@@ -1,0 +1,99 @@
+<soapenv:Envelope xmlns:soapenv=\ " http: /
+	schemas.xmlsoap.org / soap / envelope / xmlns:cour=\ " http: /
+	www.threesixtytraining.com / CourseCatalog.xsd \>
+	<soapenv:Header xmlns:soapenv=\ " http: /
+		schemas.xmlsoap.org / soap / envelope />
+		<wsse:Security soap:mustUnderstand=\ " xmlns:soap=\ "
+			http: / schemas.xmlsoap.org / wsdl / soap / xmlns:wsse=\ " http: /
+			docs.oasis-open.org / wss /
+			oasis-200401-wss-wssecurity-secext-1.0.xsd \>
+			<wsse:UsernameToken>
+				<wsse:Username>lcmsadmin</wsse:Username>
+				<wsse:Password Type=\ " http: / docs.oasis-open.org /
+					wss / oasis-200401-wss-username-token-profile-1.0 # PasswordText \>
+					lcmsadmin</wsse:Password>
+			</wsse:UsernameToken>
+		</wsse:Security>
+	</soapenv:Header>
+	<soapenv:Body xmlns:soapenv=\ " http: /
+		schemas.xmlsoap.org / soap / envelope />
+		<cour:CatalogCoursePublishRequest>
+			<GUID>efbb4bf3-830d-4552-98ef-f086b494909b</GUID>
+			<STOREID>10051</STOREID>
+			<Course>
+				<CourseID>745f12f739d347e1b45bb4968ba80e8e</CourseID>
+				<CourseName>Testing</CourseName>
+				<ImageofCourse></ImageofCourse>
+				<ApprovedCourseHours>0</ApprovedCourseHours>
+				<CourseType_Category>Classroom Course</CourseType_Category>
+				<DeliveryMethod>CLASSROOM</DeliveryMethod>
+				<CEUs>0</CEUs>
+				<CourseDescription>Desc</CourseDescription>
+				<LearningObjectives></LearningObjectives>
+				<TopicsCovered></TopicsCovered>
+				<QuizInfo></QuizInfo>
+				<FinalExamInfo></FinalExamInfo>
+				<CoursePre-req>&lt;br&gt;</CoursePre-req>
+				<State_RegReq></State_RegReq>
+				<EndofCourseInstructions>&lt;br&gt;</EndofCourseInstructions>
+				<ApprovalNumber>1</ApprovalNumber>
+				<AdditionalMaterials>&lt;br&gt;</AdditionalMaterials>
+				<SubjectMatterExpertInfo>Author background &lt;span
+					class=\"required\"&gt;*&lt;/span&gt;</SubjectMatterExpertInfo>
+				<ProductPrice>1.0000</ProductPrice>
+				<ProductOfferPrice> 0</ProductOfferPrice>
+				<currency>USD</currency>
+				<TOS>0</TOS>
+				<isDemo>0</isDemo>
+				<Audience>
+					<br>
+				</Audience>
+				<CourseContentOwner>
+					<GUID>84912AC9-01AC-417D-B7B5-EF6329109765</GUID>
+					<Name>Softtech Coporatation Private Limited</Name>
+				</CourseContentOwner>
+				<CourseGroups>
+					<Group>
+						<GroupID>EF94D34C61B</GroupID>
+						<GroupName>Classroom Courses</GroupName>
+						<ParentGroupID />
+						<ContainsCourse>true</ContainsCourse>
+					</Group>
+				</CourseGroups>
+				<CourseAuthor>
+					<FirstName>Momin</FirstName>
+					<LastName>Ali</LastName>
+					<Email>momin@a.com</Email>
+					<Phone>312321312 </Phone>
+					<Background>
+						Author background
+						<span class=\ " required \>*</span>
+					</Background>
+					<Image>http://10.0.100.179/ICPfilesystem/PersistentAssets/4/4/VU360Platform.jpg
+					</Image>
+				</CourseAuthor>
+				<CourseClassRoomWebinar>
+					<CourseStartDate>7/18/2015 8:00:00 AM</CourseStartDate>
+					<EnrollmentCloseDate>7/17/2015 11:59:59 PM</EnrollmentCloseDate>
+					<TIMEZONE>Hawaii (Honolulu)</TIMEZONE>
+					<CourseStartTime>7/18/2015 8:00:00 AM</CourseStartTime>
+					<CourseEndTime>7/18/2015 8:30:00 AM</CourseEndTime>
+					<WebinarServiceProvider></WebinarServiceProvider>
+					<MeetingURL></MeetingURL>
+					<DialNumber></DialNumber>
+					<AccessCode></AccessCode>
+					<AdditionalInformation></AdditionalInformation>
+					<Address>KarachiKarachi</Address>
+					<Description> Karachi description.</Description>
+					<Location>Karachi</Location>
+					<ClassSize>999</ClassSize>
+					<City>Karachi</City>
+					<State>Saint Thomas</State>
+					<Country>Barbados</Country>
+					<ZipCode>12343</ZipCode>
+				</CourseClassRoomWebinar>
+				<CourseBusinessKey>000001-150611-971</CourseBusinessKey>
+			</Course>
+		</cour:CatalogCoursePublishRequest>
+	</soapenv:Body>
+</soapenv:Envelope>

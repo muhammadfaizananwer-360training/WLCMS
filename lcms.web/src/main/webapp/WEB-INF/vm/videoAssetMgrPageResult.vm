@@ -1,0 +1,9 @@
+[
+#foreach( $asset in $assets )
+	
+	[ $foreach.count, "<a id='btnOpenModal' class='anchor row-data' data-index='$foreach.count' data-videoLocation='${asset.videoLocation}' data-sizeInBytes='${asset.sizeInBytes}' data-isLinked='${asset.isLinked}' data-fileExtension='${asset.fileExtension}' data-assetName='${asset.name}' data-assetId='${asset.id}' href='javascript:;' data-toggle='modal' data-target='#updateVideoAssetModal'>${asset.name}</a>", "<span style='display:none'>$!date.format('yyyyMMdd', $asset.updatedOn)</span>$!date.format('EEE, MMM. dd, yyyy', $asset.updatedOn)", "${asset.fileExtension}","${asset.sizeInBytes}", "#if($asset.isLinked) #springMessage('label.yes') #else #springMessage('label.no') #end" , "<a class='anchor red-text' onclick=\"deleteVideoAsset(this)\" href='javascript:;' data-toggle='modal' data-target='#videoModal'><i class='icon-remove'></i> #springMessage('label.delete')</a>"]
+	#if( $foreach.hasNext )
+		,
+	#end
+#end
+]

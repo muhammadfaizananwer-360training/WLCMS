@@ -1,0 +1,29 @@
+#* BEGIN FINAL EXAM ACCORDIONS *#
+	#* BEGIN EXAM *#
+	<div id="examStrip" class="panel panel-default" style="display:none">
+	    <div class="panel-heading">
+			<div class="holder">
+				<div class="anchors move-btn">
+				</div>
+				<div class="anchors">
+					<a href="#exam_setup_0" onclick="getExamforEdit(event)" data-parent="#exam_accordion_0" data-toggle="collapse" class="accordion-toggle" title="Final Exam Setup"><i class="icon-cog"></i></a>
+				</div>
+				<div class="panel-title">
+					<a href="#exam_list_0" data-parent="#exam_accordion_0" data-toggle="collapse" class="accordion-toggle" onclick="getQuestionBankList()">
+						<i class="glyphicon glyphicon-file inside-icon-exam"></i> Final Exam 1
+					</a>
+				</div>
+				<div class="remove-btn" title="Delete" onclick="remove_Exam_panel(this)"><i class="icon-remove"></i></div>
+			</div>
+	   </div>
+	   
+	   
+	   
+			#* Following div  use to display exams in Edit mode called Setup     *#
+			<div id="id_for_exam_setup_form" class="panel-collapse collapse bg-gray-2 a1">
+			</div>
+		
+			#* Following div  use to display exams sub Elemets like 'Question Banks' *#
+			<div class="panel-collapse collapse bg-gray-2 a2" id="id_for_exam_list">
+			</div>
+	</div>	

@@ -1,0 +1,106 @@
+## BEGIN LESSON ACCORDIONS
+   #set( $setup = "setup" )
+   #set( $list = "list" )
+   #set ($quizdiv = "quizdiv" )
+   #set ($quizlink = "quizlink")
+   #foreach($contentObject in $lstContentObject)	
+## BEGIN LESSON
+   <div id=$!{contentObject[0]} class="panel panel-default" item_type="ContentObject">
+      <div class="panel-heading">
+         <div class="holder">
+            <div class="anchors move-btn">
+               <a href="javascript:;" title="Move Up" class="up">
+               <i class="icon-arrow-up"></i>
+               </a>
+               <a class="down" title="Move Down" href="javascript:;">
+               <i class="icon-arrow-down"></i>
+               </a>
+            </div>
+            <input type="hidden" id="content_id" name="content_id" value="$!{contentObject[0]}">
+            <div class="anchors">
+               <a href="#${setup}_$!{contentObject[0]}" onclick="getContentObjectForEdit2($!{contentObject[0]}, event)" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle" title="#springMessage('label.lesson-setup')">
+               <i class="icon-cog"></i>
+               </a>
+            </div>
+            <div class="panel-title">
+               <a href="#${list}_$!{contentObject[0]}" onclick="getSlidesByContentObject($!{contentObject[0]})" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle collapsed" title="Lesson Components">
+               <i class="icon-folder-open"></i> <span id="lesson_panel-title_$!{contentObject[0]}" >$escapeTool.escapeHtml($!{contentObject[2]})</span>
+               </a>
+            </div>
+            <div class="remove-btn" title="Delete" onclick="remove_panel(this, 1 , $!{contentObject[0]})">
+               <i class="icon-remove"></i>
+            </div>
+         </div>
+      </div>
+##    BEGIN PANEL SETUP FORM
+      <div id="${setup}_$!{contentObject[0]}" class="panel-collapse bg-gray-2 a1 collapse">
+
+##         Start Lession form
+
+##         End Lession form
+
+      </div>
+##    END PANEL SETUP FORM
+      <div class="panel-collapse collapse bg-gray-2 a2" id="${list}_$!{contentObject[0]}" style="height: auto;">
+         <div class="panel-body">
+##          BEGIN SLIDES PORTLET
+            <div class="portlet">
+               <div class="portlet-title">
+                  <div class="caption">#springMessage('label.lesson-components')</div>
+                  <div class="tools"></div>
+               </div>
+##             START Slide
+
+##             following div will be empty and refill using ajax call
+               <div id="slide_acc_$!{contentObject[0]}" class="panel-group accordion page-panel"> 
+               </div>
+
+##             END Slide
+               <div class="portlet-footer">
+                  <a id="addSlideID" data-lesson-id="$!{contentObject[0]}" href="" title="Add Slide" data-backdrop="static" data-keyboard="false" data-target="#addSlideModal" data-toggle="modal"  onclick="resetAddSlidePannel();"><i class="icon-plus"></i> #springMessage('label.add-slide')</a>
+                  <a id="importPowerPointID"  data-lesson-id="$!{contentObject[0]}" href="javascript:;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#importPPTModal" onClick = "imprtPPTDialog (this)" title="Import PPT"><i class="icon-upload"></i> #springMessage('label.import-powerpoint')</a>
+                  <a id="addVideoSlideID" data-lesson-id="$!{contentObject[0]}" href="" title="Upload Video" data-target="#addVideoSlideModal" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="resetAddVideoSlidePannel();"><i class="icon-upload"></i> #springMessage('label.upload-video')</a>
+               </div>
+            </div>
+##          END SLIDES PORTLET
+##          BEGIN SUPPROT MATERIAL PORTLET
+            <div class="portlet">
+               <div class="portlet-body">
+##                BEGIN SUPPROT MATERIAL ACCORDIONS
+                  <div id="supportMaterial_$!{contentObject[0]}" class="panel-group accordion page-panel">
+                  </div>
+##                END SUPPROT MATERIAL ACCORDIONS
+               </div>
+               <div class="portlet-footer">
+                  <a title="Add Support Material" data-backdrop="static" data-keyboard="false" href="#" data-toggle="modal" data-target="#addSMModal" onClick="initSMAssetForms()">
+                  <i class="icon-plus"></i> #springMessage('label.add-support-material')</a>
+               </div>
+            </div>
+##          END SUPPROT MATERIAL PORTLET
+##         BEGIN QUIZ PORTLET
+            <div class="portlet" id="topquizbar_$!{contentObject[0]}">
+               <div class="portlet-body">
+##                BEGIN QUIZ ACCORDIONS
+                  <div id="quiz_container" class="panel-group accordion page-panel" id="quiz_container">
+                  </div>
+##                END QUIZ ACCORDIONS
+               </div>
+               <div  id="addQuizLinkDiv_$!{contentObject[0]}" class="portlet-footer">
+                  <a id="quizlink_$!{contentObject[0]}" data-backdrop="static" data-keyboard="false" onclick="openQuiz(this)" href="javascript:;"  data-lesson-id="$!{contentObject[0]}" data-target="#addQuizModal" data-toggle="modal" title="Add Quiz"><i class="icon-plus"></i> #springMessage('label.add-quiz')</a>
+               </div>
+            </div>
+##          END QUIZ PORTLET
+##          BEGIN CLOSE BUTTON
+            <div class="footer">
+               <a id="lessonsCompFooterLink_CloseLesson" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lessons_accordion_0" href="#list_1">#springMessage('label.close-lesson')</a>
+            </div>
+##          END CLOSE BUTTON
+         </div>
+      </div>
+##    END SLIDE CONTENT
+##    BEGIN PANEL BODY
+##    END PANEL BODY
+   </div>
+## END LESSON
+   #end
+## END LESSON ACCORDIONS

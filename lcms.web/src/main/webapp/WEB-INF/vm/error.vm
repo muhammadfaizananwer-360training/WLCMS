@@ -1,0 +1,36 @@
+#parse("header.vm")
+
+			
+				
+				
+                <div class="clearfix"></div>
+
+                #* BEGIN PAGE CONTENT *#
+                <div class="page-content">
+				
+					#* BEGIN SECTION *#
+					<div class="section">
+						<div class="body">
+							<div class="row">
+								<div class="col-sm-offset-1">
+									<div class="pull-left">
+										<i style="font-size: 190px;" class="icon-warning-sign red-text"></i>
+									</div>
+									<div class="pull-left" style="margin-left: 10px">
+										<h1>&nbsp;</h1>
+										<h3>Oops! We cannot find the page you're looking for.<br></h3>
+										<p><a href="coursetype" class="anchor">Return to home page</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					#* END SECTION *#
+				    
+					
+                </div>
+                #* END PAGE CONTENT *#
+				
+            
+
+#parse("footer.vm")

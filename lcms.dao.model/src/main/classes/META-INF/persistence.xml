@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence                  
+                                http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="transactions-optional">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.softech.ls360.lcms.contentbuilder.model.Course</class>
+    <class>com.softech.ls360.lcms.contentbuilder.model.LearningObject</class>
+    <class>com.softech.ls360.lcms.contentbuilder.model.CourseDTO</class>
+    <class>com.softech.ls360.lcms.contentbuilder.model.SynchronousClass</class>
+      <class>com.softech.ls360.lcms.contentbuilder.model.CourseGroup</class>
+      <class>com.softech.ls360.lcms.contentbuilder.model.TimeZone</class>
+         <class>com.softech.ls360.lcms.contentbuilder.model.Location</class>
+         <class>com.softech.ls360.lcms.contentbuilder.model.Address</class>
+ <!--    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/dreamandme"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.password" value="password"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+    </properties> -->
+  </persistence-unit>
+</persistence>

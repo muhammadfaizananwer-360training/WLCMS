@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>Text Editor</title>
+<style type="text/css">
+body {
+	background-color:#f0f0f0;
+	font-family: Verdana, Geneva, sans-serif;
+}
+#footer {
+	padding:20px;
+	text-align:right;
+}
+.Btn {
+	color:#FFFFFF;
+	background-image: url(UI/formUI/buttonStrip.png);
+	background-repeat:repeat-x;
+	height: 22px;
+	width: 92px;
+	text-transform: uppercase;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	border: 1px solid #000000;
+	margin-left:5px;
+}
+</style>
+<script langauge="javascript">
+	var parentValue;
+	var textArea;
+	
+	function init(){
+		parentValue = window.opener.getParentTextField();
+		textArea = document.getElementById("mainTextArea");
+		//textArea.value = parentValue.val();
+		textArea.value = parentValue.html();
+	}
+	function setValue(){
+		//alert(document.getElementById("mainTextArea").innerHTML);
+		window.opener.setParentTextField(textArea.value);
+		window.close();
+	}
+	function cancel(){
+		window.close();
+	}
+</script>
+
+</head>
+
+<body onLoad="init();">
+<div id="textArea">
+	<object type="application/x-xstandard" id="mainTextArea" name="textArea" width="100%" height="400px">
+        <param name="ToolbarWysiwyg" value="ordered-list,unordered-list,hyperlink,directory,spellchecker,," />
+        <param name="Value" value="" />
+    </object></noscript>
+</div>
+<div id="footer">
+    <button type="button" id="cancelBtn" class="Btn" onClick="cancel();">Cancel</button>
+    <button type="button" id="saveBtn" class="Btn" onClick="setValue();">Save</button>
+</div>
+</body>
+</html>

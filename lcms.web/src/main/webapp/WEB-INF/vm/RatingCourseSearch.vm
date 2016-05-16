@@ -1,0 +1,500 @@
+#parse("header.vm")
+
+#parse("breadcrumb.vm")
+#parse("branding.vm")
+<script src="javascript/vm_js/availability_rating.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+				#* BEGIN CONFIRMATION MODAL*#
+				<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="add-exam-label" aria-hidden="true">
+				   <div class="modal-dialog modal-lg">
+				      <div class="modal-content">
+				         <div class="modal-header">
+				            <h3 class="modal-title" id="add-exam-label"><i class="glyphicon glyphicon-file inside-icon-exam"></i> #springMessage('label.confirmation')</h3>
+				         </div>
+				         <div class="modal-body">
+				            #springMessage('label.confirmation-warning')
+				         </div>
+				         <div class="modal-footer">
+				            <button type="button" class="btn blue" data-dismiss="modal">#springMessage('label.yes')</button>
+				            <button type="button" class="btn btn-default" onclick="navigateToURL();" >#springMessage('label.no')</button>
+				         </div>
+				      </div>
+				   </div>
+				</div>
+				#* END CONFIRMATION MODAL *#
+                #* BEGIN PAGE CONTENT *#
+                <div class="page-content">
+				
+					#* BEGIN DATE RANGE *#
+					<div class="portlet portlet-btn">
+					  <div class="portlet-title" title="Rating Review">
+						 <div class="caption">Criteria</div>
+						 <div class="tools">
+                            <a class="collapse" href="javascript:;"></a>
+                         </div>
+					  </div>
+					  <div class="portlet-body">
+						
+						<form class="form-horizontal" action ="RatingCourseSearch" method="POST" role="form"  id="frm_availability" >
+                            <div class="form-body">
+                               <div class="form-group">
+								  <label  class="col-md-2 control-label">Submission Date</label>
+								  <div class="col-md-2">
+									<div>
+										<span class="help-block">From</span>
+										<div class="input-group date" id="datePicker_1"  data-date="" data-date-format="dd-mm-yyyy">
+											<input class="form-control" type="text" name="datePicker_1" value="" readonly="">
+											<span class="input-group-btn add-on">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+									<div>
+										<span class="help-block">To</span>
+										<div class="input-group date" id="datePicker_2"  data-date="" data-date-format="dd-mm-yyyy">
+											<input class="form-control" type="text" name="datePicker_2" value="" readonly="">
+											<span class="input-group-btn add-on">
+												<button type="button" class="btn default disabled"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+								  </div>
+								  <label class="col-md-2 control-label">Promoter Score</label>
+								  <div class="col-md-2">
+									<span class="help-block">Multiple Selection</span>
+									<select multiple="multiple" class="form-control" id="NPSRating" name="NPSRating">
+										<option>0</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+									</select>
+								  </div>
+								  
+                               </div>
+							   <div class="form-group col-md-6" style="margin-left: 75px;">
+									<input type="checkbox"  class="form-chkbox" id="chkHideNull" value="false" name="chkHideNull" />
+									<span>#springMessage('checkbox.hide.null.reviews')</span>
+								</div>
+							   <div class="form-group">
+								  <div class="col-md-offset-2 col-md-6">
+									 <button id="searchBtn" type="button" class="btn blue">Search</button>
+									 <input id="date1" name="date1" type="hidden" value="$request.getParameter('datePicker_1')"/>
+									 <input id="date2" name="date2" type="hidden" value="$request.getParameter('datePicker_1')"/>
+									 <input id="NRating" name="NRating" type="hidden" value="$request.getParameterValues('NPSRating')"/>
+								  </div>
+                               </div>
+							</div>
+                        </form>
+						
+					  </div>
+					</div>
+					#* END DATE RANGE *#
+					<div id="serachPannel" name="serachPannel" class="portlet portlet-btn">
+						#parse("ratingCourseSearchResult.vm")
+                	</div>
+                </div>
+                #* END PAGE CONTENT *#
+<div class="modals">
+			#* BEGIN DETAILS *#
+			<div style="display: none;" class="modal fade" id="furtherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="further-details-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="further-details-label"><i class="icon-comments-alt"></i> NPS Question &amp; Review</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+							<div class="form-group">
+							  <label class="col-md-3 control-label">Review number</label>
+							  <div class="col-md-7" id="ReviewNumber">
+								<p class="form-control-static">1</p>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Course Title</label>
+							  <div class="col-md-7" id="RatingCourseTitle">
+								<p class="form-control-static">ABC</p>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Course ID</label>
+							  <div class="col-md-7" id="RatingCourseID">
+								 <p class="form-control-static">12345678</p>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Question</label>
+							  <div class="col-md-7" id="RatingQuestion">
+								<p class="form-control-static">How likely are you to recommend 360training.com to a friend or colleague?</p>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Rate</label>
+							  <div class="col-md-7">
+								<div class="form-control-static" id="RatingNPSRating">
+									<span class="badge badge-warning"><i class="icon-heart"></i> <strong>8</strong></span>
+									<small class="gray-text"> out of 10</small>
+								</div>
+							  </div>
+						   </div>
+						   
+						   <hr>
+						   
+							#* BEGIN CAROUSEL *#
+							<div id="ques_carousel" class="carousel slide">
+		
+								#* BEGIN ITEMS *#
+								<div class="carousel-inner">
+									
+									<div class="item active" id="RATING">
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">#1</label>
+											  <div class="col-md-7">
+												<p class="form-control-static">Rate this course.</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Rate</label>
+											  <div class="col-md-7" id="RatingCourse">
+												<p class="form-control-static gray-text">
+												<i class="icon-star"></i>
+												<i class="icon-star"></i>
+												<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Question</label>
+											  <div class="col-md-7"  id="RatingCourseSecondary_Q">
+												 <p class="form-control-static">We’re so glad it met your needs! What were the best things about this course?</p>
+											  </div>
+										  </div>
+										  <div class="form-group" id="RatingCourseSecondary">
+											  <label class="col-md-3 control-label">Feedback</label>
+											  <div class="col-md-7">
+												 <p class="form-control-static">Enjoyable learning experience</p>
+											  </div>
+										  </div>
+									</div>
+									
+									<div class="item" id="SHOPPINGEXP">
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">#2</label>
+											  <div class="col-md-7">
+												<p class="form-control-static">Rate your experience shopping for this course.</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Rate</label>
+											  <div class="col-md-7" id="RatingCourse">
+												<p class="form-control-static gray-text">
+												<i class="icon-star"></i>
+												<i class="icon-star"></i>
+												<i class="icon-star"></i>
+												<i class="icon-star"></i>
+												<i class="icon-star"></i>
+												</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Question</label>
+											  <div class="col-md-7" id="RatingCourseSecondary_Q">
+												 <p class="form-control-static">We’re so glad it met your needs! What were the best things about this course?</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Feedback</label>
+											  <div class="col-md-7" id="RatingCourseSecondary">
+												 <p class="form-control-static">Enjoyable learning experience</p>
+											  </div>
+										  </div>
+									</div>
+									
+									<div class="item" id="LEARNINGTECH">
+										  <div class="form-group" >
+											  <label class="col-md-3 control-label">#3</label>
+											  <div class="col-md-7">
+												<p class="form-control-static">Rate our learning technology.</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Rate</label>
+											  <div class="col-md-7" id="RatingCourse">
+												<p class="form-control-static gray-text"><i class="icon-star"></i>
+												<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Question</label>
+											  <div class="col-md-7"  id="RatingCourseSecondary_Q">
+												 <p class="form-control-static">We’re so glad it met your needs! What were the best things about this course?</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Feedback</label>
+											  <div class="col-md-7" id="RatingCourseSecondary">
+												 <p class="form-control-static">Enjoyable learning experience</p>
+											  </div>
+										  </div>
+									</div>
+									
+									<div class="item" id="CS">
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">#4</label>
+											  <div class="col-md-7">
+												<p class="form-control-static">Rate your experience with our support team if you needed them.</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Rate</label>
+											  <div class="col-md-7" id="RatingCourse">
+												<p class="form-control-static gray-text"><i class="icon-star"></i>
+												<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i></p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Question</label>
+											  <div class="col-md-7"  id="RatingCourseSecondary_Q">
+												 <p class="form-control-static">We’re so glad it met your needs! What were the best things about this course?</p>
+											  </div>
+										  </div>
+										  <div class="form-group">
+											  <label class="col-md-3 control-label">Feedback</label>
+											  <div class="col-md-7" id="RatingCourseSecondary">
+												 <p class="form-control-static">Enjoyable learning experience</p>
+											  </div>
+										  </div>
+									</div>
+									
+								</div>
+								#* End ITEMS *#
+								 
+								#* BEGIN CONTROLLER *#
+								<a class="left carousel-control" style="width:0%" href="#ques_carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left gray-text"></span></a>
+								<a class="right carousel-control" style="width:0%" href="#ques_carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right gray-text"></span></a>
+								#* BEGIN CONTROLLER *#
+							</div>
+							#* End CAROUSEL *#
+							
+						   <hr>
+						   
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Review</label>
+							  <div class="col-md-7" >
+								<p class="form-control-static" id="RatingUserReviewTest"> </p>
+							  </div>
+						   </div>
+						   
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Publish</label>
+							  <div class="col-md-7">
+  									<select class="form-control" id="PublishStatus" name="PublishStatus">
+										<option value="">Not sure</option>
+										<option value="READY">Publish</option>
+										<option value="DENIED">Do not publish</option>
+									</select>
+							  		<input type="hidden" id="RatingCourseId"/>
+							  		<input type="hidden" id="RatingEnrollmentId"/>
+								 <label class="checkbox-inline">
+									
+								 </label>
+							  </div>
+						   </div>
+						</div>
+					</form>
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" onclick="SaveRatingStatus()">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END DETAILS *#
+		</div>
+#parse("footer.vm")
+<script src="javascript/vm_js/availability_rating.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="theme/executive/plugins/datepicker/css/datepicker.css" />
+<script type="text/javascript" src="theme/executive/plugins/datepicker/js/bootstrap-datepicker.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+	$("#ques_carousel").carousel('pause');
+	$("#CourseRating_table tr").slice(0, $("#CourseRating_table tr").length).hide();
+    $("#CourseRating_table tr").slice(0, 5+1).show();
+	$.fn.dataTableExt.sErrMode = 'none';
+});
+
+function GetRatingDetail(NPS_RATING,USER_REVIEW_TEXT,RATING_COURSE,
+	RATING_SHOPPINGEXP,RATING_LEARNINGTECH,RATING_CS,
+	RATING_COURSE_SECONDARY,RATING_SHOPPINGEXP_SECONDARY,
+	RATING_LEARNINGTECH_SECONDARY,RATING_CS_SECONDARY,PUBLISH_STATUS,
+	NAME,BUSSINESSKEY,
+	RATING_COURSE_SECONDARY_Q,RATING_SHOPPINGEXP_SECONDARY_Q,
+	RATING_LEARNINGTECH_SECONDARY_Q,RATING_CS_SECONDARY_Q,CourseId,EnrollmentId, reviewNumber){
+	$('#furtherDetailsModal #ReviewNumber p').text(reviewNumber);
+	$('#furtherDetailsModal #RatingCourseTitle p').text(NAME);
+	$('#furtherDetailsModal #RatingUserReviewTest').text(USER_REVIEW_TEXT);
+	$('#furtherDetailsModal #RatingNPSRating span strong').text(NPS_RATING);
+	console.log('RATING_SHOPPINGEXP_SECONDARY:'+RATING_SHOPPINGEXP_SECONDARY);
+	
+	console.log('RATING_COURSE_SECONDARY:'+RATING_COURSE_SECONDARY);	
+	$('#furtherDetailsModal #RATING #RatingCourseSecondary p').text(RATING_COURSE_SECONDARY);
+	$('#furtherDetailsModal #RATING #RatingCourseSecondary_Q p').text(RATING_COURSE_SECONDARY_Q);
+	
+	$( "#furtherDetailsModal #RATING #RatingCourse .icon-star" ).removeClass("yellow-text");
+	
+	$( "#furtherDetailsModal #RATING #RatingCourse .icon-star" ).each(function( index, element ) {
+	
+		console.log("RATING_COURSE:" + RATING_COURSE + ":index:"+index);
+    	if (index+1>RATING_COURSE) {
+  			console.log('RATING_COURSE return');
+  			return false;
+		}
+	    $(element).addClass("yellow-text");
+  	});
+	
+	$('#furtherDetailsModal #SHOPPINGEXP #RatingCourseSecondary p').text(RATING_SHOPPINGEXP_SECONDARY);
+	$('#furtherDetailsModal #SHOPPINGEXP #RatingCourseSecondary_Q p').text(RATING_SHOPPINGEXP_SECONDARY_Q);
+	
+	$( "#furtherDetailsModal #SHOPPINGEXP #RatingCourse .icon-star" ).removeClass("yellow-text");
+	
+	$( "#furtherDetailsModal #SHOPPINGEXP #RatingCourse .icon-star" ).each(function( index, element ) {
+    		
+    		console.log("RATING_SHOPPINGEXP:"+RATING_SHOPPINGEXP+":index:"+index);
+	    	if (index+1> RATING_SHOPPINGEXP) {
+      			console.log('RATING_SHOPPINGEXP return');
+      			return false;
+    		}
+	
+	    $(element).addClass("yellow-text");
+  	});
+	
+	$('#furtherDetailsModal #LEARNINGTECH #RatingCourseSecondary p').text(RATING_LEARNINGTECH_SECONDARY);
+	$('#furtherDetailsModal #LEARNINGTECH #RatingCourseSecondary_Q p').text(RATING_LEARNINGTECH_SECONDARY_Q);
+	
+	$( "#furtherDetailsModal #LEARNINGTECH #RatingCourse .icon-star" ).removeClass("yellow-text");
+	
+	$( "#furtherDetailsModal #LEARNINGTECH #RatingCourse .icon-star" ).each(function( index, element ) {
+			console.log("RATING_LEARNINGTECH:" + RATING_LEARNINGTECH + ":index:"+index);
+	    	if (index+1>RATING_LEARNINGTECH) {
+      			console.log('RATING_LEARNINGTECH return');
+      			return false;
+    		}
+	
+	    $(element).addClass("yellow-text");
+  	});
+
+	$('#furtherDetailsModal #CS #RatingCourseSecondary p').text(RATING_CS_SECONDARY);
+	$('#furtherDetailsModal #CS #RatingCourseSecondary_Q p').text(RATING_CS_SECONDARY_Q);
+	
+	$( "#furtherDetailsModal #CS #RatingCourse .icon-star" ).removeClass("yellow-text");
+	
+	$( "#furtherDetailsModal #CS #RatingCourse .icon-star" ).each(function( index, element ) {
+			console.log("RATING_CS:" + RATING_CS + ":index:"+index);
+	    	if (index+1>RATING_CS) {
+      			console.log('RATING_CS return');
+      			return false;
+    		}
+	
+	    $(element).addClass("yellow-text");
+  	});
+	$('#PublishStatus').val(PUBLISH_STATUS);
+	$("#RatingCourseId").val(CourseId);
+	$("#RatingCourseID p").text(CourseId);
+	$("#RatingEnrollmentId").val(EnrollmentId);
+	
+	if(PUBLISH_STATUS == 'PUBLISHED'){
+		$("<option value='PUBLISHED'>Published</option>").appendTo("#PublishStatus");
+		$('#PublishStatus').val("PUBLISHED");
+		$('#PublishStatus').prop('disabled', 'true');
+	}else{
+		$('#PublishStatus option[value="PUBLISHED"]').remove();
+		$('#PublishStatus').removeAttr("disabled");
+	}
+	
+	$('#RATING').removeClass("active");
+	$('#SHOPPINGEXP').removeClass("active");
+	$('#LEARNINGTECH').removeClass("active");
+	$('#LEARNINGTECH').removeClass("active");
+	$('#CS').removeClass("active");
+	
+	$('#RATING').addClass("active");
+	
+	$("#furtherDetailsModal").modal('show');
+}
+function SaveRatingStatus()
+{
+	var reviewId = $('#furtherDetailsModal #ReviewNumber p').text();
+	var statusRequested = $("#PublishStatus").val();
+	if(statusRequested == null || statusRequested == ''){
+		statusRequested = "NEW";
+	}
+	APP.AJAX({
+		url: 'SaveRatingStatus',
+		dataType: "text",
+		type: "POST",
+		cache: false,
+		data:'Course_Id='+$("#RatingCourseId").val() +'&Enrollment_id='+$("#RatingEnrollmentId").val()+'&Status='+$("#PublishStatus").val(),
+		async: false,  
+		success: function(response) {
+			var colorClass = "yellow-text"; 
+			if(statusRequested == 'NEW'){
+				colorClass = "";
+				removeReviewsId(reviewId);
+			}else if(statusRequested == 'DENIED'){
+				colorClass = "red-text";
+				removeReviewsId(reviewId);
+			}else if(statusRequested == 'READY'){
+				colorClass ="yellow-text";
+				addReviewsId(reviewId);
+			}
+			$("#CourseRating_table tbody tr").find("#review_" + reviewId).html('<span class=' + colorClass + '>' + statusRequested + '</span>');
+		}
+   });
+   
+	$('#furtherDetailsModal').modal('hide');
+
+}
+
+function PublishAllCourse()
+{
+	var trgModal = $("#confirmationModal");
+	trgModal.modal("hide");
+	showProgressLoader("<div id='loader-label'>Loading...</div>");
+	
+	var reviewIdList = reviewsMarkedReady.join(',');
+	APP.AJAX({
+		url: 'PublishAllCourse',
+		dataType: "text",
+		type: "POST",
+		cache: false,
+		data: 'reviewIds=' + reviewIdList,
+		async: true,  
+		success: function(response) {
+		
+			if(response){
+				for(var i = 0; i < reviewsMarkedReady.length; i++){
+					$("#CourseRating_table tbody tr").find("#review_" + reviewsMarkedReady[i]).html('<span class="green-text">PUBLISHED</span>');
+				}
+				reviewsMarkedReady = [];
+				enableDisablePublishButn(false);
+				TopMessageBar.displayMessageTopBar({vMsg: WLCMS_LOCALIZED.COURSE_RATING_PUBLISH_SUCCESS_MSG});
+			}else{
+				TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.COURSE_RATING_PUBLISH_FAILURE_MSG});
+			}
+			 hideProgressLoader();
+		}
+   });
+}
+</script>

@@ -1,0 +1,77 @@
+#parse("header.vm")
+#parse("branding.vm")
+#parse("breadcrumb.vm")
+			
+				
+				<script type="text/javascript" src="theme/executive/plugins/jquery.cookie.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+                <div class="clearfix"></div>
+
+                <div class="page-content">
+					<form id="create_pdf_form" action="exportSignupAuthorData">
+					<input type="hidden" name="download_token_value_id" id="download_token_value_id"/>
+					#* BEGIN ONLINE COURSE TYPE *#
+					<div class="portlet">
+						<div class="portlet-title" title="Reports">
+							 <div class="caption">#springMessage('label.reports')</div>
+							 <div class="tools">
+								
+							 </div>
+						</div>
+						<div class="portlet-body">
+							<div class="row tiles">
+								<div class="col-md-12">
+									<div class="tile box bg-gray" onclick="extractSignupAuthorReport()">
+									   <div class="tile-body text-center">
+											<h4>#springMessage('label.reports.authorsignup.heading')</h4>
+											<i class="icon-bar-chart" style="margin-top: 50px"></i>
+									   </div>
+									   <div class="tile-object">
+											<div>#springMessage('lable.reports.authorsignup.detail')</div>
+									   </div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</form>
+					</div>
+<script type="text/javascript">				
+$(document).ready(function () {
+	$.removeCookie('fileDownloadToken'); 
+	var token = new Date().getTime(); //use the current timestamp as the token value
+    $('#download_token_value_id').val(token);
+	$('#create_pdf_form').submit(function () {
+      blockUIForDownload();
+    });
+  });
+ 
+function extractSignupAuthorReport() {
+	showProgressLoader("<div id='loader-label'>Extracting...</div>");
+	//window.location.href = "exportSignupAuthorData"; 	
+	$( "#create_pdf_form" ).submit();
+	//setTimeout(function(){ hideProgressLoader(); }, 1000);	 	
+	}
+	   
+function showProgressLoader(message){
+	$("#loader-overlay").html(message);
+	$("#bg-loader").show();
+	$("#loader-overlay").show();	
+}
+
+function hideProgressLoader(){
+	clearInterval(fileDownloadCheckTimer);
+    $.removeCookie('fileDownloadToken');
+	$("#loader-overlay").fadeOut();
+	$("#bg-loader").fadeOut();	  
+}
+var fileDownloadCheckTimer;
+  function blockUIForDownload() {
+    var token = $('#download_token_value_id').val();
+    fileDownloadCheckTimer = setInterval(function () {
+	  var cookieValue = $.cookie('fileDownloadToken');
+	  if (cookieValue == token)
+       hideProgressLoader();
+	 }, 2000);
+  }
+</script>            
+
+#parse("footer.vm")

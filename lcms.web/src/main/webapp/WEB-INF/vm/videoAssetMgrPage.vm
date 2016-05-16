@@ -1,0 +1,89 @@
+#parse("header.vm")
+#parse("branding.vm")
+#parse("breadcrumb.vm")
+#parse("modals.vm")
+
+<script>
+	$(document).ready(function(){
+		 onlineRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.online.royalty.percentage')};
+		 classroomRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.classroom.royalty.percentage')};
+		 webinarRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.webinar.royalty.percentage')};
+		});
+</script>
+
+		
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+	
+	#* BEGIN RESULTS TABLE PORTLET*#
+	<div class="portlet">
+	  <div class="portlet-title" title="#springMessage('videoAssetMgrPage.title')">
+		 <div class="caption">#springMessage('videoAssetMgrPage.title')</div>
+		 <div class="tools">
+            
+         </div>
+	  </div>
+	  
+	  <div id="searchPanelContents" style="display:none">
+	  	<div class="dataTables_filter">
+		<button id="searchButton" name="searchButton" class="btn blue pull-right" onclick="searchContentOwners();"><i class="search-icon-white"></i> <span class="hide-md">#springMessage('button.find')<span></button>
+		<input id="seachText" name="seachText" type="text" class="pull-right" maxlength="255" placeholder="#springMessage('videoAssetMgrPage.searchPlaceholder')">
+		</div>
+	  </div>
+	  <div id="deleteAssetConfirmationModalContents" style="display:none">
+	  	<div class="modal-title">
+	  		<i class="icon-exclamation-sign"></i>#springMessage('deleteAssetConfirmationModalContents.title')
+		</div>
+		<div class="modal-body">
+			#springMessage('deleteAssetConfirmationModalContents.message')
+		</div>
+		<div class="modal-footer">
+			<button id="btnYes" type="button" class="btn blue" data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.yes')</button>
+			<button type="button" class="btn btn-default"  data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.no')</button>
+		</div>
+	  </div>
+	  
+	  <div id="fmsSpaceUsagePanel" class="well">
+							<h4>#springMessage('fmsSpaceUsagePanel.title')</h4>
+							<small>#springMessage('fmsSpaceUsagePanel.caption.used') <strong class="used-space-text"></strong></small>
+							<div class="progress zero-margin" style="height:5px; background-color: #e6e6e6;">
+								<div style="width: 0%" class="used-space-bar progress-bar progress-bar-warning"></div>
+							</div>
+							<div class="text-right"><small>#springMessage('fmsSpaceUsagePanel.caption.available') <strong class="avail-space-text"></strong></small></div>
+	  </div>
+	  <div class="portlet-body">
+	  	<table class="table table-striped table-bordered table-hover table-full-width" id="search_table">
+			<thead>
+			   <tr>
+				  <th width="1">#</th>
+				  <th>#springMessage('videoAssetMgrPage.column.videoName')</th>
+				  <th>#springMessage('videoAssetMgrPage.column.dateModified')</th>
+				  <th>#springMessage('videoAssetMgrPage.column.type')</th>
+				  <th>#springMessage('videoAssetMgrPage.column.size')</th>
+				  <th>#springMessage('videoAssetMgrPage.column.linked')</th>
+				  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+			   </tr>
+			</thead>
+			<tbody>
+			</tbody>
+		 </table>
+	  	
+	  </div>
+	</div>
+	#* END RESULTS TABLE PORTLET*#
+	
+</div>
+#* END PAGE CONTENT *#
+
+<script src="javascript/vm_js/videoAssetMgr.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+#*jwplayer*#
+<script type='text/javascript' src="theme/executive/plugins/jwplayer/jwplayer-7.1.4.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+<script type="text/javascript">jwplayer.key="NWa+NruTBASm39QxfCBvuv1UblvSsMtD+mrZiJgnxNI=";</script>
+
+<script type="text/javascript">
+	var gFmsQuota = $!{lcmsProperties.getLCMSProperty('fms.defaultQuota')};
+	var gFmsUsedSpace = $fmsUsedSpaceInBytes;
+</script>
+
+#parse("footer.vm")

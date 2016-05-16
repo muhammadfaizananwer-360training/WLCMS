@@ -1,0 +1,21 @@
+#macro(springMessage $msg)
+    $messageSource.getMessage($msg,null,$locale)
+#end
+
+#macro(parseText $text)
+    $parser.parseText($ctx,$text)
+#end
+
+#macro(parseMessage $msg)
+    $parser.parseText($ctx,$messageSource.getMessage($msg,null,$locale))
+#end
+
+<html>
+    <head>
+        <style>
+            body,p,th,td,li {
+                font-family:Calibri;
+            }
+        </style>
+    </head>
+    <body>

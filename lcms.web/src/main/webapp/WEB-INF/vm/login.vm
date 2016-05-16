@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Login</title>	
+		#* BEGIN CSS *#
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-3.1.1-dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/iosOverlay-js/css/iosOverlay.css" />
+
+		#* BEGIN PAGE SPECIFIC CSS *#
+		<link rel="stylesheet" type="text/css" href="theme/executive/plugins/aciTree/css/aciTree.css" />
+		<link rel="stylesheet" type="text/css" href='theme/executive/plugins/toggle-switch-master/css/toggleswitch.css' />
+		<link rel="stylesheet" type="text/css" href="theme/executive/plugins/data-tables/DT_bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />
+		#* Yasin*#  <link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+		#* END PAGE SPECIFIC CSS *#
+	
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/plugins.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style-metronic.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/custom.css" />
+    <link rel="shortcut icon" href="theme/executive/img/icons/favicon.ico" />
+    #* END CSS *#
+
+		
+	<script type="text/javascript" src="theme/executive/plugins/jquery.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	
+	
+    <script type="text/javascript" src="theme/executive/plugins/html5shiv.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    <script type="text/javascript" src="theme/executive/plugins/respond.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    
+    
+</head>
+
+<body>
+    <div class="wrapper">
+				#parse("messageTopBar.vm")
+				#* BEGIN LOGIN PAGE *#
+				<div class="container page-content ">
+				<div id="successMsg" name="successMsg" class="messages"></div>
+					<div class="login-center-form">
+						<div class="logo" onclick="window.open('http://www.360training.com/authoring-program/ ','_self')" style="cursor:pointer"></div>
+							<br/><br/>
+							<div>
+								<h2>Log in to your account.</h2>
+								<div id="login_error" style="display:none;" class="error">
+									<label>Provided user name or password is invalid</label>
+								</div>
+									<form role="form" class="form-horizontal" action="${CASServerBaseUrl}/login" method="post" name="Logon"   id="frm_login" novalidate="novalidate">
+									  <input id="auto" type="hidden" value="true" name="auto">
+									  <input type="hidden" name="service" value="${wlcmsServerBaseUrl}/lcms/j_spring_cas_security_check" />
+									  <div class="form-body">
+										<div class="form-group">
+										  <div class="input-icon">
+											<i class="icon-user"></i>
+											<input type="text" placeholder="Username" id="username" name="username" value="" class="form-control">
+										  </div>
+										</div>
+										<div class="form-group">
+										  <div class="input-icon">
+											<i class="icon-lock"></i>
+											<input  placeholder="Password" type="password" autocomplete="off"  id="password" name="password" class="form-control">
+										  </div>
+										</div>
+										<div class="form-group">
+										  <div class="pull-left">
+											  <label>
+												<input type="checkbox" class="form-chkbox">
+												Remember me.
+											  </label>
+										  </div>
+										  <div class="pull-right">
+											<button class="btn blue" type="submit" style="min-width:80px">Log in</button>
+										  </div>
+										</div>
+									  </div>
+									</form>
+									<br/><br/>
+									<div>
+										<label>Forgot your password?</label>
+									</div>
+									<div>
+										<label>No worries. Click <a href="/lcms/credentialRetrievalMethod" class="blue-text"><u>here</u></a> to reset your password. </label>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+				</div>
+					#* END LOGIN PAGE *#
+                   
+      </div>
+  	
+  	
+  	    <script type="text/javascript" src="theme/executive/scripts/jquery.validate.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    <script src="javascript/vm_js/login.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+    <script>
+    	
+
+		 #if( $!request.getParameter("msgId")=="0001" )
+			TopMessageBar.displayMessageTopBar({vType:3, vMsg:'Your Authoring account has been activated successfully. Please log in to start building courses!', bShowCloseBtn:false, bFadeOut:false});
+		 #end
+
+	</script>
+##	<script>
+##		$(document).ready(function ()
+##		{
+##			//	BEGIN APP **************************************************************
+##			//APP.PLACEHOLDER_FIX();
+##			/*APP.PARALLAX();
+##			APP.PRELOAD();
+##			APP.EDIT_OR_VIEW_TOGGLE();
+##			APP.LEFT_NAV.init();
+##			APP.LEFT_NAV_COURSE_OUTLINE();
+##			APP.BODY_COLLAPSES();
+##			APP.APPLY_ROUNDED_CORNERS();
+##			APP.CKEDITOR("title-ckeditor", "TITLE");
+##			APP.CKEDITOR("cc-ckeditor", "CC");
+##			APP.CKEDITOR("text-ckeditor", "TEXT");
+##			APP.DATAGRID('#sample_1',true,true,true,true);*/
+##			//	END APP **************************************************************
+##		});
+##	</script>
+</body>
+</html>

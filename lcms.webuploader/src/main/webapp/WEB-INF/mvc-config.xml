@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan
+            base-package="dummy.package"/> 
+	<context:property-placeholder location="classpath*:webuploader.properties"/>
+
+    <mvc:annotation-driven />
+	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
+	        <property name="prefix" value="/WEB-INF/view/"/>
+	        <property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<bean class="com.softech.ls360.lcms.contentbuilder.web.controller.FileController"/>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
+	<bean class="com.softech.ls360.lcms.contentbuilder.upload.FTPFileUploader" primary="true" >
+		<property name="tempLocation" value="${ftp.main.temploc}" />
+		<property name="permanentLocation" value="${ftp.main.permloc}" />
+		<property name="ftpServer" value="${ftp.main.server}" />
+		<property name="userName" value="${ftp.main.username}" />
+		<property name="password" value="${ftp.main.password}" />
+		<property name="maxRetries" value="${ftp.main.retries}" />
+		<property name="enabled" value="${ftp.main.enabled}" />
+	</bean>
+	<bean class="com.softech.ls360.lcms.contentbuilder.upload.FTPFileUploader">
+		<qualifier value = "fms" />
+		<property name="tempLocation" value="${ftp.fms.temploc}" />
+		<property name="permanentLocation" value="${ftp.fms.permloc}" />
+		<property name="ftpServer" value="${ftp.fms.server}" />
+		<property name="userName" value="${ftp.fms.username}" />
+		<property name="password" value="${ftp.fms.password}" />
+		<property name="maxRetries" value="${ftp.fms.retries}" />
+		<property name="enabled" value="${ftp.fms.enabled}" />
+	</bean>
+	
+	<bean class="com.softech.ls360.lcms.contentbuilder.upload.FTPPPTFileUploader" >
+		<qualifier value = "ppt" />
+		<property name="tempLocation" value="${ftp.main.temploc}" />
+		<property name="permanentLocation" value="${ftp.main.permloc}" />
+		<property name="ftpServer" value="${ftp.main.server}" />
+		<property name="userName" value="${ftp.main.username}" />
+		<property name="password" value="${ftp.main.password}" />
+		<property name="maxRetries" value="${ftp.main.retries}" />
+		<property name="enabled" value="${ftp.main.enabled}" />
+	</bean>
+</beans>

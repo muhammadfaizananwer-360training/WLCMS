@@ -1,0 +1,243 @@
+#parse("header.vm")
+#parse("branding.vm")
+#parse("breadcrumb.vm")
+<div class="modal fade background-modal" id="extractingModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+</div>
+
+#* BEGIN DYNAMIC MODAL *#
+<div class="modal fade errorModal" id="dynamicModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h3 class="modal-title" id="confirmation-label">
+                    #* Dynamic Title *#
+                </h3>
+            </div>
+            <div class="modal-body">
+                #* Dynamic Message *#
+            </div>
+            <div class="modal-footer">
+                #* Dynamic Action Buttons *#
+            </div>
+        </div>
+    </div>
+</div>
+#* END DYNAMIC MODAL *#
+
+#* START ERROR LISTING MODAL CONTENTS *#
+<div id="errorListingBody" style="display:none">
+    <div class="modal-body">
+        <table class="table table-striped table-bordered table-hover table-full-width" id="search_table">
+            <thead>
+                <tr>
+                    <th width="1">#</th>
+                    <th data-field="tableName">#springMessage('classroomImportPage.column.sheetName')</th>
+                    <th width="1" data-field="rowNum">#springMessage('classroomImportPage.column.rowNum')</th>
+                    <th data-field="columnName">#springMessage('classroomImportPage.column.column')</th>
+                    <th data-field="message">#springMessage('classroomImportPage.column.error')</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="errorMessage"></div>
+    </div>
+</div>
+<div id="errorListingConfirmation" style="display:none">
+    <div class="modal-title">
+        <i class="icon-exclamation-sign"></i> #springMessage('classroomImportPage.errorListingConfirmation.title')
+    </div>
+    <div class="modal-footer">
+        <button id="btnYes" type="button" class="btn blue" data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.yes')</button>
+        <button type="button" class="btn btn-default"  data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.no')</button>
+    </div>
+</div>
+<div id="errorListingShowstopper" style="display:none">
+    <div class="modal-title">
+        <i class="icon-exclamation-sign"></i> #springMessage('classroomImportPage.errorListingShowstopper.title')
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn blue"  data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.close')</button>
+    </div>
+</div>
+#* END ERROR LISTING MODAL CONTENTS *#
+
+<div class="page-content">
+
+    #* BEGIN ONLINE COURSE TYPE *#
+    <div class="portlet">
+        <div class="portlet-title" title="Classroom Batch Import">
+            <div class="caption">#springMessage('classroomImportPage.title')</div>
+            <div class="tools">
+
+            </div>
+        </div>
+        <div class="portlet-body form">
+
+            #* BEGIN FORM *#
+            <div class="form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label style="font-weight:bold;">#springMessage('classroomImportPage.field.template.caption')</label>
+                            <span class="help-block">#springMessage('classroomImportPage.field.template.details')</span>
+                            <a class="btn btn-default" href="theme/samplefile/Classroom batch import template.xlsx"><i class="icon-file-alt"></i> Download the batch file template</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label" style="text-align:left">#springMessage('classroomImportPage.field.importContent.caption')<span class="required" aria-required="true">*</span></label>
+                            <span class="help-block">#springMessage('classroomImportPage.field.importContent.details')</span>
+                            <form>
+                                <div id="importClassroomUploader" class="table-scrollable upload-360" data-uploader-loc="$!uploaderLocation" data-ext="xls,xlsx" data-file-handler="ppt" data-onupload-done="importClassroomSheet(this)" style="position: relative;">
+                                    <input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+                                    <input id="filePath" name="filePath" type="hidden" class= "uploaded-file"></input>
+                                    <table class="table table-str-border table-bordered drop-widget">
+                                        <thead>
+                                            <tr class="td-header">
+                                                <th colspan="4">
+                                                    <div class='btn-group'>
+                                                        <button type="button" id="btnSelectFile" class="btn btn-default blue-label btn-browse show-always">
+                                                            <span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> #springMessage('uploader.button.browse')</span>
+                                                            <span class="hide browse-change"><i class="icon-undo"></i> #springMessage('uploader.button.change')</span>
+                                                        </button>
+
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            <tr class="td-header-bottom-border">
+                                                <th colspan="4">
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dw_list_1">
+                                            <tr class = "file-panel">
+                                                <td class="name"><span id="fileName" class="file-name"></span></td>
+                                                <td class="status">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-info" style="width:0%">0%</div>
+                                                    </div>
+                                                </td>
+                                                <td class="size"><span id="fileSize" class="file-size"></span></td>
+                                                <td class="action"><a class="btn btn-default btn-cancel"><i class="icon-thumbs-down-alt"></i> #springMessage('label.cancel.upload')</a></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="drop-area" id="icc_drop_area_1" style="position: relative;">
+                                            <tr>
+                                                <td colspan="4">
+                                                    <ul class="row list-inline">
+                                                        <li><h1 class="glyphicon glyphicon-list-alt"></h1></li>
+                                                        <li class="text-left">#springMessage('bulk.course.Import.sample.file.instruction2')</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                #* END FORM *#
+
+            </div>
+        </div>
+        #* END ONLINE COURSE TYPE *#
+
+    </div>
+</div> 
+<script>
+    $(function () {
+        $('#importClassroomUploader').uploader360().reset();
+    });
+
+    function importClassroomSheet(btn, ignoreErrors) {
+        //TopMessageBar.displayMessageTopBar({vMsg:WLCMS_LOCALIZED["classroomImportPage-uploadMessage"]});
+        showProgressLoader("<div id='loader-label'>Processing...</div>");
+        var form = $(btn).closest('form')[0];
+        APP.AJAX({
+            url: 'importClassroomCourses',
+            data: $(form).serialize() + ((ignoreErrors) ? "&ignoreErrors=true" : ""),
+            dataType: "text",
+            type: 'POST',
+            cache: false,
+            success: function (response) {
+                hideProgressLoader()
+                response = $.parseJSON(response);
+                response.errorBarConf = {timeFadeOut: 5000};
+                if (!response.error) {
+                    window.location = "./searchcourseonline";
+                } else if (response.data.errors) {
+
+                    //apply contents of modal.
+                    var modal = $("#dynamicModal");
+                    modal.applyModalContent360($("#errorListingBody")[0]);
+                    var errorMessage = modal.find("#errorMessage")[0];
+                    if (response.data.showstopper) {
+                        $(errorMessage).html(WLCMS_LOCALIZED["classroomImportPage-errorListingShowstopper-message"]);
+                        modal.applyModalContent360($("#errorListingShowstopper")[0]);
+                    } else {
+                        $(errorMessage).html(WLCMS_LOCALIZED["classroomImportPage-errorListingConfirmation-message"]);
+                        modal.applyModalContent360($("#errorListingConfirmation")[0]);
+                        modal.find("#btnYes").click(function () {
+                            importClassroomSheet(btn, true);
+                        });
+                    }
+                    
+                    $(modal).find(".error-count").html(response.data.errors.length);
+                    
+
+                    //transform data for making it compatible for jquery datatables
+                    var seqNum = 0;
+                    var rows = response.data.errors.map(function (val) {
+                        seqNum = seqNum + 1;
+                        val.message = WLCMS_LOCALIZED["classroomImportPage-error-" + val.message] || val.message;
+                        return ["<span style='display:none'>" + seqNum.toString().padLeft(12) + "</span><span class='badge badge-danger'>" + seqNum + "</span>",
+                            val.tableName,
+                            (val.rowNum == 0)? 1: val.rowNum,
+                            val.columnName,
+                            "<span class='error'>" + $360.formatMessage(val.message, val) + "</span>"];
+                    });
+
+                    //initialize and populate jquery datatables
+                    var tableExtention = {
+                        buttons: [
+                            'copyHtml5',
+                            'csvHtml5'
+                        ],
+                        dom: '<"row"<"hide"B><"col-xs-12 table-tools-bar"lf>>rt<"row"<"col-sm-5"i><"col-sm-7"p>>'
+                    };
+                    APP.SEARCHGRID.init("#dynamicModal #search_table", true, true, {pageSize: 5}, tableExtention);
+                    table = $("#dynamicModal #search_table").DataTable();
+
+                    table.rows.add(rows).draw();
+
+                    //for exporting data
+                    $(errorMessage).find(".exportToCsv").click(function () {
+                        modal.find('.dataTables_wrapper a.buttons-csv').click();
+                    });
+
+                    //show modal
+                    modal.modal("show");
+                } else {
+                    $360.showMessage(response);
+                }
+            },
+            error: function (data) {
+                hideProgressLoader()
+            }
+        });
+    }
+
+    function showProgressLoader(message) {
+        $("#loader-overlay").html(message);
+        $("#bg-loader").show();
+        $("#loader-overlay").show();
+    }
+    function hideProgressLoader() {
+        $("#loader-overlay").fadeOut();
+        $("#bg-loader").fadeOut();
+    }
+
+</script>
+#parse("footer.vm")

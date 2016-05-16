@@ -1,0 +1,9 @@
+#parse("loginHeader.vm")
+#parse("breadcrumb.vm")
+<br>
+<h3>
+Your account has been activated successfully.
+</h3>
+<br>
+The 360training Authoring team 
+#parse("footer.vm")

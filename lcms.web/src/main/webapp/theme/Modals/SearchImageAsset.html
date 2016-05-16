@@ -1,0 +1,66 @@
+<!-- BEGIN ASSET SEARCH -->
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" onClick="cancelAssetSearch ()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h3 class="modal-title" id="asset-search-label">Find Asset and Attach to Slide</h3>
+	  </div>
+	  <div class="modal-body">
+	
+		<!-- BEGIN GRID TABLE -->
+		<div class="form-body">							
+		   <div class="form-group">
+				<div>
+					<div class="btn-group pull-right zero-padding col-md-6">
+						<div class="input-group">
+						  <span class="input-group-btn">
+							<label>Search<span class="search-required">*</span></label>
+						  </span>
+						  <input type="text" id="visualAssetSearchTerm" name="visualAssetSearchTerm"   Onkeydown="if (event.keyCode == 13) document.getElementById('searchAssets').click()"  class="form-control"  placeholder="Search Visual Asset">
+						  <span class="input-group-btn">
+						<button type="button" onClick= "searchAssets('dynamicModal')" id="searchAssets" data-loading-text="Loading..." class="btn blue"><i class="search-icon-white"></i> Find</button>
+						  </span>
+						</div>
+					</div>
+				</div>
+				<br /><br />
+				<div class="table-scrollable">
+					<table class="table table-str-border table-hover table-bordered white-bg">
+						<thead>
+						   <tr class="td-header-bottom-border">
+							  <th></th>
+							  <th>Asset Name</th>
+							  <th>Type</th>
+							  <th>Dimension</th>
+							  <th>Size</th>
+							  <th>Version</th>
+							  <th>Description</th>
+							  <th>Preview</th>
+						   </tr>
+						   <tr id='assetRow' style='display:none'>
+							  <td id='rowid'><input type="radio" name='g1' value='1'/></td>
+							  <td id='name'>Asset Name A</td>
+							  <td id='type'>Image</td>
+							  <td id='dimension'>250 x 250</td>
+							  <td>N/A</td>
+							  <td id='version'>1</td>
+							  <td id='description'></td>
+							  <td id='image'></td>
+						   </tr>
+						</thead>
+						
+						<tbody id="lstAsset" height="100">
+										   
+						</tbody>
+					</table>
+				</div>
+		   </div>
+		</div>
+		<!-- END GRID TABLE -->
+		
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" onClick="acceptDialogBox ('dynamicModal visual')" id ="id_acceptAssetSearch" class="btn blue">Accept</button>
+		<button type="button" onClick="cancelAssetSearch ()" id ="id_cancelAssetSearch" class="btn btn-default" data-dismiss="modal">Cancel</button>		
+	  </div>
+	</div>
+<!-- END ASSET SEARCH -->

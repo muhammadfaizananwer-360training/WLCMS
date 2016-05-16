@@ -1,0 +1,23 @@
+<div id ="slideHeaderBar" class="panel panel-default" style="display:none">
+	<div class="panel-heading">
+		<div class="holder">
+			<div class="anchors move-btn">
+				<a href="javascript:;" title="Move Up" class="up"><i class="icon-arrow-up"></i></a>
+				<a class="down" title="Move Down" href="javascript:;"><i class="icon-arrow-down"></i></a>
+			</div>
+			<div class="anchors">
+				<a id="slide_setup" href="#setup_0_0" data-parent="#lesson_1" data-toggle="collapse" class="accordion-toggle" title="Slide Setup">
+					<i class="icon-cog"></i>
+					
+				</a>
+			</div>
+			<div class="panel-title">
+				<a id="label" href="#list_0_0" data-parent="#lesson_1"  data-toggle="collapse" class="accordion-toggle"> 
+					
+				</a>
+			</div>
+			<div class="remove-btn" title="Delete" id="slideDeleteButton">
+				<i class="icon-remove"></i></div>
+		</div>
+	</div>
+</div>

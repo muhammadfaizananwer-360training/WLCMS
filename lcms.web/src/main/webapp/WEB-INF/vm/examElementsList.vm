@@ -1,0 +1,35 @@
+#* BEGIN PANEL BODY *#
+	  <div class="panel-body" id="examElementsList" style="display:none">
+		
+		#* BEGIN FORM *#
+		<div class="portlet">
+		  <div class="portlet-title">
+			 <div class="caption">
+				Question Banks
+			 </div>
+			 <div class="tools">
+				
+			 </div>
+		  </div>
+		  <div class="portlet-body">
+			
+			#* BEGIN BANK ACCORDIONS *#
+			<div class="panel-group accordion page-panel" id="exam_0_banks_dummy">
+				
+			
+				
+			</div>
+			#* END BANK ACCORDIONS *#
+			
+		  </div>
+		</div>
+		#* END FORM *#
+		
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a href="#exam_list_0" data-parent="#exam_accordion_0" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE FINAL EXAM</a>
+		</div>
+		#* END CLOSE BUTTON *#
+		
+	  </div>
+   #* END PANEL BODY *#

@@ -1,0 +1,136 @@
+#* BEGIN LESSON *#
+<div id = "lesson_accordion" class="panel panel-default" style="display:none">
+   <div class="panel-heading">
+	
+		<div class="holder">
+		
+			<div class="anchors move-btn">
+				<a href="javascript:;" title="Move Up" class="up">
+					<i class="icon-arrow-up"></i>
+				</a>
+			
+				<a class="down" title="Move Down" href="javascript:;">
+					<i class="icon-arrow-down"></i>
+				</a>
+			</div>
+			
+			<div class="anchors">
+				<a id="setup" href="#setup_0" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle" title="Lesson Setup">
+					<i class="icon-cog"></i>
+					
+				</a>
+			</div>
+
+			<div id="list" class="panel-title">
+				<a  id="label" href="#list_0" data-parent="#lessons_accordion_0"  data-toggle="collapse" class="accordion-toggle">
+                    
+					
+				</a>
+			</div>
+
+			<div class="remove-btn" title="Delete" id="lessonDeleteButton">
+				<i class="icon-remove"></i>
+			</div> 
+			
+		</div>
+	
+   </div>
+   
+   #* BEGIN PANEL SETUP FORM *#
+   <div id="setup_0" class="panel-collapse collapse bg-gray-2 a1">
+	  
+   </div>
+   #* END PANEL SETUP FORM *#
+
+   		<div style="height: 1px;" id="list_0" class="panel-collapse bg-gray-2 a2 collapse">
+				  <div class="panel-body">
+					
+					#* BEGIN SLIDES PORTLET *#
+					<div class="portlet">
+					  <div class="portlet-title">
+						 <div class="caption">Lesson Components</div>
+						 <div class="tools"></div>
+					  </div>
+					  
+					  
+					  
+					  #* START Slide *#  
+					  <div class="panel-group accordion page-panel" id="slide_1">
+						    <div id="slide_0_0" class="panel panel-default"> 
+															
+							</div>
+					  </div>
+					#* END *#  
+
+																		
+					  
+					  
+					  
+					  
+					  #*------Start - Following lines commented out Temperary bases------*#  		
+					  
+						<div class="portlet-footer">
+						<a id="addSlideID" href="" title="Add Slide" data-target="#addSlideModal" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="resetAddSlidePannel();"><i class="icon-plus"></i> Add Slide</a>
+						<a id="importPowerPointID"  data-lesson-id="$!{contentObject[0]}" href="javascript:;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#importPPTModal" onClick = "imprtPPTDialog (this)" title="Import PPT"><i class="icon-upload"></i> Import PowerPoint</a>
+						<a id="addVideoSlideID" data-lesson-id="$!{contentObject[0]}" href="" title="Upload Video" data-target="#addVideoSlideModal" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="resetAddVideoSlidePannel();"><i class="icon-upload"></i> #springMessage('label.upload-video')</a>
+					  </div>
+					  
+					  #*------End - Following lines commented out Temperary bases------*# 
+						
+					</div>
+					#* END SLIDES PORTLET *#
+					
+					#* BEGIN SUPPROT MATERIAL PORTLET*#
+					<div class="portlet">
+					  <div class="portlet-body">
+
+						#* BEGIN SUPPROT MATERIAL ACCORDIONS *#
+						<div class="panel-group accordion page-panel" id="supportMaterial_">
+							
+						</div>
+						#* END SUPPROT MATERIAL ACCORDIONS *#
+						 
+					  </div>
+					  
+					  #*  SUPPORT MATERIAL LINK *#  		
+					  <div class="portlet-footer">
+						   <a title="Add Support Material" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#addSMModal" onClick="initSMAssetForms()"><i class="icon-plus"></i> Add Support Material</a>
+					  </div>
+					    		
+					  
+					</div>
+					#* END SUPPROT MATERIAL PORTLET *#
+					
+					#* BEGIN QUIZ PORTLET *#
+					<div class="portlet" id="topquizbar_">
+					  <div class="portlet-body">
+
+						#* BEGIN QUIZ ACCORDIONS *#
+						<div class="panel-group accordion page-panel" id="quiz_container">
+							
+							
+							
+						</div>
+						#* END QUIZ ACCORDIONS *#
+						 
+					  </div>
+					  <div class="portlet-footer" id="addQuizLinkDiv_">
+						<a id="addQuizID" onclick="openQuiz(this)" href="javascript:;" data-backdrop="static" data-keyboard="false" data-lesson-id="$!{contentObject[0]}" data-target="#addQuizModal" data-toggle="modal" title="Add Quiz"><i class="icon-plus"></i> Add Quiz</a>
+					  </div>
+					
+					#* END QUIZ PORTLET *#
+					  
+					  
+					</div>
+					#* END QUIZ PORTLET *#
+					
+					#* BEGIN CLOSE BUTTON *#
+					<div class="footer">
+						<a id="addLessonFooter" href="#list_1" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE LESSON</a>
+					</div>
+					#* END CLOSE BUTTON *#
+					
+				  </div>
+			   </div>
+</div>
+#* END LESSON *#

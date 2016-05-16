@@ -1,0 +1,85 @@
+#parse("header.vm")
+#parse("breadcrumb.vm")
+
+#* BEGIN MODALS *#
+		<div class="modals">
+			#parse("tutorial.vm")
+		</div>
+#* END MODALS *#
+#* BEGIN TRACKING PIXEL *#
+	#if($!vu360User.firstTimeLogin == true)
+		<img src="https://shareasale.com/sale.cfm?amount=0.00&tracking=$!vu360User.userGUID&transtype=lead&merchantID=21523" width="1" height="1">
+	#end
+#* END TRACKING PIXEL *#
+#* BEGIN PAGE CONTENT *#
+         <div class="page-content">
+					
+					#* BEGIN ONLINE COURSE TYPE *#
+					<div class="portlet">
+						<div class="portlet-body">
+							<h1>What would you like to do?</h1>
+							<br/>
+							<div class="tiles">
+								<div class="col-md-offset-1">
+									<input type="hidden" name="username" id="username" value="$vu360User.username"/>
+									<div class="tile box bg-gray" onclick="createCookie('showOverviewTutorial_$vu360User.username', false, 365 ); window.open('/lcms/createcourse?cType=4','_self')">
+									   <div class="tile-body text-center">
+											<h4>Create Online Course</h4>
+											<i class="icon threesixty-online-course" style="margin-top: 10px"></i>
+									   </div>
+									   <div class="tile-object">
+											<div>
+											  Create an online course that learners can take independently, any time, any place.
+											</div>
+									   </div>
+									</div>
+									
+									<div class="tile box bg-gray" onclick="window.open('/lcms/createcourse?cType=5','_self')">
+									   <div class="tile-body text-center">
+											<h4>Create Classroom Course</h4>
+											<i class="icon threesixty-classroom" style="margin-top: 10px"></i>
+									   </div>
+									   <div class="tile-object">
+											<div>
+											   Create a live classroom course for delivery in a physical location at a certain date and time.
+											</div>
+									   </div>
+									</div>
+									
+									<div class="tile box bg-gray" onclick="window.open('/lcms/createcourse?cType=6','_self')">
+									   <div class="tile-body text-center">
+											<h4>Create Webinar Course</h4>
+											<i class="icon threesixty-webinar" style="margin-top: 10px"></i>
+									   </div>
+									   <div class="tile-object">
+											<div>
+											   Create a live webinar course for delivery over the internet at a certain date and time.
+											</div>
+									   </div>
+									</div>
+									
+									<div class="tile box bg-gray" onclick="window.open('/lcms/searchcourseonline','_self')">
+									   <div class="tile-body text-center">
+											<h4>Find Recent Courses</h4>
+											<i class="icon threesixty-search-courses" style="margin-top: 10px"></i>
+									   </div>
+									   <div class="tile-object">
+											<div>
+											   Quickly find the courses you've worked on most recently.
+											</div>
+									   </div>
+									</div>
+									
+									
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					#* END ONLINE COURSE TYPE *#
+                   
+                </div>
+#* END PAGE CONTENT *#
+<script type="text/javascript" src="javascript/vm_js/overview.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+#parse("footer.vm")

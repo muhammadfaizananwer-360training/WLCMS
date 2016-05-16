@@ -1,0 +1,285 @@
+#macro(replaceQuote $var)
+$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
+#end
+
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+
+<script>
+$(document).ready(function() {
+    $("#varCourseId").val(getUrlParameter ('id'));
+	$('select[name^="start_time"] option[value="$!{syncClassVO.courseStartTime}"]').attr("selected","selected");
+	$('select[name^="end_time"] option[value="$!{syncClassVO.courseEndTime}"]').attr("selected","selected");
+	
+    $('#lnkSchedule').addClass('active');
+});
+</script>
+
+
+<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script>
+    	
+
+</script>
+	
+	
+#* BEGIN PAGE CONTENT *#
+        <div class="page-content">
+        
+           #* BEGIN PAGE HEADINGS *#
+           <div class="portlet">
+            <div class="portlet-body">
+                <div class="page-heading">
+                    <div class="col-xs-12 zero-padding">
+                        <h1>#springMessage('label.schedule')</h1>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+           </div>
+           #* END PAGE HEADINGS *#
+           <div class="messages" id="msgdiv" ></div>
+		   
+           
+           
+ #* start - success message *#
+             
+             #if( $!{msg}=="success")
+                    <div class="messages">
+		              <div role="alert" class="alert alert-success alert-dismissible fade in">
+		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+		                 #springMessage('message.save-message') 
+					  </div>
+					 
+		            </div>
+			
+			</div>
+			
+             #elseif( $failureMessage )  
+               <div class="messages">
+              <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                 $!{failureMessage} 
+                </div>
+				
+            </div>
+			<script type="text/javascript"> elementFadeOut('.messages'); </script>
+           #end
+           
+           #* end - success message *#
+           
+           #* BEGIN SUMMARY FORM PORTLET *#
+           <div class="portlet">
+                      <div class="portlet-body form">
+                      <form action="saveSchedule" class="form-horizontal" method="post" role="form" id="frm_schedule">
+					  
+                             <input type="hidden" id="varCourseId" class="form-control" placeholder="" name="varCourseId">
+							 <input type="hidden" id="varSyncClassId" class="form-control" value="$!{syncClassVO.syncClassId}" name="varSyncClassId">
+							 <input type="hidden" id="varisPublished" class="form-control" value="$!{status}" name="varisPublished">
+							 <input type="hidden" id="name" class="form-control" value="$!{name}" name="name">
+							 <input type="hidden" id="synccoursetype" class="form-control" value="$!{courseObj.courseType}" name="synccoursetype">
+							 <input type="hidden" id="CourseID" class="form-control" value="$!{courseObj.bussinesskey}" name="CourseID">
+							 <input type="hidden" id="cType" class="form-control" value="$!{cType}" name="cType">
+							 
+							 
+							 
+                            <div class="form-body">
+                               <div class="form-group">
+                                  <label class="col-md-3 control-label">#springMessage('label.time-zone')<span class="required">*</span></label>
+                                  <div class="col-md-6">
+                                 
+                                  
+                                  
+                                   <select class="form-control" id="timezome" name="timezome">
+                                   
+                                   <option value=""></option>
+                                   #foreach ($timeZone in $lstTimeZone)
+                                     #if($!{syncClassVO.timeZone} == $timeZone.id)
+                                     <option value="$timeZone.id"selected="selected">
+                                     #else
+                                     <option value="$timeZone.id">
+                                     #end
+                                     
+                                     #if($timeZone.getMinutes() == 0)
+                                     #set($timezone = "(" + $timeZone.code + " " + $timeZone.hours + ":00) " + $timeZone.zone)
+                                     $timezone
+                                     #else
+                                     #set($timezone = "(" + $timeZone.code + " " + $timeZone.hours + ":" + $timeZone.minutes + ") " + $timeZone.zone)
+                                     $timezone
+                                     #end
+                                     </option>
+                                   #end
+                                    </select>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+								  <label class="control-label col-md-3">Enrollment close date<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <div class="input-group date" id="enrollDate" data-date="" data-date-format="mm/dd/yyyy">
+										<input class="form-control" type="text" id="enroll_date" name="enroll_date" value="$!{syncClassVO.enrollmentCloseDate}" readonly="" >
+										<span class="input-group-btn add-on">
+											
+											<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											
+										</span>
+									 </div>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="control-label col-md-3">Course start date<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <div class="input-group date" id="startDate" data-date="" data-date-format="mm/dd/yyyy">
+										<input class="form-control" type="text" id="start_date" name="start_date" value="$!{syncClassVO.courseStartDate}" readonly="" >
+										<span class="input-group-btn add-on">
+											
+											<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											
+										</span>
+									 </div>
+								  </div>
+							   </div>
+							   <div class="form-group">
+                                  <label class="col-md-3 control-label">#springMessage('label.course-start-time')<span class="required">*</span></label>
+                                  <div class="col-md-6">
+                                    
+                                   
+                                    <select class="form-control" id="start_time" name="start_time" >
+                                   
+										<option></option>
+										<option value="12:00 AM" >12:00 AM</option>
+										<option value="12:30 AM">12:30 AM</option>
+										<option value="1:00 AM">1:00 AM</option>
+										<option value="1:30 AM">1:30 AM</option>
+										<option value="2:00 AM">2:00 AM</option>
+										<option value="2:30 AM">2:30 AM</option>
+										<option value="3:00 AM">3:00 AM</option>
+										<option value="3:30 AM">3:30 AM</option>
+										<option value="4:00 AM">4:00 AM</option>
+										<option value="4:30 AM">4:30 AM</option>
+										<option value="5:00 AM">5:00 AM</option>
+										<option value="5:30 AM">5:30 AM</option>
+										<option value="6:00 AM">6:00 AM</option>
+										<option value="6:30 AM">6:30 AM</option>
+										<option value="7:00 AM">7:00 AM</option>
+										<option value="7:30 AM">7:30 AM</option>
+										<option value="8:00 AM">8:00 AM</option>
+										<option value="8:30 AM">8:30 AM</option>
+										<option value="9:00 AM">9:00 AM</option>
+										<option value="9:30 AM">9:30 AM</option>
+										<option value="10:00 AM">10:00 AM</option>
+										<option value="10:30 AM">10:30 AM</option>
+										<option value="11:00 AM">11:00 AM</option>
+										<option value="11:30 AM">11:30 AM</option>
+										<option value="12:00 PM">12:00 PM</option>
+										<option value="12:30 PM">12:30 PM</option>
+										<option value="1:00 PM">1:00 PM</option>
+										<option value="1:30 PM">1:30 PM</option>
+										<option value="2:00 PM">2:00 PM</option>
+										<option value="2:30 PM">2:30 PM</option>
+										<option value="3:00 PM">3:00 PM</option>
+										<option value="3:30 PM">3:30 PM</option>
+										<option value="4:00 PM">4:00 PM</option>
+										<option value="4:30 PM">4:30 PM</option>
+										<option value="5:00 PM">5:00 PM</option>
+										<option value="5:30 PM">5:30 PM</option>
+										<option value="6:00 PM">6:00 PM</option>
+										<option value="6:30 PM">6:30 PM</option>
+										<option value="7:00 PM">7:00 PM</option>
+										<option value="7:30 PM">7:30 PM</option>
+										<option value="8:00 PM">8:00 PM</option>
+										<option value="8:30 PM">8:30 PM</option>
+										<option value="9:00 PM">9:00 PM</option>
+										<option value="9:30 PM">9:30 PM</option>
+										<option value="10:00 PM">10:00 PM</option>
+										<option value="10:30 PM">10:30 PM</option>
+										<option value="11:00 PM">11:00 PM</option>
+										<option value="11:30 PM">11:30 PM</option>
+									</select>
+                                  </div>
+                               </div>
+							   <div class="form-group">
+                                  <label class="col-md-3 control-label">Course end time<span class="required">*</span></label>
+                                  <div class="col-md-6">
+                                     
+                                     
+                                     <select class="form-control" id="end_time" name="end_time" >
+                                     
+										<option></option>
+										<option value="12:00 AM" >12:00 AM</option>
+										<option value="12:30 AM">12:30 AM</option>
+										<option value="1:00 AM">1:00 AM</option>
+										<option value="1:30 AM">1:30 AM</option>
+										<option value="2:00 AM">2:00 AM</option>
+										<option value="2:30 AM">2:30 AM</option>
+										<option value="3:00 AM">3:00 AM</option>
+										<option value="3:30 AM">3:30 AM</option>
+										<option value="4:00 AM">4:00 AM</option>
+										<option value="4:30 AM">4:30 AM</option>
+										<option value="5:00 AM">5:00 AM</option>
+										<option value="5:30 AM">5:30 AM</option>
+										<option value="6:00 AM">6:00 AM</option>
+										<option value="6:30 AM">6:30 AM</option>
+										<option value="7:00 AM">7:00 AM</option>
+										<option value="7:30 AM">7:30 AM</option>
+										<option value="8:00 AM">8:00 AM</option>
+										<option value="8:30 AM">8:30 AM</option>
+										<option value="9:00 AM">9:00 AM</option>
+										<option value="9:30 AM">9:30 AM</option>
+										<option value="10:00 AM">10:00 AM</option>
+										<option value="10:30 AM">10:30 AM</option>
+										<option value="11:00 AM">11:00 AM</option>
+										<option value="11:30 AM">11:30 AM</option>
+										<option value="12:00 PM">12:00 PM</option>
+										<option value="12:30 PM">12:30 PM</option>
+										<option value="1:00 PM">1:00 PM</option>
+										<option value="1:30 PM">1:30 PM</option>
+										<option value="2:00 PM">2:00 PM</option>
+										<option value="2:30 PM">2:30 PM</option>
+										<option value="3:00 PM">3:00 PM</option>
+										<option value="3:30 PM">3:30 PM</option>
+										<option value="4:00 PM">4:00 PM</option>
+										<option value="4:30 PM">4:30 PM</option>
+										<option value="5:00 PM">5:00 PM</option>
+										<option value="5:30 PM">5:30 PM</option>
+										<option value="6:00 PM">6:00 PM</option>
+										<option value="6:30 PM">6:30 PM</option>
+										<option value="7:00 PM">7:00 PM</option>
+										<option value="7:30 PM">7:30 PM</option>
+										<option value="8:00 PM">8:00 PM</option>
+										<option value="8:30 PM">8:30 PM</option>
+										<option value="9:00 PM">9:00 PM</option>
+										<option value="9:30 PM">9:30 PM</option>
+										<option value="10:00 PM">10:00 PM</option>
+										<option value="10:30 PM">10:30 PM</option>
+										<option value="11:00 PM">11:00 PM</option>
+										<option value="11:30 PM">11:30 PM</option>
+									</select>
+                                  </div>
+                               </div>
+							   <div class="form-group hide">
+                                  <label class="col-md-3 control-label">#springMessage('label.recurrence-pattern')<span class="required">*</span></label>
+                                  <div class="col-md-6"><p class="form-control-static">#springMessage('label.none')</p></div>
+                               </div>
+                            </div>
+                            <div class="form-actions fluid">
+                               <div class="col-md-offset-3 col-md-9">
+                                  
+                                  <button class="btn blue input-small" id="btnSave" type="Submit" >#springMessage('button.save')</button>
+                                 
+                               </div>
+                            </div>
+                         </form>
+                      </div>
+                   </div>
+           #* END SUMMARY FORM PORTLET *#
+           
+        </div>
+
+#* END PAGE CONTENT *#
+
+<script src="javascript/vm_js/schedule.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+#parse("footer.vm")

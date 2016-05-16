@@ -1,0 +1,110 @@
+#macro(replaceQuote $var)
+$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
+#end
+
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("classroom_modal.vm")
+
+<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/classroom/classroom.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/utils.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/location.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+<script>
+
+$(function(){
+	//set the left navigation option to active
+	$('#nav_classroomsetup').addClass('active');
+	
+	
+});
+
+
+
+
+</script>
+
+
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+	<input type="hidden" id="hidSelectedClassId" />
+	#* BEGIN NEW CLASS *#
+	#set($clazz = $newClass)
+	#set($classSize = $clazz.maximumClassSize)
+	#set($classId = "__new__")
+	<div id="$classId" class="panel panel-default" style="display:none">
+		#parse("classroom-class-sub-panel.vm")
+		#parse("classroom-class-sub-basicSetup.vm") 
+		#parse("classroom-class-sub-scheduleListing.vm") 
+	</div>
+	#* END NEW CLASS *#
+
+	#* BEGIN PAGE HEADINGS *#
+	<div class="portlet">
+		<div class="portlet-body">
+			<div class="page-heading">
+				<div class="col-xs-12 zero-padding" id="headingDiv">
+					<h1>$course.name</h1>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	#* END PAGE HEADINGS *#
+	<div class="messages" id="errorMsg" ></div>
+	<div id="infoMsg"></div>
+	
+	#* BEGIN CLASS ACCORDIONS *#
+	<div class="panel-group accordion" id="classes_accordion">
+
+		#foreach ($clazz in $classes)
+			#set($classSize = $clazz.maximumClassSize)
+			#set($classId = $clazz.id)
+						
+			#if($classSize == $longMax)
+				#set($classSize = "")
+			#end	
+			
+		#* BEGIN CLASS *#
+		<div id="$classId" class="panel panel-default">
+			#parse("classroom-class-sub-panel.vm")
+			#parse("classroom-class-sub-basicSetup.vm") 
+			#parse("classroom-class-sub-scheduleListing.vm") 
+		</div>
+		#* END CLASS *#
+		#end
+	</div>
+	#* END CLASS ACCORDIONS *#
+
+	#* BEGIN ACTION BUTTONS *#
+	<div class="panel-group">
+		<div class="add-btns">
+			<a data-toggle="modal" data-target="#addClassModal" href="" data-backdrop="static" data-keyboard="false" title="Add Class" onclick="resetClassModal()"><i class="icon-plus"></i> Add Class</a>
+		</div>
+	</div>
+	#* END ACTION BUTTONS *#
+ <input type="hidden" id="CourseID" class="form-control" value="$!{course.bussinesskey}" name="CourseID">
+</div>
+#* END PAGE CONTENT *#
+<script src="javascript/vm_js/schedule.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/countries.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+#parse("footer.vm")
+<script>
+		jQuery(document).ready(function() { 
+
+
+	
+			COUNTRIES.PRINT_COUNTRY("country",239,"state");
+			
+			
+			
+			
+		
+    });
+		
+
+</script>

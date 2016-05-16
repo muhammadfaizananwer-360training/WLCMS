@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Login</title>	
+
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/custom.css" />
+    <link rel="shortcut icon" href="theme/executive/img/icons/favicon.ico" />
+
+		
+	<script type="text/javascript" src="theme/executive/plugins/jquery.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    
+</head>
+
+<body>
+   
+		<form role="form" class="form-horizontal" action="${CASServerBaseUrl}/login" method="post" name="Logon"   id="frm_login" novalidate="novalidate">
+		  <input id="auto" type="hidden" value="true" name="auto">
+		  <input type="hidden" name="service" value="${wlcmsServerBaseUrl}/lcms/j_spring_cas_security_check" />
+		  <input type="hidden" placeholder="Username" id="username" name="username" value="$uname" class="form-control">
+		  <input  placeholder="Password" type="hidden" autocomplete="off"  id="password" name="password" value="$upd" class="form-control">
+		</form>
+  	
+	<script>
+		$(document).ready(function(){
+			
+			setTimeout(submiToCasServer, 2000);
+		});
+		
+		function submiToCasServer(){
+			$("#frm_login").submit();
+		}
+
+	</script>
+</body>
+</html>

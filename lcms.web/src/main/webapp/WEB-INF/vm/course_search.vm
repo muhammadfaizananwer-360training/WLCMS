@@ -1,0 +1,97 @@
+#parse("header.vm")
+#parse("breadcrumb.vm")
+#parse("branding.vm")
+
+#* BEGIN PAGE CONTENT *#
+        <div class="page-content">
+        
+           #* BEGIN PAGE HEADINGS *#
+           <div class="portlet">
+            <div class="portlet-body">
+                <div class="page-heading">
+                    <div class="col-xs-12 zero-padding">
+                        <h1>My Courses</h1>
+                       <hr>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+           </div>
+           #* END PAGE HEADINGS *#
+           <div class="messages" id="msgdiv" ></div>
+		   
+           
+           
+           #* start - success message *#
+           #if( $failureMessage )		
+		   		<div class="messages">
+				  <div role="alert" class="alert alert-danger alert-dismissible fade in">
+				    <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">Close</span> </button>
+				    	$!{failureMessage} 
+				    </div>
+				    elementFadeOut('.messages');
+				</div>
+           #end
+           #* end - success message *#
+           
+           #* BEGIN SUMMARY FORM PORTLET *#
+           <div class="portlet">
+              <div class="portlet-body">
+				
+				<table id="course_data"  name="course_data" class="table table-striped table-bordered table-hover" id="sample_2">
+				    <thead>
+						<tr>
+							<th>Title</th>
+							<th>Course Type</th>
+							<th width="15%">Course ID</th>
+							<th>Last Modified</th>
+							<th>Course Status</th>
+						</tr>
+				    </thead>
+				    <tbody>
+				    	#* Classroom Course type = 5, Webinar Course type = 6 *#
+				    	#foreach( $course in $lstCourses )
+							<tr>
+								#set($courseEidtURI = "editCourseOverview")
+								#if($!{course.courseType} == "5" || $!{course.courseType} == "6")
+									#set($courseEidtURI = "editClassroomWebinarCourse")
+								#end
+								<td width="35%"><a href="$courseEidtURI?id=$!{course.id}&cType=$!{course.courseType}"> $escapeTool.escapeHtml( $!{course.name} )</a></td>
+								<td width="15%"><a href="$courseEidtURI?id=$!{course.id}&cType=$!{course.courseType}">$!{course.courseTypeName}</a></td>
+								<td width="15%"><a href="$courseEidtURI?id=$!{course.id}&cType=$!{course.courseType}">$!{course.bussinesskey}</a></td>
+								#set($dateValue = $date.toDate('yyyy-M-d H:m:s', $!{course.lastModifiedDate}))								
+								<td width="20%"><a href="$courseEidtURI?id=$!{course.id}&cType=$!{course.courseType}">$!date.format('yyyy-MM-dd HH:mm:ss', $!dateValue)</a></td>
+								<td width="15%"><a href="$courseEidtURI?id=$!{course.id}&cType=$!{course.courseType}">$!{course.courseStatusRetired}</a></td>
+							</tr>
+						#end
+				    </tbody>
+				  </table>
+              </div>
+           </div>
+           #* END SUMMARY FORM PORTLET *#
+           
+        </div>
+#* END PAGE CONTENT *#
+
+#parse("footer.vm")
+<script src="javascript/vm_js/overview.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+ 
+<script>
+ 
+
+$("#course_data").dataTable({   
+         "bFilter": false,
+		 "bSortable": true ,
+		   "bPaginate": false,
+		   "bLengthChange": false,
+		   "bInfo": false,
+		   "oLanguage": {
+			"sEmptyTable": '',
+			"sInfoEmpty": ''
+		   },
+		   "bAutoWidth": false,
+		   "aaSorting": [[4,'asc']],
+		   "sEmptyTable": "Loading data from server" 
+			 
+});
+</script>

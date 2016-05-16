@@ -1,0 +1,11 @@
+#set($checked = '"<h4 class=\"green-text icon-ok\"></h4>"')
+#set($unchecked = '"<h4 class=\"red-text icon-remove\"></h4>"')
+[
+#foreach( $authorPermissionSetting in $permissionList )
+	
+	[ $foreach.count, "${authorPermissionSetting.userName}", "<a class='anchor' onclick=\"showDetail('${authorPermissionSetting.userName}', ${authorPermissionSetting.npsRatingPermission}, ${authorPermissionSetting.royaltySettingPermission}, ${authorPermissionSetting.userPermission}, ${authorPermissionSetting.bulkCourseImportPermission}, ${authorPermissionSetting.viewWLCMSReportPermssion}, ${authorPermissionSetting.authorGroupId}, '${authorPermissionSetting.firstName}', '${authorPermissionSetting.lastName}', $foreach.index)\" href='javascript:;' data-toggle='modal' data-target='#furtherDetailsModal'>${authorPermissionSetting.firstName} ${authorPermissionSetting.lastName}</a>", #if(${authorPermissionSetting.userPermission} == 1) $checked #else $unchecked #end, #if(${authorPermissionSetting.bulkCourseImportPermission} == 1) $checked #else $unchecked #end, #if(${authorPermissionSetting.npsRatingPermission} == 1) $checked #else $unchecked #end, #if(${authorPermissionSetting.royaltySettingPermission} == 1) $checked #else $unchecked #end, #if(${authorPermissionSetting.viewWLCMSReportPermssion} == 1) $checked #else $unchecked #end]
+	#if( $foreach.hasNext )
+		,
+	#end
+#end
+]

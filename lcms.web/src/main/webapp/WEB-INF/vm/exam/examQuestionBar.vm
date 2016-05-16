@@ -1,0 +1,23 @@
+<div class="panel panel-default" id="examQuestionBar" style="display:none">
+			   <div class="panel-heading">
+				  
+					<div class="holder">
+	
+						<div class="anchors move-btn">
+						</div>
+						
+						<div class="panel-title">
+							<a id="examQuestionBarTitleLink" onClick="getGuestionComponentArea (this);" href="#exam_0_bank_0_question_0" data-parent="#exam_0_bank_0_questions" data-toggle="collapse" class="accordion-toggle">
+								<i class="icon-question-item"></i>	<span id="examQuestionTitle">Question - A</span>
+							</a>
+						</div>
+
+						<div id="examQuestionDeleteLink" name="id="examQuestionDeleteLink" class="remove-btn" title="Delete" onclick="removeQuestion(this)">
+							<i class="icon-remove"></i>
+						</div>
+
+					</div>
+
+			   </div>
+
+			</div>

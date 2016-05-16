@@ -1,0 +1,4 @@
+<div id="TopMsgBarDiv">
+</div>
+
+<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>

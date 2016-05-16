@@ -1,0 +1,146 @@
+
+
+<script src="http://localhost:8080/Custom_Template/MC_Template/data/dbString.js" language="javascript" type="text/javascript"></script>
+<!-- <script src="js/jquery-1.7.2.js" language="javascript" type="text/javascript"></script> 
+<script src="js/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script src="js/BrowserDetect.js" language="javascript" type="text/javascript"></script> -->
+<!-- <script src="js/dataBank.js" language="javascript" type="text/javascript"></script> -->
+<script src="http://localhost:8080/Custom_Template/MC_Template/js/form/w_XMLParser.js" language="javascript" type="text/javascript"></script>
+<!-- <script src="js/form/w_validation.js" language="javascript" type="text/javascript"></script> -->
+<!-- <script src="js/form/tableRow.js" language="javascript" type="text/javascript"></script>
+<script src="js/form/IB_Form.js" language="javascript" type="text/javascript"></script> -->	
+
+<!-- END SCRIPTS -->
+
+<script language="javascript" type="text/javascript">
+
+// ********************************************	XML Transformation into XSL
+function populateXml(sid){
+	
+	
+	$(document).ready(function() {
+	
+		TEMPLATE.SID = sid;
+	
+		// =======================================================
+		//	FOR TESTING
+		// =======================================================
+		if(document.getElementById('txtXml').value != "undefined" && document.getElementById('txtXml').value != null && document.getElementById('txtXml').value != ""){
+			xmlSampleData = document.getElementById('txtXml').value;
+		}
+		
+		// =======================================================
+		//	FOR LIVE
+		// =======================================================
+		/*if(TEMPLATE.DATA != '')
+		{
+			xmlSampleData = TEMPLATE.DATA;
+		}*/
+		
+		TEMPLATE.DATA = $.parseXML(xmlSampleData);
+		$(TEMPLATE.DATA).find("root").attr("sid",sid);
+		
+		TEMPLATE.LOAD_XML("http://localhost:8080/Custom_Template/MC_Template/xml/w_IB.xsl",getBackXSL);
+	});
+}
+
+function getBackXSL (xsl){
+console.log('getBackXSL:');
+	var chk1 = typeof (XSLTProcessor) == "undefined"; // All browsers
+	var chk2 = typeof (TEMPLATE.DATA.transformNode) != "undefined"; // IE 8 Only
+	//var chk3 = typeof (window.ActiveXObject) != "undefined"; // IE 9 and above
+	
+	if(chk1)
+	{
+		if(chk2)
+		{
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = TEMPLATE.DATA.transformNode(xsl);
+		}
+		else
+		{
+			var xslt = new ActiveXObject("Msxml2.XSLTemplate");
+			var xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+
+			xslDoc.load(xsl);
+			xslt.stylesheet = xslDoc;
+
+			var xslProc = xslt.createProcessor();
+			xslProc.input = TEMPLATE.DATA;
+			xslProc.transform();
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xslProc.output;
+		}
+	}
+	else
+	{
+		var xsltProcessor = new XSLTProcessor();
+		var xmls = new XMLSerializer();
+		xsltProcessor.importStylesheet(xsl);
+		var xmlDoc2 = xsltProcessor.transformToDocument(TEMPLATE.DATA);
+		document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xmls.serializeToString(xmlDoc2);
+	}
+	
+	APP.BODY_COLLAPSES("CLOSE");
+	APP.CKEDITOR("mainText_"+TEMPLATE.SID, "TITLE");
+	APP.CKEDITOR("questionText_"+TEMPLATE.SID, "TITLE");
+	TEMPLATE.DM_GARBAGE_CLEANER();
+	TEMPLATE.FIX_HTML_TAGS($("#inputform_"+TEMPLATE.SID).find(".optionText"));
+	TEMPLATE.FIX_HTML_TAGS($("#inputform_"+TEMPLATE.SID).find(".feedBack"));
+}
+
+</script>
+	<!-- BEGIN MODALS -->
+	<div class="modals">
+		
+		<!-- BEGIN DYNAMIC -->
+		<div class="modal fade" id="dynamicModal" tabindex="-1" role="dialog" aria-labelledby="dynamic-modal-label" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  
+			  <!-- Dynamic Content -->
+			  
+			</div>
+		  </div>
+		</div>
+		<!-- END DYNAMIC -->
+		
+		<!-- BEGIN CONFIRMATION -->
+		<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h3 class="modal-title" id="confirmation-label">
+					
+					<!-- Dynamic Title -->
+					
+				</h3>
+			  </div>
+			  <div class="modal-body">
+			
+				<!-- Dynamic Message -->
+				
+			  </div>
+			  <div class="modal-footer">
+			  
+				<!-- Dynamic Action Buttons -->
+				
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<!-- END CONFIRMATION -->
+		
+	</div>
+	<!-- END MODALS -->
+		
+	<!-- <div id="loader"></div> -->
+    <div id="inputform_1234"></div>
+    <input style="display:none;" type="text" id="txtXml" value=""/>
+    <div>
+      <button style="display:none;" id="btnGet" onclick="setXml()">btnGet</button>
+    </div>
+    <div>
+      <button style="display:none;" id="btnSet" onclick="populateXml('1234')">btnSet</button>
+    </div>
+	
+	<script src="http://localhost:8080/Custom_Template/MC_Template/js/test.js" language="javascript" type="text/javascript"></script>

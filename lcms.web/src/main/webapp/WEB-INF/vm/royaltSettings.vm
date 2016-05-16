@@ -1,0 +1,135 @@
+#parse("header.vm")
+#parse("branding.vm")
+#parse("breadcrumb.vm")
+
+<script>
+	$(document).ready(function(){
+		 onlineRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.online.royalty.percentage')};
+		 classroomRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.classroom.royalty.percentage')};
+		 webinarRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.webinar.royalty.percentage')};
+		});
+</script>
+
+#* BEGIN MODALS *#
+<div class="modals">
+	
+	#* BEGIN DETAILS *#
+	<div class="modal fade" id="furtherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="further-details-label" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="further-details-label"><i class="icon-user"></i> #springMessage('royalty_settings.label.author.details')</h3>
+		  </div>
+		  <div class="modal-body">
+		
+			<form id="detailForm" name="detailForm" class="form-horizontal" role="form" method="POST">
+				<input id="cId" name="cId" type="hidden" value="" />
+				<div class="form-body">
+				   <div class="form-group">
+					  <label class="col-md-3 control-label">#springMessage('royalty_settings.label.fullname')</label>
+					  <div class="col-md-7">
+						<p class="form-control-static">#springMessage('royalty_settings.label.author.fullname')</p>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="col-md-3 control-label">#springMessage('royalty_settings.label.author.course.type')</label>
+					  <div class="col-md-7">
+						<div class="table-scrollable">
+							<table class="table table-bordered">
+							  <thead>
+								<tr class="td-header-bottom-border bg-gray-2">
+								  <th width="10"></th>
+								  <th>#springMessage('royalty_settings.label.author.type')</th>
+								  <th>#springMessage('royalty_settings.label.royalty.percentage')</th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr>
+									<td><input type="checkbox" onclick="on_type_click(this,1);" class="checks"></td>
+									<td><label>#springMessage('royalty_settings.label.online')</label></td>
+									<td>
+										<div class="input-group">
+											<input type="number" id="online_amt" name="online_amt" class="form-control" placeholder="0" value=""  onkeypress="return isNumberKey(event)">
+											<span class="input-group-addon addon2">%</span>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" onclick="on_type_click(this,2);" class="checks"></td>
+									<td><label>#springMessage('royalty_settings.label.classroom')</label></td>
+									<td>
+										<div class="input-group">
+											<input type="number" id="classroom_amt" name="classroom_amt" class="form-control" placeholder="0" value=""  onkeypress="return isNumberKey(event)">
+											<span class="input-group-addon addon2">%</span>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" onclick="on_type_click(this,3);" class="checks"></td>
+									<td><label>#springMessage('royalty_settings.label.webinar')</label></td>
+									<td>
+										<div class="input-group">
+											<input type="number" id="webinar_amt" name="webinar_amt" class="form-control" placeholder="0" value=""  onkeypress="return isNumberKey(event)">
+											<span class="input-group-addon addon2">%</span>
+										</div>
+									</td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>
+					  </div>
+				   </div>
+				</div>
+			</form>
+			
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" id="saveBtn" name="saveBtn" class="btn blue" onClick="saveSettings();">#springMessage('royalty_settings.label.save')</button>
+			<button type="button" id="cancelBtn" name="cancelBtn" class="btn btn-default" data-dismiss="modal">#springMessage('royalty_settings.label.cancel')</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	#* END DETAILS *#
+	
+</div>
+#* END MODALS *#
+		
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+	
+	#* BEGIN RESULTS TABLE PORTLET*#
+	<div class="portlet">
+	  <div class="portlet-title" title="Authors">
+		 <div class="caption">#springMessage('royalty_settings.title.author')</div>
+		 <div class="tools">
+            
+         </div>
+	  </div>
+	  <div class="portlet-body">
+	  	
+	  	<table class="table table-striped table-bordered table-hover table-full-width" id="search_table">
+			<thead>
+			   <tr>
+				  <th width="1">#</th>
+				  <th>#springMessage('royalty_settings.label.username')</th>
+				  <th>#springMessage('royalty_settings.label.full_name')</th>
+				  <th>#springMessage('royalty_settings.label.online_royalty_percentage')</th>
+				  <th>#springMessage('royalty_settings.label.classroom_royalty_percentage')</th>
+				  <th>#springMessage('royalty_settings.label.webinar_royalty_percentage')</th>
+			   </tr>
+			</thead>
+			<tbody>
+			</tbody>
+		 </table>
+	  	
+	  </div>
+	</div>
+	#* END RESULTS TABLE PORTLET*#
+	
+</div>
+#* END PAGE CONTENT *#
+
+<script src="javascript/vm_js/royalty_setting.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+#parse("footer.vm")

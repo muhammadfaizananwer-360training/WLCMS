@@ -1,0 +1,2 @@
+#springMessage('common-mailTemplate-signature')
+#parse("common/etFooter.vm")

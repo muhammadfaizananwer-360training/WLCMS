@@ -1,0 +1,114 @@
+﻿
+<script src="../Custom_Template/MC_Template/data/dbString.js" language="javascript" type="text/javascript"></script>
+<script src="../Custom_Template/MC_Template/js/form/w_XMLParser.js" language="javascript" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+
+// ********************************************	XML Transformation into XSL
+function populateXml(sid){
+	
+	$(document).ready(function() {
+		$('#inputform_1234').attr('id','inputform_'+sid);
+		TEMPLATE.SID = sid;
+		TEMPLATE.IS_NEW = true;
+		
+		// =======================================================
+		//	FOR TESTING
+		// =======================================================
+		/*if(document.getElementById('txtXml').value != "undefined" && document.getElementById('txtXml').value != null && document.getElementById('txtXml').value != ""){
+			xmlSampleData = document.getElementById('txtXml').value;
+			TEMPLATE.IS_NEW = false;
+		}
+		*/
+		// =======================================================
+		//	FOR LIVE
+		// =======================================================
+		if(TEMPLATE.DATA != '')
+		{
+			xmlSampleData = TEMPLATE.DATA;
+			TEMPLATE.IS_NEW = false;
+		}
+		
+		TEMPLATE.DATA = $.parseXML(xmlSampleData);
+		$(TEMPLATE.DATA).find("root").attr("sid",sid);
+		
+		TEMPLATE.LOAD_XML("../Custom_Template/MC_Template/xml/w_IB.xsl",getBackXSL);
+	});
+}
+
+function getBackXSL (xsl){
+	var chk1 = typeof (XSLTProcessor) == "undefined"; // All browsers
+	var chk2 = typeof (TEMPLATE.DATA.transformNode) != "undefined"; // IE 8 Only
+	//var chk3 = typeof (window.ActiveXObject) != "undefined"; // IE 9 and above
+	
+	if(chk1)
+	{
+		if(chk2)
+		{
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = TEMPLATE.DATA.transformNode(xsl);
+		}
+		else
+		{
+			var xslt = new ActiveXObject("Msxml2.XSLTemplate");
+			var xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+
+			xslDoc.load(xsl);
+			xslt.stylesheet = xslDoc;
+
+			var xslProc = xslt.createProcessor();
+			xslProc.input = TEMPLATE.DATA;
+			xslProc.transform();
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xslProc.output;
+		}
+	}
+	else
+	{
+		var xsltProcessor = new XSLTProcessor();
+		var xmls = new XMLSerializer();
+		xsltProcessor.importStylesheet(xsl);
+		var xmlDoc2 = xsltProcessor.transformToDocument(TEMPLATE.DATA);
+		document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xmls.serializeToString(xmlDoc2);
+	}
+	
+	APP.BODY_COLLAPSES("CLOSE");
+	
+	APP.CKEDITOR("mainText_"+TEMPLATE.SID, "TITLE");
+	TEMPLATE.CKEDITOR_BLUR("mainText_"+TEMPLATE.SID,"_p1");
+	
+	APP.CKEDITOR("questionText_"+TEMPLATE.SID, "TITLE");
+	TEMPLATE.CKEDITOR_BLUR("questionText_"+TEMPLATE.SID,"_p2");
+	
+	TEMPLATE.DM_GARBAGE_CLEANER();
+	TEMPLATE.FIX_HTML_TAGS($("#inputform_"+TEMPLATE.SID).find(".optionText"));
+	TEMPLATE.FIX_HTML_TAGS($("#inputform_"+TEMPLATE.SID).find(".feedBack"));
+	
+	if(!TEMPLATE.IS_NEW)
+	{
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p1"),true);
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p2"),true);
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p3"),true);
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p4"),true);
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p5"),true);
+		
+		$("#inputform_"+TEMPLATE.SID).find(".detach.disabled.must").removeClass("disabled");
+	}
+}
+
+//populateXml("1234");
+
+</script>
+
+<!-- <link href="css/IB_Form.css" rel="stylesheet" type="text/css"></link> -->
+</head>
+<body>
+	<!-- <div id="loader"></div> -->
+    <div id="inputform_1234"></div>
+    <input style="display:none;" type="text" id="txtXml" value=""/>
+    <div>
+      <button style="display:none;" id="btnGet" onclick="setXml()">btnGet</button>
+    </div>
+    <div>
+      <button style="display:none;" id="btnSet" onclick="populateXml('1234')">btnSet</button>
+    </div>
+
+

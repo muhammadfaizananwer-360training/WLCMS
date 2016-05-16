@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+ 
+<hibernate-configuration>
+    <session-factory>
+    
+     <property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
+  
+     
+      <property name="hibernate.connection.password">lms!@#$</property>
+    <property name="hibernate.connection.url">jdbc:jtds:sqlserver://kar-db-2:56463;databaseName=vu360_dev_5_2</property>
+    <property name="hibernate.connection.username">lms-rwe</property>
+     
+  <!--
+    <property name="hibernate.connection.password">lcms</property>
+    <property name="hibernate.connection.url">jdbc:jtds:sqlserver://qa-db.austin.360training.com:1433;databaseName=vu360_qa</property>
+    <property name="hibernate.connection.username">lcms</property>
+        -->
+    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+
+    
+       <!--   <mapping class="com.softech.ls360.lcms.contentbuilder.model.search.GetCourseByAuthor" />
+        <mapping class="com.softech.ls360.lcms.contentbuilder.model.VU360User" />
+       -->
+    </session-factory>
+         
+</hibernate-configuration>

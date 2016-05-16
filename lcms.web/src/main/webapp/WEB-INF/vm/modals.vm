@@ -1,0 +1,2274 @@
+		#set($uploaderLocation = $!{lcmsProperties.getLCMSProperty('lcms.uploader.location')})
+##		BEGIN MODALS
+		<div class="modals">
+
+			<div class="modal fade" id="dynamicModal" tabindex="-1" role="dialog" aria-labelledby="dynamic-modal-label" aria-hidden="true">
+		  		<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+					</div>
+		  		</div>
+			</div>
+
+##			BEGIN ADD LESSON
+			<div class="modal fade" id="addLessonModal" tabindex="-1" role="dialog" aria-labelledby="add-lesson-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <form id="addLessonform">
+				  
+				  <div class="modal-header">
+					<button type="button" class="close" OnClick="cancelLesson()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-lesson-label"><i class="icon-folder-open"></i> Add New Lesson</h3>
+				  </div>
+				  <div class="modal-body">
+				
+##					BEGIN FORM
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('lesson.setup.title')>#springMessage('label.title')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="Name" name="Name" type="text" class="form-control nameEmptyCheck"  placeholder="Enter lesson title." value=""/>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('lesson.setup.description')>#springMessage('label.description')</span></label>
+							  <div class="col-md-7">
+								 <textarea id="Description" name="Description" class="form-control" rows="3"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">
+								<span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('lesson.setup.lessonlearningobjective')>#springMessage('label.content.lesson-learning-objective')</span>
+							  </label>
+							  <div class="col-md-7 top-margin">
+								What are the 3-5 key things your learners should be able to do at the end of this lesson? Add these things as lesson learning objective.
+							  </div>
+						   </div>
+						   <div class="form-group">
+								<div class="col-md-offset-3 col-md-7">
+								  <div class="table-scrollable">
+									<table id="addLessonLLOtable" class="table table-bordered">
+									  <thead>
+										<tr class="td-header">
+										  <th colspan="2">
+											<div class='btn-group'>
+												<a class="btn btn-default" href="javascript:;" onclick="APP.LLO(this,true, true)" title="Add lesson learning objective"><i class="icon-plus blue-text"></i></a>
+												<a id="BT_LLO_DELETE" class="btn btn-default" href="javascript:;" title="Delete" onclick="APP.LLO(this,false)" ><i class="icon-minus red-text"></i></a>
+											</div>
+										  </th>
+										</tr>
+										<tr class="td-header-bottom-border bg-gray-2">
+										  <th width="10"><input id="LLO_CHECKBOX" type="checkbox" class="checker" onclick="APP.CHECKBOX(this,true)"  disabled = "disabled"/></th>
+										  <th>Click the Add button ( + ) to add a learning objective.</th>
+										</tr>
+									  </thead>
+									  <tbody>
+									  </tbody>
+									</table>
+								</div>
+							    </div>
+							</div>
+						</div>
+					</div>
+##					END FORM
+
+				  </div>
+				  <div class="modal-footer">
+					<button type="submit" id="submitLesson" class="btn blue"  onClick="AddLesson()">Save</button>
+					<button type="button" class="btn btn-default" onClick="cancelLesson()" data-dismiss="modal">Cancel</button>
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+##			END ADD LESSON
+
+##			BEGIN ADD LOCATION
+			<div class="modal fade" id="addLocationModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+					<button type="button" class="close" OnClick="cancelLesson()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-lesson-label"><i class="icon-map-marker"></i> #springMessage('label.add-edit-loation')</h3>
+				  </div>
+
+					<form id="addMyLocationform" class="form-horizontal" role="form">
+						<input type="hidden" id="locationid" name="pages_title"  >
+					<div class="modal-body">
+##					BEGIN FORM
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.location-name')>#springMessage('label.location-name')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="locationname" name="locationname" type="text" class="form-control nameEmptyCheck"  placeholder="Enter location name." value="" maxlength="50"/>
+							  </div>
+							  </div>
+
+							 <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.address')>#springMessage('label.address')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								<textarea id="locationaddress" name="locationaddress" class="form-control" rows="3" maxlength="250"></textarea>
+							  </div>
+							  </div>
+							   <div class="form-group">
+							  
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.city')>#springMessage('label.city')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="locationcity" name="locationcity" type="text" class="form-control nameEmptyCheck"  placeholder="Enter city." value="" maxlength="50"/>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.zip-postal')>#springMessage('label.zip-postal')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="locationzip" name="locationzip" type="text" class="form-control"  placeholder="Enter zip." value=""
+								 required data-msg-required="Please enter a zip or postal code." data-rule-number="true" data-rule-maxlength="5" required data-msg-maxlength="Please enter zip code no more than 5 digits." data-msg-number="Please enter a valid number."/>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.country')>#springMessage('label.country')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <select class="form-control" onchange="COUNTRIES.PRINT_STATE('state', this.selectedIndex);" id="country" name="country">
+								 </select>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.state')>#springMessage('label.state')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <select class="form-control" name="state" id="state">
+								 </select>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.phone')>#springMessage('label.phone')</span></label>
+							  <div class="col-md-7">
+								 <input id="locationphone" name="locationphone" type="text" class="form-control nameEmptyCheck"  placeholder="Enter phone." value="" data-rule-digits="true" data-msg-digits="Please enter a valid number."/>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.description')>#springMessage('label.description')</span></label>
+							  <div class="col-md-7">
+							  <textarea id="locationdesc" name="locationdesc" class="form-control" rows="3" maxlength="250" ></textarea>
+							  </div>
+							  </div>
+						   </div>
+						  </div>
+						  </div>
+
+				  <div class="modal-footer">
+					<button type="button""  id="submitLocation"  OnClick="addLocation('')" class="btn blue">Save</button>
+					<button type="button" class="btn btn-default" onClick="reset_modal()" data-dismiss="modal">Cancel</button>					
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+##			END ADD LOCATION
+
+##			BEGIN ADD Slide
+			<div class="modal fade" id="addSlideModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelSlide();" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-slide-label"><i class="icon-file"></i> Add New Slide</h3>
+				  </div>
+				  <form id="addSlideform" class="form-horizontal" role="form">
+				  <div class="modal-body">
+						<input type="hidden" id="isCustomTemplate" name="isCustomTemplate" value="false" />
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.title')">#springMessage('label.title')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								<textarea id="name" name="name" class="form-control"  rows="4"></textarea>								
+							  </div>
+						   </div>
+						   <div class="form-group temp-icons">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.template')">#springMessage('label.template')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input type="hidden" id="hidSlideTemplateIdForAddForm" name="hidSlideTemplateIdForAddForm" value="0"/>
+								 <a data-toggle="modal" id="templateIDForAddForm" data-backdrop="static" data-keyboard="false" href="javascript:;" onClick="isTemplateSlctnFrmForAddOrUpdate('1')"  data-target="#selectTemplateModal" 
+																				class="btn btn-default pull-left" title="Select Template">
+									<i id="slideTemplateIconForAddForm" class="icon-question"></i>
+								 </a>
+								 <label id="slideTemplateNameForAddForm" class="temp-label gray-text">
+								   None Selected
+								 </label>
+							  </div>
+						   </div>
+						   <div class="form-group"  id="displayselection" style="display:none;">
+								<label class="col-md-3 control-label"><span
+									data-trigger="hover" data-container="body"
+									data-toggle="popover" data-placement="bottom" data-html="true"
+									data-content=#springMessage('slide.setup.display')">Display</span><span
+									class="required">*</span></label>
+								<div class="col-md-6">
+									<input type="radio" id="displayRatioStandard"
+										name="displayRatio"  checked><span>&nbsp;
+										Standard (4:3)</span><br> <input type="radio"
+										id="displayRatioWidescreen" name="displayRatio" 
+										><span>&nbsp; Widescreen (16:9)</span>
+								</div>
+							</div>			   
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.duration')">#springMessage('label.duration') (#springMessage('label.duration-seconds'))</span></label>
+							  <div class="col-md-7">
+								 <input type="text" class="form-control" id="duration" name="duration" placeholder="Enter the slide duration (expected seat time for this slide)." value="0"/>
+							  </div>
+						   </div>
+						</div>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button"  id="submitSlide"  OnClick="addSlide(this)" class="btn blue">Save</button>
+					<button type="button" class="btn btn-default" onClick="cancelSlide()" data-dismiss="modal">Cancel</button>					
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+##			END ADD SLIDE
+
+##			BEGIN ADD VIDEO Slide
+			<div class="modal fade" id="addVideoSlideModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelSlide();" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-slide-label"><i class="icon-upload"></i> #springMessage('label.upload-video')</h3>
+				  </div>
+				  <form id="addVideoSlideform" class="form-horizontal" role="form">
+				  <div class="modal-body">
+						<input type="hidden" id="isCustomTemplate" name="isCustomTemplate" value="false" />
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.title')">#springMessage('label.slide-title')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								<input id="slideTitle" name="slideTitle" type="text" class="form-control" data-msg-required="Please enter your title here" required ></input>								
+							  </div>
+						   </div>
+						   <input type="hidden" id="hidSlideTemplateIdForAddForm" name="hidSlideTemplateIdForAddForm"/>
+						   <input type="text" class="form-control hide" id="duration" name="duration" placeholder=""/>
+						   <input type="radio" id="displayRatioStandard" name="displayRatio" class="hide"  checked></input>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Video Content<span class="required">*</span></label>
+							  <div class="col-md-7">
+							  <label class="help-block"><input type="radio" id="embedCodeVideoModal" onclick="enableDisableEmbedCode(false,'#embedCodeVideoModal','#embedCodeModal',false);addDisabledOnSaveButton(this,'#submitSlide')" name="embedQVideoToggle" checked="checked"> #springMessage('label.upload.video')</label>
+							  <div  id="addVideoSlideUploader" class="upload-360" data-uploader-loc="$!uploaderLocation" data-ext="mp4" data-file-handler="fms"  data-onupload-init="disableAssetSubmission(this,'#submitSlide')" data-onupload-reset="disableAssetSubmission(this,'#submitSlide')" data-onupload-start="disableAssetSubmission(this,'#submitSlide')" data-onupload-done="onVideoUploadDone(this,'#submitSlide')">
+							    <input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+								 <input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="mp4" data-msg-extension="File does not match the selected asset type."></span>
+								 <div class="table-scrollable" id="dw_container_1">
+									<table class="table table-str-border table-bordered drop-widget">
+									  <thead>
+										<tr class="td-header">
+										  <th colspan="4">
+											<div class='btn-group'>
+												<button type="button" id="btnSelectFile" class="btn btn-default blue-label btn-browse show-always">
+													<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+													<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+												</button>
+												<a class="btn btn-default" id="btnRemoveVideo" href="javascript:;" title="Detach Video" onclick="removeTempVideo(this)"><i class="icon-minus red-text"></i></a>
+											</div>
+										  </th>
+										</tr>
+										<tr class="td-header-bottom-border">
+											<th colspan="4" class="drop-area" id="dw_drop_area_1" style="height:170px">
+												<div id='addVideoSlidPreview'></div>
+												<div id="dropPreview" style="position:absolute;top:0;left:0;width:100%;height:100%;padding:5px" >
+													<ul class="row list-inline" style="width:100%;height:auto;">
+														<li class="col-sm-2"><h1 class="icon-film"></h1></li>
+														<li class="col-sm-10 text-left">Drag and drop a video to upload<br><small>or click the Browse button ( <i class="glyphicon glyphicon-paperclip"></i> ).  File format: mp4</small></li>
+													</ul>
+												</div>
+											</th>
+										</tr>
+									  </thead>
+									  <tbody id="dw_list_1">
+										<tr class = "file-panel">
+										  <td class="name"><span id="fileName" class="file-name"></span></td>
+										  <td class="status">
+											<div class="progress">
+												<div class="progress-bar progress-bar-info" style="width:0%">0%</div>
+											</div>
+										  </td>
+										  <td class="size"><span id="fileSize" class="file-size"></span></td>
+										  <td class="action"><a class="btn btn-default btn-cancel"><i class="icon-thumbs-down-alt"></i> #springMessage('label.cancel.upload')</a></td>
+										</tr>
+									  </tbody>
+									  
+									</table>
+								</div>
+							  </div>
+							  </div>
+							  <div class="col-md-offset-3 col-md-7 deactivate" >
+																	  <label class="help-block"><input type="radio" id="embedCodeRadioModal" name="embedQVideoToggle" onclick="enableDisableEmbedCode(true,'#embedCodeVideoModal','#embedCodeModal',false);disbaledRemoveFromSaveButtonOnUploadVideoSection(this,'#submitSlide');" /> #springMessage('label.embedcode.desc')</label>
+																	  <textarea class="form-control" required data-msg-required="Please enter embed code." rows="4" name="embedCodeModal" id="embedCodeModal"></textarea>
+				  	</div>
+							</div> 
+						</div>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button"  id="submitSlide"  OnClick="addVideoSlide(this);embedCodeSaveForUploadVideo($('#embedCodeModal').val());" class="btn blue">Save</button>
+					<button type="button" class="btn btn-default" onClick="cancelSlide();activateEmbedCodeVideoModal();" data-dismiss="modal">Cancel</button>					
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+##			END ADD VIDEO SLIDE
+
+##			BEGIN Excel Course Upload Import
+			<div class="modal fade" id="addExcepUploadModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelSlide();" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-bulk-upload-label"><i class="glyphicon glyphicon-import"></i> #springMessage('label.bulk.course.import.upload')</h3>
+				  </div>
+				  <form id="addBulkCourseImportform" class="form-horizontal" role="form">
+				  <div class="modal-body">
+						<input type="hidden" id="isCustomTemplate" name="isCustomTemplate" value="false" />
+						<div class="form-body">
+						   <div class="form-group">
+						   	<label class="col-md-3 control-label"> #springMessage('bulk.course.Import.label')</label>
+							  <div class="col-md-7">
+								<a class="form-control btn" href="theme/samplefile/batch_import_template.xlsx">
+									<i class="icon-file-alt"></i> #springMessage('bulk.course.Import.sample.file')
+								</a>
+								<span class="help-block"> #springMessage('bulk.course.Import.sample.file.instruction1')</span>
+							  </div>
+						   </div>
+						   <input type="hidden" id="hidSlideTemplateIdForAddForm" name="hidSlideTemplateIdForAddForm"/>
+						   <input type="text" class="form-control hide" id="duration" name="duration" placeholder=""/>
+						   <input type="radio" id="displayRatioStandard" name="displayRatio" class="hide"  checked></input>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"> #springMessage('bulk.course.Import.label.course.content')<span class="required">*</span></label>
+							  <div  id="addBulkCourseImportUploader" class="col-md-7 upload-360" data-uploader-loc="$!uploaderLocation" data-ext="xls,xlsx" data-file-handler="ppt"  data-onupload-init="disableAssetSubmission(this,'#submitSlide')" data-onupload-reset="disableAssetSubmission(this,'#submitSlide')" data-onupload-start="disableAssetSubmission(this,'#submitSlide')" data-onupload-done="enableExcelFileSubmission(this,'#submitSlide')">
+								 <input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+								 <input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="xlsx" data-msg-extension="File does not match the selected asset type."></span>
+								 <input id="courseId" name="courseId" type="hidden" value="$!courseid" />
+								 <div class="table-scrollable" id="dw_container_1">
+									<table class="table table-str-border table-bordered drop-widget">
+									  <thead>
+										<tr class="td-header">
+										  <th colspan="4">
+											<div class='btn-group'>
+												<button type="button" id="btnSelectFile" class="btn btn-default blue-label btn-browse show-always">
+													<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+													<span class="hide browse-change" id="excelChangeId"><i class="icon-undo"></i> Change</span>
+												</button>
+												<a class="btn btn-default" id="btnRemoveVideo" href="javascript:;" title="Detach Excel File" onclick="removeExcel(this)"><i class="icon-minus red-text"></i></a>
+											</div>
+										  </th>
+										</tr>
+										<tr class="td-header-bottom-border">
+											<th colspan="4" class="drop-area" id="dw_drop_area_1" style="height:170px">
+												<div id='addVideoSlidPreview'></div>
+												<div id="dropPreview" style="position:absolute;top:0;left:0;width:100%;height:100%;padding:5px" >
+													<ul class="row list-inline" style="width:100%;height:auto;">
+														<li class="col-sm-2"><h1 class="glyphicon glyphicon-list-alt"></h1></li>
+														<li class="col-sm-10 text-left">#springMessage('bulk.course.Import.sample.file.instruction2')</li>
+													</ul>
+												</div>
+											</th>
+										</tr>
+									  </thead>
+									  <tbody id="dw_list_1">
+										<tr class = "file-panel">
+										  <td class="name"><span id="fileName" class="file-name"></span></td>
+										  <td class="status">
+											<div class="progress">
+												<div class="progress-bar progress-bar-info" style="width:0%">0%</div>
+											</div>
+										  </td>
+										  <td class="size"><span id="fileSize" class="file-size"></span></td>
+										  <td class="action"><a class="btn btn-default btn-cancel"><i class="icon-thumbs-down-alt"></i> #springMessage('label.cancel.upload')</a></td>
+										</tr>
+									  </tbody>
+									</table>
+								</div>
+								 <span class="help-block">#springMessage('bulk.course.Import.sample.file.instruction3')</span>
+							  </div>
+							</div> 
+						</div>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button"  id="submitSlide"  OnClick="importExcelCourseFile(this)" class="btn blue">#springMessage('bulk.course.Import.btn.label.accept')</button>
+					<button type="button" class="btn btn-default" onClick="cancelSlide()" data-dismiss="modal">#springMessage('bulk.course.Import.btn.label.cancel')</button>					
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+##			End Excel Course Upload Import
+
+##			BEGIN UPDATE VIDEO ASSET
+			<div class="modal fade" id="updateVideoAssetModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelSlide();" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-slide-label"><i class="icon-film"></i> #springMessage('updateVideoAssetModal.title')</h3>
+				  </div>
+				  <form id="updateVideoAssetform" class="form-horizontal" role="form">
+				  <input id="assetId" name="assetId" type="hidden"></input>
+				  <div class="modal-body">
+				  		<div role="alert" class="alert alert-warning" style="margin:0;">
+							#springMessage('updateVideoAssetModal.instructionHtml')	
+						</div>
+						<div class="form-body">
+						   <input type="text" class="form-control hide" id="duration" name="duration" placeholder=""/>
+						   <div class="form-group">
+							  <div  id="updateVideoAssetUploader" data-fmsPreviewLoc="$!{lcmsProperties.getLCMSProperty('lcms.preview.streaming')}" class="col-md-offset-2 col-md-8 upload-360" data-uploader-loc="$!uploaderLocation" data-ext="mp4" data-file-handler="fms"  data-onupload-init="disableAssetSubmission(this,'#submitSlide')" data-onupload-reset="disableAssetSubmission(this,'#submitSlide')" data-onupload-start="disableAssetSubmission(this,'#submitSlide')" data-onupload-done="onVideoUploadDone(this,'#submitSlide')">
+								 <input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+								 <input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="mp4" data-msg-extension="File does not match the selected asset type."></span>
+								 <div class="table-scrollable" id="dw_container_1">
+									<table class="table table-str-border table-bordered drop-widget">
+									  <thead>
+										<tr class="td-header">
+										  <th colspan="4">
+											<div class='btn-group'>
+												<button type="button" id="btnSelectFile" class="btn btn-default blue-label btn-browse show-always">
+													<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+													<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+												</button>
+												<a class="btn btn-default" id="btnRemoveVideo" href="javascript:;" title="Detach Video" onclick="removeTempVideo(this,true)"><i class="icon-minus red-text"></i></a>
+											</div>
+										  </th>
+										</tr>
+										<tr class="td-header-bottom-border">
+											<th colspan="4" class="drop-area" id="dw_drop_area_1" style="height:180px">
+												<div id='addVideoSlidPreview'></div>
+												<div id="dropPreview" style="position:absolute;top:0;left:0;width:100%;height:100%;padding:5px" >
+													<ul class="row list-inline" style="width:100%;height:auto;">
+														<li class="col-sm-2"><h1 class="icon-film"></h1></li>
+														<li class="col-sm-10 text-left">Drag and drop a video to upload<br><small>or click the Browse button ( <i class="glyphicon glyphicon-paperclip"></i> ).  File format: mp4</small></li>
+													</ul>
+												</div>
+											</th>
+										</tr>
+									  </thead>
+									  <tbody id="dw_list_1">
+										<tr class = "file-panel">
+										  <td class="name"><span id="fileName" class="file-name"></span></td>
+										  <td class="status">
+											<div class="progress">
+												<div class="progress-bar progress-bar-info" style="width:0%">0%</div>
+											</div>
+										  </td>
+										  <td class="size"><span id="fileSize" class="file-size"></span></td>
+										  <td class="action"><a class="btn btn-default btn-cancel"><i class="icon-thumbs-down-alt"></i> #springMessage('label.cancel.upload')</a></td>
+										</tr>
+									  </tbody>
+									</table>
+								</div>
+							  </div>
+							</div> 
+						</div>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button"  id="submitSlide"  OnClick="updateVideoAsset(this)" class="btn blue">Save</button>
+					<button type="button" class="btn btn-default" onClick="cancelVideoAssetUpdate(this)" data-dismiss="modal">Cancel</button>					
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+##			END UPDATE VIDEO ASSET
+##			BEGIN ADD EXAM
+
+##			END ADD EXAM
+
+##			BEGIN ADD SUPPORT MATERIAL
+			<div class="modal fade" id="addSMModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					<div id="accordionSM" class="multi-panels">
+					  <div class="panel">
+						<div id="collapseTypeSM" class="panel-collapse collapse in">
+						  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h3 class="modal-title"><i class="glyphicon glyphicon-file inside-icon-plus-lg"></i> Add Support Material</h3>
+						  </div>
+						  <div class="modal-body text-center">
+
+##							BEGIN CREATE
+							<a data-toggle="collapse" data-parent="#accordionSM" href="#collapseAddSM" class="big-icon-btn">
+								<i class="icon-plus"></i>
+								<div>Create</div>
+								<p>Click here to create support material and attach to lesson.</p>
+							</a>
+##							END CREATE
+
+##							BEGIN FIND
+							<a data-toggle="collapse" data-parent="#accordionSM" href="#collapseFindSM" class="big-icon-btn">
+								<i class="icon-search"></i>
+								<div>Find</div>
+								<p>Click here to find support material and attach to lesson.</p>
+							</a>
+##							END FIND
+
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel">
+						<div id="collapseAddSM" class="panel-collapse collapse">
+							<form id="frmsmUploadAsset" method="Post" action="uploadVisualAsset" novalidate="novalidate">
+							<input type="hidden" id="lessonIdSupportMaterial" name="lessonIdSupportMaterial" />
+							<input type="hidden" id="courseIdForAudioAsset" name="courseIdForAudioAsset" />
+							<input type="hidden" id="isSupportMaterialForm" name="isSupportMaterialForm" value="true" />
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+								<h3 class="modal-title"><i class="glyphicon glyphicon-file inside-icon-plus-lg"></i> Upload Support Material and Attach to Lesson</h3>
+							  </div>
+							  <div class="modal-body">
+
+##								BEGIN FORM
+								<div class="form-horizontal">
+									<div class="form-body">
+									   <div class="form-group">
+										  <label  class="col-md-3 control-label">#springMessage('label.asset-name')<span class="required">*</span></label>
+										  <div class="col-md-6">
+											<input type="text" id="audioAssetName" name="audioAssetName" class="form-control" placeholder="Enter asset name.">
+										  </div>
+									   </div>
+									   <div class="form-group">
+										  <label  class="col-md-3 control-label">#springMessage('label.keywords')</label>
+										  <div class="col-md-6">
+											<input type="text" id="audioAssetKeywords" name="audioAssetKeywords" class="form-control" data-role="tagsinput" placeholder=" Enter keywords.">
+										  </div>
+									   </div>
+									   <div class="form-group">
+										  <label  class="col-md-3 control-label">#springMessage('label.description')</label>
+										  <div class="col-md-6">
+											 <textarea class="form-control" rows="3" id="audioAssetDescription" name="audioAssetDescription"></textarea>
+										  </div>
+									   </div>
+									   <div class="form-group temp-icons">
+										  <label  class="col-md-3 control-label">#springMessage('label.asset-type')</label>
+										  <div class="col-md-6">
+											 <label class='temp-label gray-text'>Document / Image <br/>( .doc / .docx / .pdf / .ppt / .pptx / .xls / .xlsx / .png / .jpeg / .gif )</label>
+										  </div>
+									   </div>
+									   <div class="form-group">
+										  <label  class="col-md-3 control-label">#springMessage('label.file-path')<span class="required">*</span></label>
+										  <div class="col-md-6">
+											<div id="supportingMaterialUploader" class="col-md-6 upload-360" data-uploader-loc="$!uploaderLocation" data-ext="doc,docx,pdf,ppt,pptx,xls,xlsx,png,jpg,jpeg,gif" data-onupload-init="disableAssetSubmission(this,'#btnSubmitAudioAssetForm')" data-onupload-reset="disableAssetSubmission(this,'#btnSubmitAudioAssetForm')" data-onupload-start="disableAssetSubmission(this,'#btnSubmitAudioAssetForm')" data-onupload-done="enableAssetSubmission(this,'#btnSubmitAudioAssetForm')" >
+												<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+													<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+													<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+												</button>
+												<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+													<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+												</button>
+												<span style="display:block"></span>
+												<span id="filePreview" class="file-preview"></span>
+												<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+												<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+												<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." ></span>
+												<input id="imageWidth" name="imageWidth" type="hidden"></input>
+												<input id="imageHeight" name="imageHeight" type="hidden"></input>
+										  </div>
+										  </div>
+									   </div>
+									   <div class="form-group">
+										  <label  class="col-md-3 control-label"></label>
+										  <div class="col-md-6">
+											 <div class="checkbox-list">
+												<label>
+												<input id="attachAssetWithAssetGroup" name="assetOptions" value="ATTACH_ASSET_WITH_ASSETGROUP" type="checkbox" class="form-chkbox" checked="checked">
+												 Attach this asset to this course's asset group.
+												</label>
+											 </div>
+										  </div>
+									   </div>
+									</div>
+								</div>
+##								END FORM
+
+							  </div>
+							  <div class="modal-footer">
+								<input type="button" value="Accept" id="btnSubmitAudioAssetForm" onclick="addSupportMaterial(this.form); return false;" class="btn blue" data-dismiss="modal">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							</form>	
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel">
+						<div id="collapseFindSM" class="panel-collapse collapse">
+						  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h3 class="modal-title"><i class="glyphicon glyphicon-file inside-icon-plus-lg"></i> Find Support Material and Attach to Lesson</h3>
+						  </div>
+						  <div class="modal-body">
+
+##							BEGIN GRID TABLE
+							<div class="form-body">
+							   <div class="form-group">
+									<div>
+										<div class="btn-group pull-right zero-padding col-md-6">
+											<div class="input-group">
+											  <span class="input-group-btn">
+												<label>#springMessage('label.search')<span class="search-required">*</span></label>
+											  </span>
+											  
+											  <input name="txtSupportMaterialSearch" id="txtSupportMaterialSearch" class="form-control" type="text" placeholder="#springMessage('button.search-asset')" onkeydown="if (event.keyCode == 13) document.getElementById('btnSupportMaterialSearch').click()" >
+											  <span class="input-group-btn">
+												<button id="btnSupportMaterialSearch" type="submit" class="btn blue" onclick="searchSupportMaterialAsset(this)"><i class="search-icon-white"></i> #springMessage('button.find')</button>
+											  </span>
+											</div>
+										</div>
+									</div>
+									<br /><br />
+									<div class="table-scrollable">
+										<table class="table table-str-border table-hover table-bordered white-bg">
+											<thead>
+											   <tr class="td-header-bottom-border">
+												  <th></th>
+												  <th>#springMessage('label.asset-name')</th>
+												  <th>#springMessage('label.type')</th>
+												  <th>#springMessage('label.dimension')</th>
+												  <th>#springMessage('label.size')</th>
+												  <th>#springMessage('label.version')</th>
+												  <th>#springMessage('label.description')</th>
+												  <th>#springMessage('label.preview')</th>
+											   </tr>
+											</thead>
+											<tbody height="100" id="lstSupportMaterialAsset"></tbody>
+										</table>
+									</div>
+							   </div>
+							</div>
+##							END GRID TABLE
+
+						  </div>
+						  <div class="modal-footer">
+							<button id="btnSaveAssetSupportMat" type="button" class="btn blue"  onclick="acceptDialogBox('SupportMaterial')">#springMessage('button.accept')</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">#springMessage('button.cancel')</button>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				</div>
+			  </div>
+			</div>
+##			END ADD SUPPORT MATERIAL
+
+##			Exam add question form Start
+			<div class="modal fade" id="addExamQuestionModal" tabindex="-1" role="dialog" aria-labelledby="add-question-label" aria-hidden="true">
+			 <form id="addExamQuestionModalForm" method="Post" action="saveExamQuestion">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close"  onClick="cancelExamQuestion()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-question-label"><i class="icon-question-item"></i> Add New Question</h3>
+				  </div>
+				  <div class="modal-body">
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Complexity</label>
+							  <div class="col-md-6">
+								<select class="form-control" id="examComplexity" name="examComplexity">
+									<option value="0">None</option>
+									<option value="1">1 - Recall</option>
+									<option value="2">2 - Comprehension</option>
+									<option value="3">3 - Application</option>
+									<option value="4">4 - Analysis</option>
+									<option value="5">5 - Synthesis</option>
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Question type<span class="required">*</span></label>
+							  <div class="col-md-6">
+								<select class="form-control" id="examQuestionType" name="examQuestionType">
+									<option value="Single Select MCQ">Multiple-choice Single Select</option>
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Question<span class="required">*</span></label>
+							  <div class="col-md-8">
+								  <textarea id="questionExamTitle" class="form-control"  name="questionExamTitle" rows="4"></textarea> 
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <div class="col-md-offset-3 col-md-6">
+								<div class="form-list">
+									<div>
+										<input type="checkbox" id="examRandomizeAnswer" name="examRandomizeAnswer">
+										<span>Disable answer choice randomization</span>
+									</div>
+								</div>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Answer Choices<span class="required">*</span></label>
+							  <div class="col-md-8">
+        						<div class="table-scrollable">
+        							<table id="tbQuestionAnswer2" class="table table-str-border table-bordered">
+        							  <thead>
+        								<tr class="td-header">
+        								  <th colspan="8">
+        									<div class='btn-group'>
+        										<a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addExamAnsChoiceModal" onclick="chk_CorrectAnswer_add()" class="btn btn-default" href="javascript:;" title="Add Answer Choice to Question"><i class="icon-plus blue-text"></i></a>
+        										<a id="btnExamDelQstnOption" class="btn btn-default" href="javascript:;" onclick="delete_answers_choice(this, 'ADD_EXAM')" title="Delete Selected Answer Choice"><i class="icon-minus red-text"></i></a>
+        									</div>
+        								  </th>
+        								</tr>
+        								<tr class="td-header-bottom-border">
+        								  <th width="10"><input type="checkbox" id="chkExamAnswersSlctAll" class="checker" onclick="ANS_CHECKBOX(this,true)"/></th>
+        								  <th>Choice</th>
+        								  <th>Correct</th>
+        								  <th>Feedback</th>
+        								</tr>
+										<input type="hidden" name="hidExamBankId" id="hidExamBankId" value="">
+										<input type="hidden" name="examChoice[]" id="examChoice" value="">
+										<input type="hidden" name="examCorrect[]" id="examCorrect" value="">
+										<input type="hidden" name="examFeedback[]" id="examFeedback" value="">
+                                        <tr id="rwAnswerExam" style="display:none">
+                                          <td class="checks"><input type="checkbox" name="examAnswers" onclick="ANS_CHECKBOX(this,false)"/> </td>
+                                          <td class="choice"></td>
+                                          <td class="correct"></td>
+                                          <td class="feedback"></td>
+                                        </tr>
+        							  </thead>
+        							  <tbody height="25" id="tblAnswerChoicesExam">
+        							  </tbody>
+        							</table>
+        						</div>								
+							  </div>
+						   </div>
+						</div>
+					</div>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btaddExamQuestionSave" type="button" class="btn blue" onClick="addExamQuestion(this.form); return false;" >Save</button>
+					<button type="button" class="btn btn-default" onClick="cancelExamQuestion ()" data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+##			Exam add question form End
+
+##			BEGIN ADD QUIZ
+			<div class="modal fade" id="addQuizModal" tabindex="-1" role="dialog" aria-labelledby="add-quiz-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<form role="form" id="frmAddQuizModal">
+                    <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-quiz-label"><i class="glyphicon glyphicon-file inside-icon-exam"></i> Add New Quiz</h3>
+				  </div>
+				  <div class="modal-body">
+					<div class="form-horizontal">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.questions-per-quiz')">Number of target questions per quiz</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Enter value in numeric" value="10" id="noTargetQuestions" name="noTargetQuestions" readonly="readonly">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.random-questions')">Randomize questions</label>
+							  <div class="col-md-6">
+								<input type="checkbox" class="form-chkbox" value="1"  id="chkrandomizeQuestions" name="chkrandomizeQuestions" checked="checked">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.random-anwers')">Randomize answers</label>
+							  <div class="col-md-6">
+								<input type="checkbox" class="form-chkbox" value="1" id="chkrandomizeAnswers" name="chkrandomizeAnswers" checked="checked">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.time-permitted-for-quiz')">Time permitted for quiz (minutes)</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Enter value in numeric" id="timeforQuiz" name="timeforQuiz" value="15">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.grade-questions')">Grade questions</label>
+							  <div class="col-md-6">
+								<select class="form-control" id="opgradeQuestions" name="opgradeQuestions">
+									<option value="AfterEachQuestionIsAnswered">After each question is answered</option>
+									<option value="AfterAssessmentIsSubmitted">After quiz is submitted</option>
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.allow-review-after-grading')">Allow review after grading</label>
+							  <div class="col-md-6">
+								<input type="checkbox" class="form-chkbox" value="1" id="allowReviewaftGrading" name="allowReviewaftGrading" checked="checked">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.score-required-to-pass-the-quiz')">Score required to pass quiz</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Enter value in numeric" id="scorePassQuiz" name="scorePassQuiz" value="70">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.number-of-attempt-permitted')">Number of attempts permitted</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Enter value in numeric" id="noAttemptsPermitted" name="noAttemptsPermitted" value="3">
+							  </div>
+						   </div>
+						   <div class="form-group" id="MaxAttempHandlerDiv_Quiz">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.action-to-take-if-fail-to-pass')">Action to take if fail to pass</label>
+							  <div class="col-md-6">
+								<select class="form-control" id="actionOnFailtoPass" name="actionOnFailtoPass">
+									<option value="Retake Lesson">Retake lesson</option>
+									<option value="Go To Next Lesson">Go to next lesson</option>
+									<option value="Lock Course">Lock course</option>
+								</select>
+							  </div>
+						   </div>
+						</div>
+					</div>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btaddQuizModal" type="submit" class="btn blue" onClick="postQuizConfigurationValidation(this,event)">Save</button>
+					<button  type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+        		</form>
+			  </div>
+			</div>
+##			END ADD QUIZ
+
+##			BEGIN ADD QUESTION
+			<div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="add-question-label" aria-hidden="true">
+			 <form id="addQuestionModalForm" method="Post" action="postQuestion">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close"  onClick="cancelQuestion ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-question-label"><i class="icon-question-item"></i> Add New Question</h3>
+				  </div>
+				  <div class="modal-body">
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Complexity</label>
+							  <div class="col-md-6">
+								<select class="form-control" id="complexity" name="complexity">
+									<option value="0">None</option>
+									<option value="1">1 - Recall</option>
+									<option value="2">2 - Comprehension</option>
+									<option value="3">3 - Application</option>
+									<option value="4">4 - Analysis</option>
+									<option value="5">5 - Synthesis</option>
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Question type<span class="required">*</span></label>
+							  <div class="col-md-6">
+								<select class="form-control" id="questionType" name="questionType">
+									<option value="Single Select MCQ">Multiple-choice Single Select</option>
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Question<span class="required">*</span></label>
+							  <div class="col-md-8">
+								  <textarea id="questionTitle" class="form-control"  name="questionTitle" rows="4"></textarea> 
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <div class="col-md-offset-3 col-md-6">
+								<div class="form-list">
+									<div>
+										<input type="checkbox" id="randomizeAnswer" name="randomizeAnswer">
+										<span>Disable answer choice randomization</span>
+									</div>
+								</div>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Answer Choices<span class="required">*</span></label>
+							  <div class="col-md-8">
+        						<div class="table-scrollable">
+        							<table id="tbQuestionAnswer2" class="table table-str-border table-bordered">
+        							  <thead>
+        								<tr class="td-header">
+        								  <th colspan="8">
+        									<div class='btn-group'>
+        										<a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addAnsChoiceModal" onClick="chkCorrectQuestionAnswer ()" class="btn btn-default" href="javascript:;" title="Add Answer Choice to Question"><i class="icon-plus blue-text"></i></a>
+        										<a id="btnQuizDelQstnOption"  class="btn btn-default" href="javascript:;" onclick="delete_answers_choice(this, 'ADD_QUIZ')" title="Delete Selected Answer Choice"><i class="icon-minus red-text"></i></a>
+        									</div>
+        								  </th>
+        								</tr>
+        								<tr class="td-header-bottom-border">
+        								  <th width="10"><input id="chkQuizAnswersSlctAll" type="checkbox" class="checker" onclick="ANS_CHECKBOX(this,true)"/></th>
+        								  <th>Choice</th>
+        								  <th>Correct</th>
+        								  <th>Feedback</th>
+        								</tr>
+                                        <tr id="rwAnswer" style="display:none">
+                                          <td class="checks"><input type="checkbox" onclick="ANS_CHECKBOX(this,false)"/> </td>
+                                          <td class="choice"></td>
+                                          <td class="correct"></td>
+                                          <td class="feedback"></td>
+                                        </tr>
+        							  </thead>
+        							  <tbody height="100" id="tblAnswerChoices">
+        							  </tbody>
+        							</table>
+        						</div>								
+							  </div>
+						   </div>
+						</div>
+					</div>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btaddQuestionSave" class="btn blue" onClick="addQuestion(); return false;" >Save</button>
+					<button class="btn btn-default" onClick="cancelQuestion ()" data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+##			END ADD QUESTION
+
+##			BEGIN ADD ANSWER CHOICES
+			<div class="modal fade" id="addAnsChoiceModal" tabindex="-1" role="dialog" aria-labelledby="add-ans-choice-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelAnswer ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h3 class="modal-title" id="add-ans-choice-label">Add New Answer Choice</h3>
+				  </div>
+				  <div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Answer Choice<span class="required">*</span></label>
+							  <div class="col-md-8">
+								 <textarea id="ans-ckeditor-1" class="form-control" name="ans-ckeditor" rows="4"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Correct</label>
+							  <div class="col-md-8">
+								<input type="checkbox"  id="isCorrect" name="isCorrect" class="form-chkbox">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Feedback</label>
+							  <div class="col-md-8">
+								 <textarea id="feedback-ckeditor-1" class="form-control" name="feedback-ckeditor" rows="4"></textarea>
+							  </div>
+						   </div>
+						</div>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btAcceptAnswer" type="button" onClick="acceptAnswer(); return false;" class="btn blue">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelAnswer ()"  data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			</div>
+##			END ADD ANSWER CHOICES
+
+##			BEGIN ADD ANSWER CHOICES
+			<div class="modal fade" id="addAnsChoiceModal2" tabindex="-1" role="dialog" aria-labelledby="add-ans-choice-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h3 class="modal-title" id="add-ans-choice-label">Add New Answer Choice</h3>
+					<button type="button" class="close" onClick="cancelAnswer2  ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				  </div>
+				  <div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Answer Choice<span class="required">*</span></label>
+							  <div class="col-md-8">
+								 <textarea id="ans-ckeditor-2" class="form-control" name="ans-ckeditor2" rows="4"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Correct</label>
+							  <div class="col-md-8">
+								<input type="checkbox"  id="isCorrect2" name="isCorrect2" class="form-chkbox">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Feedback</label>
+							  <div class="col-md-8">
+								 <textarea id="feedback-ckeditor-2" class="form-control" name="feedback-ckeditor2" rows="4"></textarea>
+							  </div>
+						   </div>
+						</div>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btAcceptAnswer2" type="button" onClick="acceptAnswer2();correctanswervalidation(event);" class="btn blue">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelAnswer2 ()"  data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			</div>
+##			END ADD ANSWER CHOICES
+			
+##			BEGIN ADD ANSWER CHOICES
+			<div class="modal fade" id="addAnsChoiceModal3" tabindex="-1" role="dialog" aria-labelledby="add-ans-choice-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelAnswer2  ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-ans-choice-label">Edit Answer Choice</h3>
+				  </div>
+				  <div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Answer Choice<span class="required">*</span></label>
+							  <div class="col-md-8">
+								 <textarea id="ans-ckeditor-3" class="form-control" name="ans-ckeditor3" rows="4"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Correct</label>
+							  <div class="col-md-8">
+								<input type="checkbox"  id="isCorrect3" name="isCorrect3" class="form-chkbox">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Feedback</label>
+							  <div class="col-md-8">
+								 <textarea id="feedback-ckeditor-3" class="form-control" name="feedback-ckeditor3" rows="4"></textarea>
+							  </div>
+						   </div>
+						</div>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btAcceptAnswer3" type="button" onClick="acceptAnswer3();" class="btn blue">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelAnswer3 ()"  data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			</div>
+##			END ADD ANSWER CHOICES
+
+##			BEGIN ADD ANSWER CHOICES for Exam Start
+			<div class="modal fade" id="addExamAnsChoiceModal" tabindex="-1" role="dialog" aria-labelledby="add-ans-choice-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelAnswer ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h3 class="modal-title" id="add-ans-choice-label">Add New Answer Choice</h3>
+				  </div>
+				  <div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Answer Choice<span class="required">*</span></label>
+							  <div class="col-md-8">
+								 <textarea id="new_ans_choice_ckeditor_Exam" class="form-control" name="new_ans_choice_ckeditor_Exam" rows="4"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group" id="isCorrectExamDiv" name="isCorrectExamDiv">
+							  <label class="col-md-3 control-label">Correct</label>
+							  <div class="col-md-8">
+								<input type="checkbox"  id="isCorrectExam" name="isCorrectExam" class="form-chkbox">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Feedback</label>
+							  <div class="col-md-8">
+								 <textarea id="new_ans_choice_feedback_Exam" class="form-control" name="new_ans_choice_feedback_Exam" rows="4"></textarea>
+							  </div>
+						   </div>
+						</div>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btAcceptExamAnswer" type="button" onClick="acceptExamAnswer()" class="btn blue">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelExamAnswer ()"  data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+##			BEGIN ADD ANSWER CHOICES for Exam - End
+
+##			BEGIN ADD ANSWER CHOICES for Exam - FOR UPDTAE Question - Start
+			<div class="modal fade" id="addExamAnsChoiceModalForUpdate" tabindex="-1" role="dialog" aria-labelledby="add-ans-choice-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelAnswer ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h3 class="modal-title" id="add-ans-choice-label">Add New Answer Choice</h3>
+				  </div>
+				  <div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Answer Choice<span class="required">*</span></label>
+							  <div class="col-md-8">
+								 <textarea id="choiceTextForUpdateExam" class="form-control" name="choiceTextForUpdateExam" rows="4"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group" id="isCorrectExamDiv" name="isCorrectExamDiv">
+							  <label class="col-md-3 control-label">Correct</label>
+							  <div class="col-md-8">
+								<input type="checkbox"  id="isCorrectForUpdateExam" name="isCorrectForUpdateExam" class="form-chkbox">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Feedback</label>
+							  <div class="col-md-8">
+								 <textarea id="choiceFeedbackForUpdateExam" class="form-control" name="choiceFeedbackForUpdateExam" rows="4"></textarea>
+							  </div>
+						   </div>
+						</div>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btAcceptExamAnswerForUpdate" type="button" onClick="acceptExamAnswerForUpdate();finalExamCorrectAnswerValidation();" class="btn blue">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelAnswerForUpdateExam ()"  data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+##			BEGIN ADD ANSWER CHOICES for Exam - FOR UPDTAE Question- End
+
+##			BEGIN ADD ANSWER CHOICES for Exam - FOR UPDTAE Question> - Start
+			<div class="modal fade" id="addExamAnsChoiceModalForEdit" tabindex="-1" role="dialog" aria-labelledby="add-ans-choice-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" onClick="cancelAnswerEdit ()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="add-ans-choice-label">Edit Answer Choice</h3>
+				  </div>
+				  <div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Answer Choice<span class="required">*</span></label>
+							  <div class="col-md-8">
+								 <textarea id="choiceTextForEditExam" class="form-control" name="choiceTextForEditExam" rows="4"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group" id="isCorrectExamDiv" name="isCorrectExamDiv">
+							  <label class="col-md-3 control-label">Correct</label>
+							  <div class="col-md-8">
+								<input type="checkbox"  id="isCorrectForEditExam" name="isCorrectForEditExam" class="form-chkbox">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label">Feedback</label>
+							  <div class="col-md-8">
+								 <textarea id="choiceFeedbackForEditExam" class="form-control" name="choiceFeedbackForEditExam" rows="4"></textarea>
+							  </div>
+						   </div>
+						</div>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button id="btAcceptExamAnswerForEdit" type="button" onClick="acceptExamAnswerForEdit();finalExamCorrectAnswerValidation();" class="btn blue">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelAnswerForEditExam ()"  data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			</div>
+
+##			BEGIN ADD ANSWER CHOICES for Exam - FOR UPDTAE Question- End
+##			BEGIN VISUAL ASSET SEARCH AND ADD
+			<div class="modal fade" id="addVisualAssetModal" tabindex="-1" role="dialog" aria-labelledby="upload-asset-label" aria-hidden="true">
+			<form action="uploadVisualAsset" method="Post" id="frmUploadVisualAsset" >
+				<input type="hidden" id="slideIdForAsset" name="slideIdForAsset">
+				<input type="hidden" id="courseIdForAsset" name="courseIdForAsset">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="upload-asset-label">Upload Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+##					BEGIN FORM
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('va.asset-name')">Asset Name</span><span class="required">*</span></label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" name="visualAssetName" id="visualAssetName" placeholder="Enter asset name.">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('va.keywords')">Keywords</span></label>
+							  <div class="col-md-6">
+								<input type="text" name="visualAssetKeywords" id="visualAssetKeywords" class="form-control" data-role="tagsinput" placeholder="Enter keywords.">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('va.description')">Description</span></label>
+							  <div class="col-md-6">
+								 <textarea name="visualAssetDescription" id="visualAssetDescription" class="form-control" rows="3"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group temp-icons">
+							  <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('va.asset-type')">Asset Type</span></label>
+							  <div class="col-md-6">
+								<select class="form-control" name="cboAssetTypeVisual" id="cboAssetTypeVisual">
+									<option value="Image">Image</option>
+									<option value="MovieClip">Movie Clip</option>
+									<option value="FlashObject">Flash Object</option>
+								</select>
+							 </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('va.file-path')">File Path</span><span class="required">*</span></label>
+							  <div id="visualUploader" class="col-md-6 upload-360" data-uploader-loc="$!uploaderLocation" data-onupload-validateFile="$.validator.methods.validateExtensionForVisualAsset(arg.file.name)" data-onupload-init="disableAssetSubmission(this,'#btnSubmitVisualAssetForm')" data-onupload-reset="disableAssetSubmission(this,'#btnSubmitVisualAssetForm')" data-onupload-start="disableAssetSubmission(this,'#btnSubmitVisualAssetForm')" data-onupload-done="enableAssetSubmission(this,'#btnSubmitVisualAssetForm')" >
+									<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+										<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+										<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+									</button>
+									<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+										<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+									</button>
+									<span style="display:block"></span>
+									<span id="filePreview" class="file-preview"></span>
+									<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+									<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+									<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." ></span>
+									<input id="imageWidth" name="imageWidth" type="hidden"></input>
+									<input id="imageHeight" name="imageHeight" type="hidden"></input>
+									<input id="duration" name="duration" type="hidden"></input>
+							  </div>
+							</div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"></label>
+							  <div class="col-md-6">
+								 <div class="checkbox-list">
+									<label>
+									<input id="visualAttachAssetWithSlide" name="visualAssetOptions" value="ATTACH_ASSET_WITH_SLIDE" type="checkbox" class="form-chkbox" checked> Attach this asset to this slide.
+									</label>
+									<label>
+									<input id="visualAttachAssetWithAssetGroup" name="visualAssetOptions" value="ATTACH_ASSET_WITH_ASSETGROUP" type="checkbox" class="form-chkbox" checked> Attach this asset to this course's asset group.
+									</label>
+								 </div>
+							  </div>
+						   </div>
+						</div>
+					</div>
+##					END FORM
+				  </div>
+				  <div class="modal-footer">
+					<input type="button" value="Accept"	id="btnSubmitVisualAssetForm" onClick="addVisualAsset(this.form); return false;" class="btn blue">
+					<button type="button" class="btn btn-default" onClick="cancelVisualAssetUploadForm()" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+##			END ASSET SEARCH AND ADD
+
+			<div class="modal fade in" id="addVAssetModal" tabindex="-1" role="dialog" aria-labelledby="upload-a-asset-label" aria-hidde id="frmUploadVideoAsset" >
+			<form action="uploadVisualAsset" method="Post" enctype="multipart/form-data" id="frmUploadVideoAsset" >
+				<input type="hidden" id="slideIdForAsset_video" name="slideIdForAsset_video">
+				<input type="hidden" id="courseIdForAsset_video" name="courseIdForAsset_video">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onClick="cancelVideoAssetUploadForm()"><span aria-hidden="true">�</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="upload-a-asset-label">Upload Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+##					BEGIN FORM
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.asset-name')>Asset Name</span><span class="required">*</span></label>
+							  <div class="col-md-6">
+								<input type="text"  name="videoAssetName" id="videoAssetName" class="form-control" placeholder="Enter asset name.">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.keywords')>Keywords</span></label>
+							  <div class="col-md-6">
+								<input type="text"  name="visualAssetKeywords" id="visualAssetKeywords" class="form-control" data-role="tagsinput" placeholder="Enter keywords." style="display: none;">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.description')>Description</span></label>
+							  <div class="col-md-6">
+								 <textarea class="form-control" rows="3" name="visualAssetDescription" id="visualAssetDescription"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group temp-icons">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.asset-type')>Asset Type</span></label>
+							  <div class="col-md-6">
+								<select class="form-control" name="cboAssetTypeVisual" id="cboAssetTypeVisual">
+									<option value="mp4">Video Clip (MP4)</option>
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							 <label class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.file-path')>File Path</span><span class="required">*</span></label>
+								<div id="videoUploader" class="col-md-6 upload-360" data-uploader-loc="$!uploaderLocation" data-ext="mp4" data-file-handler="fms"  data-onupload-init="disableAssetSubmission(this,'#btnSubmitVideoAssetForm')" data-onupload-reset="disableAssetSubmission(this,'#btnSubmitVideoAssetForm')" data-onupload-start="disableAssetSubmission(this,'#btnSubmitVideoAssetForm')" data-onupload-done="enableAssetSubmission(this,'#btnSubmitVideoAssetForm')">
+									<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+										<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+										<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+									</button>
+									<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+										<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+									</button>
+									<span style="display:block"></span>
+									<span id="filePreview" class="file-preview"></span>
+									<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+									<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+									<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="mp4" data-msg-extension="File does not match the selected asset type."></span>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"></label>
+							  <div class="col-md-6">
+								 <div class="checkbox-list">
+									<label>
+									<input id="visualAttachAssetWithSlide" name="visualAssetOptions" value="ATTACH_ASSET_WITH_SLIDE" type="checkbox" class="form-chkbox" checked> Attach this asset to this slide.
+									</label>
+									<label>
+									<input id="visualAttachAssetWithAssetGroup" name="visualAssetOptions" value="ATTACH_ASSET_WITH_ASSETGROUP" type="checkbox" class="form-chkbox" checked> Attach this asset to this course's asset group.
+									</label>
+								 </div>
+							  </div>
+						   </div>
+						</div>
+					</div>
+##					END FORM
+				  </div>
+				  <div class="modal-footer">
+					<input type="button" value="Accept"	id="btnSubmitVideoAssetForm" onClick="addVideoAsset(this.form); return false;" class="btn blue">
+					<button type="button" class="btn btn-default" onClick="cancelVideoAssetUploadForm()" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+
+##			BEGIN ASSET VIDEO SEARCH
+			<div class="modal fade" id="searchVAssetModal" tabindex="-1" role="dialog" aria-labelledby="asset-v-search-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onClick="cancelVAAsset ()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="asset-v-search-label">Find Video Streaming Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+
+##					BEGIN GRID TABLE
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" class="form-control"  placeholder="Search Asset" id="txtVASearchTerm" name="txtVASearchTerm">
+									  <span class="input-group-btn">
+										<button id="btsearchVAAsset" type="button" class="btn blue" onClick="searchVAAsset()" data-loading-text="Loading..." ><i class="search-icon-white"></i> Find</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>Asset Name</th>
+										  <th>Type</th>
+										  <th>Duration</th>
+										  <th>Size</th>
+										  <th>Version</th>
+										  <th>Description</th>
+										  <th>Preview</th>
+									   </tr>
+									</thead>
+									<tbody height="100" id="lstVABody">
+									   
+									</tbody>
+								</table>
+							</div>
+					   </div>
+					</div>
+##					END GRID TABLE
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" id="btAcceptVAAsset" onClick="acceptDialogBox ('video') ">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelVAAsset ()" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+##			END ASSET VIDEO SEARCH
+
+##			BEGIN ASSET AUDIO SEARCH AND ADD
+			<div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="upload-a-asset-label" aria-hidden="true">
+			<form action="uploadAudioAsset" method="Post" id="frmUploadAudioAsset" >
+			<input type="hidden" id="slideIdForAudioAsset" name="slideIdForAudioAsset" />
+			<input type="hidden" id="courseIdForAudioAsset" name="courseIdForAudioAsset" />
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="upload-a-asset-label">Upload Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+##					BEGIN FORM
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Asset Name<span class="required">*</span></label>
+							  <div class="col-md-6">
+								<input type="text" name="audioAssetName" id="audioAssetName" class="form-control"  placeholder="Enter asset name.">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Keywords</label>
+							  <div class="col-md-6">
+								<input type="text" name="audioAssetKeywords" id="audioAssetKeywords" class="form-control" data-role="tagsinput" placeholder="Enter keywords.">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label">Description</label>
+							  <div class="col-md-6">
+								 <textarea name="audioAssetDescription" id="audioAssetDescription" class="form-control" rows="3"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group temp-icons">
+							  <label class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('aa.asset-type')>Asset Type</span></label>
+							  <div class="col-md-6">
+								 <label class='temp-label gray-text'>Audio Clip (MP3)</label>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('aa.file-path')>File Path</span><span class="required">*</span></label>
+							  <div id="audioUploader" class="col-md-6 upload-360" data-uploader-loc="$!uploaderLocation" data-ext="mp3" data-onupload-init="disableAssetSubmission(this,'#btnSubmitAudioAssetForm')" data-onupload-reset="disableAssetSubmission(this,'#btnSubmitAudioAssetForm')" data-onupload-start="disableAssetSubmission(this,'#btnSubmitAudioAssetForm')" data-onupload-done="enableAssetSubmission(this,'#btnSubmitAudioAssetForm')">
+									<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+										<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+										<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+									</button>
+									<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+										<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+									</button>
+									<span style="display:block"></span>
+									<span id="filePreview" class="file-preview"></span>
+									<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+									<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+									<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="mp3" data-msg-extension="File does not match the selected asset type."></span>
+									<input id="duration" name="duration" type="hidden"></input>
+									
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label"></label>
+							  <div class="col-md-6">
+								 <div class="checkbox-list">
+									<label>
+									<input id="attachAssetWithSlide" name="assetOptions" value="ATTACH_ASSET_WITH_SLIDE" type="checkbox" class="form-chkbox" checked> Attach this asset to this slide.
+									</label>
+									<label>
+									<input id="attachAssetWithAssetGroup" name="assetOptions" value="ATTACH_ASSET_WITH_ASSETGROUP" type="checkbox" class="form-chkbox" checked> Attach this asset to this course's asset group.
+									</label>
+								 </div>
+							  </div>
+						   </div>
+						</div>
+					</div>
+##					END FORM
+				  </div>
+				  <div class="modal-footer">					
+					<input type="button" value="Accept"	id="btnSubmitAudioAssetForm" onClick="addAudioAsset(this.form); return false;" class="btn blue">
+					<button type="button" class="btn btn-default" onClick="cancelAudioAssetUploadForm()" data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+##			END ASSET AUDIO SEARCH AND ADD
+
+##			BEGIN ASSET AUTHOR IMAGE UPLOAD
+			<div class="modal fade" id="addAuthorImageUpload" tabindex="-1" role="dialog" aria-labelledby="upload-asset-label" aria-hidden="true">
+				<form action="uploadAuthorImage" method="Post" id="frmAuthorImage" >
+				  <input type="hidden" id="id" name="id" />
+				  <input type="hidden" id="assetUploadType" name="assetUploadType" />
+				  <div class="modal-dialog modal-lg">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" onClick="cancelImageUpload ()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title" id="upload-asset-label">Upload and Attach Image to Course</h3>
+					  </div>
+					  <div class="modal-body">
+##						BEGIN FORM
+						<div class="form-horizontal" role="form">
+							<div class="form-body">
+							   <div class="form-group">
+								  <label  class="col-md-3 control-label">Asset Name<span class="required">*</span></label>
+								  <div class="col-md-6">
+									<input type="text" class="form-control" name="AuthorImageName" id="AuthorImageName" placeholder="Enter asset name.">
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label  class="col-md-3 control-label">Keywords</label>
+								  <div class="col-md-6">
+									<input type="text" class="form-control"  name="AuthorImageKeywords" id="AuthorImageKeywords" data-role="tagsinput" placeholder="Enter keywords.">
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label  class="col-md-3 control-label">Description</label>
+								  <div class="col-md-6">
+									 <textarea class="form-control" rows="3"  name="AuthorImageDescription" id="AuthorImageDescription" ></textarea>
+								  </div>
+							   </div>
+							   <div class="form-group temp-icons">
+								  <label  class="col-md-3 control-label">Asset Type</label>
+								  <div class="col-md-6">
+									 <label class='temp-label gray-text'>Image (GIF,PNG, JPG, JPEG,BMP)</label>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label  class="col-md-3 control-label">File Path<span class="required">*</span></label>
+								  <div id="authorImageUploader" class="col-md-8 upload-360" data-uploader-loc="$!uploaderLocation" data-ext="png,jpg,jpeg,gif,bmp" data-onupload-init="disableAssetSubmission(this,'#btaddAuthorImageUpload')" data-onupload-reset="disableAssetSubmission(this,'#btaddAuthorImageUpload')" data-onupload-start="disableAssetSubmission(this,'#btaddAuthorImageUpload')" data-onupload-done="enableAssetSubmission(this,'#btaddAuthorImageUpload')" >
+												<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+													<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+													<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+												</button>
+												<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+													<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+												</button>
+												<span style="display:block"></span>
+												<span id="filePreview" class="file-preview"></span>
+												<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+												<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+												<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." ></span>
+												<input id="imageWidth" name="imageWidth" type="hidden"></input>
+												<input id="imageHeight" name="imageHeight" type="hidden"></input>
+								 </div>
+							   </div>
+							</div>
+						</div>
+						#* END FORM *#
+					  </div>
+					  <div class="modal-footer">						
+						<button id="btaddAuthorImageUpload" type="button" class="btn blue" onClick="uploadAuthorImage (this.form, event)">Accept</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal" onClick="cancelImageUpload ()">Cancel</button>
+					  </div>
+					</div>
+				  </div>
+				  </form>
+			</div>
+			#* END IMAGE SEARCH AND ADD *#
+			
+			#* BEGIN ASSET VIDEO SEARCH *#
+			<div class="modal fade" id="searchMarketingAssetModal" tabindex="-1" role="dialog" aria-labelledby="asset-v-search-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onClick="cancelMarketingSearchAsset ()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="searchMarketingabel">Find Video Streaming Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* BEGIN GRID TABLE *#
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" class="form-control"  placeholder="Search Asset"  Onkeydown="if (event.keyCode == 13) document.getElementById('btsearchMarketingAsset').click()" id="txtMarketingSearchTerm" name="txtVASearchTerm">
+									  <span class="input-group-btn">
+										<button id="btsearchMarketingAsset" type="button" class="btn blue" onClick="searchMarketingAsset()" data-loading-text="Loading..." ><i class="search-icon-white"></i> Find</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>Asset Name</th>
+										  <th>Type</th>
+										  <th>Duration</th>
+										  <th>Size</th>
+										  <th>Version</th>
+										  <th>Description</th>
+										  <th>Preview</th>
+									   </tr>
+									</thead>
+									<tbody height="100" id="lstMarketingAssetBody">
+									   
+									</tbody>
+								</table>
+							</div>
+					   </div>
+					</div>
+					#* END GRID TABLE *#
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" id="btAcceptVAAsset" onClick="acceptMarketingDialogBox ()">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelMarketingSearchAsset ()" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END ASSET VIDEO SEARCH *#
+			
+			#* BEGIN MARKETING ASSET VIDEO SEARCH *#
+			<div class="modal fade" id="searchVideoAssetModal" tabindex="-1" role="dialog" aria-labelledby="asset-v-search-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onClick="cancelVideoSearchUpload()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="asset-v-search-label">Find Video Streaming Asset and Attach to Course</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* BEGIN GRID TABLE *#
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" class="form-control" Onkeydown="if (event.keyCode == 13) document.getElementById('btsearchVAAsset').click()"  placeholder="Search Asset" id="txtVideoSearchTerm" name="txtVideoSearchTerm" required data-msg-required="Please enter asset name here.">
+									  <span class="input-group-btn">
+										<button id="btsearchVAAsset" type="button" class="btn blue" onClick="searchVAAsset()" data-loading-text="Loading..." ><i class="search-icon-white"></i> Find</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>Asset Name</th>
+										  <th>Type</th>
+										  <th>Duration</th>
+										  <th>Size</th>
+										  <th>Version</th>
+										  <th>Description</th>
+										  <th>Preview</th>
+									   </tr>
+									</thead>
+									<tbody height="100" id="lstVideoBody">
+									   
+									</tbody>
+								</table>
+							</div>
+					   </div>
+					</div>
+					#* END GRID TABLE *#
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" id="btAcceptVAAsset" onClick="acceptMarketingVideoDialogBox () ">Accept</button>
+					<button type="button" class="btn btn-default" onClick="cancelVideoSearchUpload ()" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			 
+			</div>
+			#* END MARKETING ASSET VIDEO SEARCH *#
+			
+			#* Begin Marketing Video Demo Add*#
+			
+				<div class="modal fade in" id="addVideoDemoModal" tabindex="-1" role="dialog" aria-labelledby="upload-a-asset-label" aria-hidden="true">
+			<form action="uploadVisualDemoAsset" method="Post" id="frmUploadVideoDemoAsset" >
+				<input type="hidden" id="slideIdForAsset_video" name="slideIdForAsset_video">
+				<input type="hidden" id="courseIdForAsset_video" name="courseIdForAsset_video">
+			
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onClick="cancelVideoUpload()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="upload-a-asset-label">Upload Video Streaming Asset and Attach to Course</h3>
+				  </div>
+				  <div class="modal-body">
+					#* BEGIN FORM *#
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.asset-name')>Asset Name</span><span class="required">*</span></label>
+							  <div class="col-md-6">
+								<input type="text"  name="videoDemoAssetName" id="videoDemoAssetName" class="form-control" placeholder="Enter asset name." >
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.keywords')>Keywords</span></label>
+							  <div class="col-md-6">
+								<input type="text"  name="videoAssetKeywords" id="videoAssetKeywords" class="form-control" data-role="tagsinput" placeholder="Enter keywords." style="display: none;">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.description')>Description</span></label>
+							  <div class="col-md-6">
+								 <textarea class="form-control" rows="3" name="videoAssetDescription" id="videoAssetDescription"></textarea>
+							  </div>
+						   </div>
+						   <div class="form-group temp-icons">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.asset-type')>Asset Type</span></label>
+							  <div class="col-md-6">
+								<label class="temp-label gray-text">Video Clip (MP4) - <small>Standard SD (4:3) (640 x 480 max)</small></label>
+									
+
+								</select>
+								 
+							  </div>
+						   </div>
+						   <div class="form-group">
+							 <label class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('sva.file-path')>File Path</span><span class="required">*</span></label>
+							  
+							  <div class="col-md-6 visualFileUploadArea">
+							<div id="videoDemoUploader" class="upload-360" data-uploader-loc="$!uploaderLocation" data-ext="mp4" data-file-handler="fms" width="100%" data-onupload-init="disableAssetSubmission(this,'#btnSubmitVideoDemoForm')" data-onupload-reset="disableAssetSubmission(this,'#btnSubmitVideoDemoForm')" data-onupload-start="disableAssetSubmission(this,'#btnSubmitVideoDemoForm')" data-onupload-done="enableAssetSubmission(this,'#btnSubmitVideoDemoForm')" >
+									<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+										<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+										<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+									</button>
+									<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+										<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+									</button>
+									<span style="display:block"></span>
+									<span id="filePreview" class="file-preview"></span>
+									<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+									<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+									<input id="videoFilePath" name="videoFilePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="mp4" data-msg-extension="File does not match the selected asset type."></span>
+							  </div>
+							  </div>
+						   </div>
+						   
+						</div>
+					</div>
+					#* END FORM *#
+				  </div>
+				  <div class="modal-footer">
+					<input type="button" value="Accept"	id="btnSubmitVideoDemoForm" onClick="saveVideo(); return false;" class="btn blue">
+					<button type="button" class="btn btn-default" onClick="cancelVideoUpload()" data-dismiss="modal">Cancel</button>
+					
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+
+			#* End Marketing Video Demo Add*#
+	
+			#* BEGIN ASSET AUTHOR IMAGE UPLOAD *#
+
+			#* BEGIN TEMPLATE SELECT *#
+			<div class="modal fade" id="selectTemplateModal" tabindex="-1" role="dialog" aria-labelledby="temp-select-label" aria-hidden="true">
+			  <form action="updateTemplateType" method="Post" id="updateTemplateType" >
+			  <input type="hidden" id="hidTemplateIdForSetupFormSelection" name="hidTemplateIdForSetupFormSelection" />
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="temp-select-label">Select Template</h3>
+				  </div>
+				  <div class="modal-body">
+					<div class='col-md-8 temp-icons'>
+						<div>
+							<h5>Presentation Templates</h5>
+							<a class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_Visual_Left_ID)"><i id="" class="temp-icon-0"></i></a>
+							<a class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_Visual_Right_ID)"><i id="" class="temp-icon-1"></i></a>
+							<a class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_Visual_Top_ID)"><i id="" class="temp-icon-2"></i></a>
+							<a class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_Visual_Bottom_ID)"><i id="" class="temp-icon-3"></i></a>
+							<a class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_Visual_Streaming_Center_ID)"><i id="" class="temp-icon-10"></i></a>
+						</div>
+						<br />
+						<div id="ActivityTemplate">
+							<h5>Activity Templates</h5>
+							<a id="Template_MC_Template_A" class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_MC_Template_ID)"><i class="temp-icon-11"></i></a>
+							<a id="Template_DND_Matching_Template_A" class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_DND_Matching_Template_ID)"><i class="temp-icon-14"></i></a>
+							<a id="Template_DND_Image_Template_A" class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_DND_Image_Template_ID)"><i class="temp-icon-25"></i></a>
+							<a id="Template_DND_Category_Template_A" class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_DND_Category_Template_ID)"><i class="temp-icon-15"></i></a>
+							<a id="Template_CharColumn_Template_A" class="btn btn-default" href="javascript:;" onClick="onTemplatesSelectionClick(Template_CharColumn_Template_ID)"><i class="temp-icon-13"></i></a>
+						</div>
+						<br />
+					</div>
+				<div class="col-md-4 temp-desc">
+						<h3><span id="temp_desc_area_TopLabel">Visual Left Template</span></h3>
+						<div><img id="temp_desc_area_img" src="theme/executive/img/icons/templates/IconVisualLeftTemplate2.png"></div>
+						<p id="temp_desc_area_TopDesc">This template puts a single visual component, such as a picture (JPG, GIF, PNG) or animation (SWF) on the left, and text on the right.</p>
+					</div>
+					<div class='clearfix'></div>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" id="btnUpdateSelectedSlideTemplate" onClick="updateSelectedSlideTemplate(this); return false;" class="btn blue" >Accept</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>					
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+			#* END TEMPLATE SELECT *#
+			
+			#* BEGIN ASSET AUDIO SEARCH *#
+			<div class="modal fade" id="searchAAssetModal" tabindex="-1" role="dialog" aria-labelledby="asset-a-search-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onclick="cancelAudioAssetSearch ()"><span aria-hidden="true" >&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="asset-a-search-label">Find Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* BEGIN GRID TABLE *#
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" id="txtAudioAssetSearchTerm"  Onkeydown="if (event.keyCode == 13) document.getElementById('searchAudioAssets').click()" class="form-control"  placeholder="Search Asset">
+									  <span class="input-group-btn">
+										<button type="submit" onClick="searchAudioAssets ()" id="searchAudioAssets"  data-loading-text="Loading..." class="btn blue"><i class="search-icon-white"></i> Find</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>Asset Name</th>
+										  <th>Type</th>
+										  <th>Duration</th>
+										  <th>Size</th>
+										  <th>Version</th>
+										  <th>Description</th>
+										  <th>Preview</th>
+									   </tr>
+									   <tr id='audioAssetRow' style='display:none'>
+										  <td id="rowid"><input type="radio" name='audioVal' value='1'/></td>
+										  <td id="name">Asset Name A</td>
+										  <td id="type">MP3</td>
+										  <td id="duration">00:00:20</td>
+										  <td id="size">N/A</td>
+										  <td id="version">1</td>
+										  <td id="description"></td>
+										  <td id="link"></td>
+									   </tr>
+									</thead>
+									<tbody id="lstAudioAsset" height="100">
+									</tbody>
+								</table>
+							</div>
+					   </div>
+					</div>
+					#* END GRID TABLE *#
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" onClick="acceptDialogBox ('audio')" id="id_acceptAudioAssetSearch" class="btn blue">Accept</button>
+					<button type="button" onClick="cancelAudioAssetSearch ()"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END ASSET AUDIO SEARCH *#
+			
+			#* BEGIN ASSET SEARCH *#
+			<div class="modal fade" id="searchAssetModal" tabindex="-1" role="dialog" aria-labelledby="asset-search-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" onClick="cancelAssetSearch ()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="asset-search-label">Find Asset and Attach to Slide</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* BEGIN GRID TABLE *#
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" id="visualAssetSearchTerm" name="visualAssetSearchTerm"   Onkeydown="if (event.keyCode == 13) document.getElementById('searchAssets').click()"  class="form-control"  placeholder="Search Visual Asset">
+									  <span class="input-group-btn">
+									<button type="button" onClick= "searchAssets(this)" id="searchAssets" data-loading-text="Loading..." class="btn blue"><i class="search-icon-white"></i> Find</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>Asset Name</th>
+										  <th>Type</th>
+										  <th>Dimension</th>
+										  <th>Size</th>
+										  <th>Version</th>
+										  <th>Description</th>
+										  <th>Preview</th>
+									   </tr>
+									   <tr id='assetRow' style='display:none'>
+										  <td id='rowid'><input type="radio" name='g1' value='1'/></td>
+										  <td id='name'>Asset Name A</td>
+										  <td id='type'>Image</td>
+										  <td id='dimension'>250 x 250</td>
+										  <td>N/A</td>
+										  <td id='version'>1</td>
+										  <td id='description'></td>
+										  <td id='image'></td>
+									   </tr>
+									</thead>
+									
+									<tbody id="lstAsset" height="100">
+													   
+									</tbody>
+								</table>
+							</div>
+					   </div>
+					</div>
+					#* END GRID TABLE *#
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" onClick="acceptDialogBox ('visual')" id ="id_acceptAssetSearch" class="btn blue">Accept</button>
+					<button type="button" onClick="cancelAssetSearch ()" id ="id_cancelAssetSearch" class="btn btn-default" data-dismiss="modal">Cancel</button>		
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END ASSET SEARCH *#
+			
+			#* BEGIN ADD EXAM *#
+			<div class="modal fade" id="addExamModal" tabindex="-1" role="dialog" aria-labelledby="add-exam-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-exam-label"><i class="glyphicon glyphicon-file inside-icon-exam"></i> Add Final Exam</h3>
+				  </div>
+				  <form class="form-horizontal" role="form" id="frmAddExamModal">
+				  <div class="modal-body">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.number-of-target-questions-per-exam')">#springMessage('label.number-of-target-questions-per-exam')</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Enter value in numeric" value="60" id="noTargetQuestionsForExam" name="noTargetQuestionsForExam"  disabled>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.randomize-questions')">#springMessage('label.randomize-questions')</label>
+							  <div class="col-md-6">
+								<input type="checkbox" class="form-chkbox" id="chkrandomizeQuestionsForExam" name="chkrandomizeQuestionsForExam" checked="checked">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.random-anwers')">#springMessage('label.randomize-answers')</label>
+							  <div class="col-md-6">
+								<input type="checkbox" class="form-chkbox" value="1" id="chkrandomizeAnswersForExam" name="chkrandomizeAnswersForExam" checked="checked">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.time-permitted-for-exam')">#springMessage('label.time-permitted-for-exam') (#springMessage('label.duration-minutes'))</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Enter value in numeric" id="timePermittedForExam" name="timePermittedForExam" value="60">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.grade-questions')">#springMessage('label.grade-questions')</label>
+							  <div class="col-md-6">
+								<select class="form-control" id="oboGradeQuestionsForExam" name="oboGradeQuestionsForExam">
+									<option value="2">After Exam is submitted</option>
+									<option value="1">After each question is answered</option>									
+								</select>
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.allow-review-after-grading')">#springMessage('label.allow-review-after-grading')</label>
+							  <div class="col-md-6">
+								<input type="checkbox" value="1" id="allowReviewaftGradingForExam" name="allowReviewaftGradingForExam" class="form-chkbox" value="option1" checked="checked">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.score-required-to-pass-exam')">#springMessage('label.score-required-to-pass-exam')</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" id="scoreRequiredPassForExam" name="scoreRequiredPassForExam" placeholder="Enter value in numeric" value="70">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.number-of-attempts-permitted')">#springMessage('label.number-of-attempts-permitted')</label>
+							  <div class="col-md-6">
+								<input type="text" class="form-control" id="attemptsPermittedExam" name="attemptsPermittedExam" placeholder="Enter value in numeric" value="3">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.action-to-take-if-fail-to-pass')">#springMessage('label.action-to-take-if-fail-to-pass')</label>
+							  <div class="col-md-6">
+								<select class="form-control" id="actionOnFailtoPassForExam" name="actionOnFailtoPassForExam">
+									<option value="1">Retake Course</option>
+									<option value="2">Lock Course</option>
+									<option value="3">Continue Course</option>
+								</select>
+							  </div>
+						   </div>
+						</div>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" id="btnExamAdd" class="btn blue" onClick="examAddUpdate(this, true)">#springMessage('button.save')</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">#springMessage('button.cancel')</button>
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+			#* END ADD EXAM *#
+
+			#* BEGIN CONFIRMATION *#
+			<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="confirmation-label">
+						
+						#* Dynamic Title *#
+						
+					</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* Dynamic Message *#
+					
+				  </div>
+				  <div class="modal-footer">
+				  
+					#* Dynamic Action Buttons *#
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END CONFIRMATION *#
+
+    		#* BEGIN IMPORT PPT *#
+    			<div class="modal fade" id="importPPTModal" tabindex="-1" role="dialog" aria-labelledby="import-ppt-label" aria-hidden="true">
+				<form action="uploadPPTFile" method="Post" id="frmPPTImport" >
+				   <input type="hidden" id="browse_id" name="browse_id" value=" #springMessage('button.browse')"/>	
+				   <input type="hidden" id="change_id" name="browse_id" value=" #springMessage('button.change')"/>	
+				  <input type="hidden" id="id" name="id" />
+				  <input type="hidden" id="content_id" name="content_id" />
+    			  <div class="modal-dialog modal-lg">
+    				<div class="modal-content">
+    				  <div class="modal-header">
+    					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    					<h3 class="modal-title" id="import-ppt-label"><i class="icon-upload"></i> Import PowerPoint</h3>
+    				  </div>
+    				  <div class="modal-body">
+    					#* BEGIN FORM *#
+    					<div class="form-horizontal" role="form">
+    						<div class="form-body">
+    						   <div class="form-group temp-icons">
+    							  <label  class="col-md-3 control-label">#springMessage('label.asset-type')</label>
+    							  <div class="col-md-6">
+    								 <label class='temp-label gray-text'>#springMessage('label.document') ( .#springMessage('label.document-type-ppt') / .#springMessage('label.document-type-pptx') )</label>
+    							  </div>
+    						   </div>
+							   <div class="form-group">
+								
+    							    <label  class="col-md-3 control-label">#springMessage('label.file-path')<span class="required">*</span></label>
+									<div id="pptUploader" data-postActivities="slide" data-activity-slide-msg="extracting slides.." class="col-md-6 upload-360" data-uploader-loc="$!uploaderLocation" data-file-handler="ppt" data-ext="ppt,pptx" data-onupload-init="disableAssetSubmission(this,'#btAcceptPPTFile')" data-onupload-reset="disableAssetSubmission(this,'#btAcceptPPTFile')" data-onupload-start="disableAssetSubmission(this,'#btAcceptPPTFile')" data-onupload-done="enableAssetSubmission(this,'#btAcceptPPTFile')" data-onupload-activity = "onPPTSlideExtracted(this,arg)" >
+										<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+											<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+											<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+										</button>
+										<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+											<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+										</button>
+										<span style="display:block"></span>
+										<span id="filePreview" class="file-preview"></span>
+										<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+										<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+										<input id="slides" name="slides" type="hidden" class="upload-request"></input>
+										<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." ></span>
+								   </div>
+    						   </div>
+    						</div>
+    					</div>
+    					#* END FORM *#
+    				  </div>
+    				  <div class="modal-footer">
+    					<button id = "btAcceptPPTFile" type="button" onClick="uploadPPT (this.form)" class="btn blue">#springMessage('button.accept')</button>
+    					<button type="button" onClick="CancelUploadPPT (this.form)"  class="btn btn-default" data-dismiss="modal">#springMessage('button.cancel')</button>
+    				  </div>
+    				</div>
+    			  </div>
+				  </form>
+    			</div>
+    			#* END IMPORT PPT *#			
+		</div>
+		<script>
+			var jwpAddVideoSlidePreview = null;
+			
+			function disbaledRemoveFromSaveButtonOnUploadVideoSection(uploader,submitSelector){
+				var submitBtn = $(uploader).closest('form').find(submitSelector);
+				submitBtn.removeAttr('disabled');
+				submitBtn.addClass('blue');
+				submitBtn.removeClass('btn-default');
+				
+			}
+						
+			function onVideoUploadDone(uploader,submitSelector) {
+				enableAssetSubmission(uploader,submitSelector);
+				$(uploader).find('#btnRemoveVideo').removeAttr('disabled');
+				$(uploader).find("#addVideoSlidPreview").removeClass("hide");
+				$(uploader).find('#dropPreview').addClass('hide');
+				if(jwplayer) {
+					jwpAddVideoSlidePreview = jwplayer($(uploader).find("#addVideoSlidPreview")[0]);
+					var folderPath = "$!{lcmsProperties.getLCMSProperty('lcms.preview.streaming')}";
+					jwpAddVideoSlidePreview.setup({
+						file: folderPath + $(uploader).find("#filePath").val(),
+						width :"100%"
+					});
+				}
+				
+			}
+			
+			function onVideoDraggingActive(target) {
+				var uploader = $(target).closest(".upload-360")[0];
+				if($(uploader).find("#addVideoSlidPreview").is(':visible')) {
+					$(uploader).find('#dropPreview').removeClass('hide');	
+				}
+			}
+			
+			function onVideoDraggingInactive(target) {
+				var uploader = $(target).closest(".upload-360")[0];
+				if($(uploader).find("#addVideoSlidPreview").is(':visible')) {
+					$(uploader).find('#dropPreview').addClass('hide');	
+				}
+			}
+			
+			function removeTempVideo(target,noConfirmation) {
+				var action = function(){
+					var uploader = $(target).closest(".upload-360")[0];
+					$(uploader).uploader360().reset();
+				};
+				
+				if(noConfirmation) {
+					action();
+					return;
+				}
+				
+				var trgModal = $("#confirmationModal");
+				var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
+				var msg = '<p>This action will remove the Streaming asset from this template. Do you want to continue?</p>';		
+				var btns = '<button id="btnYes" type="button" class="btn blue" data-dismiss="modal">YES</button>'+
+				'<button type="button" class="btn btn-default"  data-dismiss="modal">NO</button>';
+				
+				trgModal.find(".modal-title").html(title);
+				trgModal.find(".modal-body").html(msg);
+				trgModal.find(".modal-footer").html(btns);
+				trgModal.modal('show');
+				trgModal.find('#btnYes').click(action);
+	
+			}
+			
+			function removeExcel(target,noConfirmation) {
+				var action = function(){
+					var uploader = $(target).closest(".upload-360")[0];
+					$(uploader).uploader360().reset();
+				};
+				
+				if(noConfirmation) {
+					action();
+					return;
+				}
+				
+				var trgModal = $("#confirmationModal");
+				var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
+				var msg = '<p>This action will remove excel file from this template. Do you want to continue?</p>';		
+				var btns = '<button id="btnYes" type="button" class="btn blue" data-dismiss="modal">YES</button>'+
+				'<button type="button" class="btn btn-default"  data-dismiss="modal">NO</button>';
+				
+				trgModal.find(".modal-title").html(title);
+				trgModal.find(".modal-body").html(msg);
+				trgModal.find(".modal-footer").html(btns);
+				trgModal.modal('show');
+				trgModal.find('#btnYes').click(action);
+				$(target).find('#dropPreview').addClass('hide');
+	
+			}
+			function enableAssetSubmission(uploader,submitSelector) {
+				
+				
+				var submitBtn = $(uploader).closest('form').find(submitSelector);
+				submitBtn.removeAttr('disabled');
+				submitBtn.addClass('blue');
+				submitBtn.removeClass('btn-default');
+				$(uploader).find('#btnRemoveVideo').removeAttr('disabled');
+				$(uploader).closest('form').find("#dropPreview").addClass('hide');
+				
+			}
+			
+			function enableExcelFileSubmission(uploader,submitSelector) {
+				
+				var submitBtn = $(uploader).closest('form').find(submitSelector);
+				submitBtn.removeAttr('disabled');
+				submitBtn.addClass('blue');
+				submitBtn.removeClass('btn-default');
+				$(uploader).find('#btnRemoveVideo').removeAttr('disabled');
+				$(uploader).find('.drop-area').addClass('hide');
+			}
+
+			function disableAssetSubmission(uploader,submitSelector) {
+				
+				$(uploader).find('#btnRemoveVideo').attr('disabled','true');
+				$(uploader).find('#dropPreview').removeClass('hide');
+				$(uploader).find("#addVideoSlidPreview").addClass("hide");
+				if(jwpAddVideoSlidePreview) {
+					jwpAddVideoSlidePreview.stop();
+				}
+							
+				addDisabledOnSaveButton(uploader,submitSelector);
+				
+			}
+			function addDisabledOnSaveButton(uploader,submitSelector){
+					var submitBtn = $(uploader).closest('form').find(submitSelector);
+					submitBtn.attr('disabled','true');
+					submitBtn.removeClass('blue');
+					submitBtn.addClass('btn-default');
+			
+			}
+		</script>
+		#* END MODALS *#

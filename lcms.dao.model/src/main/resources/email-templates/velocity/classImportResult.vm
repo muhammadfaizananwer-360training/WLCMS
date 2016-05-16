@@ -1,0 +1,29 @@
+#parse("common/etHeaderWithGreet.vm")
+#if($errors.isEmpty())
+<p>#springMessage('classroomImportPage-mailTemplate-successMessage')</p>
+#else
+<p>#springMessage('classroomImportPage-mailTemplate-errorMessage')</p>
+<table border="1" cellspacing="0" cellpadding="3" >
+    <thead>
+        <tr>
+            <th width="1">#</th>
+            <th data-field="tableName">#springMessage('classroomImportPage.column.sheetName')</th>
+            <th width="1" data-field="rowNum">#springMessage('classroomImportPage.column.rowNum')</th>
+            <th data-field="columnName">#springMessage('classroomImportPage.column.column')</th>
+            <th data-field="message">#springMessage('classroomImportPage.column.error')</th>
+        </tr>
+    </thead>
+    <tbody>
+        #foreach($error in $errors )
+        <tr>
+            <td>$foreach.count</td>
+            <td>$error.tableName</td>
+            <td>$error.rowNum</td>
+            <td>$error.columnName</td>
+            <td style="color:red;">#parseMessage($error.message)</td>
+        </tr>
+        #end
+    </tbody>
+</table>
+#end
+#parse("common/etFooterWithSignature.vm")

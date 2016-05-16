@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<toolbox>
+	<tool>
+		<key>date</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.DateTool</class>
+		<parameter name="format" value="MM/dd/yyyy" />
+	</tool>
+	
+	<tool>
+		<key>time</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.DateTool</class>
+		<parameter name="format" value="hh:mm a" />
+	</tool>
+	
+	<tool>
+		<key>datetime</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.DateTool</class>
+		<parameter name="format" value="MM/dd/yyyy hh:mm a" />
+	</tool>
+
+	<tool>
+		<key>lcmsProperties</key>
+		<scope>application</scope>
+		<class>com.softech.ls360.lcms.contentbuilder.utils.LCMSProperties
+		</class>
+	</tool>
+
+	<tool>
+		<key>converter</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.ConversionTool</class>
+	</tool>
+	<tool>
+		<key>number</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.NumberTool</class>
+		<parameter name="format" value="#00" />
+	</tool>
+	<tool>
+		<key>math</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.MathTool</class>
+	</tool>
+	<tool>
+		<key>sorter</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.SortTool</class>
+	</tool>
+	<!-- <tool> <key>exceptionTool</key> <scope>application</scope> <class>com.softech.vu360.lms.exception.ExceptionTool</class> 
+		</tool> -->
+	<tool>
+		<key>stringUtil</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.util.StringUtils</class>
+	</tool>
+	<!-- <tool> <key>pager</key> <scope>request</scope> <class>com.softech.vu360.lms.util.VelocityPagerTool</class> 
+		</tool> <tool> <key>link</key> <scope>request</scope> <class>org.apache.velocity.tools.view.tools.LinkTool</class> 
+		</tool> -->
+	<tool>
+		<key>mill</key>
+		<scope>request</scope>
+		<class>org.apache.velocity.tools.generic.IteratorTool</class>
+	</tool>
+	<!-- <tool> <key>null</key> <scope>request</scope> <class>com.softech.vu360.lms.util.NullTool</class> 
+		</tool> -->
+	<tool>
+		<key>escapeTool</key>
+		<class>org.apache.commons.lang.StringEscapeUtils</class>
+	</tool>
+	<tool>
+		<scope>request</scope>
+		<class>org.apache.velocity.tools.view.PagerTool</class>
+	</tool>
+
+	<toolbox scope="application">
+		<tool class="org.apache.velocity.tools.generic.ConversionTool"
+			dateFormat="yyyy-MM-dd" />
+	</toolbox>
+	<tools>
+		<toolbox scope="application">
+			<tool class="org.apache.velocity.tools.generic.ClassTool"
+				inspect="com.org.Foo" />
+		</toolbox>
+	</tools>
+	<tool>
+		<key>UserFeature</key>
+		<scope>application</scope>
+		<class>com.softech.ls360.lcms.contentbuilder.utils.UserFeature</class>
+	</tool>
+</toolbox>

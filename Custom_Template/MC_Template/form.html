@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Form</title>
+
+<script src="data/dbString.js" language="javascript" type="text/javascript"></script>
+<script src="js/jquery-1.7.2.js" language="javascript" type="text/javascript"></script> 
+<script src="js/jquery.min.js" language="javascript" type="text/javascript"></script> 
+<script src="js/BrowserDetect.js" language="javascript" type="text/javascript"></script> 
+<script src="js/dataBank.js" language="javascript" type="text/javascript"></script> 
+<script src="js/form/XMLParser.js" language="javascript" type="text/javascript"></script> 
+<script src="js/form/tableRow.js" language="javascript" type="text/javascript"></script> 
+<script src="js/form/IB_Form.js" language="javascript" type="text/javascript"></script>
+<script src="js/form/validation.js" language="javascript" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+
+// ********************************************	XML Transformation into XSL
+var objXMLDoc;
+
+function populateXml(){
+
+	$(document).ready(function() {
+	
+		// =======================================================
+		//	Get XML and Transform
+		// =======================================================
+
+		if(document.getElementById('txtXml').value != "undefined" && document.getElementById('txtXml').value != null && document.getElementById('txtXml').value != ""){
+			//document.getElementById('txtXml').value = xmlSampleData;
+			xmlSampleData = document.getElementById('txtXml').value;
+		}
+
+		objXMLDoc = $.parseXML(xmlSampleData);
+		xmlData.init("xml/IB.xsl",getBackXSL);
+
+		//alert(xmlSampleData);
+	});
+}
+
+function getBackXSL (xsl){
+	if(BrowserDetect.browser == 'Explorer'){
+		document.getElementById("inputform").innerHTML = objXMLDoc.transformNode(xsl);
+	}else{
+		var xsltProcessor = new XSLTProcessor();
+		var xmls = new XMLSerializer();
+		xsltProcessor.importStylesheet(xsl);
+		var xmlDoc2 = xsltProcessor.transformToDocument(objXMLDoc);
+		document.getElementById("inputform").innerHTML = xmls.serializeToString(xmlDoc2);
+	}
+	makeColapsePanel();
+}
+
+function DetectKeyDown(evt){
+	
+	// =======================================================
+	//	Detect keys onkeyDown Event
+	// =======================================================
+	
+	if (evt !=null){
+		
+		var charCode = (evt.which) ? evt.which : event.keyCode;
+		
+		if (charCode != null){
+			
+			switch (String(charCode)){
+			   case "9":
+			   break;
+			   case "16":
+			   break;
+			   case "17":
+			   break;
+			   case "18":
+			   break;
+			   
+			   default:
+			   
+				// =======================================================================
+				//	Run FormModified function except on press of Shift, Alt, Ctrl and Tab
+				// =======================================================================
+
+				 FormModified();	 	
+			}
+		}
+	}
+}
+
+var _IsForModified = false;
+
+function FormModified(){
+	
+	if (window.external != null && _IsForModified == false){
+		_IsForModified = true;
+		window.external.OnTemplateModified();
+		//alert("FormModified");
+	}
+}
+</script>
+
+<link href="css/IB_Form.css" rel="stylesheet" type="text/css"></link>
+</head>
+<body>
+	<div id="loader"></div>
+    <div id="inputform"></div>
+    <input style="display:none;" type="text" id="txtXml" value=""/>
+    <div>
+      <button style="display:none;" id="btnGet" onclick="setXml(objXMLDoc,'gridTbl')">btnGet</button>
+    </div>
+    <div>
+      <button style="display:none;" id="btnSet" onclick="populateXml()">btnSet</button>
+    </div>
+</body>
+<script src="js/test.js" language="javascript" type="text/javascript"></script>
+</html>

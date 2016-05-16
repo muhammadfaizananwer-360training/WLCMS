@@ -1,0 +1,8 @@
+    #set($currentLocale = $request.getParameter("lang"))
+    #if($request && ($currentLocale == 'en_US' || $currentLocale == 'en_GB'))
+    	#set($currentLocale ="_"+$request.getParameter("lang"))
+    #else
+    	#set($currentLocale = "_en_US")
+    #end
+    
+    <script src="javascript/vm_js/branding${currentLocale}.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>

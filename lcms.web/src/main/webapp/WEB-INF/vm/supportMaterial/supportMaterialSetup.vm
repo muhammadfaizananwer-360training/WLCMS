@@ -1,0 +1,63 @@
+<div class="panel-body" id="supportMaterialSetup" style="display:none">
+												
+	#* BEGIN SUPPORT MATERIAL FORM *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div class="caption">
+			Support Material
+		 </div>
+		 <div class="tools">
+			
+		 </div>
+	  </div>
+	  <div class="portlet-body">
+	
+		#* BEGIN FORM *#
+		<div class="form-horizontal">
+			<div class="form-body">
+			   <div class="form-group">
+				  <label class="col-md-3 control-label">Asset Name</label>
+				  <div class="col-md-6">
+					<input type="text"  id="audioAssetName"  name="audioAssetName" disabled="disabled" value="Support Material 1" placeholder="Enter asset name." class="form-control">
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label class="col-md-3 control-label">Keywords</label>
+				  <div class="col-md-6">
+					<div class="bootstrap-tagsinput" id="smKeywords">
+					</div>
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label class="col-md-3 control-label">Description</label>
+				  <div class="col-md-6">
+					 <textarea disabled="disabled" rows="3"  id="audioAssetDescription"  name="audioAssetDescription" class="form-control">Fake description.</textarea>
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label class="col-md-3 control-label">File Name</label>
+				  <div class="col-md-6">
+					 <input type="text"  id="supportMatFileName" name="supportMatFileName" class="form-control" value="" disabled="disabled">
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label class="col-md-3 control-label">File Path</label>
+				  <div class="col-md-6">
+					<a class="btn blue" id="supportMatFilePath" id="supportMatFilePath" target="_blank" href="#">Download</a>
+				  </div>
+			   </div>
+			</div>
+		</div>
+		#* END FORM *#
+			
+	  </div>
+	</div>
+	#* END SUPPORT MATERIAL FORM *#
+	
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a  id="suppMatSetupfooter" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#mat_lesson_1" href="#mat_lesson_1_setup">CLOSE SUPPORT MATERIAL</a>
+	</div>
+	#* END CLOSE BUTTON *#
+
+  </div>

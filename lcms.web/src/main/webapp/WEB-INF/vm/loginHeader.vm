@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WLCMS</title>
+    
+	#* BEGIN CSS *#
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-3.1.1-dist/css/bootstrap.min.css" />
+
+		#* BEGIN PAGE SPECIFIC CSS *#
+		<link rel="stylesheet" type="text/css" href="theme/executive/plugins/aciTree/css/aciTree.css" />
+		<link rel="stylesheet" type="text/css" href='theme/executive/plugins/toggle-switch-master/css/toggleswitch.css' />
+		<link rel="stylesheet" type="text/css" href="theme/executive/plugins/data-tables/DT_bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />		
+		#* END PAGE SPECIFIC CSS *#
+	
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/plugins.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style-metronic.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/custom.css" />
+    <link rel="shortcut icon" href="theme/executive/img/icons/favicon.ico" />
+    #* END CSS *#
+
+		
+	<script type="text/javascript" src="theme/executive/plugins/jquery.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+	
+   
+ 
+	
+    <script type='text/javascript' src="theme/executive/scripts/core.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    
+</head>
+	
+<body>
+	<div id="loader-overlay">Loading...</div>
+	<div id="bg-loader"></div>
+	<input type="hidden" id="navigatingLink" />
+	<input type="hidden" id="currentFormName" />	
+    <div class="wrapper">
+	#* BEGIN CONFIRMATION MODAL*#
+			<div class="modal fade" id="confimrationModal" tabindex="-1" role="dialog" aria-labelledby="add-exam-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h3 class="modal-title" id="add-exam-label"><i class="glyphicon glyphicon-file inside-icon-exam"></i> Confirmation</h3>
+				  </div>
+				  <div class="modal-body">
+				  Please Confirm. It looks like you have unsaved work on this page. Would you like to save the work before continuing?
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" data-dismiss="modal">Yes</button>
+					<button type="button" class="btn btn-default" onclick="navigateToURL();" >No</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+	#* END CONFIRMATION MODAL *#
+		    
+        #* Header Begin *#
+         <div class="header-content">
+            #* Top Bar Begin *#
+            <div class="push-down">
+                <div class="container-fluid">
+                    <div class="pull-left logo" onclick="window.open('../lcms/courseType','_self')" style="cursor:pointer"  ></div>
+                    <ul class="top-right-nav" >
+                        <li class="nav-ph">888-360-8764</li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="j_spring_security_logout" id="lnkLogin">Log In</a>
+							<a href="j_spring_security_logout" id="lnkLogout">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            #* Top Bar End *#
+            
+            #* Navigation Bar Begin *#
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+				
+                  #* Brand and toggle get grouped for better mobile display *#
+					<a class="btn btn-lg header-menu" data-toggle="collapse" data-target="#header-navbar-collapse"><i class="icon-reorder"></i></a>
+					
+					<ul class="nav collapse" id="header-navbar-collapse">
+						
+					
+						
+						#* Store *#
+						<li class="dropdown">
+						  <a title="Store" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons store-icon"></div><span>Store</span> <b class="caret"></b></a>
+						  <ul class="dropdown-menu">							
+							<li><a href="http://www.360training.com/authoring-program/author-starter/">Free Software and Packages</a></li>
+							<li><a href="http://www.360training.com/authoring-program/author-lcms-software/">Course Creation Software and Upgrades</a></li>
+							<li><a href="http://www.360training.com/authoring-program/author-lms-software">Learning Management Software and Upgrades</a></li>
+							<li><a href="http://www.360training.com/authoring-program/author-storefront-software">Store Software and Upgrades</a></li>
+						  </ul>
+						</li>
+						
+						#* Community *#
+						<li class="dropdown">
+						  <a title="Community" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons community-icon"></div><span>Community</span> <b class="caret"></b></a>
+						  <ul class="dropdown-menu">
+							<li class="dropdown-cat">FAQs</li>
+							<li><a href="http://www.360training.com/authoring-program/faq-software-terms/">Software Purchases and Terms</a></li>
+							<li><a href="http://www.360training.com/authoring-program/tools/">More About Tools</a></li>
+							<li><a href="http://www.360training.com/authoring-program/faq-360-author/">Life as a 360 Author</a></li>
+							<li><a href="http://www.360training.com/authoring-program/faq-storefront/">Managing Your Own Storefront</a></li>
+
+
+							<li class="dropdown-cat">Community</li>
+							<li><a href="http://www.360training.com/authoring-program/whats-new/">What�s New</a></li>
+							<li><a href="http://www.360training.com/authoring-program/author-blog/">Blogs</a></li>
+							<li><a href="https://www.facebook.com/pages/360trainingcom-Authoring/378754678842234">Facebook</a></li>
+							<li><a href="http://www.360training.com/authoring-program/author-showcase/">Showcase</a></li>
+							<li><a href="http://www.360training.com/authoring-program/author-opportunities/">Opportunities</a></li>
+						  </ul>
+						</li>					
+					</ul>
+                </div>
+            </nav>
+            #* Navigation Bar End *#
+        </div>
+        #* Header End *#
+        
+        <div class="messages" id="TopMsgBarDiv" ></div>
+        #* Main Content Begin *#
+        <div class="main-content">
+		
+		<script type="text/javascript">
+		$( document ).ready(function() {
+			var currentLocation  = $(location).attr('pathname');	
+			if (currentLocation.indexOf("RatingCourseSearch") >= 0 || currentLocation.indexOf("royaltySettings") >= 0 || currentLocation.indexOf("userPermissionSettings") >= 0)
+				$("#lnkLogin").hide();
+			else
+				$("#lnkLogout").hide();			
+		});
+		</script>

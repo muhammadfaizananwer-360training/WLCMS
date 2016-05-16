@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+##	BEGIN CSS
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-3.1.1-dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/iosOverlay-js/css/iosOverlay.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch.css" />
+##	BEGIN PAGE SPECIFIC CSS
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/data-tables/DT_bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/data-tables/buttons.dataTables.min.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/threesixty/styles.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/plugins/datepicker/css/datepicker.css" />
+##	END PAGE SPECIFIC CSS
+
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/plugins.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style-metronic.css" />
+    <link rel="stylesheet" type="text/css" href="theme/executive/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="theme/executive/css/custom.css" />
+    <link rel="shortcut icon" href="theme/executive/img/icons/favicon.ico" />
+##  END CSS
+
+	<script type="text/javascript" src="theme/executive/plugins/jquery.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    <script type="text/javascript" src="theme/executive/plugins/html5shiv.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    <script type="text/javascript" src="theme/executive/plugins/respond.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    <script type="text/javascript" src="theme/executive/scripts/common.util.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/datepicker/js/bootstrap-datepicker.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type='text/javascript' src="theme/executive/scripts/countries.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="javascript/vm_js/constants.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/bootstrap-switch/static/js/bootstrap-switch.js"></script>
+</head>
+	<script>		
+       function changeRole(type){
+	       	var serviceParam = "$!{lcmsProperties.getLCMSProperty('lms.BaseUrl')}/login.do?to=";
+	       	$("#service").val(serviceParam + type);
+	       	var form =  $("#roleForm");
+	       	form.submit();
+       }
+
+       function getUserProfile(){
+    		window.location = "getProfile?redirectPageTo=" + window.location.href;
+       }
+	</script>
+<body>
+<div id="bg-loader"></div>
+<form name="roleForm" id="roleForm" action="$!{lcmsProperties.getLCMSProperty('lcms.cas.BaseUrl')}/login" method="post">
+	<input type="hidden" id="auto" name="auto" value="true">
+	<input type="hidden" id="service" name="service" value="">
+</form>
+
+	<input type="hidden" id="navigatingLink" />
+	<input type="hidden" id="currentFormName" />	
+    <div class="wrapper">
+##	BEGIN CONFIRMATION MODAL
+			<div class="modal fade" id="confimrationModal" tabindex="-1" role="dialog" aria-labelledby="add-exam-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h3 class="modal-title" id="add-exam-label"><i class="glyphicon glyphicon-file inside-icon-exam"></i> #springMessage('label.confirmation')</h3>
+				  </div>
+				  <div class="modal-body">
+				  #springMessage('label.confirmation-warning')
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" data-dismiss="modal">#springMessage('label.yes')</button>
+					<button type="button" class="btn btn-default" onclick="navigateToURL();" >#springMessage('label.no')</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+##	END CONFIRMATION MODAL
+
+##		Header Begin
+        <div class="header-content">
+##          Top Bar Begin
+            <div>
+                <div class="container-fluid">
+                    <div class="pull-left logo"  onclick="checkForFormChanged('http://www.360training.com/authoring-program/');"  style="cursor:pointer"></div>
+                    <ul class="top-right-nav">
+                        <li class="nav-ph">888-360-8764</li>
+                        <li class="divider"></li>
+                        <li>
+							<div class="btn-group db-box-2">
+								<div class="pull-left mode-label">Author</div>
+								#if($vu360User.userProfileURL)
+									<img id="headerProfileImage" name="headerProfileImage" style="   border: 1px solid #ccc; width: 33.5px;  height: 33.5px;float: left;" src='$!{vu360User.userProfileURL}' />
+								#else
+									<i class="pull-left lady-icon dp"></i>
+								#end
+								<button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+									<span class="caret"></span>
+								</button>
+								<ul role="menu" class="dropdown-menu dropdown-menu-right">
+									<li><a href="javascript:void(0);" onclick="getUserProfile()">My Profile</a></li>
+									<li><a href="j_spring_security_logout">Log Out</a></li>
+									<li class="divider"></li>
+									#if($!{veloUserDetailService.isLMSRoleExist("ROLE_LEARNER")})
+									<li><a id="lnr_mode" href="javascript:void(0);" onclick="changeRole('/lrn_myCourses.do')">#springMessage('label.learner')</a></li>
+									#end
+									#if($!{veloUserDetailService.isLMSRoleExist("ROLE_TRAININGADMINISTRATOR")})
+									<li><a id="mgr_mode" href="javascript:void(0);" onclick="changeRole('/mgr_manageLearners.do')">#springMessage('label.manager')</a></li>
+									#end
+									#if($!{veloUserDetailService.isLMSRoleExist("ROLE_INSTRUCTOR")})
+									<li><a id="ins_mode" href="javascript:void(0);" onclick="changeRole('/ins_synchronousClasses.do')">#springMessage('label.instructor')</a></li>
+									#end
+									<li><a id="atr_mode" class="active-mode">Author</a></li>
+									#if($!{veloUserDetailService.isLMSRoleExist("ROLE_REGULATORYANALYST")})
+									<li><a id="acr_mode" href="javascript:void(0);" onclick="changeRole('/acc_search.do')">#springMessage('label.accreditation')</a></li>
+									#end
+									#if($!{veloUserDetailService.isLMSRoleExist("ROLE_LMSADMINISTRATOR")})
+									<li><a id="admin_mode" href="javascript:void(0);" onclick="changeRole('/adm_searchMember.do')">#springMessage('label.administrator')</a></li>
+									#end
+								</ul>
+							</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+##         Top Bar End
+            
+##         Navigation Bar Begin
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+##					Brand and toggle get grouped for better mobile display
+					<a class="btn btn-lg header-menu" data-toggle="collapse" data-target="#header-navbar-collapse"><i class="icon-reorder"></i></a>
+					<ul class="nav collapse" id="header-navbar-collapse">
+##                  Store
+                    <li class="dropdown">
+                      <a title="Store" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons store-icon"></div><span>Store</span> <b class="caret"></b></a>
+                      <ul class="dropdown-menu">						
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-starter/');">#springMessage('label.free-software-and-packages')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-lcms-software/');">#springMessage('label.course-creation-software-and-upgrades')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-lms-software');">#springMessage('label.learning-management-software-and-upgrades')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-storefront-software');">#springMessage('label.store-software-and-upgrades')</a></li>
+                      </ul>
+                    </li>
+
+##                  Create
+                    <li class="dropdown">
+                      <a title="Create" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons create-icon"></div><span>Create</span> <b class="caret"></b></a>
+                      <ul class="dropdown-menu">						
+                        <li class="dropdown-cat">Account-free Courses</li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('createcourse?cType=6');">#springMessage('label.submit-webinar-course')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('createcourse?cType=5');">#springMessage('label.submit-classroom-course')</a></li>
+                        <li class="dropdown-cat">Account-based Courses</li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('createcourse?cType=4');">#springMessage('label.create-an-online-course')</a></li>
+                      </ul>
+                    </li>
+
+##                 	Manage
+
+##					Permission
+
+							<li class="dropdown">
+							  <a title="Store" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons tools-icon"></div><span>Tools</span> <b class="caret"></b></a>
+							  <ul class="dropdown-menu">
+								#if($vu360User.hasFeaturePermission($UserFeature.userPermission))
+									<li><a href="/lcms/userPermissionSettings">#springMessage('author_permission_settings.label.author_permissions')</a></li>
+								#end
+								#if($vu360User.hasFeaturePermission($UserFeature.npsCourseRating))
+									<li><a href="/lcms/RatingCourseSearch">#springMessage('author_permission_settings.label.rating_review')</a></li>
+								#end
+								#if($vu360User.hasFeaturePermission($UserFeature.contentOwnerRoyaltySettings))
+									<li><a href="/lcms/royaltySettings">#springMessage('author_permission_settings.label.royalty_Settings')</a></li>
+								#end
+
+								#if($vu360User.hasFeaturePermission($UserFeature.bulkCourseImportPermssion))
+									<li><a href="/lcms/classroomImportPage">#springMessage('classroomImportPage.menu.name')</a></li>
+								#end
+								
+								#if($vu360User.hasFeaturePermission($UserFeature.viewWLCMSReportPermssion))
+									<li><a href="/lcms/reports">#springMessage('author_permission_settings.label.viewReport')</a></li>
+								#end
+
+									<li><a href="/lcms/videoAssetMgrPage">#springMessage('videoAssetMgrPage.menu.name')</a></li>
+							  </ul>
+							</li>
+
+##                 	Community
+                    <li class="dropdown">
+                      <a title="#springMessage('label.community')" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons community-icon"></div><span>#springMessage('label.community')</span> <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                      	<li class="dropdown-cat">Support</li>
+						<li><a href="javascript:;" onclick="checkForFormChanged('https://player.360training.com/ICP4/CoursePlayerPreviewer.aspx?COURSEID=74692&VARIANT=En-US&BRANDCODE=DEFAULT&PREVIEW=true&SESSION=bd5d5a7d-7fad-4203-b185-72d00247f2af');">#springMessage('label.video-tutorials')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-support/');">#springMessage('label.application-support')</a></li>
+
+                      	<li class="dropdown-cat">FAQs</li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/faq-software-terms/');">#springMessage('label.software-purchases-and-terms')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/tools/');">#springMessage('label.more-about-tools')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/faq-360-author/');">#springMessage('label.life-as-a-360-author')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/faq-storefront/');">#springMessage('label.managing-your-own-storefront')</a></li>
+
+                      	<li class="dropdown-cat">Community</li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/whats-new/');">#springMessage('label.whats-new')</a></li>                        
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-blog/');">#springMessage('label.blogs')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('https://www.facebook.com/pages/360trainingcom-Authoring/378754678842234');">#springMessage('label.facebook')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-showcase/');">#springMessage('label.showcase')</a></li>
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-opportunities/');">#springMessage('label.opportunities')</a></li>
+                      </ul>
+                    </li>
+
+##                  Search
+					<li class="search-box">
+						<form title="Search" class="pull-left" role="search" id="quickSearch" action="#">
+						  <div class="pull-left">
+								<input type="text" name="search_string" id="search_string" class="form-control field" placeholder="#springMessage('label.search-authored-courses')" value="">
+						  </div>
+						  <div class="pull-right"  onclick="window.open('/lcms/searchcourseonline','_self')">
+							<button class="btn btn-default search-btn" type="button" id="searchAction" name="searchAction"><i class="search-icon"></i></button>
+						  </div>
+						</form>
+						<div class="pull-left advance-search"  onclick="window.open('/lcms/searchcourseonline','_self')">
+							<a href="javascript:;" title="Advanced Search"><i></i><span>#springMessage('label.advanced-search')</span></a>
+						</div>
+					</li>
+                  </ul>
+                </div>
+            </nav>
+##          Navigation Bar End
+        </div>
+##      Header End
+<div id="loader-overlay"></div>
+          <div class="messages" id="TopMsgBarDiv" ></div>
+##       Main Content Begin
+        <div class="main-content">
+        

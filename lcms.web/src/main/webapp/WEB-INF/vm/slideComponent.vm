@@ -1,0 +1,490 @@
+<script language="javascript">
+
+var activeEditorForText = null;
+var activeEditorForCC = null;
+function getSlideTextEditor(div, callLoction){
+	
+	 var getSlideIdfortext = div.id.replace('Title_1_','');    
+     var getSlideTextUrl = "/lcms/getSlideTextAgainstSlideId";  
+     var divCloneTxT =  $("div#slide_1_"+ getSlideIdfortext).find("div#SceneTextEditor");	
+	 var divCloneCC = $("div#slide_1_"+ getSlideIdfortext).find("div#SceneCloseCaptionEditor");
+	    // divCloneCC.css("display", "none");	
+
+			if(divCloneTxT.css('display') == 'none')		
+			{
+			
+			
+			  //WLCMS-159 - preserve last element to show confirmation box
+			  activeEditorForText = CKEDITOR.instances["SceneText_" + getSlideIdfortext];
+			
+			 APP.AJAX({
+	    	 		 		url: getSlideTextUrl,
+	         		 		dataType: "text",
+			         		type: "POST",
+	          		 		cache: false,	          		 
+	          		 		data:'varSlideId='+ getSlideIdfortext,
+	          	     		async: false,  
+	         	     		success: function(response)
+                      				 {	         	     
+								             Slidedata = $.parseJSON(response);	
+								                
+								                  		 if(Slidedata.length != 0)
+															{
+						                						//divCloneTxT.find('#SceneText_1_' + getSlideIdfortext).val(Slidedata[0].content);	
+																var editor = CKEDITOR.instances["SceneText_" + getSlideIdfortext];
+																editor.setData (Slidedata[0].content);
+																editor.updateElement();
+																if (Slidedata[0].content != null && Slidedata[0].content.length > 0 ){
+																	$("#SlideText_"+getSlideIdfortext).find("i").addClass("green");
+																}
+															}
+										 				//divCloneTxT.css("display", "block");			 
+						                    			//$("#SlideText a").attr('class','collapse');
+						                    			
+		                			}
+                        });				    
+             	 
+			}			
+			else
+			
+			if(divCloneTxT.css('display') == 'block')				
+			{
+			 
+			 updateSlideTextUrl = "/lcms/updateSlideText";
+			 
+			 var editor = CKEDITOR.instances["SceneText_" + getSlideIdfortext];
+			 var vSceneTextData = editor.getData();
+			  //vSceneTextData = vSceneTextData.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
+			 vSceneTextData = escape(vSceneTextData);
+			
+			if (vSceneTextData != null && vSceneTextData.length > 0 ){
+				$("#SlideText_"+getSlideIdfortext).find("i").addClass("green");
+			}else{
+				$("#SlideText_"+getSlideIdfortext).find("i").removeClass("green"); 
+			}
+			 
+			 APP.AJAX({
+		    	 			url: updateSlideTextUrl,
+		          			dataType: "text",
+				  			type: "POST",
+		          			cache: false,
+		          			data:'varSlideId='+ getSlideIdfortext + '&varTitle='+vSceneTextData  + '&varOrientationKey=Text',
+		         			async: false,  
+		          			success: function(response) 
+		          			           {
+											if(callLoction=="1"){
+												//divCloneTxT.css("display", "none");	
+												
+												$('#successMsg').html("");
+												$('#successMsg').append("<div  class='messages'>"+		
+													"<div role='alert' class='alert alert-success alert-dismissible fade in'>"+
+													"<button data-dismiss='alert' class='close' type='button'><span aria-hidden='true'>&#215;</span><span class='sr-only'>Close</span> </button>"+
+														WLCMS_LOCALIZED.SAVE_MESSAGE+"</div></div>");
+												elementFadeOut("#successMsg");
+												//WLCMS-496
+												activeEditorForText.resetDirty();
+											}	
+											//	$("#SlideText a").attr('class','expand');		          			 
+						               }
+		               });
+		 			  
+			}
+
+}
+
+
+
+function getSlideCloseCaptionEditor(div, callLoction){	
+ 
+         var getSlideIdforCC = div.id.replace('ClosedCaptioning_1_',''); 
+		 var getSlideCloseCaptionUrl = "/lcms/getSlideCloseCaptionAgainstSlideId";
+		 var divCloneCC = $("div#slide_1_"+ getSlideIdforCC).find("div#SceneCloseCaptionEditor");			
+		 var divCloneTxT =  $("div#slide_1_"+ getSlideIdforCC).find("div#SceneTextEditor");	
+		      
+		 //WLCMS-159 - preserve last element to show confirmation box
+		 activeEditorForCC = CKEDITOR.instances["SceneCloseCaption_" + getSlideIdforCC];
+			
+		 
+		  if(divCloneCC.css('display') == 'none')		
+			{
+			         
+			         APP.AJAX({
+	    	 		 url:  getSlideCloseCaptionUrl,
+	         		 dataType: "text",
+			         type: "POST",
+	          		 cache: false,	          		 
+	          		 data:'varSlideId='+ getSlideIdforCC,
+	          	     async: false,  
+	         	     success: function(response) {
+		             Slidedata = $.parseJSON(response);	      
+			 	   
+													if(Slidedata.length != 0)
+														{
+															//divCloneCC.find('#SceneCloseCaption_1_' + getSlideIdforCC).val(Slidedata[0].content);	
+																var editor = CKEDITOR.instances["SceneCloseCaption_" + getSlideIdforCC];
+																editor.setData (Slidedata[0].content);
+																editor.updateElement();
+																
+																if (Slidedata[0].content != null && Slidedata[0].content.length > 0 ){
+																	$("#SlideCloseCaption_"+getSlideIdforCC).find("i").addClass("green");
+																}
+																
+														}
+						
+											 		//divCloneCC.css("display", "block");			 			
+								             		//$("#SlideCloseCaption a").attr('class','collapse');		
+             		                             }
+                                });       		
+			}			
+			else
+			if(divCloneCC.css('display') == 'block')				
+			{
+			
+			updateSlideCloseCaptionUrl = "/lcms/updateSlideCloseCaption";
+			 
+			 var editor = CKEDITOR.instances["SceneCloseCaption_" + getSlideIdforCC];
+			 var vSceneCloseCaptionData = editor.getData();
+			 //vSceneCloseCaptionData = vSceneCloseCaptionData.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
+			 vSceneCloseCaptionData = escape(vSceneCloseCaptionData);
+			 
+			 //WLCMS-194
+			if (vSceneCloseCaptionData != null && vSceneCloseCaptionData.length > 0 ){
+				$("#SlideCloseCaption_"+getSlideIdforCC).find("i").addClass("green");
+			}else{
+				$("#SlideCloseCaption_"+getSlideIdforCC).find("i").removeClass("green"); 
+			}
+			 
+			 APP.AJAX({
+		    	 			url: updateSlideCloseCaptionUrl,
+		          			dataType: "text",
+				  			type: "POST",
+		          			cache: false,
+		          			data:'varSlideId='+ getSlideIdforCC + '&varTitle='+vSceneCloseCaptionData  + '&varOrientationKey=VOText',
+		         			async: false,  
+		          			success: function(response) {	
+									
+									if(callLoction=="1"){
+										//divCloneCC.css("display", "none");	
+										
+										$('#successMsg').html("");
+										$('#successMsg').append("<div  class='messages'>"+		
+											"<div role='alert' class='alert alert-success alert-dismissible fade in'>"+
+											"<button data-dismiss='alert' class='close' type='button'><span aria-hidden='true'>&#215;</span><span class='sr-only'>Close</span> </button>"+
+											WLCMS_LOCALIZED.SAVE_MESSAGE+"</div></div>");
+										elementFadeOut("#successMsg");
+										//WLCMS-496
+										activeEditorForCC.resetDirty();
+									}	
+									//$("#SlideCloseCaption a").attr('class','expand');	
+													 
+						    
+						
+							}
+		              });              
+			  
+			}
+
+}
+
+
+
+</script>
+
+<input type="hidden" id="sceneId" name="sceneId" value="" />
+<input type="hidden" id="isTemplateSlctnFrmForAddOrUpdate" name="isTemplateSlctnFrmForAddOrUpdate" value="" />
+
+
+
+<div class="panel-collapse a2 collapse" id="slideComponent" style="height: auto;">
+  <div class="panel-body">
+	
+	#* BEGIN SLIDE COMPONENTS *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div class="caption">
+			Slide Components
+		 </div>
+		 <div class="tools">
+			
+		 </div>
+	  </div>
+	  <div class="portlet-body form">
+	  
+		<form role="form" class="form-horizontal">
+		
+				#* BEGIN COMPONENTS 1 *#
+			<div class="portlet portlet-btn" >
+			  <div title="Text" class="portlet-title" onclick="getSlideTextEditor(this, '1')">
+				 <div class="caption" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" >
+					<h5><strong>Text</strong></h5>
+				 </div>
+				 <div class="tools" id="SlideText">
+					<i class="text-icon"></i>
+					<a class="collapse" href="javascript:void(0)"></a>
+				 </div>
+			  </div>
+			  <div id = "SceneTextEditor" name = "SceneTextEditor" class="portlet-body" style="display: none;" >
+				<div class="form-body">
+				   <div class="form-group">					 
+						<div class="col-md-offset-2 col-md-8" id="SceneText" >
+						<textarea  name="SceneText" id="SceneText" ></textarea>							     
+					   </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			
+			#* END COMPONENTS 1 *#
+			
+			#* BEGIN COMPONENTS 2 *#
+			<div class="portlet portlet-btn" id="tblVisualAssetTopDiv">
+			  <div title="Visual Asset" class="portlet-title">
+				<div class="caption"  data-trigger="hover" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-html="true"  >
+					<h5><strong>Visual </strong> - 1 asset maximum</h5>
+				</div>
+				<div id="camera-icon" class="tools">
+					<i class="camera-icon"></i>
+					<a class="collapse" id="visualAssetLink" href="javascript:void(0)"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form" style="display: none;" id="tblDivVisualAsset">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						  <div class="table-scrollable">
+							<table class="table table-str-border table-bordered" id="tblVisualAsset">
+							  <thead>
+								<tr class="td-header">
+								  <th colspan="8">
+									<div class="btn-group">
+										<a title="Find Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" href="javascript:;" class="btn btn-default" data-target="#searchAssetModal" data-toggle="modal"><i class="glyphicon glyphicon-new-window"></i></a>										
+										<a title="Upload Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" onClick="cancelVisualAssetUploadForm();" href="javascript:;" class="btn btn-default" data-target="#addVisualAssetModal" data-toggle="modal"><i class="icon-plus blue-text"></i></a>										
+										<a title="Detach Asset" href="javascript:;" data-backdrop="static" data-keyboard="false" class="btn btn-default" onClick="confirmDetachObject (1, this, event)"><i class="icon-minus red-text"></i></a>
+									</div>
+								  </th>
+								</tr>
+								<tr class="td-header-bottom-border">
+								  
+								  <th>Asset Name</th>
+								  <th>Type</th>
+								  <th>Dimension</th>
+								  <th>Size</th>
+								  <th>Version</th>
+								  <th>Description</th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr>
+								 
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 2 *#
+			
+			#* BEGIN COMPONENTS 3 *#
+			<div class="portlet portlet-btn" id="tblAudioAssetTopDiv">
+			  <div title="Audio Asset" class="portlet-title">
+				<div class="caption" data-placement="bottom" data-trigger="hover" data-container="body" data-toggle="popover" data-html="true" >
+					<h5><strong>Audio </strong> - 1 asset maximum</h5>
+				</div>
+				<div id="audio-icon" class="tools">
+					<i class="audio-icon"></i>
+					<a class="collapse" id="audioAssetLink" href="javascript:void(0)"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form" style="display: none;" id="tblDivAudioAsset">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<div class="table-scrollable">
+							<table class="table table-str-border table-bordered" id="tblAudioAsset">
+							  <thead>
+								<tr class="td-header">
+								  <th colspan="8">
+									<div class="btn-group">
+										<a title="Find Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" href="javascript:;" class="btn btn-default" data-target="#searchAAssetModal" data-toggle="modal"><i class="glyphicon glyphicon-new-window"></i></a>
+										<a title="Upload Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" onClick="cancelAudioAssetUploadForm();" href="javascript:;" class="btn btn-default" data-target="#addAssetModal" data-toggle="modal"><i class="icon-plus blue-text"></i></a>
+										<a title="Detach Asset" href="javascript:;" data-backdrop="static" data-keyboard="false" class="btn btn-default" onClick="confirmDetachObject (2, this, event)"><i class="icon-minus red-text"></i></a>
+									</div>
+								  </th>
+								</tr>
+								<tr class="td-header-bottom-border">
+								  <th>Asset Name</th>
+								  <th>Type</th>
+								   <th>Duration</th>
+								  <th>Size</th>
+								  <th>Version</th>
+								  <th>Description</th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 3 *#
+					
+			#* BEGIN COMPONENTS 4 *#
+			<div class="portlet portlet-btn" id="tblVideoTopDiv">
+			  <div title="Video Streaming Asset" class="portlet-title">
+				<div class="caption"  data-placement="bottom" data-trigger="hover" data-container="body" data-toggle="popover" data-html="true" onclick="removeJqueryErrorMessages();">
+					<h5><strong>Video </strong> - 1 asset</h5>
+				</div>
+				<div id="video-icon" class="tools">
+					<i class="video-icon"></i>
+					<a href="javascript:void(0)" id="videoLink" class="collapse"></a>
+				</div>
+			 </div>
+			  <div class="portlet-body form" style="display: none;" id="tblDivVideo">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+					  		<label class="help-block"><input type="radio" id="embedV_0" name="embedVideoToggle" checked="checked" onclick="enableDisableEmbedCode(false,'#embedCodeVideo_'+$('#hidId').val(),'#embedCode_'+$('#hidId').val(),false);removeJqueryErrorMessages();" /> #springMessage('label.upload.video.slide')</label>
+						  <div class="table-scrollable">
+							<table class="table table-str-border table-bordered" id="tblVideo">
+							  <thead>
+								<tr class="td-header">
+								  <th colspan="8">
+									<div class="btn-group">
+										<a title="Find Asset and Attach to Slide" href="javascript:;" data-backdrop="static" data-keyboard="false" class="btn btn-default" data-target="#searchVAssetModal" data-toggle="modal"><i class="glyphicon glyphicon-new-window"></i></a>
+										<a title="Upload Asset and Attach to Slide" href="javascript:;" data-backdrop="static" data-keyboard="false" class="btn btn-default" onClick="cancelVideoAssetUploadForm()" data-target="#addVAssetModal" data-toggle="modal"><i class="icon-plus blue-text"></i></a>
+										<a title="Detach Asset" href="javascript:;" class="btn btn-default" data-backdrop="static" data-keyboard="false" onClick="confirmDetachObject (3, this, event)"><i class="icon-minus red-text"></i></a>
+									</div>
+								  </th>
+								</tr>
+								<tr class="td-header-bottom-border">								  
+								  <th>Asset Name</th>
+								  <th>Type</th>
+								  <th>Dimension</th>
+								  <th>Size</th>
+								  <th>Version</th>
+								  <th>Description</th>
+								</tr>
+							  </thead>
+							  <tbody id="VideoListing">
+								<tr>
+								 
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+							  </tbody>
+							</table>
+						</div>
+					  </div>
+					  <input type="hidden" name="hidEmbedCode" id="hidEmbedCode" />
+					  <div class="col-md-offset-2 col-md-8 deactivate">
+																	  <label class="help-block"><input type="radio" id="embedV_1" name="embedVideoToggle" onclick="enableDisableEmbedCode(true,'#embedCodeVideo_'+$('#hidId').val(),'#embedCode_'+$('#hidId').val(),false)" /> #springMessage('label.embedcode.desc')</label>
+																	  <textarea class="form-control"  data-msg-required="Please enter embed code."  rows="4" name="embedCode" id="embedCode"></textarea>
+				  	</div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 4 *#
+			
+			
+			
+			#* BEGIN COMPONENTS 5 *#
+			<div class="portlet portlet-btn">
+			  <div title="Closed Captioning" class="portlet-title" onclick="getSlideCloseCaptionEditor(this, '1')">
+				<div class="caption" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true">
+					<h5><strong>Closed Captioning</strong></h5>
+				</div>
+				<div class="tools" id="SlideCloseCaption">
+					<i class="cc-icon"></i>
+					<a class="collapse" href="javascript:void(0)"></a>
+				</div>
+			  </div>
+			  <div id = "SceneCloseCaptionEditor" name = "SceneCloseCaptionEditor" class="portlet-body form" style="display: none;">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8" id="SceneCloseCaption">
+					  
+					            <textarea  name="SceneCloseCaption" id="SceneCloseCaption" ></textarea>
+						 
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 5 *#
+		
+			#* BEGIN ACTION BUTTON *#
+			<div class="form-actions fluid" id="DivSlidePreview">
+			   <div class="text-center">
+				  <button class="btn blue" type="button" id="btnSlidePreview"><i class="icon-desktop"></i> Preview Slide</button>
+			   </div>
+			</div>
+			#* END ACTION BUTTON *#
+			
+		</form>
+		 
+	  </div>
+	</div>
+	#* END SLIDE COMPONENTS *#
+	
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id="slideHref" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lesson_1" href="#list_0_0">CLOSE SLIDE</a>
+	</div>
+	#* END CLOSE BUTTON *#
+	
+  </div>
+</div>
+
+<div class="panel-collapse a2 collapse" id="slideComponent_CustomTemplate" style="height: auto;">
+  <div class="panel-body">
+	
+	#* BEGIN SLIDE COMPONENTS *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div class="caption">
+			Slide Components
+		 </div>
+		 <div class="tools">
+			
+		 </div>
+	  </div>
+	  <div class="portlet-body form">
+	  
+
+	  </div>
+	</div>
+	#* END SLIDE COMPONENTS *#
+	
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id="slideHref" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lesson_1" href="#list_0_0">CLOSE SLIDE</a>
+	</div>
+	#* END CLOSE BUTTON *#
+	
+  </div>
+</div>

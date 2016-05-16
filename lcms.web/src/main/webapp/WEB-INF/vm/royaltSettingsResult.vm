@@ -1,0 +1,9 @@
+[
+#foreach( $royaltySetting in $royaltyList )
+	#if( $foreach.hasNext )
+		[ $foreach.count, "${royaltySetting.userName}", "<a class='anchor' onclick=\"showDetail('${royaltySetting.userName}', ${royaltySetting.onlineRoyaltyPercentage}, ${royaltySetting.classroomRoyaltyPercentage}, ${royaltySetting.webinarRoyaltyPercentage}, ${royaltySetting.contentOwnerId}, '${royaltySetting.firstName}', '${royaltySetting.lastName}', $foreach.index)\" href='javascript:;' data-toggle='modal' data-target='#furtherDetailsModal'>${royaltySetting.firstName} ${royaltySetting.lastName}</a>", "${royaltySetting.onlineRoyaltyPercentage}%", "${royaltySetting.classroomRoyaltyPercentage}%", "${royaltySetting.webinarRoyaltyPercentage}%" ],
+	#else
+		[ $foreach.count, "${royaltySetting.userName}", "<a class='anchor' onclick=\"showDetail('${royaltySetting.userName}', ${royaltySetting.onlineRoyaltyPercentage}, ${royaltySetting.classroomRoyaltyPercentage}, ${royaltySetting.webinarRoyaltyPercentage}, ${royaltySetting.contentOwnerId}, '${royaltySetting.firstName}', '${royaltySetting.lastName}', $foreach.index)\" href='javascript:;' data-toggle='modal' data-target='#furtherDetailsModal'>${royaltySetting.firstName} ${royaltySetting.lastName}</a>", "${royaltySetting.onlineRoyaltyPercentage}%", "${royaltySetting.classroomRoyaltyPercentage}%", "${royaltySetting.webinarRoyaltyPercentage}%" ]
+	#end
+#end
+]

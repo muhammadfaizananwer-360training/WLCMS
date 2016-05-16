@@ -1,0 +1,294 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("modals.vm")
+#parse("addLesson.vm")
+#parse("setupform.vm")
+#parse("slideSetup.vm")
+#parse("slideHeader.vm")
+#parse("slideComponent.vm")
+#parse( "quizPortlet.vm" ) 
+#parse("examStrip.vm")
+#parse("examSetup.vm")
+#parse("examElementsList.vm")
+#parse("questionBanksBar.vm")
+#parse("exam/questionBankSetupAndQuestionList.vm")
+#parse("exam/examQuestionBar.vm")
+#parse("exam/questionComponent.vm")
+#parse("branding.vm")
+#parse("supportMaterial/supportMaterialSetup.vm")
+#parse("supportMaterial/supportMaterialStrip.vm")
+
+<script src="javascript/vm_js/course_structure.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/course_structure_slide.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/slideComponent.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/quiz.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/exam.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/constants.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/importPowerPoint.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/supportMaterial.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+##jwplayer
+<script type='text/javascript' src="theme/executive/plugins/jwplayer/jwplayer-7.1.4.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+<script type="text/javascript">jwplayer.key="NWa+NruTBASm39QxfCBvuv1UblvSsMtD+mrZiJgnxNI=";</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"> 
+
+<script language="javascript">
+</script>
+
+<input type="hidden" id="hidId" name="hidId" value="">
+<input type="hidden" id="hidLessonId" name="hidLessonId" value="">
+<input type="hidden" id="hidItemBankId" name="hidItemBankId" value="-1">
+<input type="hidden" id="hidFunctionName" name="hidFunctionName" value="">
+<input type="hidden" id="hidQuizContentObjectId" name="hidQuizContentObjectId" value="0">
+<input type="hidden" id="hidQuizNoOfQuestionContentObjectId" name="hidQuizNoOfQuestionContentObjectId" value="0">
+<input type="hidden" id="hidQuizNoOfQuestionBankId" name="hidQuizNoOfQuestionBankId" value="0">
+<input type="hidden" id="hidQuizQuestionContentObjectId" name="hidQuizNoOfQuestionContentObjectId" value="0">
+<input type="hidden" id="hidQuizQuestionBankId" name="hidQuizNoOfQuestionBankId" value="0">
+<input type="hidden" id="hidQuizQuestionId" name="hidQuizNoOfQuestionBankId" value="0">
+<input type="hidden" id="hidGetExamforEdit" name="hidGetExamforEdit" value="0">
+<input type="hidden" id="hidExamQuestionBankId" name="hidExamQuestionBankId" value="0">
+<input type="hidden" id="hidExamQuestionId" name="hidExamQuestionId" value="0">
+
+<input type="hidden" id="hidBankId" name="hidBankId" value="0">
+<input type="hidden" id="hidQuestionId" name="hidQuestionId" value="0">
+<input type="hidden" id="hidQuestionMessageId" name="hidQuestionMessageId" value="0">
+
+<div class="messages" id="msgdiv" ></div>
+
+<div id="successMsg">
+</div>
+
+              #if( $!{msg}=="success" )
+                    <div class="messages">
+             		 	<div role="alert" class="alert alert-success alert-dismissible fade in">
+                			<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                			#springMessage('course.structure.new-course-warning-message')
+			  		 	</div>
+			         </div>
+	   	 <script type="text/javascript"> elementFadeOut('.messages'); </script>
+           #end
+##BEGIN SLIDE CONTENT
+         <div class="page-content">
+
+##					BEGIN SLIDE HEADINGS
+					<div class="panel-group">
+						<div class="page-heading" id="headingDiv">
+							<div>
+								#springBind("courseobj.name")
+								<h1>$escapeTool.escapeHtml( $!{courseobj.name})</h1>
+								#if($vu360User.hasFeaturePermission($UserFeature.bulkCourseImportPermssion))
+									<div>
+										<a id="uploadExcelCourseImportId" data-lesson-id="$!{contentObject[0]}" href="" title="#springMessage('label.bulk.course.import.upload')" data-target="#addExcepUploadModal" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="resetBulkUploadPannel();"><small class="glyphicon glyphicon-import"></small> #springMessage('label.bulk.course.import.upload')</a>
+									</div>
+								#end
+							</div>
+						</div>
+					</div>
+					<div id ="CourseID" style="display:none"> $!{courseobj.bussinesskey} </div>
+					#springBind("courseobj.name")
+
+##					END SLIDE HEADINGS
+
+##					BEGIN ACTION BUTTONS
+					<div class="panel-group">
+						<div>
+							<button title="Preview Course" class="btn blue" type="button" id="btnPreviewCourse" onClick="preview('$!{lcmsProperties.getLCMSProperty('lcms.courseplayer.previewer.URL')}')" >
+							<i class="icon-desktop"></i> Preview Course</button>
+							<button type="button" class="btn blue" id="btnSaveUp" onClick="embedCodeSave();save(event);" title="#springMessage('button.save')">
+							<i class="icon-save"></i> #springMessage('button.save')</button>
+						</div>
+					</div>
+##					END ACTION BUTTONS
+
+##					BEGIN LESSON ACCORDIONS
+					<div class="panel-group accordion" id="lessons_accordion_0">
+
+						#set( $setup = "setup" )
+						#set( $list = "list" )
+						#set ($quizdiv = "quizdiv" )
+						#set ($quizlink = "quizlink")
+
+						#foreach($contentObject in $lstContentObject)	
+##    						BEGIN LESSON
+							<div id=$!{contentObject[0]} class="panel panel-default" item_type="ContentObject">
+                               <div class="panel-heading">
+                            		<div class="holder">
+                            			<div class="anchors move-btn">
+                            				<a href="javascript:;" title="Move Up" class="up">
+                            					<i class="icon-arrow-up"></i>
+                            				</a>
+                            				<a class="down" title="Move Down" href="javascript:;">
+                            					<i class="icon-arrow-down"></i>
+                            				</a>
+                            			</div>
+                            			<input type="hidden" id="content_id" name="content_id" value="$!{contentObject[0]}">
+                            			<div class="anchors">
+                            				<a href="#${setup}_$!{contentObject[0]}" onclick="getContentObjectForEdit2($!{contentObject[0]}, event)" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle" title="#springMessage('label.lesson-setup')">
+                            					<i class="icon-cog"></i>
+                            				</a>
+                            			</div>
+                            			<div class="panel-title">
+                            				<a href="#${list}_$!{contentObject[0]}" onclick="getSlidesByContentObject($!{contentObject[0]})" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle collapsed" title="Lesson Components">
+                            					<i class="icon-folder-open"></i> <span id="lesson_panel-title_$!{contentObject[0]}" >$escapeTool.escapeHtml($!{contentObject[2]})</span>
+                            				</a>
+                            			</div>
+                            			<div class="remove-btn" title="Delete" onclick="remove_panel(this, 1 , $!{contentObject[0]})">
+                            				<i class="icon-remove"></i>
+                            			</div>
+                            		</div>
+                               </div>
+                               
+##                             BEGIN PANEL SETUP FORM
+							   
+                               <div id="${setup}_$!{contentObject[0]}" class="panel-collapse bg-gray-2 a1 collapse">
+
+##								Start    ------------------------------Lession form----------------------------------
+
+##								End      ------------------------------Lession form----------------------------------
+                               </div>
+##                             END PANEL SETUP FORM
+                               
+                                <div class="panel-collapse collapse bg-gray-2 a2" id="${list}_$!{contentObject[0]}" style="height: auto;">
+												  <div class="panel-body">
+													
+													
+													<div class="portlet">
+													  <div class="portlet-title">
+														 <div class="caption">#springMessage('label.lesson-components')</div>
+														 <div class="tools"></div>
+													  </div>
+ <div id="slide_acc_$!{contentObject[0]}" class="panel-group accordion page-panel"> 
+																	
+															 </div>
+													  <div class="portlet-footer">
+														<a id="addSlideID" data-lesson-id="$!{contentObject[0]}" href="" title="Add Slide" data-backdrop="static" data-keyboard="false" data-target="#addSlideModal" data-toggle="modal"  onclick="resetAddSlidePannel();"><i class="icon-plus"></i> #springMessage('label.add-slide')</a>
+														<a id="importPowerPointID"  data-lesson-id="$!{contentObject[0]}" href="javascript:;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#importPPTModal" onClick = "imprtPPTDialog (this)" title="Import PPT"><i class="icon-upload"></i> #springMessage('label.import-powerpoint')</a>
+													  	<a id="addVideoSlideID" data-lesson-id="$!{contentObject[0]}" href="" title="Upload Video" data-target="#addVideoSlideModal" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="resetAddVideoSlidePannel();"><i class="icon-upload"></i> #springMessage('label.upload-video')</a>
+													  </div>
+
+													</div>
+##													END SLIDES PORTLET
+													
+##													BEGIN SUPPROT MATERIAL PORTLET
+													<div class="portlet">
+													  <div class="portlet-body">
+					
+##														BEGIN SUPPROT MATERIAL ACCORDIONS
+														<div id="supportMaterial_$!{contentObject[0]}" class="panel-group accordion page-panel">
+															
+														</div>
+##														END SUPPROT MATERIAL ACCORDIONS
+														 
+													  </div>
+
+													  	<div class="portlet-footer">
+															<a title="Add Support Material" data-backdrop="static" data-keyboard="false" href="#" data-toggle="modal" data-target="#addSMModal" onClick="initSMAssetForms()">
+															<i class="icon-plus"></i> #springMessage('label.add-support-material')</a>
+													  	</div>
+
+													</div>
+##													END SUPPROT MATERIAL PORTLET
+
+##													BEGIN QUIZ PORTLET
+													<div class="portlet" id="topquizbar_$!{contentObject[0]}">
+													  <div class="portlet-body">
+
+##														 	BEGIN QUIZ ACCORDIONS
+															<div id="quiz_container" class="panel-group accordion page-panel" id="quiz_container">
+
+															</div>
+
+##															END QUIZ ACCORDIONS
+
+													  </div>
+
+														  <div  id="addQuizLinkDiv_$!{contentObject[0]}" class="portlet-footer">
+															<a id="quizlink_$!{contentObject[0]}" data-backdrop="static" data-keyboard="false" onclick="openQuiz(this)" href="javascript:;"  data-lesson-id="$!{contentObject[0]}" data-target="#addQuizModal" data-toggle="modal" title="Add Quiz"><i class="icon-plus"></i> #springMessage('label.add-quiz')</a>
+														  </div>
+
+													</div>
+
+##													END QUIZ PORTLET
+
+##													BEGIN CLOSE BUTTON
+													<div class="footer">
+														<a id="lessonsCompFooterLink_CloseLesson" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lessons_accordion_0" href="#list_1">#springMessage('label.close-lesson')</a>
+													</div>
+##													END CLOSE BUTTON
+
+												  </div>
+											   </div>
+##					END SLIDE CONTENT
+
+                            </div>
+##                            END LESSON
+						#end
+
+					</div>
+##					END LESSON ACCORDIONS
+
+##					BEGIN ACTION BUTTONS
+					<div class="panel-group">
+						<div class="add-btns">
+							<a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addLessonModal" href="" onclick="clearHiddenContentId()"title="Add Lesson"><i class="icon-plus"></i> #springMessage('label.add-lesson')</a>
+						</div>
+					</div>
+##					END ACTION BUTTONS
+
+##						BEGIN ACTION BUTTONS
+						<div class="panel-group" id="AddFinalExamLink" #if($!{isFinalExamEnabled}=="yes") style="display: none;" #end>
+							<div class="add-btns">
+								<a onClick="resetOpenExamForm()" href="javascript:;" data-backdrop="static" data-keyboard="false" data-target="#addExamModal" data-toggle="modal" title="Add Final Exam"><i class="icon-plus"></i> #springMessage('label.add-final-exam')</a>
+							</div>
+						</div>
+##						END ACTION BUTTONS
+					<div id="exam_accordion_0" class="panel-group accordion">
+					#if($!{isFinalExamEnabled}=="yes")
+
+##						BEGIN FINAL EXAM ACCORDIONS
+
+##							BEGIN EXAM
+							<div class="panel panel-default" id="exam_accordion_02">
+							   <div class="panel-heading">
+									<div class="holder">
+										<div class="anchors move-btn">
+										</div>
+										<div class="anchors">
+											<a href="#exam_setup_0" onclick="getExamforEdit(event)" data-parent="#exam_accordion_0" data-toggle="collapse" class="accordion-toggle" title="#springMessage('label.final-exam-setup')"><i class="icon-cog"></i></a>
+										</div>
+										<div class="panel-title">
+											<a href="#exam_list_0" data-parent="#exam_accordion_0" data-toggle="collapse" class="accordion-toggle" onclick="getQuestionBankList()">
+												<i class="glyphicon glyphicon-file inside-icon-exam"></i> #springMessage('label.final-exam') 1
+											</a>
+										</div>
+										<div class="remove-btn" title="#springMessage('label.delete')" onclick="remove_Exam_panel(this)"><i class="icon-remove"></i></div>
+									</div>
+							   </div>
+
+##								Following div is used to display exams in Edit mode called Setup
+
+							    <div id="exam_setup_0" class="panel-collapse collapse bg-gray-2 a1">
+								</div>
+
+##								Following div  use to display exams sub Elemets like 'Question Banks'
+
+								<div id="exam_list_0" class="panel-collapse collapse bg-gray-2 a2">
+							
+								</div>
+							</div>
+					#end
+					</div>
+                </div>			
+#parse("footer.vm")
+
+## END SLIDE CONTENT
+<script type="text/javascript">
+$(document).ready(function ()
+		{
+			APP.BOTTOM_BAR();
+		});
+		</script>

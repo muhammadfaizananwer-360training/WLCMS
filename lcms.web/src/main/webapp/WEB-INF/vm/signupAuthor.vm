@@ -1,0 +1,121 @@
+#parse("loginHeader.vm")
+#parse("breadcrumb.vm")
+
+<script src="javascript/vm_js/signupAuthor.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+#* BEGIN SIGN UP *#    
+<div class="page-content">
+<div class="portlet">
+<div class="portlet-body">
+<h1>Sign-Up</h1>
+<br>
+		<form role="form" class="form-horizontal" action="signUpAuthorSave" method="POST" id="frm_signupAuthor">
+		     <input type="hidden" name="src" id="src"  >
+			<div class="form-group">
+			  <label class="col-md-3 control-label">First Name<span class="required">*</span></label>
+			  <div class="col-md-6">
+				 <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" class="form-control">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label class="col-md-3 control-label">Last Name<span class="required">*</span></label>
+			  <div class="col-md-6">
+				 <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" class="form-control">
+			  </div>
+			</div>
+										   
+			<div class="form-group">
+			  <label class="col-md-3 control-label">Email<span class="required">*</span></label>
+			  <div class="col-md-6">
+				 <input type="text" id="email" name="email" placeholder="Enter Email Address" class="form-control">
+			  </div>
+			</div>
+
+			<div class="form-group">
+			  <label class="col-md-3 control-label">Re-enter Email<span class="required">*</span></label>
+			  <div class="col-md-6">
+				 <input type="text" id="reenterEmail" name="reenterEmail" placeholder="Re-enter your email address" class="form-control">
+			  </div>
+			</div>
+			
+			<div class="form-group">
+			  <div class="col-md-offset-3 col-md-9">
+				 <div class="form-list">
+					<div>
+						<input type="radio" id="useMyEmailTF1" value="1" checked name="useMyEmailTF">
+						<span>&nbsp; Use my email address as my user name.</span>
+					</div>
+					<div>
+						<input type="radio" id="useMyEmailTF2" value="0" name="useMyEmailTF">
+						<span>&nbsp; Let me create a new user name.</span>
+					</div>
+					<div>
+						<br/>
+						<input type="text" id="useOtherEmail" name="useOtherEmail" disabled="true" class="form-control">
+					</div>
+				 </div>
+			  </div>
+			</div>
+			
+			<div class="form-group">
+			  <label class="col-md-3 control-label">Password<span class="required">*</span></label>
+			  <div class="col-md-6 input-group">
+				 <input type="password" id="passwrod" name="passwrod" placeholder="Enter your password" class="form-control">
+				 <span class="input-group-addon">
+					<a class="help-anchor glyphicon glyphicon-exclamation-sign" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Enter a password that includes letters and numbers, and is at least 8 characters long."></a>
+				 </span>
+			  </div>
+		    </div>
+
+			<div class="form-group">
+			  <label class="col-md-3 control-label">Re-enter Password<span class="required">*</span></label>
+			  <div class="col-md-6">
+				 <input type="password" id="reenterPasswrod" name="reenterPasswrod" placeholder="Re-enter your password" class="form-control">
+			  </div>
+			</div>
+
+			<div class="form-group">
+			  <label class="col-md-3 control-label">Terms<span class="required">*</span></label>
+			  <div class="col-md-6">
+				 <div id="description" name="description" class="form-control" style="height:200px; overflow:auto;">$!{eulaText}</div>
+			  </div>
+			</div>
+			
+			<div class="form-group">
+			  <div class="col-md-offset-3 col-md-9">
+				 <div class="form-list">
+					<div class="accept-chk" id="accept-chk" style="">
+					<input name="eulaFT" id="eulaFT" type="checkbox" />I accept the terms.
+					<div class="accept-txt" id="accept-txt" for="eulaFT"></div>	
+				 </div>
+				 <div sytle="height:200px;" id="errs"></div>
+			  </div>
+			</div>
+			
+			<div class="form-actions fluid">
+			   <div class="col-md-offset-3 col-md-9"><br>
+				  <button class="btn blue" type="submit" class="btn blue">Submit</button>
+				  <button class="btn default"  type="reset" id="reset" name="reset" value="Reset">Reset</button>
+			   </div>
+			</div>
+
+		</form>
+	</div>
+</div>
+</div>
+#* END SIGN UP *#
+<script>
+$(document).ready(function (){
+	jQuery.ready();
+	APP.PLACEHOLDER_FIX();
+	APP.BOOTSTRAP_POPOVER(".help-anchor");
+}
+);
+
+
+</script>
+
+#parse("footer.vm")

@@ -1,0 +1,207 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("webinarSetupModals.vm")
+#parse("branding.vm")
+<script src="javascript/vm_js/webinar_setup.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>     
+<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+<script>
+	var is360 = false;
+	function enabledSaveBtn(trg)
+	{
+		var $sBtn = $("#saveBtn");
+		var $mElm = $("#meetingURL");
+		
+		switch($(trg).val())
+		{
+			case "360training":
+				is360 = true;
+				$sBtn.removeClass("hide");
+				$mElm.addClass("hide");
+				document.getElementById("WebinarLink").setAttribute("style", "display:none"); 
+				break;
+				
+			case "Others":
+				is360 = false;
+				$sBtn.removeClass("hide");
+				$mElm.removeClass("hide");
+				break;
+			
+			default:
+				is360 = false;
+				$mElm.addClass("hide");
+				$sBtn.addClass("hide");
+				$mElm.addClass("hide");
+		}
+	}
+
+	$(document).ready(function() {
+         #set($msg = $request.getParameter("msg"))
+         $("#varCourseId").val(getUrlParameter ('id'));
+         is360 = false;
+		 var $sBtn = $("#saveBtn");
+		 var $mElm = $("#meetingURL");
+		 
+		 var status = '$!{courseObj.courseStatus}';
+		 var serviceProvider = '$!{syncClassVO.webinarServiceProvider}';
+		  $('#lnkWebinarSetup').addClass('active');
+		  if(status == 'Published'){
+			  $sBtn.removeClass("hide");
+		      //$mElm.addClass("hide");
+			  //document.getElementById("SaveButton").setAttribute("style", "display:none"); 
+			  if(serviceProvider == "360training")
+			  {
+			  
+			  	$mElm.addClass("hide");
+			  	$("#WEBINAR_SERVICE_PROVIDER").attr('disabled','disabled');
+			  	$("#saveBtn").attr('disabled','disabled');
+				document.getElementById("WebinarLink").setAttribute("style", "display:block");
+			  }else{
+			  
+			  	  $("#WEBINAR_SERVICE_PROVIDER").attr('disabled','disabled');
+				  $("#MEETINGURL").attr('disabled','disabled');
+				  $("#DIAL_IN_NUMBER").attr('disabled','disabled');
+				  $("#MEETINGPASSCODE").attr('disabled','disabled');
+				  $("#ADDITIONAL_INFORMATION").attr('disabled','disabled');
+				  $("#saveBtn").attr('disabled','disabled');
+				  document.getElementById("WebinarLink").setAttribute("style", "display:none");
+			  }
+		  }else{
+		  
+		 	  document.getElementById("WebinarLink").setAttribute("style", "display:none"); 
+			  //var serviceProvider = document.getElementById("WEBINAR_SERVICE_PROVIDER"); 	
+			  if(serviceProvider == "360training")
+			  {
+		        $mElm.addClass("hide");
+		        $sBtn.removeClass("hide");
+			    
+			  }else  if(serviceProvider == "Others"){
+			  	
+			  	$sBtn.removeClass("hide");
+			  	$mElm.removeClass("hide");
+			    
+			  }else{
+		        $sBtn.removeClass("hide");
+			  	$mElm.removeClass("hide");
+			  }
+		  }
+	});
+</script>
+               #* BEGIN PAGE CONTENT *#
+                <div class="page-content">				
+				 #* BEGIN PAGE HEADINGS *#
+				   <div class="portlet">
+					<div class="portlet-body">
+						<div class="page-heading">
+							<div class="col-xs-12 zero-padding">
+								<h1>Webinar Setup</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				   </div>
+                   #* END PAGE HEADINGS *#                   
+                 
+				    #if( $!{msg}=="success")
+						<div class="messages">
+						  <div role="alert" class="alert alert-success alert-dismissible fade in">
+							<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">Close</span> </button>
+							<strong>Success! </strong>It’s been saved. 
+						  </div>
+						 
+						</div>
+						<script type="text/javascript"> elementFadeOut('.messages'); </script>
+						 
+						  
+					   <script type="text/javascript"> elementFadeOut('.messages'); </script>
+						</div>
+						
+						 #elseif( $failureMessage )  
+						   <div class="messages">
+							  <div role="alert" class="alert alert-danger alert-dismissible fade in">
+								<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">Close</span> </button>
+								 $!{failureMessage} 
+								</div>
+								
+							</div>
+						<script type="text/javascript"> elementFadeOut('.messages'); </script>
+				   #end
+           
+		         #* BEGIN SUMMARY FORM PORTLET *#
+                      <div class="portlet-body form">
+                         <form action="saveWebinarSetup" class="form-horizontal" method="post" role="form" id="frm_webinarsetup">
+						     <input type="hidden" id="varCourseId" class="form-control" placeholder="" name="varCourseId">
+							 <input type="hidden" id="varSyncClassId" class="form-control" value="$!{syncClassVO.syncClassId}" name="varSyncClassId">
+							 <input type="hidden" id="coursename" class="form-control" value="$!{coursename}" name="coursename">
+							 <input type="hidden" id="bussinesskey" class="form-control" value="$!{bussinesskey}" name="bussinesskey">
+							 <input type="hidden" id="CourseId" class="form-control" value="$!{CourseId}" name="CourseId">
+							 <input type="hidden" id="courseStartDate" name="courseStartDate" class="form-control" value="$!{syncClassVO.courseStartDate}">
+							 <input type="hidden" id="presenterEmail" name="presenterEmail" class="form-control" value="$!{syncClassVO.presenterEmail}">
+							 <input type="hidden" id="shouldSubmbitForm" name="shouldSubmbitForm" value="false">
+							
+                            <div class="form-body">
+                                <div class="form-group">
+                                  <label class="col-md-3 control-label">Webinar Service Provider<span class="required">*</span></label>
+                                  <div class="col-md-6">
+                                    <select onchange="enabledSaveBtn(this);" class="form-control" id="WEBINAR_SERVICE_PROVIDER" name="WEBINAR_SERVICE_PROVIDER" value="$!{syncClassVO.webinarServiceProvider}">
+										<option></option>										
+                                        <option value="360training" #if (${syncClassVO.webinarServiceProvider} == '360training') selected="selected" #end >360training</option>
+                                        <option value="Others"      #if (${syncClassVO.webinarServiceProvider} == 'Others') selected="selected" #end>Others</option>
+                                     </select>                              
+                                 </div>
+                               </div>
+							   <div id="meetingURL" class="">
+								   <div class="form-group">
+									  <label class="col-md-3 control-label">Meeting URL<span class="required">*</span></label>
+									  <div class="col-md-6">
+										 <input type="text" placeholder="Enter meeting URL." class="form-control" id="MEETINGURL" name="MEETINGURL" value="$!{syncClassVO.meetingURL}">
+									  </div>
+								   </div>
+								   <div class="form-group">
+									  <label class="col-md-3 control-label">Dial-in number</label>
+									  <div class="col-md-6">
+										 <input type="text" placeholder="Enter dial-in number." class="form-control" id="DIAL_IN_NUMBER" name="DIAL_IN_NUMBER" value="$!{syncClassVO.dialInNumber}">
+									  </div>
+								   </div>
+								   <div class="form-group">
+									  <label class="col-md-3 control-label">Access code</label>
+									  <div class="col-md-6">
+										 <input type="text" placeholder="Enter access code." class="form-control"   id="MEETINGPASSCODE" name="MEETINGPASSCODE" value="$!{syncClassVO.meetingPassCode}">
+									  </div>
+								   </div>
+								   <div class="form-group">
+									  <label class="col-md-3 control-label">Additional information</label>
+									  <div class="col-md-6">
+										 <textarea placeholder="Enter additional information." class="form-control"  maxlength='255' id="ADDITIONAL_INFORMATION" name="ADDITIONAL_INFORMATION" >$!{syncClassVO.additionalInformation}</textarea>
+									  </div>
+								   </div>
+							   </div>                           
+                          </div>
+                            <div class="form-actions fluid" id="SaveButton" >
+                               <div class="col-md-offset-3 col-md-9">
+                                  <button id="saveBtn" class="btn blue input-small" type="Submit">Save</button>
+                               </div>
+                            </div>
+                            
+                            <div class="col-md-offset-3 col-md-6" id="WebinarLink" >
+								<div class="alert alert-warning zero-margin" role="alert">
+									<i class="icon-warning-sign"></i>
+										The instructor and course information are now locked and an email has been sent to the instructor. To prepare the webinar environment for this course, click the link below:
+										</p>
+											<br>
+												<a class="anchor" title="Go to Webinar Environment" target="_blank" href="$!{syncClassVO.meetingURL}">Go to Webinar Environment</a>
+								</div>
+							</div>
+                            
+                            
+                         </form>
+                      </div>
+                   </div>
+                   #* END SUMMARY FORM PORTLET *#
+                   
+                </div>
+                #* END PAGE CONTENT *#
+#parse("footer.vm")
+           
+                      

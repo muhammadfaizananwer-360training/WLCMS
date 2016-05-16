@@ -1,0 +1,119 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("branding.vm")
+#parse("modals.vm")
+
+<link rel="stylesheet" type="text/css" href="theme/executive/plugins/datepicker/css/datepicker.css" />
+<script type="text/javascript" src="theme/executive/plugins/datepicker/js/bootstrap-datepicker.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+<script src="javascript/vm_js/utils.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/makeOffer.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+<script language="javascript">
+
+$(document).ready(function(){	
+	APP.PLACEHOLDER_FIX();
+	APP.EDIT_OR_VIEW_TOGGLE();
+	APP.LEFT_NAV.init("OPEN","nav_accordion_3");
+	$('#leftMenuOfferOn360Marketplace a').addClass('active');
+	
+	//$('#hidCourseId').val(getUrlParameter ("id")); 
+});
+
+</script>
+
+<div class="messages" id="msgdiv" ></div>
+	<div id="successMsg">
+</div>
+
+#* BEGIN PAGE CONTENT *#
+	<div class="page-content">
+				
+				   #* BEGIN PAGE HEADINGS *#
+				   <div class="portlet">
+						<div class="portlet-body">
+							<div class="page-heading">
+								<div class="col-xs-12 zero-padding">
+									<h1>#springMessage('label.offer-on-360-marketplace')</h1>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+				   </div>
+                   #* END PAGE HEADINGS *#
+				   
+				   <br>
+				   
+                   #* BEGIN OFFERS *#
+                   <div class="portlet">
+                      <div class="portlet-title" title="Offers">
+                         <div class="caption">
+                            #springMessage('label.offers')
+                         </div>
+                         <div class="tools">
+                            
+                         </div>
+                      </div>
+                      <div class="portlet-body">
+						<p>#springMessage('label.publish.offer.message-1').
+						
+						<p>#springMessage('label.publish.offer.message-2a') <strong>${royaltyPercentage}% royalty </strong> 
+						#springMessage('label.publish.offer.message-2b').</p>
+						
+						<p>#springMessage('label.publish.offer.message-3').</p>
+					  </div>
+				   </div>
+                   #* END OFFERS *#
+                   
+                   	<div role="alert" class="alert alert-info" id = "divPending" name="divPending" style= "display:none">
+							<h2><i class="icon-spinner"></i><strong> #springMessage('label.in-progress')</strong></h2><p>#springMessage('label.publish.progress.message').</p>
+					</div>
+				   
+				   #* BEGIN ACTION BUTTON *#
+				  #if ($!{offer.offerStatus}=="Pending")
+					
+					<div role="alert" class="alert alert-info" id = "divPending" >
+							<h2><i class="icon-spinner"></i><strong> #springMessage('label.in-progress')</strong></h2><p>#springMessage('label.publish.progress.message').</p>
+					</div>
+					
+				  #elseif ($!{offer.offerStatus}=="Accepted")
+					
+					<div role="alert" class="alert alert-success">
+							<h2><i class="icon-ok-sign"></i><strong> #springMessage('label.congratulations')!</strong></h2> <p>#springMessage('label.publish.congratulation.message') <a href="mailto:ls360.authors.cs@360training.com" class="anchor">ls360.authors.cs@360training.com.</a> Include:</p>
+							<br>
+							<ul>
+								<li>#springMessage('label.title-of-the-course')</li>
+								<li>#springMessage('default.SearchHeaderCourseID')</li>
+								<li>#springMessage('label.username-of-the-account-owner')</li>
+							</ul>
+						</div>
+				  #elseif ($!{offer.offerStatus}=="Rejected")
+					
+						<div role="alert" class="alert alert-danger">
+							<h2><i class="icon-remove-sign"></i> <strong>#springMessage('label.hmm')..</strong></h2>#springMessage('course.publish.rejected.message')
+						</div>
+				  #elseif ($!{command.publishStatus}=="true" && "$!offer.offerStatus" == "")
+				   	<div class="form-actions fluid">
+					   <div class="col-md-offset-3 col-md-9">
+					    
+
+								<div id="divBtnMakeOfferbtn">
+									<button id="makeOfferbtn" type="button" onclick="click_makeOffer()" class="btn blue">#springMessage('label.make-offer')</button>
+								</div>
+							
+						
+					   </div>
+                   	</div>
+                  #end
+				 
+				   #* END ACTION BUTTON *#
+				   
+                </div>
+<input type="hidden"  name="breadCrumbBusinessKey" id="breadCrumbBusinessKey" value="$!{command.bussinessKey}">
+<input type="hidden"  name="breadCrumbCourseName" id="breadCrumbCourseName" value="$!{command.courseName}">				
+#* END PAGE CONTENT *#
+
+
+
+#parse("footer.vm")
+

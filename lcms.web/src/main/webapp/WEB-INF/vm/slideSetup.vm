@@ -1,0 +1,75 @@
+<div class="panel-collapse a1 collapse" id="slideSetup" style="height: auto;" >
+  <div class="panel-body">
+	
+	#* BEGIN SLIDE SETUP FORM *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div class="caption">
+			Slide Setup
+		 </div>
+		 <div class="tools">
+			
+		 </div>
+	  </div>
+	  <div class="portlet-body form">
+		 
+		  <form role="form" name="slidsetupform_" id="slidsetupform_" class="form-horizontal">
+			<div class="form-body">
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.title')">Title</span><span class="required">*</span></label>
+				  <div class="col-md-6">
+					<textarea class="form-control" rows="3" name="title" id="title" ></textarea>
+				  </div>
+			   </div>
+			   <div class="form-group temp-icons">
+				  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.template')">Template</span><span class="required">*</span></label>
+				  <div class="col-md-6">
+					 <input type="hidden" id="hidSlideTemplateIdForSetupForm" name="hidSlideTemplateIdForSetupForm" />
+					 <a title="Select Template" data-backdrop="static" data-keyboard="false" class="btn btn-default pull-left" href="javascript:;" onClick="isTemplateSlctnFrmForAddOrUpdate('2')"
+																data-target="#selectTemplateModal" data-backdrop="static" data-toggle="modal">
+							<i id="slideTemplateIconForSetupForm" class="temp-icon-1"></i>
+					 </a>
+					
+					<label id="slideTemplateNameForSetupForm" name="slideTemplateNameForSetupForm" class="temp-label gray-text">
+					   #* ---------- 
+						 slide Template Name will set using getSlideSetup() from course_structure.js file 
+						 ---------- *#
+					 </label>
+					 
+				  </div>	
+			   </div>
+			   
+			    <div class="form-group" id="displayselection" style="display:none;">
+				  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.display')">Display</span><span class="required">*</span></label>
+				  <div class="col-md-6">
+					 
+					<input type="radio" id ="displayRatioStandard" name="displayRatio"  checked><span>&nbsp; Standard (4:3)</span><br>
+					<input type="radio" id ="displayRatioWidescreen" name="displayRatio"  ><span>&nbsp; Widescreen (16:9)</span>
+					
+					 
+				  </div>	
+			   </div>
+			   
+			   
+			   
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('slide.setup.duration')">Duration (seconds)</span></label>
+				  <div class="col-md-6">
+					 <input type="text" id="duration" placeholder="Enter the slide duration (expected seat time for this slide)." class="form-control">
+				  </div>
+			   </div>
+			</div>
+		 </form>
+		 
+	  </div>
+	</div>
+	#* END SLIDE SETUP FORM *#
+	
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id = "footer" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lesson_1" href="#setup_0_0">CLOSE SLIDE SETUP</a>
+	</div>
+	#* END CLOSE BUTTON *#
+
+  </div>
+</div>

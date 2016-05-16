@@ -1,0 +1,1441 @@
+<div class="modals">
+
+			
+			
+			#* BEGIN CONFIRMATION *#
+			<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="confirmation-label">
+						
+						#* Dynamic Title *#
+						
+					</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* Dynamic Message *#
+					
+				  </div>
+				  <div class="modal-footer">
+				  
+					#* Dynamic Action Buttons *#
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END CONFIRMATION *#
+			#* BEGIN CLASS *#
+			<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<form id="addClassform" class="form-horizontal" role="form">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title"><i class="icon-folder-open"></i> Add Class</h3>
+					  </div>
+					  <div class="modal-body">
+					
+						#* BEGIN FORM *#
+						<div class="form-horizontal">
+							<div class="form-body">
+							   <div class="form-group">
+								  <label  class="col-md-3 control-label">Class title<span class="required">*</span></label>
+								  <div class="col-md-7">
+									 <input type="text" id="classTitle" name="classTitle" class="form-control"  placeholder="Enter class title." value="" required data-msg-required="Please enter a title for this class." />
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">Class size</label>
+								  <div class="col-md-7">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input class="zero-margin" style="float:none" type="radio" value="#springMessage('label.limited')" id="rdoClassroomlimit" name="rdoClassroomlimit" onclick="conditionalField(this,'limited');"> Limited
+										</label>
+										<label class="radio-inline">
+											<input class="zero-margin" style="float:none" type="radio" value="#springMessage('label.unlimited')" id="rdoClassroomlimit" name="rdoClassroomlimit" onclick="conditionalField(this,'unlimited');"> Unlimited
+										</label>
+									</div>
+								  </div>
+							   </div>
+							   
+							   <div class="limit form-group">
+									<label class="col-md-3 control-label">#springMessage('label.seat-count')<span class="required">*</span></label>	
+									<div class="col-md-7">
+										<input type="number" id="classSize" name="classSize" min="1" class="form-control" value="0" placeholder="Enter maximum number of seats." required data-msg-required="Please enter the maximum number of seats." data-rule-min="1" required data-msg-min="Please enter a positive number only." data-rule-pattern="true" data-pattern-exp="^\d*$" data-msg-pattern="Please enter a positive integer only." />
+									</div>
+									</div>
+							   
+							   
+							   
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">Schedule time zone<span class="required">*</span></label>
+								  <div class="col-md-7">
+									 <select class="form-control" id="classTimezome" name="classTimezome" required data-msg-required="Please select the time zone.">
+
+												<option value=""></option>
+												#foreach ($timezone in $timezones)
+												<option value="$timezone.id" #if($clazz.timeZoneId == $timezone.id)selected#end>
+													#if($timezone.getMinutes() == 0)
+													#set($timezoneDisplay = "(" + $timezone.code + " " + $timezone.hours + ":00) " + $timezone.zone)
+													#else
+													#set($timezoneDisplay = "(" + $timezone.code + " " + $timezone.hours + ":" + $timezone.minutes + ") " + $timezone.zone)
+													#end
+													$timezoneDisplay
+												</option>
+												#end
+											</select>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="control-label col-md-3">Enrollment close date<span class="required">*</span></label>
+								  <div class="col-md-7" data-error-place="#enroll_date_modal" >
+									 <div class="input-group date" id="enroll_date_modal" data-date="" data-date-format="mm/dd/yyyy">
+										<input class="form-control" type="text" id="enrollmentCloseDate" name="enrollmentCloseDate" value="" readonly="" required data-msg-required="Please select the last day a user can enroll in the class." data-rule-dt-max="true" data-msg-dt-max="Enrollment close date cannot be more than six months from today's date." data-dt-max-diffTo=":6" data-rule-dt-min="true" data-msg-dt-min="Enrollment date cannot be set to past date." data-dt-min-diffFrom="0">
+										<span class="input-group-btn add-on">
+											<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+										</span>
+									 </div>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="control-label col-md-3">Location<span class="required">*</span></label>
+								  <div class="col-md-7">
+									 <select class="form-control" id="classLocation" name="classLocation" required data-msg-required="Please select a location. If none display, then create one on the Location tab.">
+											<option value=""></option>
+										#foreach ($location in $locations)
+											<option value="$location.id">$location.locationname</option>
+										#end
+									 </select>
+								  </div>
+								  <a data-toggle="modal" data-target="#addLocationModal" data-backdrop="static" data-keyboard="false" onclick="reset_modal()" href="" title="#springMessage('label.add-location')"><i class="icon-plus"></i> #springMessage('label.add-location')</a>
+							   </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">#springMessage("label.instructor")<span class="required">*</span></label>
+                                    <div class="col-md-7">
+                                        <select class="form-control" id="classInstructor" name="classInstructor" required data-msg-required="#springMessage('label.instructor.required.message.none.display')">
+                                            <option value=""></option>
+											#foreach ($classIns in $classInstructors)
+                                                <option value="$classIns.id">$classIns.firstName</option>
+											#end
+                                        </select>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+						#* END FORM *#
+						
+					  </div>
+					  <div class="modal-footer">
+						<button id="submitClass"  OnClick="addClassroom()" class="btn blue">Save</button>
+						
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					  </div>
+					</div>
+				</form>
+			  </div>
+			</div>
+			#* END CLASS *#
+			
+			#* BEGIN SESSION *#
+			<div class="modal fade" id="addSessionModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<form id="frm_session" action="saveSession" method="post" class="form-horizontal" role="form">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title"><i class="icon-calendar"></i> Add Session</h3>
+					  </div>
+					  <div class="modal-body">
+					
+						#* BEGIN FORM *#
+						<div class="form-horizontal">
+							<div class="form-body">
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">Recurrence pattern<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input class="zero-margin" checked="checked" style="float:none" type="radio" name="add_sess_rPattern" id="add_sess_rPattern" value="manual" onclick="conditionalField(this,'manual');"> Manual
+										</label>
+										<label class="radio-inline">
+											<input class="zero-margin" style="float:none" type="radio" name="add_sess_rPattern" id="add_sess_rPattern" value="daily" onclick="conditionalField(this,'daily');"> Daily
+										</label>
+									</div>
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input class="zero-margin" style="float:none" type="radio" name="add_sess_rPattern" id="add_sess_rPattern" value="weekly" onclick="conditionalField(this,'weekly');"> Weekly
+										</label>
+									</div>
+								  </div>
+							   </div>
+							   <div class="form-group" id="daily_session">
+								  <label class="col-md-3 control-label">Daily session<span class="required">*</span></label>
+								  <div class="col-md-7 session-group">
+										<div class="clearfix">
+											<div class="form-control-static">
+												<div class="pull-left form-control-static"><input type="radio" name="add_sess_recurrence_d" id="add_sess_recurrence_everyday" value = "EveryDay" checked> Every</div>
+												<div class="pull-left"><input type="number" min="0" id = "add_sess_number_days" name = "add_sess_number_days" class="form-control" value="0" style="margin:0 5px; max-width:70px"></div>
+												<div class="form-control-static pull-left">day(s)</div>
+											</div>
+										</div>
+										<div class="clearfix">
+											<div class="form-control-static"><input type="radio" class="zero-margin" style="float:none" name="add_sess_recurrence_d" id="add_sess_recurrence_everyweekday" value = "EveryWeekDay"> Every Weekday
+											</div>
+										</div>
+								  </div>
+							   </div>
+							   <div class="form-group" id="weekly_session">
+								  <label class="col-md-3 control-label">Weekly session<span class="required">*</span></label>
+								  <div class="col-md-7 session-group">
+										<div class="clearfix">
+											<div class="form-control-static">
+												<div class="pull-left form-control-static">Recurs every</div>
+												<div class="pull-left"><input type="number" min="1" class="form-control" name = "add_sess_number_week_days" id="add_sess_number_week_days" value="0" style="margin:0 5px; max-width:70px" data-msg-min="Please enter a value greater than or equal to one."></div>
+												<div class="form-control-static pull-left" style="left: 46%;">week(s) on:</div>
+											</div>
+										</div>
+										<div class="clearfix">
+											<label>
+												<input type="checkbox" id="chkdSunday" name="chkdWeekday" value ="1"> Sunday
+											</label>
+											<label>
+												<input type="checkbox" id="chkdMonday" name="chkdWeekday" value ="1"> Monday
+											</label>
+											<label>
+												<input type="checkbox" id="chkdTuesday" name="chkdWeekday" value ="1"> Tuesday
+											</label>
+											<label>
+												<input type="checkbox" id="chkdWednesday" name="chkdWeekday" value ="1"> Wednesday
+											</label>
+											<label>
+												<input type="checkbox" id="chkdThursday" name="chkdWeekday" value ="1"> Thursday
+											</label>
+											<label>
+												<input type="checkbox" id="chkdFriday" name="chkdWeekday" value ="1"> Friday
+											</label>
+											<label>
+												<input type="checkbox" id="chkdSaturday" name="chkdWeekday" value ="1"> Saturday
+											</label>
+										</div>
+										<label id='weekdays'></label>
+								  </div>
+							   </div>
+							   
+							   <div class="form-group" id="monthly_session">
+								  <label class="col-md-3 control-label">Monthly session<span class="required">*</span></label>
+								  <div class="col-md-7 session-group">
+										<div class="clearfix">
+											<div class="form-control-static">
+												<div class="pull-left form-control-static">Day </div>
+												<div class="pull-left"><input type="number" min="0" class="form-control" value="0" style="margin:0 5px; max-width:70px"></div>
+												<div class="form-control-static pull-left"> of every</div>
+												<div class="pull-left"><input type="number" min="0" class="form-control" value="0" style="margin:0 5px; max-width:70px"></div>
+												<div class="form-control-static pull-left">month(s)</div>
+											</div>
+										</div>
+										<div class="clearfix">
+											<div class="form-control-static">
+												<div class="pull-left form-control-static">The</div>
+												<div class="pull-left">
+													<select class="form-control" style="margin-left: 5px;">
+														<option value="1">First</option>
+														<option value="2">Second</option>
+														<option value="3">Third</option>
+														<option value="4">Fourth</option>
+														<option value="0">Last</option>
+													</select>
+												</div>
+												<div class="pull-left">
+													<select class="form-control" style="margin:0 5px; max-width:100px">
+														<option value="Sun">Sunday</option>
+														<option value="Mon">Monday</option>
+														<option value="Tue">Tuesday</option>
+														<option value="Wed">Wednesday</option>
+														<option value="Thu">Thursday</option>
+														<option value="Fri">Friday</option>
+														<option value="Sat">Saturday</option>
+													</select>
+												</div>
+												<div class="form-control-static pull-left">of every</div>
+												<div class="pull-left"><input type="number" min="0" class="form-control" value="0" style="margin:0 5px; width:70px"></div>
+												<div class="form-control-static pull-left">month(s)</div>
+											</div>
+										</div>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label"><i class="icon-calendar"></i> Date<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div>
+										<span class="help-block">Start date</span>
+										<div class="input-group date" id="start_by_date" data-date="" data-date-format="mm/dd/yyyy">
+											<input class="form-control" id="add_sess_manual_daily_sdate" name = "add_sess_manual_daily_sdate" type="text" value="" readonly="">
+											<span class="input-group-btn add-on" style="vertical-align:top">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+									<div>
+										<div class="help-block" id="manual_end_label">
+											End date
+										</div>
+										<div class="help-block" id="except_manual_end_label">
+											<label class="radio-inline"><input type="radio" id="end_by_occ_radio" name="end_date_occ" onclick="conditionalField(this,'occurrence');"> End after ___ occurrence(s) </label>
+											<label class="radio-inline"><input type="radio" id="end_by_date_radio" name="end_date_occ" selected="selected" onclick="conditionalField(this,'endDate');"> Fixed end date</label>
+										</div>
+										<div class="input-group date" id="end_by_date" data-date="" data-date-format="mm/dd/yyyy">
+											<input class="form-control" type="text" id="add_sess_manual_daily_edate" name = "add_sess_manual_daily_edate" value="" readonly="">
+											<span class="input-group-btn add-on" style="vertical-align:top">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+										<div class="hide" id="end_by_occ">
+											<input type="number" min="0" class="form-control" id="add_sess_manual_daily_edate_days" name="add_sess_manual_daily_edate_days" value="0">
+										</div>
+									</div>
+								  </div>
+                               </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label"><i class="icon-time"></i> Time<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div>
+										<span class="help-block">Start time</span>
+										<div>
+											<select class="form-control" id="add_sess_start_time" name="add_sess_start_time">
+												<option></option>
+												<option>12:00 am</option>
+												<option>12:30 am</option>
+												<option>1:00 am</option>
+												<option>1:30 am</option>
+												<option>2:00 am</option>
+												<option>2:30 am</option>
+												<option>3:00 am</option>
+												<option>3:30 am</option>
+												<option>4:00 am</option>
+												<option>4:30 am</option>
+												<option>5:00 am</option>
+												<option>5:30 am</option>
+												<option>6:00 am</option>
+												<option>6:30 am</option>
+												<option>7:00 am</option>
+												<option>7:30 am</option>
+												<option>8:00 am</option>
+												<option>8:30 am</option>
+												<option>9:00 am</option>
+												<option>9:30 am</option>
+												<option>10:00 am</option>
+												<option>10:30 am</option>
+												<option>11:00 am</option>
+												<option>11:30 am</option>
+												<option>12:00 pm</option>
+												<option>12:30 pm</option>
+												<option>1:00 pm</option>
+												<option>1:30 pm</option>
+												<option>2:00 pm</option>
+												<option>2:30 pm</option>
+												<option>3:00 pm</option>
+												<option>3:30 pm</option>
+												<option>4:00 pm</option>
+												<option>4:30 pm</option>
+												<option>5:00 pm</option>
+												<option>5:30 pm</option>
+												<option>6:00 pm</option>
+												<option>6:30 pm</option>
+												<option>7:00 pm</option>
+												<option>7:30 pm</option>
+												<option>8:00 pm</option>
+												<option>8:30 pm</option>
+												<option>9:00 pm</option>
+												<option>9:30 pm</option>
+												<option>10:00 pm</option>
+												<option>10:30 pm</option>
+												<option>11:00 pm</option>
+												<option>11:30 pm</option>
+											</select>
+										</div>
+									</div>
+									<div>
+										<span class="help-block">End time</span>
+										<div>
+											<select class="form-control" id="add_sess_end_time" name="add_sess_end_time">
+												<option></option>
+												<option>12:00 am</option>
+												<option>12:30 am</option>
+												<option>1:00 am</option>
+												<option>1:30 am</option>
+												<option>2:00 am</option>
+												<option>2:30 am</option>
+												<option>3:00 am</option>
+												<option>3:30 am</option>
+												<option>4:00 am</option>
+												<option>4:30 am</option>
+												<option>5:00 am</option>
+												<option>5:30 am</option>
+												<option>6:00 am</option>
+												<option>6:30 am</option>
+												<option>7:00 am</option>
+												<option>7:30 am</option>
+												<option>8:00 am</option>
+												<option>8:30 am</option>
+												<option>9:00 am</option>
+												<option>9:30 am</option>
+												<option>10:00 am</option>
+												<option>10:30 am</option>
+												<option>11:00 am</option>
+												<option>11:30 am</option>
+												<option>12:00 pm</option>
+												<option>12:30 pm</option>
+												<option>1:00 pm</option>
+												<option>1:30 pm</option>
+												<option>2:00 pm</option>
+												<option>2:30 pm</option>
+												<option>3:00 pm</option>
+												<option>3:30 pm</option>
+												<option>4:00 pm</option>
+												<option>4:30 pm</option>
+												<option>5:00 pm</option>
+												<option>5:30 pm</option>
+												<option>6:00 pm</option>
+												<option>6:30 pm</option>
+												<option>7:00 pm</option>
+												<option>7:30 pm</option>
+												<option>8:00 pm</option>
+												<option>8:30 pm</option>
+												<option>9:00 pm</option>
+												<option>9:30 pm</option>
+												<option>10:00 pm</option>
+												<option>10:30 pm</option>
+												<option>11:00 pm</option>
+												<option>11:30 pm</option>
+											</select>
+										</div>
+									</div>
+								  </div>
+                               </div>
+							</div>
+						</div>
+						#* END FORM *#
+						
+					  </div>
+					  <div class="modal-footer">
+						<button id="submitSession" class="btn blue" onclick="saveSession()" type="button">Save</button>
+						<button id="reset" name="reset" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					  </div>
+					</div>
+				</form>
+			  </div>
+			</div>
+			#* END SESSION *#
+			
+			#* BEGIN ADD MANUALLY SESSION *#
+			<div class="modal fade" id="addManuallyModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<form id="frm_manual_session" action="" method="post" class="form-horizontal" role="form">
+					<input type="hidden" id="add_manual_sessionId" name="add_manual_sessionId"></input>
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title"><i class="icon-calendar"></i> Edit Session</h3>
+					  </div>
+					  <div class="modal-body">
+					
+						#* BEGIN FORM *#
+						<div class="form-horizontal">
+							<div class="form-body">
+							   <div class="form-group">
+								  <label class="col-md-3 control-label"><i class="icon-calendar"></i> Date<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div>
+										<span class="help-block">Start date</span>
+										<div class="input-group date" id="manual_start_date_modal" data-date="" data-date-format="mm/dd/yyyy">
+											<input class="form-control" type="text" value="" id="add_manual_sdate" name="add_manual_sdate" readonly="">
+											<span class="input-group-btn add-on" style="vertical-align:top">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+									<div>
+										<div class="help-block">End date</div>
+										<div class="input-group date" id="manual_end_date_modal" data-date="" data-date-format="mm/dd/yyyy">
+											<input class="form-control" type="text" value="" id="add_manual_edate" name="add_manual_edate" readonly="">
+											<span class="input-group-btn add-on" style="vertical-align:top">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+								  </div>
+                               </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label"><i class="icon-time"></i> Time<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div>
+										<span class="help-block">Start time</span>
+										<div>
+											<select class="form-control" id="add_manual_startTime" name="add_manual_startTime">
+												<option></option>
+												<option>12:00 am</option>
+												<option>12:30 am</option>
+												<option>1:00 am</option>
+												<option>1:30 am</option>
+												<option>2:00 am</option>
+												<option>2:30 am</option>
+												<option>3:00 am</option>
+												<option>3:30 am</option>
+												<option>4:00 am</option>
+												<option>4:30 am</option>
+												<option>5:00 am</option>
+												<option>5:30 am</option>
+												<option>6:00 am</option>
+												<option>6:30 am</option>
+												<option>7:00 am</option>
+												<option>7:30 am</option>
+												<option>8:00 am</option>
+												<option>8:30 am</option>
+												<option>9:00 am</option>
+												<option>9:30 am</option>
+												<option>10:00 am</option>
+												<option>10:30 am</option>
+												<option>11:00 am</option>
+												<option>11:30 am</option>
+												<option>12:00 pm</option>
+												<option>12:30 pm</option>
+												<option>1:00 pm</option>
+												<option>1:30 pm</option>
+												<option>2:00 pm</option>
+												<option>2:30 pm</option>
+												<option>3:00 pm</option>
+												<option>3:30 pm</option>
+												<option>4:00 pm</option>
+												<option>4:30 pm</option>
+												<option>5:00 pm</option>
+												<option>5:30 pm</option>
+												<option>6:00 pm</option>
+												<option>6:30 pm</option>
+												<option>7:00 pm</option>
+												<option>7:30 pm</option>
+												<option>8:00 pm</option>
+												<option>8:30 pm</option>
+												<option>9:00 pm</option>
+												<option>9:30 pm</option>
+												<option>10:00 pm</option>
+												<option>10:30 pm</option>
+												<option>11:00 pm</option>
+												<option>11:30 pm</option>
+											</select>
+										</div>
+									</div>
+									<div>
+										<span class="help-block">End time</span>
+										<div>
+											<select class="form-control" id="add_manual_endTime" name="add_manual_endTime">
+												<option></option>
+												<option>12:00 am</option>
+												<option>12:30 am</option>
+												<option>1:00 am</option>
+												<option>1:30 am</option>
+												<option>2:00 am</option>
+												<option>2:30 am</option>
+												<option>3:00 am</option>
+												<option>3:30 am</option>
+												<option>4:00 am</option>
+												<option>4:30 am</option>
+												<option>5:00 am</option>
+												<option>5:30 am</option>
+												<option>6:00 am</option>
+												<option>6:30 am</option>
+												<option>7:00 am</option>
+												<option>7:30 am</option>
+												<option>8:00 am</option>
+												<option>8:30 am</option>
+												<option>9:00 am</option>
+												<option>9:30 am</option>
+												<option>10:00 am</option>
+												<option>10:30 am</option>
+												<option>11:00 am</option>
+												<option>11:30 am</option>
+												<option>12:00 pm</option>
+												<option>12:30 pm</option>
+												<option>1:00 pm</option>
+												<option>1:30 pm</option>
+												<option>2:00 pm</option>
+												<option>2:30 pm</option>
+												<option>3:00 pm</option>
+												<option>3:30 pm</option>
+												<option>4:00 pm</option>
+												<option>4:30 pm</option>
+												<option>5:00 pm</option>
+												<option>5:30 pm</option>
+												<option>6:00 pm</option>
+												<option>6:30 pm</option>
+												<option>7:00 pm</option>
+												<option>7:30 pm</option>
+												<option>8:00 pm</option>
+												<option>8:30 pm</option>
+												<option>9:00 pm</option>
+												<option>9:30 pm</option>
+												<option>10:00 pm</option>
+												<option>10:30 pm</option>
+												<option>11:00 pm</option>
+												<option>11:30 pm</option>
+											</select>
+										</div>
+									</div>
+								  </div>
+                               </div>
+							</div>
+						</div>
+						#* END FORM *#
+						
+					  </div>
+					  <div class="modal-footer">
+						<button id="submitManualSession" class="btn blue" type="button" onclick="saveManualSession()">Save</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					  </div>
+					</div>
+				</form>
+			  </div>
+			</div>
+			#* END ADD MANUALLY SESSION *#
+			
+			#* BEGIN EDIT MANUALLY SESSION *#
+			<div class="modal fade" id="editManuallyModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<form>
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title"><i class="icon-calendar"></i> Edit Session</h3>
+					  </div>
+					  <div class="modal-body">
+					
+						#* BEGIN FORM *#
+						<div class="form-horizontal">
+							<div class="form-body">
+							   <div class="form-group">
+								  <label class="col-md-3 control-label"><i class="icon-calendar"></i> Date<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div>
+										<span class="help-block">Start</span>
+										<div class="input-group date" id="manual_start_date" data-date="22-11-2015" data-date-format="mm/dd/yyyy">
+											<input class="form-control" type="text" id="manual_start_date_val" name="manual_start_date_val" value="22-11-2015" readonly="">
+											<span class="input-group-btn add-on">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+									<div>
+										<div class="help-block">End</div>
+										<div class="input-group date" id="manual_end_date" data-date="22-11-2015" data-date-format="mm/dd/yyyy">
+											<input class="form-control" type="text" value="22-11-2015" readonly="">
+											<span class="input-group-btn add-on">
+												<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+											</span>
+										</div>
+									</div>
+								  </div>
+                               </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label"><i class="icon-time"></i> Time<span class="required">*</span></label>
+								  <div class="col-md-7">
+									<div>
+										<span class="help-block">Start</span>
+										<div>
+											<select class="form-control" id="start_time" name="start_time">
+												<option></option>
+												<option>12:00 am</option>
+												<option>12:30 am</option>
+												<option>1:00 am</option>
+												<option>1:30 am</option>
+												<option>2:00 am</option>
+												<option>2:30 am</option>
+												<option>3:00 am</option>
+												<option>3:30 am</option>
+												<option>4:00 am</option>
+												<option>4:30 am</option>
+												<option>5:00 am</option>
+												<option>5:30 am</option>
+												<option>6:00 am</option>
+												<option>6:30 am</option>
+												<option>7:00 am</option>
+												<option>7:30 am</option>
+												<option>8:00 am</option>
+												<option>8:30 am</option>
+												<option>9:00 am</option>
+												<option>9:30 am</option>
+												<option>10:00 am</option>
+												<option>10:30 am</option>
+												<option>11:00 am</option>
+												<option>11:30 am</option>
+												<option>12:00 pm</option>
+												<option>12:30 pm</option>
+												<option selected="selected">1:00 pm</option>
+												<option>1:30 pm</option>
+												<option>2:00 pm</option>
+												<option>2:30 pm</option>
+												<option>3:00 pm</option>
+												<option>3:30 pm</option>
+												<option>4:00 pm</option>
+												<option>4:30 pm</option>
+												<option>5:00 pm</option>
+												<option>5:30 pm</option>
+												<option>6:00 pm</option>
+												<option>6:30 pm</option>
+												<option>7:00 pm</option>
+												<option>7:30 pm</option>
+												<option>8:00 pm</option>
+												<option>8:30 pm</option>
+												<option>9:00 pm</option>
+												<option>9:30 pm</option>
+												<option>10:00 pm</option>
+												<option>10:30 pm</option>
+												<option>11:00 pm</option>
+												<option>11:30 pm</option>
+											</select>
+										</div>
+									</div>
+									<div>
+										<span class="help-block">End</span>
+										<div>
+											<select class="form-control" id="end_time" name="end_time">
+												<option></option>
+												<option>12:00 am</option>
+												<option>12:30 am</option>
+												<option>1:00 am</option>
+												<option>1:30 am</option>
+												<option>2:00 am</option>
+												<option>2:30 am</option>
+												<option>3:00 am</option>
+												<option>3:30 am</option>
+												<option>4:00 am</option>
+												<option>4:30 am</option>
+												<option>5:00 am</option>
+												<option>5:30 am</option>
+												<option>6:00 am</option>
+												<option>6:30 am</option>
+												<option>7:00 am</option>
+												<option>7:30 am</option>
+												<option>8:00 am</option>
+												<option>8:30 am</option>
+												<option>9:00 am</option>
+												<option>9:30 am</option>
+												<option>10:00 am</option>
+												<option>10:30 am</option>
+												<option>11:00 am</option>
+												<option>11:30 am</option>
+												<option>12:00 pm</option>
+												<option>12:30 pm</option>
+												<option>1:00 pm</option>
+												<option>1:30 pm</option>
+												<option>2:00 pm</option>
+												<option>2:30 pm</option>
+												<option selected="selected">3:00 pm</option>
+												<option>3:30 pm</option>
+												<option>4:00 pm</option>
+												<option>4:30 pm</option>
+												<option>5:00 pm</option>
+												<option>5:30 pm</option>
+												<option>6:00 pm</option>
+												<option>6:30 pm</option>
+												<option>7:00 pm</option>
+												<option>7:30 pm</option>
+												<option>8:00 pm</option>
+												<option>8:30 pm</option>
+												<option>9:00 pm</option>
+												<option>9:30 pm</option>
+												<option>10:00 pm</option>
+												<option>10:30 pm</option>
+												<option>11:00 pm</option>
+												<option>11:30 pm</option>
+											</select>
+										</div>
+									</div>
+								  </div>
+                               </div>
+							</div>
+						</div>
+						#* END FORM *#
+						
+					  </div>
+					  <div class="modal-footer">
+						<button type="Submit" class="btn blue" >Save</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					  </div>
+					</div>
+				</form>
+			  </div>
+			</div>
+			#* END EDIT MANUALLY SESSION *#
+
+			#* BEGIN ADD LOCATION *#
+			
+					<div class="modal fade" id="addLocationModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+						 <div class="modal-header">
+					<button type="button" class="close" OnClick="cancelLesson()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title" id="add-lesson-label"><i class="icon-folder-open"></i> #springMessage('label.add-edit-loation')</h3>
+				  </div>
+				   
+				
+					<form id="addMyLocationform" class="form-horizontal" role="form">
+						<input type="hidden" id="locationid" name="pages_title"  >
+					<div class="modal-body">
+					#* BEGIN FORM *#
+					<div class="form-horizontal" role="form">
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.location-name')>#springMessage('label.location-name')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="locationname" name="locationname" type="text" class="form-control"  placeholder="Enter location name." value="" required data-msg-required="Please enter a location name."/>
+							  </div>
+							  </div>
+							  
+							  
+							 <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.address')>#springMessage('label.address')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								<textarea id="locationaddress" name="locationaddress" class="form-control" rows="3" maxlength="250" required data-msg-required="Please enter a street address."></textarea>
+								 
+							  </div>
+							  </div>
+							   <div class="form-group">
+							  
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.city')>#springMessage('label.city')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="locationcity" name="locationcity" type="text" class="form-control"  placeholder="Enter city." value="" required data-msg-required="Please enter a city."/>
+							  </div>
+							  
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.zip-postal')>#springMessage('label.zip-postal')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <input id="locationzip" name="locationzip" type="text" class="form-control"  placeholder="Enter zip." value=""
+								 required data-msg-required="Please enter a zip or postal code." data-rule-number="true" data-rule-maxlength="5" required data-msg-maxlength="Please enter zip code no more than 5 digits." data-msg-number="Please enter a valid number."/>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.country')>#springMessage('label.country')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <select class="form-control" onchange="COUNTRIES.PRINT_STATE('state', this.selectedIndex);" id="country" name="country" required data-msg-required="Please select a country.">
+										 </select>
+							  </div>
+							  
+							  </div>
+							  
+							   <div class="form-group">
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.state')>#springMessage('label.state')</span><span class="required">*</span></label>
+							  <div class="col-md-7">
+								 <select class="form-control" name="state" id="state" required data-msg-required="Please select a state.">
+										 </select>
+							  </div>
+							  </div>
+							  
+							   <div class="form-group">
+							  
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.phone')>#springMessage('label.phone')</span></label>
+							  <div class="col-md-7">
+								 <input id="locationphone" name="locationphone" type="text" class="form-control nameEmptyCheck"  placeholder="Enter phone." value="" data-rule-digits="true" data-msg-digits="Please enter a valid number."/>
+							  </div>
+							  
+							  </div>
+							  
+							   <div class="form-group">
+							  
+							  
+							  <label class="col-md-3 control-label"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.description')>#springMessage('label.description')</span></label>
+							  <div class="col-md-7">
+							  <textarea id="locationdesc" name="locationdesc" class="form-control" rows="3" maxlength="250"></textarea>
+								 
+							  </div>
+							  </div>
+							  
+						   </div>
+						   
+						  </div>
+						  </div>
+						  
+						
+					
+					
+				  <div class="modal-footer">
+					<button id="submitLocation"  OnClick="addLocation('1')" class="btn blue">Save</button>
+					<button type="button" class="btn btn-default" onClick="reset_modal()" data-dismiss="modal">Cancel</button>					
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+			
+			
+			
+			#* END ADD LOCATION *#
+</div>
+
+
+	
+	<script>
+		$(document).ready(function ()
+		{
+			//	BEGIN APP **************************************************************
+			
+			APP.PLACEHOLDER_FIX();
+			//APP.EDIT_OR_VIEW_TOGGLE();
+			APP.LEFT_NAV.init("OPEN","nav_accordion_1c");
+			
+			
+			//APP.DATE_PICKER("#enroll_date_1");
+			//APP.DATE_PICKER("#enroll_date_2");
+			APP.DATE_PICKER("#manual_start_date_modal");
+			APP.DATE_PICKER("#manual_end_date_modal");
+			APP.DATE_PICKER("#manual_start_date");
+			APP.DATE_PICKER("#manual_end_date");
+			
+			var nowTemp = new Date();
+			var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+	
+			var checkinstart = $('#start_by_date').datepicker({
+				onRender: function(date) {  
+				return date.valueOf() < now.valueOf() ? 'disabled' : '';
+			}
+			}).on('changeDate', function(ev) {	  
+				checkinstart.hide();
+			}).data('datepicker');
+			
+			var checkinend = $('#end_by_date').datepicker({
+				onRender: function(date) {  
+				return date.valueOf() < now.valueOf() ? 'disabled' : '';
+			}
+			}).on('changeDate', function(ev) {	  
+				checkinend.hide();
+			}).data('datepicker');
+			
+			var checkenrolldate = $('#enroll_date_modal').datepicker({
+				onRender: function(date) {  
+				return date.valueOf() < now.valueOf() ? 'disabled' : '';
+			}
+			}).on('changeDate', function(ev) {	  
+				checkenrolldate.hide();
+			}).data('datepicker');
+			
+			
+			//	END APP **************************************************************
+			
+			class_toggling("manual");
+		
+
+            jQuery.validator.addMethod("weeklydaysselection", function(value, element) {
+                       return weeklydaysselection();
+	        }, "Session end time must be later than session start time.");
+
+            jQuery.validator.addMethod("sessionstarttimeisBeforeEndtime", function(value, element) {
+                       return sessionstarttimeisBeforeEndtime();
+	        }, "Session end time must be later than session start time.");
+            
+            jQuery.validator.addMethod("sessionStarttimeBeforeCurrenttime", function(value, element) {
+                       return sessionStarttimeBeforeCurrenttime();
+	        }, "Session start time must be a future time.");
+			
+			jQuery.validator.addMethod("isFutureDate", function(value, element) {
+                       return isFutureDate(value, element);
+	        }, "Session start date cannot be set to a past date.");
+
+			jQuery.validator.addMethod("endDateisbeforestartDate", function(value, element) {
+                       return endDateisbeforestartDate();
+	        }, "End Date must be after Start Date.");
+			
+			jQuery.validator.addMethod("weeklynumberofdays", function(value, element) {
+                       return weeklynumberofdays();
+	        }, "Number of days must be greater then Zero.");
+			
+			jQuery.validator.addMethod("dailynumberofdays", function(value, element) {
+                       return dailynumberofdays();
+	        }, "Please enter a positive number.");
+			
+			jQuery.validator.addMethod("endAfterOccurrence", function(value, element) {
+                       return endAfterOccurrence();
+	        }, "End after occurrence must be greater then Zero.");
+			
+			var validator =  $("#frm_session").validate({
+             rules: {
+               add_sess_manual_daily_sdate : {
+								required : true,
+								isFutureDate : true
+						  },
+               add_sess_manual_daily_edate : {
+								required : true,
+								endDateisbeforestartDate : true
+						  },
+               add_sess_start_time : {
+								required : true,
+								sessionStarttimeBeforeCurrenttime : true
+						  },
+               add_sess_end_time : {
+								required : true,
+								sessionstarttimeisBeforeEndtime : true
+						  },
+			add_sess_number_days : {
+				               dailynumberofdays : true
+				          }	,
+			add_sess_manual_daily_edate_days : {
+				               endAfterOccurrence : true
+				          },
+			add_sess_number_week_days: {
+				               weeklynumberofdays : true
+				          },
+            chkdWeekday: {
+				               weeklydaysselection : true
+				          }						  
+
+						  
+				
+           },
+	      	   
+			   errorPlacement: function (error, element) {
+                   if (element.attr("type") == 'checkbox') {
+					$('#chkdSaturdayId').remove();
+					$('#chkdSaturday').parent().append(
+					"<label id='chkdSaturdayId' for='enroll_date' generated='true' class='error'>"+ error[0].innerHTML+ "</label>");
+                              //error.insertAfter($(element).parents('div').prev($('.chkdSaturday'))); 
+
+                   }
+				   else {
+								error.insertAfter(element);
+
+							}
+    },
+
+        messages: {
+		      add_sess_manual_daily_sdate : {
+					        required : "Please enter the session start date."
+						 },
+		      add_sess_manual_daily_edate : {
+					        required : "Please enter the session end date."
+						 },
+		      add_sess_start_time : {
+					        required : "Please enter the session start time."
+						 },
+		      add_sess_end_time : {
+					        required : "Please enter the session end time."
+						 },						 
+		      add_sess_number_days : {
+					        dailynumberofdays : "Number of days must be greater then Zero."
+						 },
+		      add_sess_manual_daily_edate_days : {
+					        endAfterOccurrence : "Number of days must be greater then Zero."
+						 },						 
+		      add_sess_number_week_days : {
+					        weeklynumberofdays : "Number of days must be greater then Zero."
+						 },
+            chkdWeekday: {
+				               weeklydaysselection : "Please select the day(s) of the week the class should occur on"
+				          }		
+
+        },
+		submitHandler : function(form) {
+				form.submit();
+						}
+    })
+	$("#reset").click(function() {
+    //alert("Reset");
+	validator.resetForm();
+	$("label.error").hide();
+    $(".error").removeClass("error");
+   });
+		});
+		
+		var weeklydaysselection = function(enrolldate, startdate) {
+		     var recurringpattern = $('input:radio[name=add_sess_rPattern]:checked').val();
+
+		if(recurringpattern == "weekly"){
+           if($('input[type=checkbox]:checked').length == 0) {
+                    //alert("UnChecked");
+					return false;
+         }
+    else {
+                     //alert("Checked");
+					 return true;
+         }
+}
+
+		}
+		
+		$('input[name="chkdWeekday"]').click(function(){
+			if($(this).is(':checked')){
+				$('#chkdSaturdayId').remove();//filter(":contains('Please select the day(s) of the week the class should occur on')").remove()
+				
+				//$('#frm_session').valid();
+				
+			}
+		});
+		
+		var sessionstarttimeisBeforeEndtime = function(enrolldate, startdate) {
+
+		var strcourseStartDate = $('#add_sess_manual_daily_sdate').val();
+		var strcourseStarttime = $('#add_sess_start_time').val();
+		var strcourseEndDate = $('#add_sess_manual_daily_edate').val();
+		var strcourseEndtime = $('#add_sess_end_time').val();
+		var index = strcourseStarttime.indexOf(":");
+		var endDateindex = strcourseEndtime.indexOf(":");
+		var hours, minutes, inthours,endhours, endminutes, endinthours;
+		var courseEndDate = new Date(strcourseEndDate);
+		var courseStartDate = new Date(strcourseStartDate);
+		var currentDate = new Date();
+		var courseFixedEndDate = new Date(strcourseStartDate);
+
+		// alert( strcourseStarttime.substr(
+		// strcourseStarttime.indexOf(":")+1,2));
+		// return;
+		courseEndDate.setHours(0);
+		courseEndDate.setMinutes(0);
+		courseEndDate.setSeconds(0);
+
+		courseStartDate.setHours(0);
+		courseStartDate.setMinutes(0);
+		courseStartDate.setSeconds(0);
+		
+		if(strcourseEndtime == strcourseStarttime)
+		{
+			return false;
+		}
+		
+		
+		if (index > 0) {
+			if (strcourseStarttime.indexOf("am") > 0) {
+				hours = strcourseStarttime.substr(0, index);
+				if(hours==12)
+				{
+					hours = 0
+				}
+				inthours = parseInt(hours);
+				if(inthours == 12)
+					inthours = 0;
+				minutes = strcourseStarttime.substr(strcourseStarttime
+						.indexOf(":") + 1, 2);
+				intminutes = parseInt(minutes);
+			} else if (strcourseStarttime.indexOf("pm") > 0) {
+				hours = strcourseStarttime.substr(0, index);
+				if(hours == 12)
+				{
+					hours = parseInt(hours) - 12;
+				}
+				inthours = parseInt(hours) + 12;
+				minutes = strcourseStarttime.substr(strcourseStarttime
+						.indexOf(":") + 1, 2);
+				intminutes = parseInt(minutes);
+			}
+		}
+		
+		
+		courseStartDate.setHours(inthours);
+		courseStartDate.setMinutes(intminutes);
+		courseStartDate.setSeconds(0);
+
+		if (endDateindex > 0) {
+			if (strcourseEndtime.indexOf("am") > 0 ) {
+				endhours = strcourseEndtime.substr(0, endDateindex);
+				if(endhours == 12)
+					endhours = 0;
+				endinthours = parseInt(endhours);
+				endminutes = strcourseEndtime.substr(strcourseEndtime.indexOf(":") + 1, 2);
+				endintminutes = parseInt(endminutes);
+			} else if (strcourseEndtime.indexOf("pm") > 0) {
+				endhours = strcourseEndtime.substr(0, endDateindex);
+				if(endhours == 12)
+				{
+					endhours = parseInt(endhours) - 12;
+				}
+				endinthours = parseInt(endhours) + 12;
+				endminutes = strcourseEndtime.substr(strcourseEndtime.indexOf(":") + 1, 2);
+				endintminutes = parseInt(endminutes);
+			}
+		}
+		
+		courseEndDate.setHours(endinthours);
+		courseEndDate.setMinutes(endintminutes);
+		courseEndDate.setSeconds(0);
+		
+		if($("#end_by_occ_radio").attr('checked')=='checked')
+		{
+			no_of_days = $("#add_sess_manual_daily_edate_days").val();
+			end_after_occurence_date = new Date(strcourseStartDate);
+			courseFixedEndDate.setDate(courseFixedEndDate.getDate()+parseInt(no_of_days))
+			courseFixedEndDate.setHours(endinthours);
+			courseFixedEndDate.setMinutes(endintminutes);
+			courseFixedEndDate.setSeconds(0);
+			courseEndDate = courseFixedEndDate;
+		}	
+
+		if (Date.parse(courseEndDate) < Date.parse(courseStartDate)) {
+			return false;
+		} else if (Date.parse(courseEndDate) > Date.parse(courseStartDate)) {
+			return true;
+		}
+
+	};
+
+		function isFutureDate(value, element) {
+			//var courseEnrollDate = $('#add_sess_manual_daily_sdate').val();
+			var today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+
+			if (Date.parse(today) <= Date.parse(value)) {
+				return true;
+			} else if (Date.parse(today) > Date.parse(value)) {
+				return false;
+			}
+        }
+var sessionStarttimeBeforeCurrenttime = function(enrolldate, startdate) {
+
+		var strcourseStartDate = $('#add_sess_manual_daily_sdate').val();
+		var strcourseStarttime = $('#add_sess_start_time').val();
+		var index = strcourseStarttime.indexOf(":");
+		var hours, minutes, inthours;
+		var currentDatetime = new Date();
+		var courseStartDate = new Date(strcourseStartDate);
+		var currentDate = new Date();
+
+		// alert( strcourseStarttime.substr(
+		// strcourseStarttime.indexOf(":")+1,2));
+		// return;
+		currentDatetime.setHours(0);
+		currentDatetime.setMinutes(0);
+		currentDatetime.setSeconds(0);
+
+		courseStartDate.setHours(0);
+		courseStartDate.setMinutes(0);
+		courseStartDate.setSeconds(0);
+
+		if (index > 0) {
+			if (strcourseStarttime.indexOf("am") > 0) {
+				hours = strcourseStarttime.substr(0, index);
+				inthours = parseInt(hours);
+				if(inthours == 12)
+					inthours = 0;
+				minutes = strcourseStarttime.substr(strcourseStarttime
+						.indexOf(":") + 1, 2);
+				intminutes = parseInt(minutes);
+			} else if (strcourseStarttime.indexOf("pm") > 0) {
+				hours = strcourseStarttime.substr(0, index);
+				if(hours == 12)
+				{
+					hours = parseInt(hours) - 12;
+				}
+				inthours = parseInt(hours) + 12;
+				minutes = strcourseStarttime.substr(strcourseStarttime
+						.indexOf(":") + 1, 2);
+				intminutes = parseInt(minutes);
+			}
+		}
+
+		courseStartDate.setHours(inthours);
+		courseStartDate.setMinutes(intminutes);
+		courseStartDate.setSeconds(0);
+
+		if (Date.parse(currentDate) > Date.parse(courseStartDate)) {
+			return false;
+		} else if (Date.parse(currentDate) < Date.parse(courseStartDate)) {
+			return true;
+		}
+
+	};
+
+		
+    var sessionstartDateBeforeCurrentDate = function(enrolldate, startdate) {
+
+		var courseStartDate = $('#add_sess_manual_daily_sdate').val();
+		var today = new Date();
+
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(0);
+
+		if (Date.parse(today) < Date.parse(courseStartDate)) {
+
+			return true;
+		} else if (Date.parse(today) > Date.parse(courseStartDate)) {
+
+			return false;
+		}
+
+	};
+
+		
+	var endDateisbeforestartDate = function(startDateStr, endDateStr) {
+
+		// debugger;
+		var startDate = $('#add_sess_manual_daily_sdate').val();
+		var endDate = $('#add_sess_manual_daily_edate').val();
+		
+		if(typeof(endDate) != "undefined")
+		{
+			var D1 = new Date(startDate.replace(/(\d{2})-(\d{2})-(\d{4})/,
+					"$2/$1/$3")); // Year, Month, Date
+			var D2 = new Date(endDate.replace(/(\d{2})-(\d{2})-(\d{4})/,
+					"$2/$1/$3"));
+
+			if (D1 <= D2) {
+				return true;
+			} else if (D1 > D2) {
+				return false;
+			}
+		}
+
+	};
+	
+	var dailynumberofdays = function() {
+		var recurringpattern = $('input:radio[name=add_sess_rPattern]:checked').val();
+		var isnumberofday = $('input:radio[name=add_sess_recurrence_d]:checked').val();
+		var numberofdays = $('#add_sess_number_days').val();
+		
+		if(recurringpattern == "daily"){
+             if(isnumberofday  == "EveryDay"){
+				
+			     if(numberofdays >0)
+			        return true;
+			     else
+			        return false;   
+			   }
+			  return true;
+		 }
+    }
+	
+	var endAfterOccurrence = function() {
+		var end_by_occ_radio = $('input:radio[name=end_by_occ_radio]:checked');
+		var numberofOccurances = $('#add_sess_manual_daily_edate_days').val();
+		
+		if(end_by_occ_radio){
+			     if(numberofOccurances >0)
+			        return true;
+			     else
+			        return false;   
+		 }
+    }
+    
+    var weeklynumberofdays = function() {
+		var recurringpattern = $('input:radio[name=add_sess_rPattern]:checked').val();
+		var isnumberofday = $('input:radio[name=add_sess_recurrence_d]:checked').val();
+		var numberofdays = $('#add_sess_number_week_days').val();
+		
+		if(recurringpattern == "weekly"){
+             	
+			     if(numberofdays >0)
+			        return true;
+			     else
+			        return false;   
+			 
+		 }
+    }
+
+		function conditionalField(trg, condition)
+		{
+			console.log(condition);
+			
+			switch(condition)
+			{
+				case "limited":
+					var $trg = $(trg).closest('.form-group').next();
+					$trg.removeClass("hide");
+				break;
+				
+				case "unlimited":
+					var $trg = $(trg).closest('.form-group').next();
+					$trg.addClass("hide");
+					$trg.find('#classSize').val("0");
+				break;
+			}
+			
+			class_toggling(condition);
+		}
+		
+		function class_toggling(cond)
+		{
+			switch(cond)
+			{
+				case "manual":
+					class_toggling("endDate");
+					manual_label_toggle(true);
+					$("#daily_session").addClass("hide");
+					$("#weekly_session").addClass("hide");
+					$("#monthly_session").addClass("hide");
+				break;
+				
+				case "daily":
+					manual_label_toggle(false);
+					$("#weekly_session").addClass("hide");
+					$("#monthly_session").addClass("hide");
+					
+					$("#daily_session").removeClass("hide");
+				break;
+				
+				case "weekly":
+					manual_label_toggle(false);
+					$("#daily_session").addClass("hide");
+					$("#monthly_session").addClass("hide");
+					
+					$("#weekly_session").removeClass("hide");
+				break;
+				
+				case "monthly":
+					manual_label_toggle(false);
+					$("#daily_session").addClass("hide");
+					$("#weekly_session").addClass("hide");
+					
+					$("#monthly_session").removeClass("hide");
+				break;
+				
+				case "endDate":
+					$("#end_by_occ").addClass("hide");
+					$("#end_by_date").removeClass("hide");
+					$("#end_by_date_radio").prop('checked', true);
+					$("#end_by_occ_radio").removeAttr('checked');
+				break;
+				
+				case "occurrence":
+					$("#end_by_occ").removeClass("hide");
+					$("#end_by_date").addClass("hide");
+				break;
+			}
+		}
+		
+		function manual_label_toggle(isTrue)
+		{
+			if(isTrue)
+			{
+				$("#manual_end_label").removeClass("hide");
+				$("#except_manual_end_label").addClass("hide");
+			}
+			else
+			{
+				$("#except_manual_end_label").removeClass("hide");
+				$("#manual_end_label").addClass("hide");
+			}
+		}
+		
+		function manageSession(trg,condition)
+		{
+			switch(condition)
+			{
+				case "add":
+					$("#addManuallyModal").modal('show');
+				break;
+				
+				case "delete":
+					
+				break;
+				
+				case "edit":
+					$("#editManuallyModal").modal('show');
+				break;
+			}
+		}
+		
+	</script>

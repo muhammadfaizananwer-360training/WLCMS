@@ -1,0 +1,184 @@
+#parse("header.vm")
+#parse("breadcrumb.vm")
+<script src="javascript/vm_js/userProfile.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+
+#* BEGIN MODALS *#
+<div class="modals">
+	#* BEGIN UPLOAD PROFILE PICTURE *#
+	<div class="modal fade" id="uploadProPicModal" tabindex="-1" role="dialog" aria-labelledby="upload-pp-label" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="upload-pp-label"><i class="icon-upload"></i> Upload Profile Picture</h3>
+		  </div>
+		  
+			#* BEGIN FORM *#
+			<form action="uploadProfileImage" method="Post" id="formUploadProfilePicture" name="formUploadProfilePicture" novalidate="novalidate">
+			<div class="modal-body">
+				<div class="form-horizontal" role="form">
+					<div class="form-body">
+					   <div class="form-group temp-icons">
+						  <label  class="col-md-3 control-label">Asset Type</label>
+						  <div class="col-md-6">
+							 <label class='temp-label gray-text'>Image</label>
+						  </div>
+					   </div>
+					   <div class="form-group">
+						  <label  class="col-md-3 control-label">File Path<span class="required">*</span></label>
+						  <div class="col-md-8">
+							  <div id="profilePicUploader" class="col-md-6 upload-360" data-uploader-loc="$!{lcmsProperties.getLCMSProperty('lcms.uploader.location')}" data-ext="png,jpg,jpeg,gif,bmp" data-onupload-init="disableAssetSubmission(this,'#btaddProfileImageUpload')" data-onupload-reset="disableAssetSubmission(this,'#btaddProfileImageUpload')" data-onupload-start="disableAssetSubmission(this,'#btaddProfileImageUpload')" data-onupload-done="enableAssetSubmission(this,'#btaddProfileImageUpload')" >
+												<button type="button" id="btnSelectFile" class="btn blue btn-browse">
+													<span class="browse-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+													<span class="hide browse-change"><i class="icon-undo"></i> Change</span>
+												</button>
+												<button id="btnUploadCancel" type="button" class="hide btn btn-default btn-cancel" style="z-index:99999">
+													<span class=""><i class="glyphicon  glyphicon-thumbs-down"></i>&nbsp;</span>Cancel Upload
+												</button>
+												<span style="display:block"></span>
+												<span id="filePreview" class="file-preview"></span>
+												<span id="fileProgress" class="hide file-progress" style="font-weight:bold"></span>
+												<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+												<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." ></span>
+												<input id="imageWidth" name="imageWidth" type="hidden"></input>
+												<input id="imageHeight" name="imageHeight" type="hidden"></input>
+								 </div>
+						  </div>
+					   </div>
+					</div>
+				</div>
+		  </div>
+		  <div class="modal-footer">
+			<button id="btaddProfileImageUpload" name="btaddProfileImageUpload" type="button" class="btn blue" data-dismiss="modal" onclick="AddProfilePicture(this.form); return false;">Accept</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancelProfilePicturetUploadForm()">Cancel</button>
+		  </div>
+		 </form>
+		 #* END FORM *#
+		</div>
+	  </div>
+	</div>
+	#* END UPLOAD PROFILE PICTURE *#
+	
+</div>
+#* END MODALS *#
+#* Main Content Begin *#
+<div class="main-content">
+    
+    #* Workspace Begin *#
+    <div id="contentHolder" class="content-holder">
+
+        <div class="clearfix"></div>
+
+        #* BEGIN PAGE CONTENT *#
+        <div class="page-content">
+			
+			#* BEGIN SIGN UP *#
+			<div class="portlet">
+				<div class="portlet-title">
+					<h1>Author Profile</h1>
+				</div>
+				<div class="portlet-body">
+					
+					#* BEGIN PROFILE *#
+					<form class="form-horizontal" role="form" id="userProfileForm" name="userProfileForm" method="POST" action="updateProfile">
+						<input type="hidden" id="redirectPageTo" name="redirectPageTo" value="${redirectPageTo}"/>
+						<input type="hidden" id="username" name="username" value="${profileObject.username}"/>
+						<input type="hidden" id="assetId" name="assetId" value=""/>
+						<div class="form-group">
+						  <label class="col-md-3 control-label">Profile Picture</label>
+						  <div class="col-md-6">
+							<a class="profile-pic-btn" href="javascript:;" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#uploadProPicModal" title="Upload Profile Picture" onclick="cancelProfilePicturetUploadForm()">
+							    #if(!${profileImageUrl})
+									<img id="profileImage" name="profileImage" style="width:200px;min-height:200px;" src="theme//executive/img/icons/lady_200x200.png" />
+								#else
+									<img id="profileImage" name="profileImage" style="width:200px;min-height:200px;" src='$!{profileImageUrl}' />
+								#end
+							</a>
+						  </div>
+						</div>
+						
+						<div class="form-group">
+						  <label class="col-md-3 control-label">Username</label>
+						  <div class="col-md-6">
+							<p class="form-control-static">${profileObject.username}</p>
+						  </div>
+						</div>
+						
+						<div class="form-group">
+						  <label class="col-md-3 control-label">First Name<span class="required">*</span></label>
+						  <div class="col-md-6">
+							 <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" value="${profileObject.firstName}" class="form-control" maxlength="255">
+						  </div>
+						</div>
+
+						<div class="form-group">
+						  <label class="col-md-3 control-label">Last Name<span class="required">*</span></label>
+						  <div class="col-md-6">
+							 <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" value="${profileObject.lastName}" class="form-control" maxlength="255">
+						  </div>
+						</div>
+													   
+						<div class="form-group">
+						  <label class="col-md-3 control-label">Email Address<span class="required">*</span></label>
+						  <div class="col-md-6">
+							 <input type="text" id="email" name="email" placeholder="Enter Email Address" class="form-control" value="${profileObject.emailAddress}" maxlength="255">
+						  </div>
+						</div>
+
+						<div class="form-group">
+						  <label class="col-md-3 control-label">Password<span class="required">*</span></label>
+						  <div class="col-md-6 input-group">
+							 <input type="password" id="password" name="password" placeholder="Enter your password" class="form-control" value="${profileObject.password}" maxlength="100">
+							 <span class="input-group-addon">
+								<a class="help-anchor glyphicon glyphicon-exclamation-sign" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Enter a password that includes letters and numbers, and is at least 8 characters long."></a>
+							 </span>
+						  </div>
+						</div>
+						
+						<div class="form-group">
+						  <label class="col-md-3 control-label">Confirm Password<span class="required">*</span></label>
+						  <div class="col-md-6">
+							 <input type="password" class="form-control" placeholder="Enter your confirm password" name="cpassword" id="cpassword" value="${profileObject.password}" maxlength="100">
+						  </div>
+						</div>
+						
+						<div class="form-actions fluid">
+						   <div class="col-md-offset-3 col-md-9">
+							  <button type="button" onclick="saveProfile(this)" class="btn blue">Save</button>
+							  <button type="button" onclick="cancelProfileEdit('${redirectPageTo}')" class="btn default">Cancel</button>
+						   </div>
+						</div>
+
+					</form>
+					#* BEGIN PAGE CONTENT *#
+				</div>
+			</div>
+			#* END SIGN UP *#
+           
+        </div>
+        #* END PAGE CONTENT *#
+    </div>
+    <script>
+			function enableAssetSubmission(uploader,submitSelector) {
+				var submitBtn = $(uploader).closest('form').find(submitSelector);
+				submitBtn.removeAttr('disabled');
+				submitBtn.addClass('blue');
+				submitBtn.removeClass('btn-default');
+			}
+
+			function disableAssetSubmission(uploader,submitSelector) {
+				
+				var submitBtn = $(uploader).closest('form').find(submitSelector);
+				submitBtn.attr('disabled','true');
+				submitBtn.removeClass('blue');
+				submitBtn.addClass('btn-default');
+				
+			}
+		</script>
+    #* Workspace End *#
+</div>
+#* Main Content End *#
+#parse("footer.vm")

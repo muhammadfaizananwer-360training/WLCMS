@@ -1,0 +1,184 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	background:#f0f0f0;
+}
+input{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+}
+.FormWrapper{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+}
+.Panel{
+	position:relative;
+	/*background:#FFFFFF;*/
+}
+.PanelHeader{
+	background-image: url(../UI/formUI/headerStrip.png);
+	background-repeat: repeat-x;
+	height: 18px;
+	border: 1px solid #CCCCCC;
+	cursor: default;
+}
+.PanelToggleBtn{
+	height:10px;
+	padding: 5px;
+}
+.deleteAssetBtn{
+	background:url(../UI/formUI/del.png);
+	height: 23px;
+	width: 26px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.PanelText{
+	border: 1px solid #CCCCCC;
+	display: none;
+	overflow:auto;
+	overflow-x:hidden;
+	padding:10px;
+	/*width:100%;*/
+}
+.PanelHeaderText{
+	float:left;
+	text-indent: 6px;
+	margin-top: -4px;
+	display: block;
+}
+.PanelHeaderToggleImage{
+	float:left;
+}
+.opt{
+	overflow: scroll;
+	overflow-x: hidden;
+	display: block;
+	border: thin dotted #CCCCCC;
+}
+
+.gridTable{
+	border: 1px solid #999999;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+	width:100%;
+}
+.gridSNoHeaderCell{
+	height: 18px;
+	/*width:2%;*/
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #999999;
+	background-color: #CCCCCC;
+	text-align:center;
+}
+.gridSNoCell{
+	height: 18px;
+	border-right-width: 1px;
+	border-right-style: dotted;
+	border-right-color: #999999;
+	border-top-width: 1px;
+	border-top-style: dotted;
+	border-top-color: #999999;
+	text-align:center;
+}
+
+.gridHeaderCell{
+	height: 18px;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #999999;
+	background-color: #CCCCCC;
+	text-indent: 10px;
+	/*width:24%;*/
+}
+.gridCell{
+	background:#FFFFFF;
+	height: 18px;
+	width:24.5%;
+	border-right-width: 1px;
+	border-right-style: dotted;
+	border-right-color: #999999;
+	border-top-width: 1px;
+	border-top-style: dotted;
+	border-top-color: #999999;
+	padding-left:10px;
+}
+.leftFloat{
+	float:left;	
+}
+.optionField{
+	height:18px;
+	width:97%;
+	overflow:hidden;
+	/*background:#ffffff;*/
+	margin:0px;
+	padding-top:3px;
+	vertical-align:middle;
+}
+.optionField p{
+	margin:0px;
+	padding:0px;
+}
+.optionAudioSpan{
+	background:#ffffff;
+	height:18px;
+	width:87%;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.dropdownField{
+	width:99%;
+}
+
+.tableHeaderBtn{
+	text-align: right;
+}
+.addRow{
+	background:url(../UI/formUI/rowAdd.png);
+	height: 23px;
+	width: 26px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	margin: 3px;
+}
+.searchBtn{
+	background: url(../UI/formUI/searchBtn.png);
+	height:23px;
+	width:26px;
+	/*background-position: right;*/
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.deleteRow{
+	background:url(../UI/formUI/rowDelete.png);
+	height: 23px;
+	width: 26px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	margin: 3px;
+}
+.validationMsg{
+	color:#900;
+}
+#loader{
+	position:absolute;
+	width:98%;
+	height:98%;
+	background-image: url(../UI/formUI/loader.gif);
+	background-position: center center;
+	background-repeat: no-repeat;
+}

@@ -1,0 +1,179 @@
+#macro(replaceQuote $var)
+$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
+#end
+
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+
+<script type='text/javascript' src="theme/executive/scripts/countries.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+<script>
+$(document).ready(function() {
+    $("#varCourseId").val(getUrlParameter ('id'));
+	$("#frm_classroomsetup").trackChanges();
+	$("#currentFormName").val("frm_classroomsetup");
+
+	COUNTRIES.PRINT_COUNTRY("country",239,"state");
+	$('select[name^="country"] option[value="$!{syncClassVO.country}"]').attr("selected","selected");
+	// fill the state with w.r.t country
+	
+	COUNTRIES.PRINT_STATE('state', $("#country")[0].selectedIndex);
+	$('select[name^="state"] option[value="$!{syncClassVO.state}"]').attr("selected","selected");
+	
+	#set( $classSize = "0" )
+	#set( $syncClassId = "0" )
+	
+	#if($!{syncClassVO.classSize})
+		#set( $classSize = $syncClassVO.classSize  )
+	#end
+	
+		
+	
+	// 9223372036854775807 is a max long value in java
+	if($!{classSize}=="9223372036854775807" || $!{syncClassVO.classroomSetupPageData}=="0")
+	{
+		$('input[name="rdoClassroomlimit"][value="Unlimited"]').prop('checked', true);
+		//$("#maximumClassSize").val("0");
+		enableLimitField(false);
+	}else{
+		$('input[name="rdoClassroomlimit"][value="Limited"]').prop('checked', true);
+		$("#maximumClassSize").val($!{classSize});
+		enableLimitField(true);
+	}
+});
+</script>
+                <div class="page-content">
+				  <div class="portlet">
+					<div class="portlet-body">
+						<div class="page-heading">
+							<div class="col-xs-12 zero-padding">
+								<h1>#springMessage('label.classroom-setup')</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				   </div>
+				   <div class="messages" id="msgdiv" ></div>
+             #if( $!{msg}=="success")
+                    <div class="messages">
+		              <div role="alert" class="alert alert-success alert-dismissible fade in">
+		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+		                #springMessage('message.save-message')  
+					  </div>
+		            </div>
+           #end
+            <form action="saveClassroomSetup" class="form-horizontal" method="post" role="form" id="frm_classroomsetup">
+		           <div class="portlet">
+					  <div class="portlet-title" title="Class Size">
+                         <div class="caption">
+                            #springMessage('label.class-size')
+                         </div>
+                         <div class="tools">
+                         </div>
+                      </div>
+                      <div class="portlet-body form">
+                         <input type="hidden" id="varSyncClass" class="form-control" value="$!{syncClassnull}" name="varSyncClass" />
+                         <input type="hidden" id="name" class="form-control" value="$!{courseObj.name}" name="name" />
+						 <input type="hidden" id="synccoursetype" class="form-control" value="$!{courseObj.courseType}" name="synccoursetype" />
+						 <input type="hidden" id="CourseID" class="form-control" value="$!{courseObj.bussinesskey}" name="CourseID" />
+						 <input type="hidden" id="name" class="form-control" value="$!{courseObj.name}" name="name" />
+						 <input type="hidden" id="Coursestatus" class="form-control" value="$!{courseObj.courseStatus}" name="Coursestatus" />
+						 <input type="hidden" id="cType" class="form-control" value="$!{cType}" name="cType" />
+                            <div class="form-body">
+                                <div class="form-group">
+                                  <label class="col-md-3 control-label">#springMessage('label.unlimited')</label>
+                                  <div class="col-md-6">
+									<input type="radio" class="form-chkbox" checked="checked" value="#springMessage('label.unlimited')" id="rdoClassroomlimit" name="rdoClassroomlimit" onclick="enableLimitField(false);">
+                                  </div>
+                                </div>
+							    <div class="form-group">
+                                  <label class="col-md-3 control-label">#springMessage('label.limited')</label>
+                                  <div class="col-md-6">
+									<input type="radio" class="form-chkbox" value="#springMessage('label.limited')" id="rdoClassroomlimit" name="rdoClassroomlimit" onclick="enableLimitField(true);"> 
+                                  </div>
+                                </div>
+							    <div class="form-group hide" id="_limit">
+                                  <label class="col-md-3 control-label">#springMessage('label.size')<span class="required">*</span></label>
+                                  <div class="col-md-6">
+									<input type="text" id="maximumClassSize" name="maximumClassSize" class="form-control" placeholder="#springMessage('label.enter-class-size')." />
+                                  </div>
+                                </div>
+							</div>
+					  </div>
+                   </div>
+                   <div class="portlet">
+					  <div class="portlet-title" title="#springMessage('label.other-location')">
+                         <div class="caption">
+                            #springMessage('label.location')
+                         </div>
+                         <div class="tools">
+                         </div>
+                      </div>
+                      <div class="portlet-body form">
+                            <input type="hidden" id="varCourseId" class="form-control" placeholder="" name="varCourseId" />
+							<input type="hidden" id="varSyncClassId" class="form-control" value="$!{syncClassVO.syncClassId}" name="varSyncClassId" />
+							<div class="form-body">
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.location')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <input type="text" class="form-control" id="location_name" name="location_name" value="$!{syncClassVO.location}" placeholder="#springMessage('label.enter-location-name')." maxlength="255" />
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.address')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <textarea class="form-control" id="location_address" name="location_address" placeholder="#springMessage('label.enter-the-address')." cols="" rows="" maxlength="255" >$!{syncClassVO.address}</textarea>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.city')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <input type="text" class="form-control" id="location_city" name="location_city" value="$!{syncClassVO.city}" placeholder="#springMessage('label.enter-the-city-name')."  maxlength="255"  />
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.zip-postal')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <input type="text" class="form-control" id="location_postcode" name="location_postcode"  value="$!{syncClassVO.zipPostal}" placeholder="#springMessage('label.enter-the-zip-postal-number')."  maxlength="50" />
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.country')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <select class="form-control" onchange="COUNTRIES.PRINT_STATE('state', this.selectedIndex);" id="country" name="country">
+									 </select>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.state')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <select class="form-control" id="state" name="state">
+									 </select>
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.phone')<span class="required">*</span></label>
+								  <div class="col-md-6">
+									 <input type="text" class="form-control" id="location_phone" name="location_phone" value="$!{syncClassVO.phone}" placeholder="#springMessage('label.enter-contact-phone-number-for-location')."  maxlength="50" />
+								  </div>
+							   </div>
+							   <div class="form-group">
+								  <label class="col-md-3 control-label">#springMessage('label.description')</label>
+								  <div class="col-md-6">
+									 <textarea  class="form-control" id="location_description" name="location_description" placeholder="#springMessage('label.enter-additional-details-about-location')." maxlength="100">$!{syncClassVO.description}   </textarea>
+								  </div>
+							   </div>
+                            </div>
+                            <div class="form-actions fluid">
+                               <div class="col-md-offset-3 col-md-9">
+                                  <button id="saveBtn" name="saveBtn" type="Submit" class="btn blue input-small">#springMessage('button.save')</button>
+                               </div>
+                            </div>
+					  </div>
+                   </div>
+                  </form>
+                </div>
+#parse("footer.vm")
+<script src="javascript/vm_js/classroom_setup.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script> 
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>

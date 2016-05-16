@@ -1,0 +1,9 @@
+[
+#foreach($insObject in $lstclassinstructor)
+    #if( $foreach.hasNext )
+    [ "<input id='${insObject.id}' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'instructor-delete-btn')\" class='checks' value='${insObject.id}' name='classinstructor_checkboxes'>", "<a  class='anchor' href='javascript:;' data-toggle='modal' data-target='#addClassInstructorModal' onclick='loadInstructor(${insObject.id})'>${insObject.firstName}</a>", "${insObject.lastName}","${insObject.email}","${insObject.phoneNo}"],
+    #else
+    [ "<input id='${insObject.id}' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'instructor-delete-btn')\" class='checks' value='${insObject.id}' name='classinstructor_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addClassInstructorModal' onclick='loadInstructor(${insObject.id})'>${insObject.firstName}</a>", "${insObject.lastName}","${insObject.email}","${insObject.phoneNo}"]
+    #end
+#end
+]

@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Multiple Choices</title>
+<script language="javascript" src="../Custom_Template/MC_Template/js/jquery-1.7.2.js"></script>
+<script language="javascript">
+	jQuery.noConflict();
+</script>
+<script type="text/javascript" language="javascript" src="../Custom_Template/MC_Template/js/template/resize.js"></script>
+<script type="text/javascript" language="javascript" src="../Custom_Template/MC_Template/js/BrowserDetect.js"></script>
+<script type="text/javascript" language="javascript" src="../Custom_Template/MC_Template/js/dataBank.js"></script>
+<script type="text/javascript" language="javascript" src="../Custom_Template/MC_Template/js/template/Tween.js"></script>
+<script type="text/javascript" language="javascript" src="../Custom_Template/MC_Template/js/template/iscroll.js"></script>
+<link href="../Custom_Template/MC_Template/css/MC_scenerio.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="loader"></div>
+<span class="sceneTitle"><div id="title" style="margin-right:12px; margin-left:12px;" >$Heading</div></span>
+<div id="my_temp_wrapper">
+  <div id="font_percent"/>
+    <!-- Special Case only for iPhone/iPad/iPod -->
+    <div id="iaudioBtnHolder"></div>
+
+  <div id="Audio" style="position:absolute; visibility:hidden;"></div>
+  <div id="MainDiv">
+    <div id="TOP" class="TOP">
+      <div id="mainArea" class="mainArea"> <br>
+        <div id="Image" class="Image">
+          <!--  Image  --> 
+        </div>
+        <div id="scrollableMainText">
+          <div id="MainText"> 
+            <!-- <font size="+1"> Main Text </font> --> 
+          </div>
+        </div>
+      </div>
+      <div id="QOArea" class="QOArea"><br>
+        <div id="QText" class="QText">
+          <!-- Instruction & Question Text -->
+        </div>
+        <font size="-6"><br>
+        </font>
+        <div id="scrollableOption">
+          <div id="Option"> 
+            <!-- Options --> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="BOTTOM" class="BOTTOM">
+      <div style="background-image:url(../Custom_Template/MC_Template/UI/PNG/feedback.jpg);" class="Feedback">
+        <div style="position:absolute; left:2%; width:50%; height:50%;top:10%"  class="fontFm"> <font style="font-weight:bold; font-size:180%; vertical-align:middle">Feedback</font> </div>
+      </div>
+      <div id="scrollableFeedbackText">
+        <div id="FeedbackText2">
+          <!-- FeedbackText -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<bgsound></bgsound>
+</body>
+<script language="javascript" src="../Custom_Template/MC_Template/data/dbString.js"></script>
+<!--<script language="javascript" src="../Custom_Template/MC_Template/js/test.js"></script>-->
+<script language="javascript" src="../Custom_Template/MC_Template/js/template/template.js"></script>
+</html>

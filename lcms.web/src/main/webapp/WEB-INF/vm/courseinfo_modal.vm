@@ -1,0 +1,370 @@
+#* BEGIN MODALS *#
+		<div class="modals">
+			
+			#* BEGIN PREVIEW IMAGE *#
+			<div class="modal fade" id="previewImgModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title"><i class="icon-picture"></i> Image Preview</h3>
+				  </div>
+				  <div class="modal-body text-center">
+					
+					#* Image add here dynamically *#
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END PREVIEW IMAGE *#
+			
+			#* BEGIN PLAY VIDEO *#
+			<div class="modal fade" id="playVideoModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h3 class="modal-title"><i class="icon-film"></i> Play Video</h3>
+				  </div>
+				  <div class="modal-body text-center">
+					
+					<div id='previewVideoPlayer'></div>
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END PLAY VIDEO *#
+			
+			#* BEGIN VIDE ADD *#
+			<div class="modal fade" id="addVAssetModal" tabindex="-1" role="dialog" aria-hidden="true">
+				<form action="uploadVisualDemoAsset" method="Post" id="frmUploadVideoDemoAsset" >
+					<input type="hidden" id="slideIdForAsset_video" name="slideIdForAsset_video">
+					<input type="hidden" id="courseIdForAsset_video" name="courseIdForAsset_video">
+					<input id="videoFilePath" name="videoFilePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." data-rule-extension="mp4" data-msg-extension="File does not match the selected asset type."/>
+				  <div class="modal-dialog modal-lg">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" onclick="detachOrCancelPress();saveAndAttachAsset(false)" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('label.close')</span></button>
+						<h3 class="modal-title">Upload and Attach Video to Course</h3>
+					  </div>
+					  <div class="modal-body">
+						#* BEGIN FORM *#
+						<div class="form-body">
+						   <div class="form-group">
+							  <label class="control-label-2">#springMessage('label.asset-name')<span class="required">*</span></label>
+							  <div>
+								<input type="text" class="form-control" name="videoDemoAssetName" id="videoDemoAssetName" placeholder="#springMessage('label.enter-asset-name')">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="control-label-2">#springMessage('label.keywords')</label>
+							  <div>
+								<input type="text" class="form-control"  name="videoAssetKeywords" id="videoAssetKeywords" data-role="tagsinput" placeholder="#springMessage('label.keywords-default').">
+							  </div>
+						   </div>
+						   <div class="form-group">
+							  <label class="control-label-2">#springMessage('marketing.description')</label>
+							  <div>
+								 <textarea class="form-control" name="videoAssetDescription" id="videoAssetDescription" rows="3"></textarea>
+							  </div>
+						   </div>
+						</div>
+						#* END FORM *#
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn blue" onClick="saveVideo(); return false;">#springMessage('button.save')</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal" onclick="detachOrCancelPress();saveAndAttachAsset(false)">#springMessage('button.cancel')</button>
+					  </div>
+					</div>
+				  </div>
+				</form>
+			</div>
+			#* END VIDE ADD *#
+			
+			#* BEGIN VIDEO SEARCH *#
+			<div class="modal fade" id="searchVAssetModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('label.close')</span></button>
+					<h3 class="modal-title">Find and Attach Video to Course</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* BEGIN GRID TABLE *#
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" class="form-control"  Onkeydown="if (event.keyCode == 13) document.getElementById('btsearchVAAsset').click()"  placeholder="Search Asset" id="txtVideoSearchTerm" name="txtVideoSearchTerm" required data-msg-required="Please enter asset name here.">
+									  <span class="input-group-btn">
+										<button id="btsearchVAAsset" type="button" class="btn blue" onClick="searchVAAsset()" data-loading-text="Loading..." ><i class="search-icon-white"></i> Find</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>#springMessage('label.asset-name')</th>
+										  <th>#springMessage('royalty_settings.label.author.type')</th>
+										  <th>#springMessage('label.duration')</th>
+										  <th>#springMessage('label.size')</th>
+										  <th>#springMessage('label.version')</th>
+										  <th>#springMessage('marketing.description')</th>
+										  <th>#springMessage('label.preview')</th>
+									   </tr>
+									</thead>
+									<tbody id="lstVideoBody" height="100">
+									   
+										
+									</tbody>
+								</table>
+							</div>
+					   </div>
+					</div>
+					#* END GRID TABLE *#
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" onClick="acceptMarketingVideoDialogBox () ">#springMessage('label.attach')</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">#springMessage('button.cancel')</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END VIDEO SEARCH *#
+			
+			#* BEGIN IMAGE ADD *#
+			<div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-hidden="true">
+				<form action="uploadAuthorImage" method="Post" id="frmAuthorImage" >
+				<input id="filePath" name="filePath" type="hidden" class= "uploaded-file" required data-msg-required="File uploading has not been completed yet." />
+				<input type="hidden" id="id" name="id" />
+				<input type="hidden" id="assetUploadType" name="assetUploadType" /><input type="hidden" id="image_width" name="image_width"/>
+				<input type="hidden" id="image_height" name="image_height"/>
+				<input type="hidden" id="image_width" name="image_width"/>
+				<input type="hidden" id="image_height" name="image_height"/>
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" onclick="detachOrCancelPress();saveAndAttachAsset(false)" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('label.close')</span></button>
+					<h3 class="modal-title">Upload and Attach Image to Course</h3>
+				  </div>
+				  <div class="modal-body">
+					#* BEGIN FORM *#
+					<div class="form-body">
+					   <div class="form-group">
+						  <label class="control-label-2">#springMessage('label.asset-name')<span class="required">*</span></label>
+						  <div>
+							<input type="text" class="form-control"  name="AuthorImageName" id="AuthorImageName" placeholder="#springMessage('label.asset-name')">
+						  </div>
+					   </div>
+					   <div class="form-group">
+						  <label class="control-label-2">#springMessage('label.keywords')</label>
+						  <div>
+							<input type="text" class="form-control" name="AuthorImageKeywords" id="AuthorImageKeywords" data-role="tagsinput" placeholder="#springMessage('label.keywords-default').">
+						  </div>
+					   </div>
+					   <div class="form-group">
+						  <label class="control-label-2">#springMessage('label.description')</label>
+						  <div>
+							 <textarea class="form-control" name="AuthorImageDescription" id="AuthorImageDescription" rows="3"></textarea>
+						  </div>
+					   </div>
+					</div>
+					#* END FORM *#
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn blue" onclick="uploadAuthorImage (this.form, event)">#springMessage('button.save')</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" onclick="detachOrCancelPress();saveAndAttachAsset(false)">#springMessage('button.cancel')</button>
+				  </div>
+				</div>
+			  </div>
+			  </form>
+			</div>
+			#* END IMAGE ADD *#
+			
+			#* BEGIN IMAGE SEARCH *#
+			<div class="modal fade" id="searchAssetModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('label.close')</span></button>
+					<h3 class="modal-title">#springMessage('label.attach-image-course')</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* BEGIN GRID TABLE *#
+					<div class="form-body">							
+					   <div class="form-group">
+							<div>
+								<div class="btn-group pull-right zero-padding col-md-6">
+									<div class="input-group">
+									  <span class="input-group-btn">
+										<label>Search<span class="search-required">*</span></label>
+									  </span>
+									  <input type="text" id="txtAudioAssetSearchTerm"  Onkeydown="if (event.keyCode == 13) document.getElementById('searchAssets').click()" class="form-control"  placeholder="#springMessage('label.search.visual.asset')">
+									 
+									  <span class="input-group-btn">
+										<button onClick="searchAssets(this)" id="searchAssets" type="button" class="btn blue"><i class="search-icon-white"></i> #springMessage('button.find')</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+							<br /><br />
+							<div class="table-scrollable">
+								<table class="table table-str-border table-hover table-bordered white-bg">
+									<thead>
+									   <tr class="td-header-bottom-border">
+										  <th></th>
+										  <th>#springMessage('label.asset-name')</th>
+										  <th>#springMessage('royalty_settings.label.author.type')</th>
+										  <th>#springMessage('label.dimension')</th>
+										  <th>#springMessage('label.dimension')</th>
+										  <th>#springMessage('label.version')</th>
+										  <th>#springMessage('marketing.description')</th>
+										  <th>#springMessage('label.preview')</th>
+									   </tr>
+									</thead>
+									<tbody id="lstAudioAsset" height="100">
+									   
+										
+									</tbody>
+									
+								</table>
+							</div>
+					   </div>
+					</div>
+					#* END GRID TABLE *#
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" onClick="acceptDialog()" class="btn blue">#springMessage('button.accept')</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" >#springMessage('button.cancel')</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END IMAGE SEARCH *#
+			
+			#* BEGIN MULTI MODAL *#
+			<div class="modal fade" id="multiModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('label.close')</span></button>
+					<h3 class="modal-title">Title</h3>
+				  </div>
+				  <div class="modal-body text-center">
+					
+					#* BEGIN CREATE 0 *#
+					<a id="icc_browse_0" href="#javascript:;" class="big-icon-btn">
+						<i class="icon-plus"></i>
+						<div>Upload</div>
+						<p>#springMessage('label.click.upload.asset')</p>
+					</a>
+					#* END CREATE 0 *#
+					
+					#* BEGIN CREATE 1 *#
+					<a id="icc_browse_1" href="#javascript:;" class="big-icon-btn">
+						<i class="icon-plus"></i>
+						<div>Upload</div>
+						<p>#springMessage('label.click.upload.asset')</p>
+					</a>
+					#* END CREATE 1 *#
+					
+					#* BEGIN CREATE 2 *#
+					<a id="icc_browse_2" href="#javascript:;" class="big-icon-btn">
+						<i class="icon-plus"></i>
+						<div>Upload</div>
+						<p>#springMessage('label.click.upload.asset')</p>
+					</a>
+					#* END CREATE 2 *#
+					
+					#* BEGIN CREATE 3 *#
+					<a id="icc_browse_3" href="#javascript:;" class="big-icon-btn">
+						<i class="icon-plus"></i>
+						<div>Upload</div>
+						<p>#springMessage('label.click.upload.asset')</p>
+					</a>
+					#* END CREATE 3 *#
+					
+					#* BEGIN FIND 0 *#
+					<a id="icc_find_0" href="javascript:openFindModal(0);" class="big-icon-btn">
+						<i class="icon-search"></i>
+						<div>Find</div>
+						<p>#springMessage('label.click.find.asset')</p>
+					</a>
+					#* END FIND 0 *#
+					
+					#* BEGIN FIND 1 *#
+					<a id="icc_find_1" href="javascript:openFindModal(1);" class="big-icon-btn">
+						<i class="icon-search"></i>
+						<div>Find</div>
+						<p>#springMessage('label.click.find.asset')</p>
+					</a>
+					#* END FIND 1 *#
+					
+					#* BEGIN FIND 2 *#
+					<a id="icc_find_2" href="javascript:openFindModal(2);" class="big-icon-btn">
+						<i class="icon-search"></i>
+						<div>Find</div>
+						<p>#springMessage('label.click.find.asset')</p>
+					</a>
+					#* END FIND 2 *#
+					
+					#* BEGIN FIND 3 *#
+					<a id="icc_find_3" href="javascript:openFindModal(3);" class="big-icon-btn">
+						<i class="icon-search"></i>
+						<div>Find</div>
+						<p>#springMessage('label.click.find.asset')</p>
+					</a>
+					#* END FIND 3 *#
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">#springMessage('button.cancel')</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END MULTI MODAL *#
+			
+			#* BEGIN CONFIRMATION *#
+			<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('label.close')</span></button>
+					<h3 class="modal-title">
+						
+						#* Dynamic Title *#
+						
+					</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* Dynamic Message *#
+					
+				  </div>
+				  <div class="modal-footer">
+				  
+					#* Dynamic Action Buttons *#
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END CONFIRMATION *#
+			
+		</div>
+		#* END MODALS *#

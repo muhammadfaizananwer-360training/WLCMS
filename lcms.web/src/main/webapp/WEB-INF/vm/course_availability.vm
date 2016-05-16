@@ -1,0 +1,193 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("branding.vm")
+<script src="javascript/vm_js/availability.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="theme/executive/plugins/datepicker/css/datepicker.css" />
+<script type="text/javascript" src="theme/executive/plugins/datepicker/js/bootstrap-datepicker.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+
+
+#* BEGIN PAGE CONTENT *#
+       <div class="page-content">
+				
+				   #* BEGIN PAGE HEADINGS *#
+				   <div class="portlet">
+						<div class="portlet-body">
+							<div class="page-heading">
+								<div class="col-xs-12 zero-padding">
+									<h1>#springMessage('label.course-availability')</h1>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+				   </div>
+                   #* END PAGE HEADINGS *#
+				   
+				   <br>
+				   
+				   	#* start - success message *#
+                     #if( $!{msg}=="success" )
+                            <div class="messages">
+        		              <div role="alert" class="alert alert-success alert-dismissible fade in">
+        		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span></button>
+        		                #springMessage('message.save-message')
+        					  </div>
+        					 
+        		            </div>
+							<script type="text/javascript"> elementFadeOut('.messages'); </script>
+        				   
+                     #elseif( $!failureMessage )  
+                       <div class="messages">
+                       <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                        <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                         $!{failureMessage} 
+                        </div>
+					   </div>
+					   <script type="text/javascript"> elementFadeOut('.messages'); </script>
+                   #end
+				    <form class="form-horizontal" action ="updadeCourseAvailability" method="Post" role="form"  id="frm_availability" >
+                        <input type="hidden"  name="name" id="name" value="$!availability.courseName">						
+						<input type="hidden"  name="cType" id="cType" value="4">						
+						<input type="hidden"  name="businessKey" id="businessKey" value="$!availability.businessKey">                 
+							#* BEGIN TIMEFRAME FORM *#
+		                   <div class="portlet portlet-btn">
+		                      <div class="portlet-title" title="#springMessage('label.expiration')">
+		                         <div class="caption">
+		                            #springMessage('label.expiration')
+		                         </div>
+		                         <div class="tools">
+		                            <a href="" class="collapse"></a>
+		                         </div>
+		                      </div>
+		                     <div class="portlet-body" style="display: block;">
+		                      <div class="form-horizontal max-width-800">
+		                            <div class="form-body">
+									  <div class="form-group">
+									   <div class="col-md-10">
+										  <label class="control-label-2">#springMessage('label.availibilty.expiration.caption')</label>										 
+										  #set($expDate = '')
+										  #if(!$!availability.courseExpiration.isEmpty())
+											#set($expDate = $!converter.parseDate($!availability.courseExpiration, 'yyyy-MM-dd'))
+											#set($expDate =  $!date.format('MM-dd-yyyy', $!expDate))
+										  #end
+											 <div class="date input-group"  id ="courseExpiration" data-date="$!expDate" data-date-format="mm-dd-yyyy">
+												<input class="form-control" id="expDate_div" name="courseExpiration" type="text" value="$!expDate" readonly="" placeholder="#springMessage('label.availibilty.expiration.placeholder')">
+												<span class="input-group-btn add-on">
+													<button class="btn default" type="button">
+													<i class="icon-calendar"></i>
+													</button>
+												</span>
+											 </div>
+										  </div>
+									    </div>
+									   <div class="form-group">
+									    <div class="col-md-10">
+										  <label class="control-label-2">#springMessage('label.availibilty.learneraccess.caption')</label>										 
+											<input type="text" class="form-control" id="learnerAccessToCourse" placeholder="#springMessage('label.availibilty.learneraccess.placeholder')" name="learnerAccessToCourse" #if($!availability.learnerAccessToCourse != "0") value="$!availability.learnerAccessToCourse" #else value="" #end />											
+										</div> 
+									   </div>
+									</div>
+								</div>
+							  </div>
+						   </div>
+		                   #* END TIMEFRAME FORM *#
+							
+							 #* BEGIN FLAGS FORM *#
+			                   <div class="portlet portlet-btn">
+			                      <div class="portlet-title" title="#springMessage('lable.availibilty.settings')">
+			                         <div class="caption">
+			                            #springMessage('lable.availibilty.settings')
+			                         </div>
+			                         <div class="tools">
+			                            <a href="" class="collapse"></a>
+			                         </div>
+			                      </div>
+								  <div class="portlet-body">
+						<div class="form-horizontal">
+							<div class="col-md-12">
+								<div class="table-scrollable">
+									<table class="table">
+										<thead>
+										   <tr class="dataTable-head">
+												<th colspan="2">#springMessage('lable.availibilty.answeryesNo')</th>
+										   </tr>
+										</thead>
+										<tbody>
+										   <tr>
+												<td>#springMessage('lable.availibilty.flag.mobile.question')<br><span class="help-block">#springMessage('lable.availibilty.flag.mobile.mean')</span></td>
+												<td class="text-right">
+													<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+													#springBind("availability.eligibleForMobileTablet")								
+													<input name="eligibleForMobileTablet"  type="checkbox" #if ( ${status.value} == "false") checked #end value="true">
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td>#springMessage('lable.availibilty.flag.thirdparty.question')<span class="help-block">#springMessage('lable.availibilty.flag.thirdparty.mean')</span></td>
+												<td class="text-right">
+												 #set($offeredForDistribution = 'true')												 
+												 #if($!availability.eligibleForDistrThruAICC && $!availability.eligibleForDistrThruSCORM && $!availability.eligibleForVARresale)
+													#set($offeredForDistribution = 'false')
+												 #end
+													<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">													 						
+													<input name="offeredForDistribution"  type="checkbox" #if ( ${offeredForDistribution} == "true") checked #end   value="true"  >
+													</div>
+												</td>
+										   </tr>
+										   <tr>
+												<td>#springMessage('lable.availibilty.flag.ship.question')<span class="help-block">#springMessage('lable.availibilty.flag.ship.mean')</span></td>
+												<td class="text-right">
+													<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+														#springBind("availability.requireShippableItems")								
+													<input name="requireShippableItems"  type="checkbox" #if ( ${status.value} == "true") checked #end   value="true">
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					  </div>	  
+									  </div>	  
+			                      <div class="portlet-body form">
+			                
+			                           
+							 <div class="portlet">
+										<div class="col-md-8">
+   									       <input type="hidden" id="id" name="id" value="$!availability.id"/>
+										  <button type="Submit" class="btn blue">#springMessage('button.save')</button>
+										  <button type="button" class="btn default" onClick="location.href='/lcms/editCourseOverview?id=$!availability.id&cType=4'">#springMessage('button.cancel')</button>   	                            </div>
+										</div>
+									 
+									</div>
+								  </div>
+							   </div>
+			                   #* END FLAGS FORM *#
+							
+						</form>
+					  
+                   #* END CATEGORY FORM *#
+				   
+				   
+				   
+				  
+				   
+                </div>
+#* END PAGE CONTENT *#
+
+<script> 
+
+$(function() {
+    $("input[type='checkbox']").change(function() {
+		if(this.checked){
+			this.value="true";			
+		}else{
+			this.value="false";
+		}	
+    })
+})	
+</script>
+
+#parse("footer.vm")
+

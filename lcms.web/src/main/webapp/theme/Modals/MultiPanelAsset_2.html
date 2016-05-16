@@ -1,0 +1,62 @@
+<!-- BEGIN HTML -->
+<div id="accordionMM" class="multi-panels">
+  <div class="panel">
+	<div id="mainScreenMM" class="panel-collapse collapse in">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h3 class="modal-title">Attached Visual Asset</h3>
+	  </div>
+	  <div class="modal-body text-center">
+	
+		<!-- BEGIN CREATE -->
+		<a title="Upload Asset and Attach to Slide" onclick="getRelatedRefreshedModal('UploadImageAsset');" href="javascript:;" class="big-icon-btn" data-target="#addVisualAssetModal" data-toggle="modal">
+			<i class="icon-plus"></i>
+			<div>Upload</div>
+			<p>Click here to upload asset.</p>
+		</a>
+		<!-- END CREATE -->
+		
+		<!-- BEGIN FIND -->
+		<a data-toggle="collapse" data-parent="#accordionMM" href="#findScreenMM" class="big-icon-btn">
+			<i class="icon-search"></i>
+			<div>Find</div>
+			<p>Click here to find asset.</p>
+		</a>
+		<!-- END FIND -->
+		
+		<!-- BEGIN FIND -->
+		<a href="javascript:;" onclick="TEMPLATE.RETURN_DYNAMIC_MODAL('','','')" class="big-icon-btn">
+			<i class="icon-minus red-text"></i>
+			<div>Detach</div>
+			<p>Click here to detach asset.</p>
+		</a>
+		<!-- END FIND -->
+		
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	  </div>
+	</div>
+  </div>
+  <div class="panel">
+	<div id="addScreenMM" class="panel-collapse collapse">
+	   
+	   <!-- Modal One -->
+	   
+	</div>
+  </div>
+  <div class="panel">
+	<div id="findScreenMM" class="panel-collapse collapse">
+	  
+	  <!-- Modal Two -->
+	  
+	</div>
+  </div>
+</div>
+<!-- END HTML -->
+
+<!-- BEGIN SCRIPT -->
+<script type="text/javascript">
+	TEMPLATE.MODAL_VIEW($("#findScreenMM"),"theme/Modals/SearchImageAsset.html");
+</script>
+<!-- END SCRIPT -->

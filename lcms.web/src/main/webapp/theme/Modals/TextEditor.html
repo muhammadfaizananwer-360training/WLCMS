@@ -1,0 +1,33 @@
+<!-- BEGIN HTML -->
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<h3 class="modal-title" id="dynamic-modal-label">
+		
+		<!-- Dynamic Title -->
+		
+	</h3>
+</div>
+<div class="modal-body">
+	
+	<!-- Dynamic Body -->
+	<textarea class="form-control" id="ckModalText" name="ckModalText" rows="4"></textarea>
+	
+</div>
+<div class="modal-footer">
+	
+	<button class="btn blue" type="button" onclick="TEMPLATE.RETURN_TEXT_MODAL()">Accept</button>
+	<button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+	
+</div>
+<!-- END HTML -->
+
+<!-- BEGIN SCRIPT -->
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#dynamic-modal-label").html($(TEMPLATE.CACHE).data("modal-title"));
+	$("#ckModalText").val($(TEMPLATE.CACHE).find(".content").html());
+	APP.CKEDITOR("ckModalText","TITLE");
+})
+</script>
+<!-- END SCRIPT -->

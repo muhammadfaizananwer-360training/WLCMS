@@ -1,0 +1,84 @@
+<textarea style="display:none" id="LLOtemplate">
+	<tr><td><input type="checkbox" class="checks" onclick="APP.CHECKBOX(this,false)" /></td>
+	<td><input type="text" maxlength="50" value="" id="LLOname" name="LLOname" placeholder="Enter learning objective name." class="form-control lloEmptyCheck checkForDuplicate lloCommaCheck" onfocusout="onKeyFocusOut(this.form)" /></td>
+	</tr>
+</textarea>
+
+<div id="setupform" class="panel-body" style="display:none">
+		
+		#* BEGIN LESSON SETUP FORM *#
+		<div class="portlet">
+		  <div class="portlet-title" title="Lesson Setup">
+			 <div class="caption">
+				Lesson Setup
+			 </div>
+			 <div class="tools">
+			 </div>
+		  </div>
+		  <div class="portlet-body form">
+		
+			#* BEGIN FORM *#
+			<form class="form-horizontal" role="form" id="lessonSetupFormEmbedded">
+				<div class="form-body">
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom"data-html="true"  data-content=#springMessage('lesson.setup.title')">Title</span><span class="required">*</span></label>
+					  <div class="col-md-6">
+						 <input type="text" id="name"  name="name" class="form-control nameEmptyCheck"  placeholder="Enter lesson title." value="Lesson 1"/>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('lesson.setup.description')">Description</span></label>
+					  <div class="col-md-6">
+						 <textarea class="form-control" rows="3" name="description" id="description" >Fake description for a mockup flow testing.</textarea>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label">
+						<span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('lesson.setup.lessonlearningobjective')">Lesson Learning Objectives</span>
+					  </label>
+					  <div class="col-md-6">
+						What are the 3-5 key things your learners should be able to do at the end of this lesson? Add these things as lesson learning objective.
+					  </div>
+				   </div>
+				   
+				   <div class="form-group">
+					  <div class="col-md-offset-3 col-md-6">
+						<div class="table-scrollable">
+							<table id="llotable2" class="table table-bordered">
+							  <thead>
+								<tr class="td-header">
+								  <th colspan="2">
+									<div class='btn-group'>
+										<a id="addObjective" name="addObjective" class="btn btn-default" href="javascript:;" onclick="APP.LLO(this,true, false);" title="Add lesson learning objective"><i class="icon-plus blue-text"></i></a>
+										<a id="removeObjective" name="removeObjective" class="btn btn-default" href="javascript:;" title="Delete" onclick="APP.LLO(this,false);"><i class="icon-minus red-text"></i></a>
+									</div>
+								  </th>
+								</tr>
+								<tr class="td-header-bottom-border bg-gray-2">
+								  <th width="10"><input id="learningObjectiveCheckbox" type="checkbox" class="checker" onclick="APP.CHECKBOX(this,true)" /></th>
+								  <th>Click the Add button ( + ) to add a learning objective.</th>
+								</tr>
+							  </thead>
+							  <tbody>
+								
+							  </tbody>
+							</table>
+						</div>
+					  </div>
+					</div>	
+				</div>
+
+			</form>
+			#* END FORM *#
+			
+		  </div>
+		</div>
+		#* END LESSON SETUP FORM *#
+	
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a id = "footer" href="#setup_0" data-parent="#lessons_accordion_0" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE LESSON SETUP</a>
+		</div>
+		#* END CLOSE BUTTON *#
+		
+</div>

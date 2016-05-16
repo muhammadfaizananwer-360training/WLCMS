@@ -1,0 +1,161 @@
+#* BEGIN QUESTION COMPONENT BODY *#
+<div id="exam_0_bank_0_question_0" class="panel-collapse a2 collapse" style="height: auto;"> 
+  <div class="panel-body">
+	
+	#* BEGIN QUESTION *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div class="caption">
+			Question Components
+		 </div>
+		 <div class="tools">
+			
+		 </div>
+	  </div>
+	  <div class="portlet-body form">
+	  
+		<div class="form-horizontal">
+		
+			#* BEGIN COMPONENTS 1 *#
+			<div class="portlet portlet-btn" id="examQuestionCmpnntCmplxty">
+			  <div class="portlet-title" title="Complexity">
+				<div class="caption">
+					<h5><strong>Complexity</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form" style="display: none;" >
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<select class="form-control" id="qustnCmpnntComplexity" name="qustnCmpnntComplexity">
+							<option value="0">None</option>
+							<option value="1">1 – Recall</option>
+							<option value="2">2 - Comprehension</option>
+							<option value="3">3 - Application</option>
+							<option value="4">4 - Analysis</option>
+							<option value="5">5 - Synthesis</option>
+						</select>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 1 *#
+		
+			#* BEGIN COMPONENTS 2 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Question type">
+				<div class="caption">
+					<h5><strong>Question type</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+							<select class="form-control" id="qustnCmpnntQustnTyp" name="qustnCmpnntQustnTyp">
+								<option value="Single Select MCQ">Multiple-choice Single Select</option>
+							</select>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 2 *#
+		
+			#* BEGIN COMPONENTS 3 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Question">
+				<div class="caption">
+					<h5><strong>Question</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						 <textarea class="ckeditor form-control" name="qustnCmpnntQustnLbl" id="qustnCmpnntQustnLbl" rows="4">Question - A</textarea>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 3 *#
+		
+			#* BEGIN COMPONENTS 4 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Answer Choices">
+				<div class="caption">
+					<h5><strong>Answer Choices</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<div class="form-list">
+							<div>
+								<input type="checkbox" name="chkAnswrRndmztnForUpdateExam" id="chkAnswrRndmztnForUpdateExam">
+								<span>Disable answer choice randomization</span>
+							</div>
+						</div>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<div class="table-scrollable">
+							<table  class="table table-str-border table-bordered">
+							  <thead>
+								<tr class="td-header">
+								  <th colspan="8">
+									<div class='btn-group'>
+										<a data-toggle="modal" data-target="#addExamAnsChoiceModalForUpdate" data-backdrop="static" data-keyboard="false" onclick="chk_CorrectAnswer_update()" class="btn btn-default" href="javascript:;" title="Add Answer Choice to Question"><i class="icon-plus blue-text"></i></a>
+										<a id="btnUpdtExamDelQstnOptionTemp" data-backdrop="static" data-keyboard="false" class="btn btn-default" onclick="delete_answers_choice(this, 'UPDATE_EXAM')" href="javascript:;" title="Delete Selected Answer Choice"><i class="icon-minus red-text"></i></a>
+									</div>
+								  </th>
+								</tr>
+								<tr class="td-header-bottom-border">
+								<th width="10"><input id="chkUpdtExamAnswersSlctAllTemp" type="checkbox" onclick="ANS_CHECKBOX(this,true)" class="checker"></th>
+								  <th>Choice</th>
+								  <th>Correct</th>
+								  <th>Feedback</th>
+								</tr>
+							  </thead>
+							   <tbody height="25" id="tbodytblAnswerChoicesUpdateExam">
+        					   </tbody>
+							</table>
+						</div>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 4 *#
+			
+		</div>
+		 
+	  </div>
+	</div>
+	#* END QUESTION *#
+	
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id="qustnCmpnntClseLnk" href="#exam_0_bank_0_question_0" data-parent="#exam_0_bank_0_questions" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUESTION</a>
+	</div>
+	#* END CLOSE BUTTON *#
+	
+  </div>
+ </div>
+#* END QUESTION COMPONENT BODY *#

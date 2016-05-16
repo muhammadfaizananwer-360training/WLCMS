@@ -1,0 +1,100 @@
+<div class="modals">
+
+
+
+#* BEGIN CONFIRMATION *#
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="confirmation-label">
+
+                    #* Dynamic Title *#
+
+                    </h3>
+                </div>
+                <div class="modal-body">
+
+                #* Dynamic Message *#
+
+                </div>
+                <div class="modal-footer">
+
+                #* Dynamic Action Buttons *#
+
+                </div>
+            </div>
+        </div>
+    </div>
+#* END CONFIRMATION *#
+#* BEGIN CLASS *#
+
+    <div class="modal fade" id="addClassInstructorModal" tabindex="-1" role="dialog" aria-labelledby="add-slide-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" OnClick="cancelLesson()" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="add-lesson-label"><i class="icon-map-marker"></i> Add Instructor</h3>
+                </div>
+                <div class="modal-body">
+                <form id="frm_classinstructor_modal" class="form-horizontal" role="form">
+                    <input type="hidden" id="classInstructorId" name="pages_title"  >
+                    <div class="form-body">
+                    ##					BEGIN FORM
+                       #* <div class="form-horizontal" role="form">*#
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <label class="control-label-2"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.instructor.firstname')>#springMessage('label.instructor.firstname')</span><span class="required">*</span></label>
+
+                                    <input id="firstName" name="firstName" type="text" class="form-control nameEmptyCheck"  placeholder='#springMessage("placeholder.instructor.firstname")' value="" maxlength="50"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <label class="control-label-2"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.instructor.lastname')>#springMessage('label.instructor.lastname')</span><span class="required">*</span></label>
+                                    <input id="lastName" name="lastName" type="text" class="form-control nameEmptyCheck"  placeholder='#springMessage("placeholder.instructor.lastname")' value="" maxlength="50"/>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <label class="control-label-2"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.instructor.email')>#springMessage('label.instructor.email')</span><span class="required">*</span></label>
+
+                                    <input id="email" name="email" type="text" class="form-control nameEmptyCheck"  placeholder='#springMessage("placeholder.instructor.email")' value="" maxlength="50"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <label class="control-label-2"><span  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"  data-content=#springMessage('label.instructor.phone')>#springMessage('label.instructor.phone')</span><span class="required">*</span></label>
+
+                                    <input id="phoneNo" name="phoneNo" type="text" class="form-control nameEmptyCheck"  placeholder='#springMessage("placeholder.instructor.phone")' value="" maxlength="50"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        #*</div>*#
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button""  id="submitClassInstuctor"  OnClick="addClassInstructor()" class="btn blue">#springMessage('button.save')</button>
+                        <button type="button" class="btn btn-default" onClick="reset_modal();" data-dismiss="modal">#springMessage('button.cancel')</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+#* END ADD LOCATION *#
+</div>
+
+
+
+<script>
+
+
+</script>

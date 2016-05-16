@@ -1,0 +1,415 @@
+<div id="quizbar" style="display:none">
+	#* BEGIN QUIZ *#
+	<div class="panel panel-default">
+	   <div class="panel-heading">
+			<div class="holder">
+				<div class="anchors move-btn">
+				</div>
+				<div class="anchors">
+					<a id ="quizSetupTitle" onClick="getQuizSetup(this,event)" href="#lesson_1_quiz_1_policies" data-parent="#quiz_container" data-toggle="collapse" class="accordion-toggle" title="Quiz Setup">
+						<i class="icon-cog"></i>
+					</a>
+				</div>
+				<div class="panel-title">
+					<a id ="quizBankTitle" onClick="quizList(this)" href="#lesson_1_quiz_1_banks" data-parent="#quiz_container" data-toggle="collapse" class="accordion-toggle">
+						<i class="glyphicon glyphicon-file inside-icon-quiz"></i> Quiz 1
+					</a>
+				</div>
+				<div class="remove-btn" title="Delete" onclick="removeQuiz(this)">
+					<i class="icon-remove"></i>
+				</div>
+			</div>
+	   </div>
+		#* BEGIN POLICIES *#
+        <div id="lesson_1_quiz_1_policies_" class="panel-collapse collapse a1">
+          <div class="panel-body">
+        	#* FORM *#
+          </div>
+        </div>
+        #* END POLICIES *#
+        #* BEGIN PANEL BODY *#
+        <div id="lesson_1_quiz_1_banks_" class="panel-collapse collapse a2">
+          <div class="panel-body">
+        	#* LIST *#
+          </div>
+        </div>
+        #* END PANEL BODY *#
+	</div>
+	#* END QUIZ *#
+</div>
+<div id="quizSetup" style="display:none" class="panel-body">
+	  #* BEGIN POLICIES *#
+		#* BEGIN QUIZ SETUP FORM *#
+		<div class="portlet">
+		  <div class="portlet-title sub">
+			 <div class="caption">
+				Quiz Setup
+			 </div>
+			 <div class="tools">
+			 </div>
+		  </div>
+		  <div class="portlet-body form">
+			  <form class="form-horizontal" role="form" id="frmEditQuizSetup">
+				<div class="form-body">
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.questions-per-quiz')"
+>Number of target questions per quiz</label>
+					  <div class="col-md-6">
+						<input type="text" class="form-control" placeholder="Enter value in numeric" value="10" id="embnoTargetQuestions" name="embnoTargetQuestions" readonly="readonly">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.random-questions')"
+>Randomize questions</label>
+					  <div class="col-md-6">
+						<input type="checkbox" class="form-chkbox" value="1" id="embchkrandomizeQuestions" name="embchkrandomizeQuestions" checked="checked">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.random-anwers')"
+>Randomize answers</label>
+					  <div class="col-md-6">
+						<input type="checkbox" class="form-chkbox" value="1"  id="embchkrandomizeAnswers" name="embchkrandomizeAnswers" checked="checked">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.time-permitted-for-quiz')"
+>Time permitted for quiz (minutes)</label>
+					  <div class="col-md-6">
+						<input type="text" class="form-control" placeholder="Enter value in numeric"  id="embtimeforQuiz" name="embtimeforQuiz"  value="15">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.grade-questions')"
+>Grade questions</label>
+					  <div class="col-md-6">
+						<select class="form-control"  id="embopgradeQuestions" name="embopgradeQuestions">
+							<option value="AfterEachQuestionIsAnswered">After each question is answered</option>
+							<option value="AfterAssessmentIsSubmitted">After quiz is submitted</option>
+						</select>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.allow-review-after-grading')"
+>Allow review after grading</label>
+					  <div class="col-md-6"   >
+						<input type="checkbox" class="form-chkbox" value="1" checked="checked" id="emballowReviewaftGrading" name="emballowReviewaftGrading">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.score-required-to-pass-the-quiz')"
+>Score required to pass quiz</label>
+					  <div class="col-md-6"  >
+						<input type="text" class="form-control" placeholder="Enter value in numeric" id="embscorePassQuiz" name="embscorePassQuiz" value="70">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.number-of-attempt-permitted')"
+>Number of attempts permitted</label>
+					  <div class="col-md-6">
+						<input type="text" class="form-control" placeholder="Enter value in numeric"  id="embnoAttemptsPermitted" name="embnoAttemptsPermitted" value="3">
+					  </div>
+				   </div>
+				   <div class="form-group" id="MaxAttempHandlerDiv_Quiz" tabindex="-1">
+					  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('qs.action-to-take-if-fail-to-pass')"
+>Action to take if fail to pass</label>
+					  <div class="col-md-6">
+						<select class="form-control"  id="embactionOnFailtoPass" name="embactionOnFailtoPass">
+							<option value="Retake Lesson">Retake lesson</option>
+							<option value="Go To Next Lesson">Go to next lesson</option>
+							<option value="Lock Course">Lock course</option>
+						</select>
+					  </div>
+				   </div>
+				</div>
+			 </form>
+		  </div>
+		</div>
+		#* END QUIZ SETUP FORM *#
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a id="setupfooter" href="#lesson_1_quiz_1_policies" data-parent="#lesson_1_quiz_1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUIZ SETUP</a>
+		</div>
+		#* END CLOSE BUTTON *#
+	  #* END POLICIES *#
+</div>
+<div id="quizList" style="display:none">
+	<div class="panel-body">
+		#* BEGIN QUESTION BANKS *#
+		<div class="portlet">
+		  <div class="portlet-title sub">
+			 <div class="caption">
+				Question Banks
+			 </div>
+			 <div class="tools">
+			 </div>
+		  </div>
+		  <div class="portlet-body">
+			#* BEGIN BANK PORTLET *#
+			<div class="portlet">
+			  <div class="portlet-body">
+				#* BEGIN BANK ACCORDIONS *#
+				<div class="panel-group accordion page-panel" id="lesson_1_quiz_1_bank_1_">
+					#* BANK LIST *#
+				</div>
+				#* END BANK ACCORDIONS *#
+			  </div>
+			</div>
+			#* END BANK PORTLET *#
+		  </div>
+		</div>
+		#* END QUESTION BANKS *#
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a id="listfooter" href="#lesson_1_quiz_1_banks" data-parent="#lesson_1_quiz_1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUIZ</a>
+		</div>
+		#* END CLOSE BUTTON *#
+	</div>
+</div>
+<div id="bankBar" style="display:none">
+	#* BEGIN BANK *#
+	<div class="panel panel-default">
+	   <div class="panel-heading">
+			<div class="holder">
+				<div class="anchors move-btn">
+				</div>
+				<div class="panel-title">
+					<a id="bankTitle_" href="#lesson_1_quiz_1_bank_1_questions" onClick="getBankList(this, event)" data-parent="#lesson_1_quiz_1_bank_1" data-toggle="collapse" class="accordion-toggle">
+					</a>
+				</div>
+			</div>
+	   </div>
+	   #* BEGIN PANEL BODY *#
+	   <div id="lesson_1_quiz_1_bank_1_questions_" class="panel-collapse collapse a1">
+		  <div class="panel-body">
+			#* LIST OF QUESTIONS *#
+		  </div>
+	   </div>
+	   #* END PANEL BODY *#
+	</div>
+	#* END BANK *#
+</div>
+<div id="bankList" style="display:none">
+	#* BEGIN QUESTIONS *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div  class="caption">
+			Questions
+		 </div>
+		 <div class="tools">
+		 </div>
+	  </div>
+	  <div class="portlet-body">
+		#* BEGIN SETUP FORM *#
+		<div class="heading-bottom-text">
+			<label class="col-md-11 control-label" style="margin-top: 5px">Target number of questions to ask related to this lesson learning objective on every quiz attempt<span class="required">*</span></label>
+			<div class="col-md-1">
+				<input type="text" class="form-control lessthan" id="Quiz_No_Questions" name="Quiz_No_Questions" placeholder="Enter value in numeric" value="2">
+			</div>
+		</div>
+		#* END SETUP FORM *#
+		#* BEGIN QUESTION PORTLET *#
+		<div class="portlet">
+		  <div class="portlet-body">
+			#* BEGIN QUESTION ACCORDIONS *#
+			<div class="panel-group accordion page-panel" id="lesson_1_quiz_1_bank_1_Q1_">
+				#* Question Bar *#
+			</div>
+			#* END QUESTION ACCORDIONS *#
+		  </div>
+		  <div class="portlet-footer">
+			<a id="addQuestion" onclick="openAddQuestion(this)" data-backdrop="static" data-keyboard="false" href="javascript:;" data-target="#addQuestionModal" data-toggle="modal" title="Add Question"><i class="icon-plus"></i> Add Question</a>
+		  </div>
+		</div>
+		#* END QUESTION PORTLET *#
+	  </div>
+	</div>
+	#* END QUESTIONS *#
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id="footerBankList" href="#lesson_1_quiz_1_bank_1_questions" data-parent="#lesson_1_quiz_1_bank_1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUESTION BANK</a>
+	</div>
+	#* END CLOSE BUTTON *#
+</div>
+<div id="questionBar" style="display:none">
+	#* BEGIN QUESTION PANEL *#
+	<div class="panel panel-default">
+	   <div class="panel-heading">
+			<div class="holder">
+				<div class="anchors move-btn">
+				</div>
+				<div class="panel-title">
+					<a id="quizQuestionTitle" href="#lesson_1_quiz_1_bank_1_Q1_ans" onClick="getQuestion (this, event)" data-parent="#lesson_1_quiz_1_bank_1_Q1" data-toggle="collapse" class="accordion-toggle">
+						<i class="icon-question-item"></i>
+							<span id="quizQuestionTitleText">Question - A</span>
+					</a>
+				</div>
+				<div class="remove-btn" title="Delete" onclick="removeQuizQuestion(this)">
+					<i class="icon-remove"></i>
+				</div>
+			</div>
+	   </div>
+	   #* BEGIN QUESTION COMPONENT BODY *#
+	   <div id="lesson_1_quiz_1_bank_1_Q1_ans_" class="panel-collapse collapse a1">
+		  <div class="panel-body">
+			#* QUESTION LIST *#
+		  </div>
+	   </div>
+	   #* END QUESTION COMPONENT BODY *#
+	</div>
+	#* END QUESTION PANEL *#
+</div>
+<div id="questionList" style="display:none">
+	#* BEGIN QUESTION *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div id ="QuestionTitle" class="caption">
+			Question Components
+		 </div>
+		 <div class="tools">
+		 </div>
+	  </div>
+	  <form id="emdQuestionform">
+	  <div class="portlet-body form">
+		<div class="form-horizontal">
+			#* BEGIN COMPONENTS 1 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Complexity">
+				<div class="caption">
+					<h5><strong>Complexity</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<select class="form-control" id="embComplexity" name="embComplexity">
+							<option value="0">None</option>
+							<option value="1">1 - Recall</option>
+							<option value="2">2 - Comprehension</option>
+							<option value="3">3 - Application</option>
+							<option value="4">4 - Analysis</option>
+							<option value="5">5 - Synthesis</option>
+						</select>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 1 *#
+			#* BEGIN COMPONENTS 2 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Question type">
+				<div class="caption">
+					<h5><strong>Question type</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<select class="form-control" id="embQuestionType" name="embQuestionType">
+							<option value="Single Select MCQ">Multiple-choice Single Select</option>
+						</select>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 2 *#
+			#* BEGIN COMPONENTS 3 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Question">
+				<div class="caption">
+					<h5><strong>Question</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						 <textarea id="questionTitleEmb" class="ckeditor form-control" name="questionTitleEmb" rows="4"></textarea>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 3 *#
+			#* BEGIN COMPONENTS 4 *#
+			<div class="portlet portlet-btn">
+			  <div class="portlet-title" title="Answer Choices">
+				<div id="answerChoice" class="caption" onClick="getAnswerChoice (this, event)">
+					<h5><strong>Answer Choices</strong></h5>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse"></a>
+				</div>
+			  </div>
+			  <div class="portlet-body form">
+				<div class="form-body">
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<div class="form-list">
+							<div>
+								<input type="checkbox" id="embchkAnswerRandomization" name="embchkAnswerRandomization" checked'>
+								<span>Disable answer choice randomization</span>
+							</div>
+						</div>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <div class="col-md-offset-2 col-md-8">
+						<div class="table-scrollable">
+							<table id="tbQuestionAnswer2" class="table table-str-border table-bordered">
+							  <thead>
+								<tr class="td-header">
+								  <th colspan="8">
+									<div class='btn-group'>
+										<a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addAnsChoiceModal2" onClick="addAnswer2(this)" class="btn btn-default" href="javascript:;" title="Add Answer Choice to Question"><i class="icon-plus blue-text"></i></a>
+										<a id="btnUpdtQuizDelQstnOptionTemp" class="btn btn-default" href="javascript:;" onclick="delete_answers_choice(this, 'UPDATE_QUIZ')" title="Delete Selected Answer Choice"><i class="icon-minus red-text"></i></a>
+									</div>
+								  </th>
+								</tr>
+								<tr class="td-header-bottom-border">
+								  <th width="10"><input id="chkUpdtQuizAnswersSlctAllTemp" type="checkbox" class="checker" onclick="ANS_CHECKBOX(this,true)"/></th>
+								  <th>Choice</th>
+								  <th>Correct</th>
+								  <th>Feedback</th>
+								</tr>
+                                <tr id="rwAnswer" style="display:none">
+                                  <td class="checks"><input type="checkbox" onclick="ANS_CHECKBOX(this,false)"/> </td>
+                                  <td class="choice"></td>
+                                  <td class="correct"></td>
+                                  <td class="feedback"></td>
+                                </tr>
+							  </thead>
+							  <tbody height="100" id="tblAnswerChoices">
+							  </tbody>
+							</table>
+						</div>
+					  </div>
+				   </div>
+				</div>
+			  </div>
+			</div>
+			#* END COMPONENTS 4 *#
+		</div>
+	  </div>
+	  </form>
+	</div>
+	#* END QUESTION *#
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id="question_com_footer" href="#lesson_1_quiz_1_bank_1_Q1_ans" data-parent="#lesson_1_quiz_1_bank_1_Q1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUESTION</a>
+	</div>
+	#* END CLOSE BUTTON *#
+</div>

@@ -1,0 +1,74 @@
+#parse("header.vm")
+#parse("breadcrumb.vm")
+
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+				
+				   #* BEGIN CRITERIA PORTLET *#
+                   <div class="portlet portlet-btn">
+                      <div class="portlet-title" title="Criteria">
+                         <div class="caption">
+                         	Criteria
+                         </div>
+                         <div class="tools">
+                            <a href="" class="expand"></a>
+                         </div>
+                      </div>
+                      <div style="display: none;" class="portlet-body form">
+                         
+						  <form class="form-horizontal" role="form">
+                            <div class="form-body">
+                               <div class="form-group">
+                                  <label class="col-md-1 control-label">Look In</label>
+                                  <div class="col-md-2">
+                                     <select class="form-control">
+                                        <option>Author Courses</option>
+                                     </select>
+                                  </div>
+								  <label class="col-md-2 control-label">Title / Keywords</label>
+                                  <div class="col-md-2">
+                                     <input class="form-control" placeholder="Enter Title / Keywords" type="text">
+                                  </div>
+								  <label class="col-md-2 control-label">Course ID</label>
+                                  <div class="col-md-2">
+                                     <input class="form-control" placeholder="Enter Course ID" type="text">
+                                  </div>
+                               </div>
+							</div>
+						   <div class="col-md-offset-5">
+							  <button type="submit" class="btn blue">Search</button>
+						   </div>
+                         </form>
+                      </div>
+                   </div>
+                   #* END CRITERIA PORTLET *#
+					
+					<br>
+					
+				   #* BEGIN RESULTS TABLE PORTLET*#
+				   <div class="portlet portlet-btn">
+					  <div class="portlet-title" title="Results">
+						 <div class="caption">Results</div>
+						 <div class="tools">
+                            <a href="" class="collapse"></a>
+                         </div>
+					  </div>
+					  <div class="portlet-body">
+						
+							 <div class="dataTables_wrapper form-inline no-footer" id="search_table_wrapper"><div class="row"><div class="col-xs-12 table-tools-bar"><div id="search_table_length" class="dataTables_length"><label>Show <select class="form-control" aria-controls="search_table" name="search_table_length"><option value="5">5</option><option value="20">20</option><option value="30">30</option><option value="-1">All</option></select></label></div><div class="btn-group pull-right"><div class="btn-group"><a class="btn btn-default" href="#" data-toggle="dropdown">Columns <i class="icon-angle-down"></i></a><div id="search_table_filters" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right"><label><input checked="" data-column="0" type="checkbox">Title</label><label><input checked="" data-column="1" type="checkbox">Course ID</label><label><input checked="" data-column="2" type="checkbox">Last Modified</label><label><input checked="" data-column="3" type="checkbox">Course Status</label><label><input checked="" data-column="4" type="checkbox">Publish Status</label><label><input checked="" data-column="5" type="checkbox">Course Group</label><label><input checked="" data-column="6" type="checkbox">Rating</label></div></div></div></div></div><div class="table-scrollable"><table aria-describedby="search_table_info" role="grid" class="table table-striped table-bordered table-hover table-full-width dataTable no-footer" id="search_table">
+								<thead>
+								   <tr role="row"><th aria-label="Title: activate to sort column ascending" aria-sort="ascending" style="width: 77px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting_asc">Title</th><th aria-label="Course ID: activate to sort column ascending" style="width: 145px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting">Course ID</th><th aria-label="Last Modified: activate to sort column ascending" style="width: 197px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting">Last Modified</th><th aria-label="Course Status: activate to sort column ascending" style="width: 199px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting">Course Status</th><th aria-label="Publish Status: activate to sort column ascending" style="width: 204px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting">Publish Status</th><th aria-label="Course Group: activate to sort column ascending" style="width: 197px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting">Course Group</th><th aria-label="Rating: activate to sort column ascending" style="width: 103px;" colspan="1" rowspan="1" aria-controls="search_table" tabindex="0" class="sorting">Rating</th></tr>
+								</thead>
+								<tbody>
+								   
+								<tr class="odd"><td class="dataTables_empty" colspan="7" valign="top">No data available in table</td></tr></tbody>
+							 </table></div><div class="row"><div class="col-sm-5"><div aria-live="polite" role="status" id="search_table_info" class="dataTables_info">Showing 0 to 0 of 0 entries</div></div><div class="col-sm-7"><div id="search_table_paginate" class="dataTables_paginate paging_bootstrap"><ul class="pagination"><li class="prev disabled"><a href="#" title="Prev"><i class="icon-angle-left"></i></a></li><li class="next disabled"><a href="#" title="Next"><i class="icon-angle-right"></i></a></li></ul></div></div></div></div>
+						
+					  </div>
+				   </div>
+				   #* END RESULTS TABLE PORTLET*#
+                   
+                </div>
+#* END PAGE CONTENT *#
+#parse("footer.vm")
+<script src="javascript/vm_js/search.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>

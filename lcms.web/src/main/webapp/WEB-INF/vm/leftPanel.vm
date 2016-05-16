@@ -1,0 +1,179 @@
+
+
+<div id="leftNavPanel" class="left-nav-panel">
+                <div class="thumb-btn">
+                    <a class="collapse-btn-icon" onclick="toggle_leftNavPanel()"></a>
+                </div>
+                
+                <div class="list-holder">
+                    <ul class="list-group only-icon-panel">
+
+					#set ($courseTypeForMenu = $request.getSession().getAttribute("courseTypeForMenu"))
+					#* Webinar left menu---------------------------------------------------------------------------------*#
+					#if( $!{courseTypeForMenu}=="6")
+					
+						  #* Overview *#
+                        <li class="list-group-item">
+                            <a class="btn-sub-group" id="nav_accordion_0_wb">
+                                <i class="glyphicon glyphicon-book"></i>
+                                <span>Overview</span>
+                            </a>
+                        </li>
+					
+						#* Webinar *#
+                                <li class="list-group-item">
+                                    <a href="#" class="btn-sub-group"  onclick="accordion_btn_actions('schedule')"  id = "lnkSchedule">
+                                          <i class="glyphicon glyphicon-list-alt"></i>
+                                        <span>Webinar</span>                                        
+                                    </a>
+                                </li>
+								<li class="list-group-item" id = "lnkInstructor">
+                                    <a href="#"  id="nav_instructor" class="btn-sub-group" onclick="accordion_btn_actions('instructor')">
+                                        <i class="glyphicon glyphicon-user"></i>
+                                        <span>Instructor</span>                                      
+                                    </a>
+                                </li>
+                                <li class="list-group-item" >
+                                    <a href="#" class="btn-sub-group"  onclick="accordion_btn_actions('webinarSetup')" id = "lnkWebinarSetup">
+                                         <i class="icon-map-marker"></i>
+                                        <span>Webinar Setup</span>                                        
+                                    </a>
+                                </li>
+
+
+					#* classroom left menu---------------------------------------------------------------------------------*#
+					#elseif( $!{courseTypeForMenu}=="5")	
+					
+					  #* Overview *#
+                        <li class="list-group-item">
+                            <a class="btn-sub-group" id="nav_accordion_0_cr">
+                                <i class="glyphicon glyphicon-book"></i>
+                                <span>Overview</span>
+                            </a>
+                        </li>
+					#* Classroom *#
+                        <li class="list-group-item">
+                            <a href="#" id="nav_instructor" class="btn-sub-group" onclick="accordion_btn_actions('instructor')">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>#springMessage('label.provider')</span>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#" id="nav_classroomsetup" class="btn-sub-group" onclick="accordion_btn_actions('classroomsetup')">
+                                <i class="glyphicon glyphicon-list-alt"></i>
+                                <span>Classroom</span>
+                            </a>
+                        </li>
+
+						<li class="list-group-item">
+                            <a href="#" id="nav_locationList" class="btn-sub-group" onclick="accordion_btn_actions('locationList')">
+                                <i class="icon-map-marker"></i>
+                                <span>Locations</span>
+                            </a>
+                        </li>
+
+					#else
+					
+					  #* Overview *#
+                        <li class="list-group-item">
+                            <a class="btn-sub-group"  id="nav_accordion_0">
+                                <i class="glyphicon glyphicon-book"></i>
+                                <span>Overview</span>
+                            </a>
+                        </li>
+					#* online course left menu---------------------------------------------------------------------------------*#		
+						#* Content for online courses *#
+                        <li class="list-group-item">
+                            <a class="btn-sub-group" id="nav_accordion_1">
+                                <i class="glyphicon glyphicon-list-alt"></i>
+                                <span>Content</span>
+                            </a>
+                        </li>
+                        
+                        
+                         #* Settings *#
+                        
+						<li class="list-group-item">
+                            <a class="btn-sub-group" id="nav_accordion_2">
+                                <i class="icon-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        
+						
+					#end	
+					
+					
+					
+					
+                       
+                                                
+
+                        <li class="list-group-item">
+                            <a class="btn-sub-group open-sign" id="nav_accordion_3">
+                                <i class="glyphicon glyphicon-download-alt"></i>
+                                <span>Publishing</span>
+                                <b></b>
+                            </a>
+                            
+                            <ul class="list-sub-group">
+                                <li class="list-group-item" id = "lnkAvailability">
+
+                                    <a href="javascript:;" onclick="accordion_btn_actions('availability')">
+                                        <i></i>
+                                        <span>#springMessage('label.availability')</span>
+                                        <b></b>
+                                    </a>
+                                </li>
+									<li class="list-group-item" id = "lnkMarketing">
+                                    <a href="javascript:;" onclick="accordion_btn_actions('marketing')">
+                                        <i></i>
+                                        <span>#springMessage('label.information')</span>
+                                        <b></b>
+                                    </a>
+                                </li>
+                                <li class="list-group-item" id = "lnkPricing" >
+
+                                    <a href="javascript:;" onclick="accordion_btn_actions('pricing')" >
+                                        <i></i>
+                                        <span>Set Pricing</span>
+                                        <b></b>
+                                    </a>
+                                </li>
+
+								 #if( $!{courseTypeForMenu}=="5" || $!{courseTypeForMenu}=="6")
+    								<li class="list-group-item" id = "lnkWebinarPublishing" >
+                                        <a href="javascript:;" onclick="accordion_btn_actions('webinar_publishing')">
+                                            <i></i>
+                                            <span>Publish Course</span>
+                                            <b></b>
+                                        </a>
+                                    </li>
+								#else
+    								<li class="list-group-item" id = "lnkPublishing" >
+                                        <a href="javascript:;" onclick="accordion_btn_actions('publishing')">
+                                            <i></i>
+                                            <span>Publish Course</span>
+                                            <b></b>
+                                        </a>
+                                    </li>									
+								#end
+							
+                                
+								<li class="list-group-item" id = "leftMenuOfferOn360Marketplace">
+
+                                    <a href="javascript:;" onclick="accordion_btn_actions('leftMenuOfferOn360Marketplace')">
+                                        <i></i>
+                                        <span>Offer on 360 Marketplace</span>
+                                        <b></b>
+                                    </a>
+                                </li>
+                                  
+                            </ul>							
+                        </li>
+                         
+                    </ul>
+
+                
+				</div>
+            </div>

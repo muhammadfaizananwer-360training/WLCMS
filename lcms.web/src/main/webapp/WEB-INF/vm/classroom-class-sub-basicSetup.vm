@@ -1,0 +1,130 @@
+#* BEGIN PANEL SETUP FORM *#
+<div id="class_setup_$classId" class="panel-collapse collapse bg-gray-2 a1">
+	<div class="panel-body">
+
+		#* BEGIN CLASS SETUP FORM *#
+		<div class="portlet">
+			<div class="portlet-title" title="Class Setup">
+				<div class="caption">
+					Class Setup
+				</div>
+				<div class="tools">
+				</div>
+			</div>
+			<div class="portlet-body form">
+
+				#* BEGIN FORM *#
+				<form id="frm-class-setup-$classId" class="form-horizontal" role="form" data-url = "classroom-classes/action/update" data-360-onsuccess="$(this).closest('.panel').find('#class_panel_title_').html($(this).find('#className').val())" >
+					<div class="form-body">
+						<input type="hidden" value="$classId" data-360-bind="id"/>
+						<div class="form-group">
+							<label  class="col-md-3 control-label">Class title<span class="required">*</span></label>
+							<div class="col-md-6">
+								<input id="className" name="className" data-360-bind="className"  type="text" class="form-control"  placeholder="Enter class title." value="$!clazz.className" required data-msg-required="Please enter a title for this class."/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">Class size<span class="required">*</span></label>
+							<div class="col-md-6">
+								<div class="radio-list">
+									<label class="radio-inline">
+										<input class="zero-margin" style="float:none" type="radio" #if($!classSize !='')checked#end value="option2" id="rdoLimited" name="optionsRadios" onclick="$(this).closest('div.form-group').next().removeClass('hide')"/> Limited
+									</label>
+									<label class="radio-inline">
+										<input class="zero-margin" style="float:none" type="radio" #if($!classSize=='')checked#end value="option1" id="rdoUnlimited" name="optionsRadios" onclick="$(this).closest('div.form-group').next().addClass('hide');"/> Unlimited
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group #if($!classSize=='')hide#end">
+							<label  class="col-md-3 control-label">Number of seats<span class="required">*</span></label>
+							<div class="col-md-6">
+								<input data-360-bind="maximumClassSize" type="number" min="1" class="form-control" placeholder="Enter maximum number of seats." id="_limit" value="$!classSize" required data-msg-required="Please enter the maximum number of seats." data-rule-min="1" required data-msg-min="Please enter a positive number only." data-rule-pattern="true" data-pattern-exp="^\d*$" data-msg-pattern="Please enter a positive integer only." />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">Schedule time zone<span class="required">*</span></label>
+							<div class="col-md-6">
+								<select data-360-bind="timeZoneId" class="form-control" id="timezome" name="timezome" required data-msg-required="Please select the time zone.">
+									<option value=""></option>
+									#foreach ($timezone in $timezones)
+									<option value="$timezone.id" #if($!clazz.timeZoneId == $timezone.id)selected#end>
+										#if($timezone.getMinutes() == 0)
+										#set($timezoneDisplay = "(" + $timezone.code + " " + $timezone.hours + ":00) " + $timezone.zone)
+										#else
+										#set($timezoneDisplay = "(" + $timezone.code + " " + $timezone.hours + ":" + $timezone.minutes + ") " + $timezone.zone)
+										#end
+										$timezoneDisplay
+									</option>
+									#end
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+						  <label class="control-label col-md-3">Enrollment close date<span class="required">*</span></label>
+						  <div class="col-md-6" data-error-place="#closeDateDiv_$classId">
+							 <div class="input-group date" id="closeDateDiv_$classId" data-date="" data-date-format="mm/dd/yyyy">
+								<input id="closeDate_$classId" name="closeDate_$classId" required data-msg-required="Please select the last day a user can enroll in the class." data-rule-dt-max="true" data-msg-dt-max="Enrollment close date cannot be more than six months from today's date." data-dt-max-diffTo=":6" data-rule-dt-min="true" data-msg-dt-min="Enrollment date cannot be set to past date." data-dt-min-diffFrom="0"  data-360-bind="enrollmentCloseDate" class="form-control" type="text" value="$!date.format($clazz.enrollmentCloseDate)" readonly />
+								<span class="input-group-btn add-on">
+									<button type="button" class="btn default"><i class="icon-calendar"></i></button>
+								</span>
+								<script>
+									$(function() {
+										APP.DATE_PICKER("#closeDateDiv_$classId");
+									});
+								</script>
+							 </div>
+						  </div>
+					   </div>
+						<div class="form-group">
+						  <label class="control-label col-md-3">Location<span class="required">*</span></label>
+						  <div class="col-md-6">
+							 <select id="classLocation" name="classLocation" required data-msg-required="Please select a location. If none display, then create one on the Location tab." data-360-bind="locId" class="form-control">
+								<option></option>
+								#foreach ($location in $locations)
+								<option value="$location.id" #if($!clazz.location.id == $location.id)selected#end>
+									$location.locationname
+								</option>
+								#end
+							</select>
+						  </div>
+					   </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">#springMessage("label.instructor")<span class="required">*</span></label>
+                            <div class="col-md-6">
+                                <select id="classInstructorLocation" name="classInstructorLocation" required data-msg-required="Please select a instructor." data-360-bind="classInsId" class="form-control">
+                                    <option></option>
+                                    #foreach ($classIns in $classInstructors)
+                                        <option value="$classIns.id" #if($!clazz.classInstructorId == $classIns.id)selected#end>
+                                            $classIns.firstName
+                                        </option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>
+
+					   <div class="form-actions fluid">
+						   <div class="col-md-offset-3 col-md-9">
+							  <input type="button" onclick="#[[$(this).closest('form').submit360()]]#" class="btn blue" style="width: 100px" value="Save">
+						   </div>
+					   </div>
+
+					</div>
+				</form>
+				#* END FORM *#
+
+			</div>
+		</div>
+		#* END CLASS SETUP FORM *#
+
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a href="#class_setup_$classId" data-parent="#classes_accordion" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE CLASS SETUP</a>
+		</div>
+		#* END CLOSE BUTTON *#
+
+	</div>
+</div>
+#* END PANEL SETUP FORM *#

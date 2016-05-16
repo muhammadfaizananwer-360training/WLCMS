@@ -1,0 +1,2 @@
+#parse("common/etHeader.vm")
+#parseMessage("common-mailTemplate-greeting")

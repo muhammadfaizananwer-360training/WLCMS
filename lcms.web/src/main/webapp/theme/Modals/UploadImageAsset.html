@@ -1,0 +1,137 @@
+<form action="uploadVisualAsset" method="Post" enctype="multipart/form-data" id="frmUploadVisualAsset_custom" >
+	<input type="hidden" id="slideIdForAsset" name="slideIdForAsset">
+	<input type="hidden" id="courseIdForAsset" name="courseIdForAsset">
+	<input id="IsCustomTemplate" name="IsCustomTemplate" type="hidden" value="true">
+
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h3 class="modal-title" id="upload-asset-label">Upload Asset and Attach to Slide</h3>
+	  </div>
+	  <div class="modal-body">
+		<!-- BEGIN FORM -->
+		<div class="form-horizontal" role="form">
+			<div class="form-body">
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label">Asset Name<span class="required">*</span></label>
+				  <div class="col-md-6">
+					<input type="text" class="form-control" name="visualAssetName" id="visualAssetName" placeholder="Enter asset name.">
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label">Keywords</label>
+				  <div class="col-md-6">
+					<input type="text" name="visualAssetKeywords" id="visualAssetKeywords" class="form-control" data-role="tagsinput" placeholder="Enter keywords.">
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label">Description</label>
+				  <div class="col-md-6">
+					 <textarea name="visualAssetDescription" id="visualAssetDescription" class="form-control" rows="3"></textarea>
+				  </div>
+			   </div>
+			   <div class="form-group temp-icons">
+				  <label  class="col-md-3 control-label">Asset Type</label>
+				  <div class="col-md-6">
+					 <!--<label class='temp-label gray-text'>Image (bmp, gif, jpg, png), Flash (flv, swf), Movie Clip (mp4)</label>-->
+					<select class="form-control" name="cboAssetTypeVisual" id="cboAssetTypeVisual">
+						<option value="Image">Image</option>
+						<!-- <option value="MovieClip">Movie Clip</option>
+						<option value="FlashObject">Flash Object</option> -->
+					</select>
+
+				 </div>
+				  
+				  
+			   </div>
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label">File Path<span class="required">*</span></label>
+				  <div class="col-md-6 visualFileUploadArea">
+					  <div class="fileupload fileupload-new" data-provides="fileupload">
+						<span class="btn blue btn-file">
+						<span class="fileupload-new"><i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+						<span class="fileupload-exists"><i class="icon-undo"></i> Change</span>
+
+						<input type="file" class="default" name="visualAssetFile" id="visualAssetFile"/>
+						</span>
+						<span class="fileupload-preview" style="margin-left:5px;" id="lblfileuploadPreview"></span>
+						<textarea class="fileupload-preview" name="txtAreaVisualFileUpload" id="txtAreaVisualFileUpload" style="display: none"></textarea>
+						<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+					 </div>
+				  </div>
+			   </div>
+			   <div class="form-group">
+				  <label  class="col-md-3 control-label"></label>
+				  <div class="col-md-6">
+					 <div class="checkbox-list">
+						<label>
+						<input id="visualAttachAssetWithSlide" name="visualAssetOptions" value="ATTACH_ASSET_WITH_SLIDE" type="checkbox" class="form-chkbox" checked> Attach this asset to this slide.
+						</label>
+						<label>
+						<input id="visualAttachAssetWithAssetGroup" name="visualAssetOptions" value="ATTACH_ASSET_WITH_ASSETGROUP" type="checkbox" class="form-chkbox" checked> Attach this asset to this course's asset group.
+						</label>
+					 </div>
+				  </div>
+			   </div>
+			</div>
+		</div>
+		<!-- END FORM -->
+	  </div>
+	  <div class="modal-footer">
+		
+		<input type="button" value="Accept"	id="btnSubmitVisualAssetForm" onClick="addVisualAsset(this.form); return false;" class="btn blue">
+		<button type="button" class="btn btn-default" onClick="cancelVisualAssetUploadForm()" data-dismiss="modal">Cancel</button>
+		
+	  </div>
+
+  </form>
+<!-- BEGIN SCRIPT -->
+<script>
+$(function (){
+	$.validator.addMethod("validateExtension", 
+			function(value, element) {
+				var ext = value.split('.').pop().toLowerCase();
+				
+				if( $("#cboAssetTypeVisual").val()=="Image" && $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) != -1)
+					return true;
+				else if($("#cboAssetTypeVisual").val()=="MovieClip" && $.inArray(ext, ['flv','wmv','mp4']) != -1)	 
+					return true;
+				else if($("#cboAssetTypeVisual").val()=="FlashObject" && $.inArray(ext, ['swf']) != -1)	
+					return true;	
+				else	
+					return false;
+			}, 
+		"Please provide a file with a valid file type");
+				
+	    $("#frmUploadVisualAsset_custom").validate({
+	        rules: {
+	        	visualAssetName: "required",
+	        	txtAreaVisualFileUpload:  {
+										required: true,
+										//extension: "mp4|flv|swf|wmv|bmp|gif|jpg|png"
+										
+										validateExtension : true
+									}
+	        },
+	        messages: {
+	        	visualAssetName: "Please enter your asset name here",
+	        	txtAreaVisualFileUpload: "Please provide a file with a valid file type"
+	        },
+	        
+	        submitHandler: function(form) 
+	        {		
+				form.submit();
+	        },
+	        
+			invalidHandler: function(event, validator) {			
+				var errors = validator.numberOfInvalids();
+				if (errors) {			
+				$('#msgdiv').html('<div class=\'alert alert-danger alert-dismissible fade in\' >	<button type=\'button\' class=\'close\' data-dismiss=\'alert\'><span aria-hidden=\'true\'>&#215;</span><span class=\'sr-only\'>Close</span></button>Not so fast! Required fields are missing. Complete the fields, then click <strong>Save</strong>.</div>');
+				} else {				
+					$("#msgdiv").html('');
+				}
+				elementFadeOut("#msgdiv");
+			}
+	    });
+});
+</script>
+<!-- END SCRIPT -->

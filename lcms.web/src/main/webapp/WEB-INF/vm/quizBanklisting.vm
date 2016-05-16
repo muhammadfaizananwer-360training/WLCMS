@@ -1,0 +1,326 @@
+<textarea style="display:none" id="quizBanktemplate">
+  #* BEGIN PANEL BODY *#
+   <div id="lesson_1_quiz_1_banks" class="panel-collapse collapse a2">
+	  <div class="panel-body">
+		
+		#* BEGIN QUESTION BANKS *#
+		<div class="portlet">
+		  <div class="portlet-title sub">
+			 <div class="caption">
+				Question Banks
+			 </div>
+			 <div class="tools">
+				
+			 </div>
+		  </div>
+		  <div class="portlet-body">
+		  
+			#* BEGIN BANK PORTLET *#
+			<div class="portlet">
+			  <div class="portlet-body">
+
+				#* BEGIN BANK ACCORDIONS *#
+				<div class="panel-group accordion page-panel" id="lesson_1_quiz_1_bank_1">
+					
+					#* BEGIN BANK *#
+					<div class="panel panel-default">
+					   <div class="panel-heading">
+						  
+							<div class="holder">
+			
+								<div class="anchors move-btn">
+								</div>
+								
+								<div class="panel-title">
+									<a href="#lesson_1_quiz_1_bank_1_questions" data-parent="#lesson_1_quiz_1_bank_1" data-toggle="collapse" class="accordion-toggle">
+										<i class="icon-question-bank"><i></i></i> Explain the role of experience and exploration in design.
+									</a>
+								</div>
+
+								<div class="remove-btn" title="Delete" onclick="remove_panel(this)">
+									<i class="icon-remove"></i>
+								</div>
+								
+							</div>
+						  
+					   </div>
+					   
+					   #* BEGIN PANEL BODY *#
+					   <div id="lesson_1_quiz_1_bank_1_questions" class="panel-collapse collapse a2">
+						  <div class="panel-body">
+							
+							#* BEGIN QUESTIONS *#
+							<div class="portlet">
+							  <div class="portlet-title sub">
+								 <div class="caption">
+									Questions
+								 </div>
+								 <div class="tools">
+									
+								 </div>
+							  </div>
+							  <div class="portlet-body">
+								
+								#* BEGIN SETUP FORM *#
+								<div class="heading-bottom-text">
+									<label class="col-md-11 control-label" style="margin-top: 5px">Target number of questions to ask related to this lesson learning objective on every quiz attempt<span class="required">*</span></label>
+									<div class="col-md-1">
+										<input type="text" class="form-control" placeholder="Enter value in numeric" value="2">
+									</div>
+								</div>
+								#* END SETUP FORM *#
+								
+								#* BEGIN QUESTION PORTLET *#
+								<div class="portlet">
+								  <div class="portlet-body">
+
+									#* BEGIN QUESTION ACCORDIONS *#
+									<div class="panel-group accordion page-panel" id="lesson_1_quiz_1_bank_1_Q1">
+										
+										#* BEGIN QUESTION PANEL *#
+										<div class="panel panel-default">
+										   <div class="panel-heading">
+											  
+												<div class="holder">
+								
+													<div class="anchors move-btn">
+													</div>
+													
+													<div class="panel-title">
+														<a href="#lesson_1_quiz_1_bank_1_Q1_ans" data-parent="#lesson_1_quiz_1_bank_1_Q1" data-toggle="collapse" class="accordion-toggle">
+															<i class="icon-question-item"></i> Question - A
+														</a>
+													</div>
+
+													<div class="remove-btn" title="Delete" onclick="remove_panel(this)">
+														<i class="icon-remove"></i>
+													</div>
+													
+												</div>
+											  
+										   </div>
+										   
+										   #* BEGIN QUESTION COMPONENT BODY *#
+										   <div id="lesson_1_quiz_1_bank_1_Q1_ans" class="panel-collapse collapse a2">
+											  <div class="panel-body">
+												
+												#* BEGIN QUESTION *#
+												<div class="portlet">
+												  <div class="portlet-title sub">
+													 <div class="caption">
+														Question Components
+													 </div>
+													 <div class="tools">
+														
+													 </div>
+												  </div>
+												  <div class="portlet-body form">
+												  
+													<div class="form-horizontal">
+													
+														#* BEGIN COMPONENTS 1 *#
+														<div class="portlet portlet-btn">
+														  <div class="portlet-title" title="Complexity">
+															<div class="caption">
+																<h5><strong>Complexity</strong></h5>
+															</div>
+															<div class="tools">
+																<a href="" class="collapse"></a>
+															</div>
+														  </div>
+														  <div class="portlet-body form">
+															<div class="form-body">
+															   <div class="form-group">
+																  <div class="col-md-offset-2 col-md-8">
+																	<select class="form-control">
+																		<option>1 – Recall</option>
+																		<option>Option 2</option>
+																		<option>Option 3</option>
+																	</select>
+																  </div>
+															   </div>
+															</div>
+														  </div>
+														</div>
+														#* END COMPONENTS 1 *#
+													
+														#* BEGIN COMPONENTS 2 *#
+														<div class="portlet portlet-btn">
+														  <div class="portlet-title" title="Question type">
+															<div class="caption">
+																<h5><strong>Question type</strong></h5>
+															</div>
+															<div class="tools">
+																<a href="" class="collapse"></a>
+															</div>
+														  </div>
+														  <div class="portlet-body form">
+															<div class="form-body">
+															   <div class="form-group">
+																  <div class="col-md-offset-2 col-md-8">
+																	<select class="form-control">
+																		<option>Multiple-choice Single Select</option>
+																		<option>Option 2</option>
+																		<option>Option 3</option>
+																	</select>
+																  </div>
+															   </div>
+															</div>
+														  </div>
+														</div>
+														#* END COMPONENTS 2 *#
+													
+														#* BEGIN COMPONENTS 3 *#
+														<div class="portlet portlet-btn">
+														  <div class="portlet-title" title="Question">
+															<div class="caption">
+																<h5><strong>Question</strong></h5>
+															</div>
+															<div class="tools">
+																<a href="" class="collapse"></a>
+															</div>
+														  </div>
+														  <div class="portlet-body form">
+															<div class="form-body">
+															   <div class="form-group">
+																  <div class="col-md-offset-2 col-md-8">
+																	 <textarea id="q-ckeditor-1" class="ckeditor form-control" name="q-ckeditor" rows="4">Question - A</textarea>
+																  </div>
+															   </div>
+															</div>
+														  </div>
+														</div>
+														#* END COMPONENTS 3 *#
+													
+														#* BEGIN COMPONENTS 4 *#
+														<div class="portlet portlet-btn">
+														  <div class="portlet-title" title="Answer Choices">
+															<div class="caption">
+																<h5><strong>Answer Choices</strong></h5>
+															</div>
+															<div class="tools">
+																<a href="" class="collapse"></a>
+															</div>
+														  </div>
+														  <div class="portlet-body form">
+															<div class="form-body">
+															   <div class="form-group">
+																  <div class="col-md-offset-2 col-md-8">
+																	<div class="form-list">
+																		<div>
+																			<input type="checkbox">
+																			<span>Disable answer choice randomization</span>
+																		</div>
+																	</div>
+																  </div>
+															   </div>
+															   <div class="form-group">
+																  <div class="col-md-offset-2 col-md-8">
+																	<div class="table-scrollable">
+																		<table class="table table-str-border table-bordered">
+																		  <thead>
+																			<tr class="td-header">
+																			  <th colspan="8">
+																				<div class='btn-group'>
+																					<a data-toggle="modal" data-backdrop="static" data-keyboard="false"data-target="#addAnsChoiceModal" class="btn btn-default" href="javascript:;" title="Add Answer Choice to Question"><i class="icon-plus blue-text"></i></a>
+																					<a class="btn btn-default" data-backdrop="static" data-keyboard="false" href="javascript:;" title="Delete Selected Answer Choice"><i class="icon-minus red-text"></i></a>
+																				</div>
+																			  </th>
+																			</tr>
+																			<tr class="td-header-bottom-border">
+																			  <th></th>
+																			  <th>Choice</th>
+																			  <th>Correct</th>
+																			  <th>Feedback</th>
+																			</tr>
+																		  </thead>
+																		  <tbody height="100">
+																			<tr>
+																			  <td></td>
+																			  <td></td>
+																			  <td></td>
+																			  <td></td>
+																			</tr>
+																		  </tbody>
+																		</table>
+																	</div>
+																  </div>
+															   </div>
+															</div>
+														  </div>
+														</div>
+														#* END COMPONENTS 4 *#
+														
+													</div>
+													 
+												  </div>
+												</div>
+												#* END QUESTION *#
+												
+												#* BEGIN CLOSE BUTTON *#
+												<div class="footer">
+													<a href="#lesson_1_quiz_1_bank_1_Q1_ans" data-parent="#lesson_1_quiz_1_bank_1_Q1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUESTION</a>
+												</div>
+												#* END CLOSE BUTTON *#
+												
+											  </div>
+										   </div>
+										   #* END QUESTION COMPONENT BODY *#
+										   
+										</div>
+										#* END QUESTION PANEL *#
+										
+									</div>
+									#* END QUESTION ACCORDIONS *#
+									 
+								  </div>
+								  <div class="portlet-footer">
+									<a data-target="#addQuestionModal" data-backdrop="static" data-keyboard="false" data-toggle="modal" title="Add Question"><i class="icon-plus"></i> Add Question</a>
+								  </div>
+								</div>
+								#* END QUESTION PORTLET *#
+								 
+							  </div>
+							</div>
+							#* END QUESTIONS *#
+							
+							#* BEGIN CLOSE BUTTON *#
+							<div class="footer">
+								<a id="lesson_1_quiz_1_bank_1_questions_footer" href="#lesson_1_quiz_1_bank_1_questions" data-parent="#lesson_1_quiz_1_bank_1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUESTION BANK</a>
+							</div>
+							#* END CLOSE BUTTON *#
+							
+						  </div>
+					   </div>
+					   #* END PANEL BODY *#
+					   
+					</div>
+					#* END BANK *#
+					
+				</div>
+				#* END BANK ACCORDIONS *#
+				 
+			  </div>
+			</div>
+			#* END BANK PORTLET *#
+			
+		  </div>
+		</div>
+		#* END QUESTION BANKS *#
+		
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a href="#lesson_1_quiz_1_banks" data-parent="#lesson_1_quiz_1" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUIZ</a>
+		</div>
+		#* END CLOSE BUTTON *#
+		
+	  </div>
+   </div>
+   #* END PANEL BODY *#
+
+</div>
+#* END QUIZ *#
+
+
+
+</textarea>

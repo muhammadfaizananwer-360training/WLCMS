@@ -1,0 +1,58 @@
+   #* BEGIN PANEL BODY *#
+   <div id="class_schedule_$classId" class="panel-collapse collapse bg-gray-2 a2">
+	  <div class="panel-body">
+		
+		#* BEGIN SCHEDULE PORTLET *#
+		<div class="portlet">
+		  <div class="portlet-title">
+			 <div class="caption">
+				Class Sessions
+			 </div>
+			 <div class="tools">
+				
+			 </div>
+		  </div>
+		  <div class="portlet-body">
+
+			#* THIS TABLE will use to display sessions of class *#
+			<div id="schdl_tbl_$classId" class="table-scrollable">
+				<table class="table table-striped table-bordered table-hover table-full-width" id="schedule_table_$classId">
+					<thead>
+						<tr class="td-header">
+						  <th colspan="6">
+							<div class='btn-group'>
+								<a class="btn btn-default" href="javascript:manageSession('add')" title="Add Session"><i class="icon-plus blue-text"></i></a>
+								<a class="btn btn-default disabled del-session" href="javascript:manageSession('delete')" title="Delete Session"><i class="icon-minus red-text"></i></a>
+							</div>
+						  </th>
+						</tr>
+						<tr class="td-header-bottom-border bg-gray-2">
+						  <th width="10"><input type="checkbox" class="checker" onclick="APP.CHECKBOX(this,true);Enable_Disable_Delete_Btn(this);" /></th>
+						  <th></th>
+						  <th>Start date</th>
+						  <th>End date</th>
+						  <th>Start time</th>
+						  <th>End time</th>
+						</tr>
+					</thead>
+					<tbody height="100">
+					</tbody>
+				</table>
+			</div>
+			
+		  </div>
+		  <div id="addSessionLnk_$classId" class="portlet-footer">
+			<a onclick="resetSessionModal()" href="#" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addSessionModal" title="Add Session"><i class="icon-plus"></i> Add Session</a>
+		  </div>
+		</div>
+		#* END SCHEDULE PORTLET *#
+		
+		#* BEGIN CLOSE BUTTON *#
+		<div class="footer">
+			<a href="#class_schedule_$classId" data-parent="#classes_accordion" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE CLASS</a>
+		</div>
+		#* END CLOSE BUTTON *#
+		
+	  </div>
+   </div>
+   #* END PANEL BODY *#

@@ -1,0 +1,72 @@
+#parse("header.vm")
+#parse("breadcrumb.vm")
+
+ #* BEGIN PAGE CONTENT *#
+       <div class="page-content">
+				
+					#* BEGIN DASHBOARD *#
+					<div class="portlet">
+						<div class="portlet-body">
+							<h1>What would you like to do?</h1>
+							<br/>
+							<div class="tiles">
+								<div class="col-md-5 zero-padding">
+									<div class="tile double-right bg-gray" onclick="window.open('/lcms/coursetype','_self')">
+									   <div class="tile-body">
+											<img src="theme/executive/img/icons/create-large.png" alt="">
+											<h2>Create a new online course.</h2>
+									   </div>
+									</div>
+									<div class="tile double-right bg-gray">
+									   <div class="tile-body">
+											<img src="theme/executive/img/icons/recent-search.png" alt="">
+											<h2>Find recent updates.</h2>
+									   </div>
+									</div>
+									<div class="tile double-right bg-gray">
+									   <div class="tile-body">
+											<img src="theme/executive/img/icons/two-mans.png" alt="">
+											<h2>Earn points through peer review.</h2>
+									   </div>
+									</div>
+								</div>
+								<div class="col-md-7 zero-padding">
+									<div class="pull-left">
+										<div class="tile tri bg-gray">
+											<div class="tile-body">
+												<img class="pull-right" src="theme/executive/img/icons/cup.png" alt="">
+												<h2>Check out my scorecard.</h2>
+												<br/>
+												<h1>1,302</h1>
+											</div>
+										</div>
+									</div>
+									<div class="pull-left">
+										<div class="tile box bg-gray">
+										   <div class="tile-body text-center">
+												<h5>View published courses.</h5>
+												<i class="number">5</i>
+										   </div>
+										</div>
+										<div class="tile box bg-gray">
+										   <div class="tile-body text-center">
+												<h5>View my top courses.</h5>
+												<i class="icon-star-empty"></i>
+										   </div>
+										   <div class="tile-object">
+												<div class="text-center">
+												   4.45
+												</div>
+										   </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					#* END DASHBOARD *#
+                
+                </div>
+#* END PAGE CONTENT *#
+
+#parse("footer.vm")

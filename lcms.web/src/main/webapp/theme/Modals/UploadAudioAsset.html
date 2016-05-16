@@ -1,0 +1,120 @@
+
+<form action="uploadAudioAsset" method="Post" enctype="multipart/form-data" id="frmUploadAudioAsset_custom" name="frmUploadAudioAsset_custom">
+			<input id="slideIdForAudioAsset" name="slideIdForAudioAsset" type="hidden">
+			<input id="courseIdForAudioAsset" name="courseIdForAudioAsset" type="hidden">
+			<input id="IsCustomTemplate" name="IsCustomTemplate" type="hidden" value="true">
+
+<!-- BEGIN HTML -->
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<h3 class="modal-title" id="dynamic-modal-label">
+		
+		Upload Audio Asset and Attach to Slide
+		
+	</h3>
+</div>
+<div class="modal-body">
+
+	<!-- BEGIN FORM -->
+	<div class="form-horizontal" role="form">
+		<div class="form-body">
+		   <div class="form-group">
+			  <label  class="col-md-3 control-label">Asset Name<span class="required">*</span></label>
+			  <div class="col-md-6">
+				<input name="audioAssetName" id="audioAssetName" class="form-control" placeholder="Enter asset name." type="text">
+				
+			  </div>
+		   </div>
+		   <div class="form-group">
+			  <label  class="col-md-3 control-label">Keywords</label>
+			  <div class="col-md-6">
+				<input style="display: none;" name="audioAssetKeywords" id="audioAssetKeywords" class="form-control" data-role="tagsinput" placeholder="Enter keywords." type="text"><div class="bootstrap-tagsinput"><input style="width: 15em ! important;" placeholder="Enter keywords." type="text"></div>
+			  </div>
+		   </div>
+		   <div class="form-group">
+			  <label  class="col-md-3 control-label">Description</label>
+			  <div class="col-md-6">
+				 <textarea name="audioAssetDescription" id="audioAssetDescription" class="form-control" rows="3"></textarea>
+			  </div>
+		   </div>
+		   <div class="form-group temp-icons">
+			  <label  class="col-md-3 control-label">Asset Type</label>
+			  <div class="col-md-6">
+				 <label class='temp-label gray-text'>Audio Clip (MP3)</label>
+			  </div>
+		   </div>
+		   <div class="form-group">
+							  <label class="col-md-3 control-label">File Path<span class="required">*</span></label>
+							  <div class="col-md-6 AudioFileUploadArea">
+							  <div class="fileupload fileupload-new" data-provides="fileupload">
+							  <span class="btn blue btn-file"><span class="fileupload-new">
+							  <i class="glyphicon glyphicon-paperclip"></i> Browse</span>
+							  <span class="fileupload-exists"><i class="icon-undo"></i> Change</span>
+							  <input name="audioAssetFile" id="audioAssetFile" class="default" type="file"></span>
+							  <span class="fileupload-preview" style="margin-left:5px;"></span>
+							  <textarea class="fileupload-preview" name="txtAreaAudioFileUpload" id="txtAreaAudioFileUpload" style="display: none"></textarea>
+							  <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+							  </div>
+							  </div>
+		   </div>
+		   <div class="form-group">
+			  <label  class="col-md-3 control-label"></label>
+			  <div class="col-md-6">
+				 <div class="checkbox-list">
+					<label>
+					<input id="attachAssetWithSlide" name="assetOptions" value="ATTACH_ASSET_WITH_SLIDE" class="form-chkbox" checked="checked" type="checkbox"> Attach this asset to this slide.
+					</label>
+					<label>
+					<input id="attachAssetWithAssetGroup" name="assetOptions" value="ATTACH_ASSET_WITH_ASSETGROUP" class="form-chkbox" checked="checked" type="checkbox"> Attach this asset to this course's asset group.
+					</label>
+				 </div>
+			  </div>
+		   </div>
+		</div>
+	</div>
+	<!-- END FORM -->
+	
+</div>
+<div class="modal-footer">
+		<input value="Accept" id="btnSubmitAudioAssetForm" onclick="addAudioAsset(this.form); return false;" class="btn blue" type="button">
+		<button type="button" class="btn btn-default" onclick="cancelAudioAssetUploadForm()" data-dismiss="modal">Cancel</button>					
+</div>
+<!-- END HTML -->
+
+<!-- BEGIN SCRIPT -->
+<script>
+$(function (){
+	
+	$("#frmUploadAudioAsset_custom").validate({
+        
+        rules: {
+        	audioAssetName: "required",
+        	txtAreaAudioFileUpload:  {
+									required: true,
+									extension: "mp3"
+								}
+        },
+        messages: {
+        	audioAssetName: "Please enter your asset name here",
+        	txtAreaAudioFileUpload: "Please provide a file with a valid file type"
+        },
+        
+        submitHandler: function(form) 
+        {		
+			form.submit();
+        },
+        
+		invalidHandler: function(event, validator) {			
+			var errors = validator.numberOfInvalids();
+			if (errors) {			
+			$('#msgdiv').html('<div class=\'alert alert-danger alert-dismissible fade in\' >	<button type=\'button\' class=\'close\' data-dismiss=\'alert\'><span aria-hidden=\'true\'>&#215;</span><span class=\'sr-only\'>Close</span></button>Not so fast! Required fields are missing. Complete the fields, then click <strong>Save</strong>.</div>');
+			} else {				
+				$("#msgdiv").html('');
+			}
+			elementFadeOut("#msgdiv");
+		}
+    });
+});
+</script>
+<!-- END SCRIPT -->
+</form>

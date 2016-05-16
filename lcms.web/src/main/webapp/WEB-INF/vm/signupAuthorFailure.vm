@@ -1,0 +1,11 @@
+#parse("loginHeader.vm")
+#parse("breadcrumb.vm")
+<br>
+
+<h3>
+Invalid activation code.
+</h3>
+
+<br>
+The 360training Authoring team 
+#parse("footer.vm")

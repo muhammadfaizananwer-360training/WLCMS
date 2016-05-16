@@ -1,0 +1,29 @@
+<div class="panel-heading">
+	<div class="holder">
+		<div class="anchors move-btn">
+			<a href="javascript:;" title="Move Up" class="up">
+				<i class="icon-arrow-up hide"></i>
+			</a>
+
+			<a class="down" title="Move Down" href="javascript:;">
+				<i class="icon-arrow-down hide"></i>
+			</a>
+		</div>
+
+		<div class="anchors">
+			<a href="#class_setup_$classId" id="linkClassSetup" data-parent="#classes_accordion" onClick="SaveClassSetup (this,event)" data-toggle="collapse" class="accordion-toggle collapsed" title="Class Setup">
+				<i class="icon-cog"></i>	
+			</a>
+		</div>
+
+		<div class="panel-title">
+			<a href="#class_schedule_$classId" id="linkClassSchedule" data-parent="#classes_accordion" onclick="getSessions($classId)" data-toggle="collapse" class="accordion-toggle">
+				<i class="icon-folder-open"></i><span id="class_panel_title_"> $!clazz.className</span>
+			</a>
+		</div>
+
+		<div class="remove-btn" title="Delete" onclick="confimration_delete($classId)">
+			<i class="icon-remove"></i>
+		</div>
+	</div>
+</div>

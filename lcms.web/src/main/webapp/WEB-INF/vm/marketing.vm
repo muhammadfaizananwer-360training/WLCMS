@@ -1,0 +1,408 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("courseinfo_modal.vm")
+#parse("branding.vm")
+<script type='text/javascript' src="theme/executive/plugins/jwplayer/jwplayer-7.1.4.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+<script src="javascript/vm_js/marketing.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+
+
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+	<div class="messages" id="successMsg" style="display:none"></div>
+	<div class="messages" id="msgdiv" style="display:none"></div>
+	
+   #* BEGIN PAGE HEADINGS *#
+   <div class="portlet">
+		<div class="portlet-body">
+			<div class="page-heading">
+				<div class="col-xs-12 zero-padding">
+					<h1>#springMessage('label.course-information')</h1>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+   </div>
+   #* END PAGE HEADINGS *#
+   <div class="text-muted">#springMessage('label.information.header.text')</div>
+   <br/>
+   <form role="form" id="frm_marketing">
+	<input type="hidden" id="assetUploadType" name="assetUploadType" />
+	<input id="requestId" name="requestId" type="hidden" class="upload-request" value="$vu360User.vu360UserID"></input>
+	
+    #set($cType = $request.getParameter('cType'))
+	
+ 	#springBind("command.id")
+	<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">	
+	
+	#springBind("command.name")
+	<input type="hidden"  name="courseName" id="courseName" value="$!{status.value}">
+	
+	#springBind("command.bussinesskey")
+	<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+	
+	#* BEGIN AUTHOR INFORMATION FORM *#
+	<div class="portlet portlet-btn">
+      <div class="portlet-title" onclick="$('#assetUploadType').val(CourseAssetTypeEnum.AUTHORIMAGE); " title="#springMessage('label.author-information')">
+         <div class="caption">
+            Author / Instructor Information
+         </div>
+         <div class="tools">
+            <a href="javascript:;" class="collapse" id="collapse_course_author_id"></a>
+         </div>
+      </div>
+      <div class="portlet-body form" id="collapse_course_author_portlet_body_id">
+        <div class="form-horizontal">
+            <div class="form-body">
+            #if ($!{cType}=='5')
+                <div class="form-group">
+                    #springBind("command.classInstructorId")
+
+                <div class="col-md-6">
+                    <label class="control-label-2">#springMessage("label.instructor")<span class="required">*</span></label>
+                        <select id="classInstructor" name="classInstructor" required data-msg-required="#springMessage('label.instructor.required.message')"  class="form-control">
+
+                            #*<option>-- Please select a instructor --</option>*#
+                                <option value=""></option>
+                            #foreach ($classIns in $classInstructors)
+                                <option value="$classIns.id" #if($!{status.value} == $classIns.id)selected#end>
+                                    $classIns.firstName
+                                </option>
+                            #end
+                        </select>
+                 </div>
+
+                </div>
+                #end
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input type="hidden" id="authorImageTableField" name="authorImageTableField" />
+
+                        <label class="control-label-2">#springMessage('label.information.author.desc') #if ($!{cType} == "6" || $!{cType} == "5")  <span class="required">*</span> #end</label>
+                        <span class="help-block">#springMessage('label.information.image.size')</span>
+                        <div class="table-scrollable" id="icc_container_0" style="margin-top:0 !important">
+                            <table class="table table-str-border table-bordered drop-widget">
+                              <thead >
+                                <tr class="td-header">
+                                  <th colspan="6">
+                                    <div class='btn-group'>
+
+                                        <a class="btn btn-default blue-label" id="root_icc_browse_0" href="javascript:openBrowseModal(0);" title="Browse Image File to Upload"><i class="glyphicon glyphicon-paperclip"></i> Browse</a>
+                                        <a class="btn btn-default" id="icc_remove_0" data-backdrop="static" data-keyboard="false" href="javascript:;" onClick="OnAuthorImageDetach ()" title="#springMessage('label.detach-asset')"><i class="icon-minus red-text"></i></a>
+
+                                    </div>
+                                  </th>
+                                </tr>
+
+                                <tr id="author_labels" class="td-header-bottom-border">
+                                #springBind("command.AuthorImage")
+                                #if ($!{status.value})
+                                    #set( $AuthorImage = $!{status.value})
+                                     <th style="width:60%">#springMessage('label.asset-name')</th>
+                                        <th style="width:15%">#springMessage('label.dimension')</th>
+                                        <th style="width:15%">#springMessage('label.size')</th>
+                                        <th style="width:10%"></th>
+                                    #end
+                                </tr>
+
+                              </thead>
+                              <tbody id="icc_list_0">
+                                #springBind("command.AuthorImage")
+                                #if ($!{status.value})
+                                    #set( $AuthorImage = $!{status.value})
+                                    <tr>
+                                      <td class="Name attached">$AuthorImage.name</td>
+                                      <td class="Dimension attached">$AuthorImage.width x  $AuthorImage.height</td>
+                                      <td class="Size attached" >$AuthorImage.size</td>
+                                      <td id="image"><a onClick="previewImage(this)" href="javascript:;"><img width="50px" src="$AuthorImage.location" data-full-src="$AuthorImage.location" ></img></a></td>
+                                    </tr>
+                                #end
+                              </tbody>
+                              <tfoot id="icc_drop_area_0">
+
+                              <tr>
+                                    <td colspan="4">
+                                        <ul class="list-inline hint-in-table">
+                                            <li class="top"><img src="theme/executive/img/instructor-image.png" style="width:100%"></li>
+                                            <li class="middle">#springMessage('label.information.image.use') <br>#springMessage('label.dag-drop')<br><small>or #springMessage('label.click-browse-button') ( <i class="glyphicon glyphicon-paperclip"></i> ). #springMessage('label.image.file.formats')</small></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label-2">Enter some promotional / background information on the author or instructor of the course #if ($!{cType} == "6" || $!{cType} == "5")  <span class="required">*</span> #end</label>
+                        #springBind("command.AuthorBackground")
+                        <textarea id="AuthorBackground" class="ckeditor form-control" name="AuthorBackground" rows="4">$!{status.value}</textarea>
+                        <span class="input-group-addon"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+	  </div>
+	</div>
+	#* END AUTHOR INFORMATION FORM *#
+   
+	#* BEGIN COURSE INFORMATION FORM *#
+	<div class="portlet portlet-btn">
+	  <div class="portlet-title" title="#springMessage('label.courseimages')">
+		 <div class="caption">
+			#springMessage('label.courseimages')
+		 </div>
+		 <div class="tools">
+			<a href="" class="collapse"></a>
+		 </div>
+	  </div>
+	  <div class="portlet-body form">
+		
+		<div class="form-body">
+			<div class="form-group">
+			  
+				<label class="control-label-2">#springMessage('label.upload.image.course')</label>
+				<span class="help-block">#springMessage('label.course.image.dimension') <b>850</b> x <b>565</b> pixels.</span>
+				
+				<div class="table-scrollable" id="icc_container_1" style="margin-top:0 !important">
+					<table class="table table-str-border table-bordered drop-widget">
+					  <thead>
+						<tr class="td-header">
+						  <th colspan="4">
+							<div class='btn-group'>
+								<a class="btn btn-default blue-label" id="root_icc_browse_1" href="javascript:openBrowseModal(1);" title="#springMessage('label.browse.image.file')"><i class="glyphicon glyphicon-paperclip"></i> #springMessage('button.browse')</a>
+								<a class="btn btn-default" id="icc_remove_1" data-backdrop="static" data-keyboard="false" href="javascript:;" onClick="OnCourseImageDetach ()" title="#springMessage('label.detach-asset')"><i class="icon-minus red-text"></i></a>
+							</div>
+						  </th>
+						</tr>
+						<tr id="course_labels" class="td-header-bottom-border">
+							
+							#springBind("command.CourseImage")
+							#if ($!{status.value})							
+								<th style="width:60%">#springMessage('label.asset-name')</th>
+								<th style="width:15%">#springMessage('label.dimension')</th>
+								<th style="width:15%">#springMessage('label.size')</th>
+								<th style="width:10%"></th>
+							#end	
+						</tr>
+					  </thead>
+					  <tbody id="icc_list_1">
+						#springBind("command.CourseImage")
+							#if ($!{status.value})							
+							#set( $CourseImage = $!{status.value})
+							<tr>
+							  <td class="Name attached">$CourseImage.name</td>								 
+							  <td class="Dimension attached">$CourseImage.width x  $CourseImage.height</td>
+							  <td class="Size attached" >$CourseImage.size</td>
+							  <td id="image"><a onClick="previewImage(this)" href="javascript:;"><img width="50px" src="$CourseImage.location" data-full-src="$CourseImage.location" ></img></a></td>
+							</tr>
+							#end
+					  </tbody>
+					  <tfoot id="icc_drop_area_1">
+						<tr>
+							<td colspan="4">
+								<ul class="list-inline hint-in-table">
+									<li class="top"><img src="theme/executive/img/course-cover-img.png" style="width:100%"></li>
+									<li class="middle">Your image will be used like the example to the left. <br>Drag and drop an image to upload<br><small>or click the Browse button ( <i class="glyphicon glyphicon-paperclip"></i> ). #springMessage('label.image.file.formats')</small></li>
+								</ul>
+							</td>
+						</tr>
+					  </tfoot>
+					</table>
+				</div>
+				
+			  
+			</div>
+			<div class="form-group">
+				
+				<label class="control-label-2">#springMessage('label.upload.thumbnail.image')</label>
+				<span class="help-block">#springMessage('label.information.image.size') <b>460</b> x <b>289</b> pixels.</span>
+				<div class="table-scrollable" id="icc_container_2" style="margin-top:0 !important">
+					<table class="table table-str-border table-bordered drop-widget">
+					  <thead>
+						<tr class="td-header">
+						  <th colspan="4">
+							<div class='btn-group'>
+								<a class="btn btn-default blue-label" id="root_icc_browse_2" href="javascript:openBrowseModal(2);" title="#springMessage('label.browse.image.file')"><i class="glyphicon glyphicon-paperclip"></i> #springMessage('button.browse')</a>
+								<a class="btn btn-default" id="icc_remove_2" data-backdrop="static" data-keyboard="false" href="javascript:;" onClick="OnCourseThumbnailDetach ()" title="#springMessage('label.detach-asset')"><i class="icon-minus red-text"></i></a>
+							</div>
+						  </th>
+						</tr>
+						<tr id="thumbnail_labels" class="td-header-bottom-border">
+						
+						#springBind("command.CourseImageThumbnail")
+						#if ($!{status.value})							
+							<th style="width:60%">#springMessage('label.asset-name')</th>
+							<th style="width:15%">#springMessage('label.dimension')</th>
+							<th style="width:15%">#springMessage('label.size')</th>
+							<th style="width:10%"></th>
+						#end	
+					</tr>
+					  </thead>
+					  <tbody id="icc_list_2">
+						#springBind("command.CourseImageThumbnail")
+						#if ($!{status.value})							
+						#set( $CourseImageThumbnail = $!{status.value})
+						<tr>
+											  
+						  <td class="Name attached">$CourseImageThumbnail.name</td>								 
+						  <td class="Dimension attached">$CourseImageThumbnail.width x  $CourseImageThumbnail.height</td>
+						  <td class="Size attached" >$CourseImageThumbnail.size</td>
+						  <td id="image"><a onClick="previewImage(this)" href="javascript:;"><img width="50px" src="$CourseImageThumbnail.location" data-full-src="$CourseImageThumbnail.location" ></img></a></td>
+						</tr>
+						#end
+					  </tbody>
+					  <tfoot id="icc_drop_area_2">
+						<tr>
+							<td colspan="4">
+								<ul class="list-inline hint-in-table">
+									<li class="top"><img src="theme/executive/img/thumbnail-img.png" style="width:100%"></li>
+									<li class="middle">#springMessage('label.information.image.use') <br>#springMessage('label.dag-drop')<br><small>or #springMessage('label.click-browse-button') ( <i class="glyphicon glyphicon-paperclip"></i> ). #springMessage('label.image.file.formats')</small></li>
+								</ul>
+							</td>
+						</tr>
+					  </tfoot>
+					</table>
+				</div>
+				
+			</div>
+		</div>
+		
+	  </div>
+	</div>
+	#* END COURSE INFORMATION FORM *#
+   
+	#* BEGIN PROMOTIONAL VIDE *#
+	<div class="portlet portlet-btn">
+	  <div class="portlet-title" title="#springMessage('label.promotional-video')">
+		 <div class="caption">
+			#springMessage('label.promotional-video')
+		 </div>
+		 <div class="tools">
+			<a href="" class="collapse"></a>
+		 </div>
+	  </div>
+	  <div class="portlet-body form">
+		<div class="form-body">
+			<div class="form-group">
+			  <label class="control-label-2">#springMessage('label.promotional.video')</label>
+			  <span class="help-block">#springMessage('label.informartion.video.desc')</span>
+			  <div class="table-scrollable" id="icc_container_3" style="margin-top:0 !important">
+					<table class="table table-str-border table-bordered drop-widget">
+					  <thead>
+						<tr class="td-header">
+						  <th colspan="4">
+							<div class='btn-group'>
+								<a class="btn btn-default blue-label" id="root_icc_browse_3" href="javascript:openBrowseModal(3);" title="#springMessage('label.browse.image.file')"><i class="glyphicon glyphicon-paperclip"></i> #springMessage('button.browse')</a>
+								<a class="btn btn-default" id="icc_remove_3" href="javascript:;" onClick="OnVideoDemoDetach ()" title="#springMessage('label.detach-asset')"><i class="icon-minus red-text"></i></a>
+							</div>
+						  </th>
+						</tr>
+						<tr id="video_labels" class="td-header-bottom-border">
+								
+								#if($!{slideAsset})							
+									<th style="width:60%">#springMessage('label.asset-name')</th>
+									<th style="width:15%">#springMessage('label.dimension')</th>
+									<th style="width:15%">#springMessage('label.size')</th>
+									<th style="width:10%"></th>
+								#end	
+							</tr>
+					  </thead>
+					  <tbody id="icc_list_3">
+						#if($!{slideAsset})
+								 <tr>
+								 <td class="Name attached">$slideAsset.name</td>								 
+								  <td class="Dimension attached">$slideAsset.height x  $slideAsset.width</td>
+								  <td class="Size attached" >$slideAsset.size</td>
+								  <td id="image"><a onClick="playVideo(this)" href="javascript:;"><img width="50px" src="theme/executive/img/vplayer_thumbnail.png" data-full-src="theme/executive/img/vplayer_thumbnail.png" ></img></a></td>
+								  <input type="hidden" id="videoPath" value="$slideAsset.location"/>
+								</tr>
+						#end
+					  </tbody>
+					  <tfoot id="icc_drop_area_3">
+						<tr>
+							<td colspan="4">
+								<ul class="list-inline hint-in-table">
+									<li class="top"><img src="theme/executive/img/course-promo-video.png" style="width:100%"></li>
+									<li class="middle">These videos will be seen on the course details page,<br>and can be featured in other marketing initiatives.<br>Drag and drop a video to upload<br><small>or #springMessage('label.click-browse-button') ( <i class="glyphicon glyphicon-paperclip"></i> ).  #springMessage('label.file.format.mp4')</small></li>
+								</ul>
+							</td>
+						</tr>
+					  </tfoot>
+					</table>
+			  </div>
+			</div>
+		</div>
+	  </div>
+	</div>
+	#* END PROMOTIONAL VIDEO *#
+   
+   #* BEGIN COURSE DETAILS *#
+   <div class="portlet portlet-btn">
+      <div class="portlet-title" title="#springMessage('label.course-details')">
+         <div class="caption">
+           #springMessage('label.course-details')
+         </div>
+         <div class="tools">
+            <a href="javascript:;" class="collapse"></a>
+         </div>
+      </div>
+      <div class="portlet-body form">
+        <div class="form-body">
+			<div class="form-group">
+			  <label class="control-label-2">#springMessage('label.course') #springMessage('label.marketing.duration') (#springMessage('label.duration-hours'))</label>
+			  <div>
+				#springBind("command.ceus")
+				 <input type="text" class="form-control" placeholder="#springMessage('label.course-duration-default')." id="duration" name="duration" value="$!{status.value}" maxlength="10" />
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label class="control-label-2">#springMessage('label.intended-audience')</label>
+			  <div>
+					#springBind("command.IntendedAudience")
+					<textarea id="IntendedAudience" class="ckeditor form-control" name="IntendedAudience" rows="4">$!{status.value}</textarea>
+			  </div>
+			</div>
+			<div class="form-group">
+				<label class="control-label-2">#springMessage('label.prerequisites')</label>
+				<div>
+					#springBind("command.coursePreReq")
+					<textarea id="PreReqs" class="ckeditor form-control" name="PreReqs" rows="4">$!{status.value}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label-2">#springMessage('label.support-materials-and-additional-provided-features')</label>
+				<div>
+					#springBind("command.AdditionalMaterials")
+					<textarea id="AdditionalMaterials" class="ckeditor form-control" name="AdditionalMaterials" rows="4">$!{status.value}</textarea>
+				</div>
+			</div>
+            <div class="form-group">
+			  <label class="control-label-2">#springMessage('label.other-requirements-and-end-of-course-instructions')</label>
+			  <div>
+					#springBind("command.EndOfCourseInstructions")
+					<textarea id="EocInstructions" class="ckeditor form-control" name="EocInstructions" rows="4">$!{status.value}</textarea>
+			  </div>
+		    </div>
+		</div>
+	  </div>
+   </div>
+   #* END COURSE DETAILS *#
+   
+	#* BEGIN ACTION BUTTONS *#
+    <div class="form-actions fluid">
+	   <div class="col-md-9">
+		  <button type="button" class="btn blue input-small" onclick="SaveMarketing ()">#springMessage('button.save')</button>
+	   </div>
+    </div>
+	#* BEGIN ACTION BUTTONS *#
+	
+   </form>
+</div>
+#* END PAGE CONTENT *#
+#parse("footer.vm")

@@ -1,0 +1,11 @@
+[
+  {
+    "id": 0,
+    "label": "Course Name",
+    "inode": false,
+    "open": true,
+    "checkbox": false,
+    "radio": false,
+    "branch": []
+  }
+]

@@ -1,0 +1,194 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+
+<script src="javascript/vm_js/course_setting.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+#* BEGIN PAGE HEADINGS *#
+<div class="portlet">
+	<div class="portlet-body">
+		<div class="page-heading">
+			<div class="col-xs-12 zero-padding">
+				<h1>#springMessage('label.courseSettings')</h1>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+#* END PAGE HEADINGS *#
+   	#* start - success message *#
+      #if( $!request.getParameter("msg")=="success" )
+            <div class="messages">
+              <div role="alert" class="alert alert-success alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span></button>
+                #springMessage('message.save-message')
+			  </div>
+			 
+            </div>
+			<script type="text/javascript"> elementFadeOut('.messages'); </script>
+		   
+     #elseif( $!failureMessage )  
+       <div class="messages">
+       <div role="alert" class="alert alert-danger alert-dismissible fade in">
+        <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+         $!{failureMessage} 
+        </div>
+	   </div>
+	   <script type="text/javascript"> elementFadeOut('.messages'); </script>
+   #end
+				   
+
+
+  <div style="height: 30px;">#springMessage('label.courseSettingsDescription')</div>
+  <br>
+  
+<div class="messages" id="msgdiv" ></div>
+#* BEGIN SETTONGS FORM *#
+<div class="portlet">
+  	<form action="courseSettingSave" class="form-horizontal" method="Post" id="frm_courseSettings" role="form">
+	 	#springBind("courseSettingModel.courseConfiguration_Id")
+		<input type="hidden" name="courseConfiguration_Id" value="${status.value}">
+	 	#springBind("courseSettingModel.course_Id")
+		<input type="hidden" name="course_Id" value="${status.value}">
+	 	#springBind("courseSettingModel.businessKey")
+		<input type="hidden" id="businessKey" name="businessKey" value="${status.value}">
+	 	#springBind("courseSettingModel.courseName")
+		<input type="hidden" id="name" name="courseName" value="${status.value}">
+		#springBind("cType")
+		<input type="hidden"  name="cType" id="cType" value="$!{cType}">	
+  <div class="portlet-body form">
+	#* BEGIN INSTRUCTION *#
+	<div class="portlet">
+		<div class="portlet-body">
+			<div class="heading-bottom-text">
+				<div class="table-scrollable">
+								<table class="table">
+									<thead>
+									   <tr class="dataTable-head">
+											<th colspan="2">#springMessage('label.settings.course.completion')</th>
+										</tr>
+									</thead>
+									<tbody>
+									   <tr>
+											<td>#springMessage('label.pass-all-quizzes')</td>
+											<td class="text-right">
+												<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+												#springBind("courseSettingModel.passAllQuizzes")
+												<input name="passAllQuizzes" type="checkbox" #if ( ${status.value} == "true") checked #end value="1"  >
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>#springMessage('label.attempt-the-exam')</td>
+											<td class="text-right">
+												<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+												#springBind("courseSettingModel.attemptTheExam")
+												<input name="attemptTheExam"  type="checkbox" #if ( ${status.value} == "true") checked #end value="1" >
+												</div>
+											</td>
+									   </tr>
+									   <tr>
+											<td>#springMessage('label.pass-the-exam')</td>
+											<td class="text-right">
+												<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+												#springBind("courseSettingModel.passTheExam")								
+												<input name="passTheExam"  type="checkbox" #if ( ${status.value} == "true") checked #end value="1"  >
+												</div>
+											</td>
+										</tr>
+									</tbody>
+									<thead>
+									   <tr class="dataTable-head">
+											<th colspan="2">#springMessage('label.agree-with-specified-text')</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>#springMessage('label.specified-text')</td>
+											<td class="text-right">
+												<div id="agreement_toggle" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+												#springBind("courseSettingModel.agreeWithSpecifiedText")
+												<input id="agreeWithSpecifiedText" name="agreeWithSpecifiedText" type="checkbox" #if ( ${status.value} == "true") checked #end  value="1" >
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+											 #springBind("courseSettingModel.specifiedText") 
+											<textarea name="specifiedText"  id="specifiedText" class="form-control" rows="3" placeholder="e.g. #springMessage('label.specified-text-place-holder')">${status.value}</textarea></td>
+									   </tr>
+									</tbody>
+									<thead>
+									   <tr class="dataTable-head">
+											<th colspan="2">#springMessage('label.text.course-player-criteria')</th>
+										</tr>
+									</thead>
+									<tbody>
+									   <tr>
+											<td>#springMessage('label.text.display-slides-tableofcontent')</td>
+											<td class="text-right">
+												<div class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+												#springBind("courseSettingModel.displaySlidesTOC")
+													<input name="displaySlidesTOC" type="checkbox" #if ( ${status.value} == "true") checked #end value="1" >
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+				 <button type="submit" class="btn blue" onclick="APP.SAVE_SETTINGS()">#springMessage('button.save')</button>			                                
+			  <button type="button" class="btn default" onclick="location.reload(true); " >#springMessage('button.cancel')</button>		
+				</div>
+		</div>
+	</div>
+	#* END INSTRUCTION *#
+		
+		
+	</form>
+  </div>
+</div>
+#* END SETTONGS FORM *#
+		
+<script>
+$(document).ready(function ()
+{
+	//	BEGIN APP **************************************************************
+	APP.PLACEHOLDER_FIX();
+	APP.EDIT_OR_VIEW_TOGGLE();
+	APP.LEFT_NAV.init("OPEN","nav_accordion_2");
+	APP.BOOTSTRAP_TOOLTIP("[data-toggle='tooltip']");
+	APP.BOOTSTRAP_POPOVER("[data-toggle='popover']");
+	
+	//APP.MODE_INIT("#atr_mode");
+	/*APP.LEFT_NAV_COURSE_OUTLINE();
+	APP.BODY_COLLAPSES();
+	APP.APPLY_ROUNDED_CORNERS();
+	APP.CKEDITOR("title-ckeditor", "TITLE");
+	APP.CKEDITOR("cc-ckeditor", "CC");
+	APP.CKEDITOR("text-ckeditor", "TEXT");
+	APP.DATAGRID('#sample_1',true,true,true,true);*/
+	//	END APP **************************************************************
+	 $('#agreement_toggle').on('switch-change', function (e, data) {
+				if(data.value)
+				{
+					$("#specifiedText").removeAttr("disabled");
+				}
+				else
+				{
+					$("#specifiedText").attr("disabled","disabled");
+				}
+			});
+	if ($("#specifiedText").val().length==0){
+			$("#specifiedText").attr("disabled","disabled");
+			}
+		
+});
+
+</script>
+	
+#parse("footer.vm")	

@@ -1,0 +1,219 @@
+<script type="text/javascript">   
+
+	//WLCMS-1054
+	//Html encode and decode function
+	function htmlEncode(value) {
+		return $('<div/>').text(value).html();
+	}
+	function htmlDecode(value) {
+		return $('<div/>').html(value).text();
+	}
+ 
+	$(function() {					
+		   var currentLocation  = $(location).attr('pathname');		   
+		  
+		   var loginLink = "lcms/login";
+		   var createCourseOnlineLink = "lcms/createcourse";		  
+		   var editCourseLink = "lcms/editCourseOverview";
+		   var editCourseStructureLink= "lcms/coursestructure";
+		   var dashboardLink = "lcms/dashboard";
+		   var courseTypeLink = "lcms/coursetype";
+		   var pricingLink = "lcms/pricing";
+		   var courseSettings = "lcms/courseSettings";
+		   var courseSettingsWebinar = "lcms/coursesettingw";
+		   var publishingLink = "lcms/publishing";
+		   var signUpLink = "lcms/signUpAuthor";
+		   var signUpSaveLink = "lcms/signUpAuthorSave";
+		   var signUpActivateLink = "lcms/signUpAuthorActivate";
+		   var quickSearch = "lcms/quickSearch";
+		   var findRecent = "lcms/searchcourseonline";
+		   var setMarketingLink = "lcms/setMarketing";
+		   var availabilityLink = "lcms/availability";
+		   var offerLink = "lcms/displayOfferPage";
+		   var editClassroomWebinarLink = "lcms/editClassroomWebinarCourse"
+		   var reportsLink = "lcms/reports"
+
+		   var addClassroomLink = "lcms/schedule"
+		   var addInstructorLink = "lcms/instructor"
+		   var webinarPublishingLink = "lcms/webinar_publishing"
+		   var addWebinarSetup   = "lcms/webinarSetup"
+		   var addclassroomsetup   = "lcms/classroomsetup"
+		   
+		   var courseSettingsClassroom = "lcms/coursesettingc";
+		   var profilePage = "lcms/getProfile";
+		   var courseRating = "lcms/RatingCourseSearch";
+		   var classroomClasses = "lcms/classroom-classes";
+		   var locations = "lcms/locationList";
+		   var authorPermission ="lcms/userPermissionSettings";
+		   var royaltySetting = "/lcms/royaltySettings";
+		   var videoAssetMgr = "/lcms/videoAssetMgrPage";
+           var classroomImportPage = "/lcms/classroomImportPage";
+		   
+		   //append <li><a href="dashboard"> Dashboard</a></li> in the beginning when dashboard comes		    
+		   if (currentLocation.indexOf(loginLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li>#springMessage('label.login')</li>');
+					document.title = '#springMessage('label.login-in')';
+		   }
+		   else if (currentLocation.indexOf(dashboardLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li>#springMessage('label.create')</li>');					
+					document.title = '#springMessage('label.course-type')';
+		   }
+		   else if (currentLocation.toLowerCase().indexOf(courseTypeLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li>#springMessage('label.create')</li>');
+					document.title = '#springMessage('label.course-type')';
+		   }
+		   else if (currentLocation.indexOf(createCourseOnlineLink) >= 0 ){
+		   			var c_type;
+						#if($!cType == "5")
+		   				c_type = $('#new_classroom_course').val()
+		   			#elseif($!cType == "6")
+		   				c_type = $('#new_webinar_course').val()
+		   			#else
+		   				c_type = $('#new_online_course').val()
+		   			#end
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>'+ c_type+'</li>');
+					document.title = '#springMessage('label.course-overview')';					
+		   }
+		   else if (currentLocation.indexOf(pricingLink) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + " "+"(" +$("#businessKey").val() +")"+ '</li>');				
+					document.title = '#springMessage('label.course-pricing')';		
+		   }else if (currentLocation.indexOf(publishingLink) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#courseName").val() ) + " "+"(" +$("#bussinessKey").val() +")"+ '</li>');				
+					document.title = '#springMessage('label.course-publishing')';		
+		   }else if (currentLocation.indexOf(webinarPublishingLink) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#courseName").val() ) + " "+"(" +$("#bussinessKey").val() +")"+ '</li>');				
+					document.title = '#springMessage('label.course-publishing')';				
+		   }
+		   else if (currentLocation.indexOf(courseSettings) >= 0 || currentLocation.indexOf(courseSettingsWebinar) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val() ) + " "+"(" +$("#businessKey").val() +")"+ '</li>');				
+					document.title ='#springMessage('label.course-settings')';		
+		   }
+		   
+		   else if (currentLocation.indexOf(courseSettings) >= 0 || currentLocation.indexOf(courseSettingsClassroom) >= 0) {
+				$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val() ) + " "+"(" +$("#businessKey").val() +")"+ '</li>');				
+				document.title ='#springMessage('label.course-settings')';		
+	   }	   
+		   
+		   else if (currentLocation.indexOf(editCourseStructureLink) >= 0){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' +  $('#headingDiv h1:first').html()  +" "+"(" + $.trim($("#CourseID").html()) +")"+ '</li>');			
+					document.title = '#springMessage('label.course-structure')';
+			}
+			else if (currentLocation.indexOf(editCourseLink) >= 0 || currentLocation.indexOf(editClassroomWebinarLink) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + " "+"(" +$("#CourseID").val() +")"+ '</li>');	
+					document.title = '#springMessage('label.course-overview')';
+		   }
+		   else if (currentLocation.indexOf(addClassroomLink) >= 0) {
+					//$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + '</li>');
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + " "+"(" +$("#CourseID").val() +")"+ '</li>');			
+					if($("#cType").val() == 6)
+					  document.title = '#springMessage('label.webinar-schedule')';
+					else if($("#cType").val() == 5)
+					  document.title = '#springMessage('label.classroom-schedule')';
+					//document.title = '#springMessage('label.course-overview')';
+		   }
+		   else if (currentLocation.indexOf(addclassroomsetup) >= 0) {
+					//$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + '</li>');
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + " "+"(" +$("#CourseID").val() +")"+ '</li>');			
+					//document.title = 'Course Overview';
+					if($("#cType").val() == 6)
+					document.title = '#springMessage('label.webinar-setup')';
+					else if($("#cType").val() == 5)
+					document.title = '#springMessage('label.classroom-setup')';
+		   }
+		   else if (currentLocation.indexOf(addInstructorLink) >= 0) {
+					//$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + '</li>');			
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#name").val()) + " "+"(" +$("#CourseID").val() +")"+ '</li>');
+					//document.title = '#springMessage('label.course-overview')';
+					if($("#cType").val() == 6)
+					document.title = '#springMessage('label.webinar-instructor')';
+					else if($("#cType").val() == 5)
+					document.title = '#springMessage('label.classroom-instructor')';
+		   }
+		    else if (currentLocation.indexOf(signUpSaveLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="signUpAuthor">#springMessage('label.sign-up')</a></li><li> #springMessage('label.thanks')</li>');
+					document.title = '#springMessage('label.thanks')';					
+		   }
+		    else if (currentLocation.indexOf(signUpActivateLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="signUpAuthor">#springMessage('label.sign-up')</a></li><li> #springMessage('label.account-activation')</li>');
+					document.title = '#springMessage('label.account-activation')';					
+		   } else if (currentLocation.indexOf(setMarketingLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#courseName").val() )+ " "+"(" +$("#bussinesskey").val() +")"+ '</li>');
+					document.title = '#springMessage('label.course-information')';					
+		   } 
+		     else if (currentLocation.indexOf(signUpLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li> Sign-up</li>');
+					document.title = '#springMessage('label.sign-up')';					
+		   }
+		   else if(currentLocation.indexOf(quickSearch) >= 0){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>  #springMessage('label.search')</li>');
+					document.title = '#springMessage('label.search')';					
+		   }
+		   else if(currentLocation.indexOf(findRecent) >= 0){
+					$("#breadcrumbs ol").append('<li> My Courses</li>');
+					document.title = '#springMessage('label.my-courses')';					
+		   }else if (currentLocation.indexOf(availabilityLink) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode ( $("#name").val() ) + " "+"(" +$("#businessKey").val() +")"+ '</li>');				
+					document.title = '#springMessage('label.course-availability')';		
+		   }
+		   else if (currentLocation.indexOf(offerLink) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#breadCrumbCourseName").val()) + " "+"(" +$("#breadCrumbBusinessKey").val() +")"+ '</li>');				
+					document.title = '#springMessage('label.course-offer')';		
+		   }
+		   
+		   else if (currentLocation.indexOf(addWebinarSetup) >= 0) {
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' + htmlEncode( $("#coursename").val() ) + " "+"(" +$("#bussinesskey").val() +")"+ '</li>');				
+					document.title = '#springMessage('label.webinar-setup')';		
+		   } else if (currentLocation.indexOf(profilePage) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('label.profile')</li>');
+					document.title = '#springMessage('label.author-profile')';					
+		   } 
+		   else if (currentLocation.indexOf(courseRating) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('label.course-rating-review') </li>');				
+					document.title ='#springMessage('label.course-rating-review')';					
+		   } 
+		     else if (currentLocation.indexOf(classroomClasses) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' +  $('#headingDiv h1:first').html()  +" "+"(" + $.trim($("#CourseID").val()) +")"+ '</li>');			
+					document.title = '#springMessage('label.classroom')';			
+		   } 
+		       else if (currentLocation.indexOf(locations) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li>' +  '#springMessage('label.locations')' + '</li>');			
+					document.title = '#springMessage('label.locations')';			
+		   }  else if (currentLocation.indexOf(authorPermission) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('author_permission_settings.label.title') </li>');				
+					document.title ='#springMessage('author_permission_settings.label.title')';				
+		   } else if (currentLocation.indexOf(royaltySetting) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('royalty_settings.label.title') </li>');				
+					document.title ='#springMessage('royalty_settings.label.title')';
+		   } else if (currentLocation.indexOf(videoAssetMgr) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('videoAssetMgrPage.menu.name') </li>');				
+					document.title ='#springMessage('videoAssetMgrPage.menu.name')';
+		   } else if (currentLocation.indexOf(classroomImportPage) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('classroomImportPage.menu.name') </li>');				
+					document.title ='#springMessage('classroomImportPage.menu.name')';
+		   } 
+		   else if (currentLocation.indexOf(reportsLink) >= 0 ){
+					$("#breadcrumbs ol").append('<li><a href="coursetype"> #springMessage('label.create')</a></li><li> #springMessage('label.reports') </li>');				
+					document.title ='#springMessage('label.reports.authorReports')';
+		   } 
+		 });
+</script>
+							
+#* Workspace Begin *#
+      <div id="contentHolder" class="content-holder">
+			<input type="hidden" id="new_classroom_course" name="new_classroom_course" value=" #springMessage('label.new-classroom-course')"/>
+			<input type="hidden" id="new_webinar_course" name="new_webinar_course" value=" #springMessage('label.new-webinar-course')"/>
+			<input type="hidden" id="new_online_course" name="new_online_course" value=" #springMessage('label.new-online-course')"/>
+				#* BEGIN BREADCRUMB BAR CONTENT *#
+                <div>
+                	#* Breadcrumb *#
+                    <div class="col-xs-8" id="breadcrumbs">
+                        <ol class="breadcrumb">
+                        	<li>#springMessage('label.author'), #springMessage('label.teach'), #springMessage('label.and') #springMessage('label.sell')</li>
+                        </ol>
+                    </div>
+                </div>
+                #* END BEGIN BREADCRUMB BAR CONTENT *#
+				
+                <div class="clearfix"></div>
+
+						

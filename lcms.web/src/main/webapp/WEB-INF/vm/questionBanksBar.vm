@@ -1,0 +1,29 @@
+#* BEGIN BANK *# 
+<div class="panel panel-default" id="questionBankBar" style="display:none">
+   <div class="panel-heading">
+	  
+		<div class="holder">
+
+			<div class="anchors move-btn">
+			</div>
+			
+			<div class="panel-title">
+				<a href="#exam_0_bank_0" id="questionBankBarExpendLink" data-parent="#exam_0_banks" data-toggle="collapse" class="accordion-toggle">
+					<i class="icon-question-bank"><i></i></i> <span id="questionBanksTitle">Lesson Name</span>
+				</a>
+			</div>
+		</div>
+	  
+   </div>
+   
+
+
+   
+   #* BEGIN PANEL BODY *#
+   <div id="exam_0_bank_0" class="panel-collapse collapse a2">
+	  #* Questions list will display there *#
+   </div>
+   #* END PANEL BODY *#
+   
+</div>
+#* END BANK *#

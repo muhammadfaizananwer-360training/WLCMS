@@ -1,0 +1,71 @@
+<!-- BEGIN ASSET AUDIO SEARCH -->
+<!--<div class="modal fade" id="searchAAssetModal" tabindex="-1" role="dialog" aria-labelledby="asset-a-search-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg">-->
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" onClick="cancelAudioAssetSearch ()">&times;</span><span class="sr-only">Close</span></button>
+		<h3 class="modal-title" id="asset-a-search-label">Find Asset and Attach to Slide</h3>
+	  </div>
+	  <div class="modal-body">
+	
+		<!-- BEGIN GRID TABLE -->
+		<div class="form-body">							
+		   <div class="form-group">
+				<div>
+					<div class="btn-group pull-right zero-padding col-md-6">
+						<div class="input-group">
+						  <span class="input-group-btn">
+							<label>Search<span class="search-required">*</span></label>
+						  </span>
+						  <input type="text" id="txtAudioAssetSearchTerm"  Onkeydown="if (event.keyCode == 13) document.getElementById('searchAudioAssets').click()" class="form-control"  placeholder="Search Asset">
+						  <span class="input-group-btn">
+							<button type="submit" onClick="searchAudioAssets ('dynamicModal')" id="searchAudioAssets"  data-loading-text="Loading..." class="btn blue"><i class="search-icon-white"></i> Find</button>
+						  </span>
+						</div>
+					</div>
+				</div>
+				<br /><br />
+				<div class="table-scrollable">
+					<table class="table table-str-border table-hover table-bordered white-bg">
+						<thead>
+						   <tr class="td-header-bottom-border">
+							  <th></th>
+							  <th>Asset Name</th>
+							  <th>Type</th>
+							  <th>Duration</th>
+							  <th>Size</th>
+							  <th>Version</th>
+							  <th>Description</th>
+							  <th>Preview</th>
+						   </tr>
+						   <tr id='audioAssetRow' style='display:none'>
+							  <td id="rowid"><input type="radio" name='audioVal' value='1'/></td>
+							  <td id="name">Asset Name A</td>
+							  <td id="type">MP3</td>
+							  <td id="duration">00:00:20</td>
+							  <td id="size">N/A</td>
+							  <td id="version">1</td>
+							  <td id="description"></td>
+							  <td id="link"></td>
+						   </tr>
+						</thead>
+						
+						<tbody id="lstAudioAsset" height="100">
+						   
+							
+						</tbody>
+					</table>
+				</div>
+		   </div>
+		</div>
+		<!-- END GRID TABLE -->
+		
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" onClick="acceptDialogBox ('dynamicModal audio')" id="id_acceptAudioAssetSearch" class="btn blue">Accept</button>
+		<button type="button" onClick="cancelAudioAssetSearch ()"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+	  </div>
+	</div>
+<!--  </div>
+</div>-->
+<!-- END ASSET AUDIO SEARCH -->

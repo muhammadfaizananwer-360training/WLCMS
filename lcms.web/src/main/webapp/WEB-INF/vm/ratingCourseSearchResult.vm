@@ -1,0 +1,24 @@
+<div class="portlet-title" title="Result" id="resultTitle">
+	<div class="caption">Result(s)</div>
+	<div class="tools">
+    	<a class="collapse" href="javascript:;"></a>
+    </div>
+</div>
+<br>
+<div class="portlet-body"> 
+ 	<table class="table table-striped table-bordered table-hover table-full-width" id="CourseRating_table">
+		<thead>
+		   <tr>
+			  <th>#</th>
+			  <th>Submission Date</th>
+			  <th>Publish Status</th>
+			  <th></th>
+		   </tr>
+		</thead>
+	    <tbody>
+	    </tbody>
+	    <tfoot>
+	    </tfoot>
+	</table>
+</div>
+<input class="btn blue" id="PublishAll" value="Publish" type="button" onclick="showConfirmationModal()">

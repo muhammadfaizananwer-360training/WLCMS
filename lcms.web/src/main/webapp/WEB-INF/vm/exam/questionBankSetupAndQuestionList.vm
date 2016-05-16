@@ -1,0 +1,67 @@
+#* BEGIN PANEL BODY - This file and its html+div use ti dispaly questions list and question in edit mode *#
+  <div class="panel-body" id="questionBankSetupAndQuestionList" style="display:none">
+	
+	#* BEGIN QUESTIONS *#
+	<div class="portlet">
+	  <div class="portlet-title sub">
+		 <div class="caption">
+			Questions
+		 </div>
+		 <div class="tools">
+			
+		 </div>
+	  </div>
+	  <div class="portlet-body">
+		
+		#* BEGIN SETUP FORM *#
+		<div class="heading-bottom-text">
+  
+				<label class="col-md-10 control-label" style="/* margin-top: 5px; */ font-weight: 600; /* height: 40px; */font-size: 16px;">Target number of questions to ask related to this lesson on every exam attempt<span class="required">*</span></label>
+				
+<div class="col-md-2">                                
+								 <div class="input-group">
+											<input type="text" id="Exam_No_Questions" name="Final_No_Questions" class="form-control" placeholder="Enter value in numeric" autofocus value="2" onblur="bankvalidation(this); return false;" onfocus="bankvalidation(this); return false;">
+											
+										<span class="input-group-addon addon2"><i class='icon-exclamation red-text'></i></span>
+										</div>
+                               </div>
+  				
+  
+			</div>
+		
+		
+		
+	
+		#* END SETUP FORM *#
+		
+		#* BEGIN QUESTION PORTLET *#
+		<div class="portlet">
+		  <div class="portlet-body">
+
+			#* BEGIN QUESTION ACCORDIONS *#
+			#* Question's Bar will be added here  *#
+			<div class="panel-group accordion page-panel" id="exam_0_bank_0_questions">
+				#* BEGIN QUESTION PANEL *#
+				#* END QUESTION PANEL *#
+			</div>
+			#* END QUESTION ACCORDIONS *#
+			 
+		  </div>
+		  <div class="portlet-footer">
+			<a data-target="#addExamQuestionModal" data-backdrop="static" data-keyboard="false" data-toggle="modal" title="Add Question" onclick="resetAddExamQuestionModal();"><i class="icon-plus"></i> Add Question</a>
+		  </div>
+		</div>
+		#* END QUESTION PORTLET *#
+		 
+	  </div>
+	</div>
+	#* END QUESTIONS *#
+	
+	#* BEGIN CLOSE BUTTON *#
+	<div class="footer">
+		<a id="questionBankSetupAndQuestionListCloseLink" href="#exam_0_bank_0" data-parent="#questionBankBar_0" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE QUESTION BANK</a>
+	</div>
+	#* END CLOSE BUTTON *#
+	
+  </div>
+#* END PANEL BODY *#

@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Form</title>
+	
+	<script src="../Custom_Template/CharColumn_Template/data/dbString.js" language="javascript" type="text/javascript"></script>
+	<script src="../Custom_Template/CharColumn_Template/js/form/w_XMLParser.js" language="javascript" type="text/javascript"></script>
+	
+<script language="javascript" type="text/javascript">
+
+
+// ********************************************	XML Transformation into XSL
+function populateXml(sid){
+	
+	$(document).ready(function() {
+		$('#inputform_1234').attr('id','inputform_'+sid);
+		TEMPLATE.SID = sid;
+		TEMPLATE.IS_NEW = true;
+		TEMPLATE.CHART_COL_TEMPLATE = {
+			
+			//	BEGIN CHECK COLUMN
+			CHECK_COLUMN:function(trg){
+				
+				var $form = $("#inputform_"+TEMPLATE.SID);
+				var $options = $form.find("tbody.options");
+				var checking = [];
+				var $trg = $(trg);
+				
+				$options.children().each(function(i)
+				{
+					if(i != 0)
+					{
+						var $cCategory = $(this).find(".answer > select");
+						var sID = $cCategory.val();
+						
+						if(typeof checking[sID] == "undefined")
+						{
+							checking[sID] = [];
+							checking[sID].push(sID);
+						}
+						else
+						{
+							checking[sID].push(sID);
+						}
+					}
+				});
+				
+				for(var i=0; i<checking.length; i++)
+				{
+					if(i != 0 && typeof checking[i] != "undefined")
+					{
+						var $opt = $trg.find("option[value='"+i+"']");
+						$opt.removeClass("hide");
+					}
+				};
+			},
+			//	END CHECK COLUMN
+			
+			//	BEGIN POPULATE LIST
+			POPULATE_LIST:function(){
+				
+				var $tBody = $("#inputform_"+TEMPLATE.SID).find("tbody.columnTitles");
+				var list = '<select class="form-control" onfocus="TEMPLATE.CHART_COL_TEMPLATE.CHECK_COLUMN(this)"><option value="0">--Select--</option>';
+				var f = 0;
+				$tBody.children().each(function(i,elm)
+				{
+					var $inputs = $(this).find(".cat-title");
+					if($(this).attr("class") != "hide")
+					{
+						var val = $inputs.val();
+						if(val != "")
+						{
+							f++;
+							list += "<option value='"+f+"'>"+val+"</option>";
+						}
+					}
+				});
+				list += "</select>";
+				
+				$("#inputform_"+TEMPLATE.SID).find(".options > tr").each(function(i,elm)
+				{
+					var $cCategory = $(this).find(".answer");
+					var selectedId = $cCategory.find("select").val();
+					$cCategory.html(list);
+					$cCategory.find("select").val(selectedId);
+					if(typeof $cCategory.find("select").val() == "object")
+					{
+						$cCategory.find("select").val(0);
+					}
+				});
+			},
+			//	END POPULATE LIST
+			
+			//	BEGIN CHANGE COLUMN
+			CHANGE_COLUMN:function(trg){
+			
+				var $trg = $(trg);
+				var $tBody = $trg.parent().parent().parent().find(".columnTitles");				
+				switch($trg.val())
+				{
+					case "2":
+						$tBody.find("tr:last").remove();
+						break;
+						
+					case "3":
+						var $row = $tBody.find("tr.hide").clone();
+						$row.removeClass("hide");
+						$tBody.append($row);
+						break;
+				}
+				
+				TEMPLATE.CHART_COL_TEMPLATE.POPULATE_LIST();
+			}
+		};
+	
+		// =======================================================
+		//	FOR TESTING
+		// =======================================================
+		/*if(document.getElementById('txtXml').value != "undefined" && document.getElementById('txtXml').value != null && document.getElementById('txtXml').value != ""){
+			xmlSampleData = document.getElementById('txtXml').value;
+			TEMPLATE.IS_NEW = false;
+		}*/
+		
+		// =======================================================
+		//	FOR LIVE
+		// =======================================================
+		if(TEMPLATE.DATA != '')
+		{
+			xmlSampleData = TEMPLATE.DATA;
+			TEMPLATE.IS_NEW = false;
+		}
+		
+		TEMPLATE.DATA = $.parseXML(xmlSampleData);
+		$(TEMPLATE.DATA).find("root").attr("sid",sid);
+		TEMPLATE.LOAD_XML("../Custom_Template/CharColumn_Template/xml/w_IB.xsl",getBackXSL);
+	});
+}
+
+function getBackXSL (xsl){
+	var chk1 = typeof (XSLTProcessor) == "undefined"; // All browsers
+	var chk2 = typeof (TEMPLATE.DATA.transformNode) != "undefined"; // IE 8 Only
+	//var chk3 = typeof (window.ActiveXObject) != "undefined"; // IE 9 and above
+	
+	if(chk1)
+	{
+		if(chk2)
+		{
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = TEMPLATE.DATA.transformNode(xsl);
+		}
+		else
+		{
+			var xslt = new ActiveXObject("Msxml2.XSLTemplate");
+			var xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+
+			xslDoc.load(xsl);
+			xslt.stylesheet = xslDoc;
+
+			var xslProc = xslt.createProcessor();
+			xslProc.input = TEMPLATE.DATA;
+			xslProc.transform();
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xslProc.output;
+		}
+	}
+	else
+	{
+		var xsltProcessor = new XSLTProcessor();
+		var xmls = new XMLSerializer();
+		xsltProcessor.importStylesheet(xsl);
+		var xmlDoc2 = xsltProcessor.transformToDocument(TEMPLATE.DATA);
+		document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xmls.serializeToString(xmlDoc2);
+	}
+	
+	var $form = $("#inputform_"+TEMPLATE.SID);
+	//TEMPLATE.IS_NEW = false; // For Testing
+	APP.BODY_COLLAPSES("CLOSE");
+	APP.CKEDITOR("insText_"+TEMPLATE.SID, "TITLE");
+	TEMPLATE.CKEDITOR_BLUR("insText_"+TEMPLATE.SID,"_p1");
+	TEMPLATE.DM_GARBAGE_CLEANER();
+	TEMPLATE.FIX_HTML_TAGS($form.find(".questionStatement"));
+	TEMPLATE.FIX_HTML_TAGS($form.find(".correctFeedBack"));
+	TEMPLATE.FIX_HTML_TAGS($form.find(".incorrectFeedback"));
+	
+	if(!TEMPLATE.IS_NEW)
+	{
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p1"),true);
+		
+		if($form.find(".audioAssets").children().length > 1)
+		{
+			TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p2"),true);
+			var $btns = $form.find(".audioAssets").parent().find(".td-header > th > .btn-group");
+			$btns.find(".upload").addClass("disabled");
+			$btns.find(".find").addClass("disabled");
+			$btns.find(".detach").removeClass("disabled");
+		}
+		
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p3"),true);
+		var $columnTitles = $form.find(".columnTitles");
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p4"),true);
+		var length = $form.find(".options").children().length;
+		TEMPLATE.LIMIT_CHECK_ROW($form.find(".upload.cond"),length,6);
+	}
+}
+
+</script>
+
+</head>
+<body>
+	
+    <div id="inputform_1234"></div>
+	<input style="display:none;" type="text" id="txtXml" value=""/>
+    <div>
+		<button style="display:none;" id="btnGet" onclick="setXml();">btnGet</button>
+    </div>
+    <div>
+		<button style="display:none;" id="btnSet" onclick="populateXml('1234');">btnSet</button>
+    </div>
+</body>
+</html>

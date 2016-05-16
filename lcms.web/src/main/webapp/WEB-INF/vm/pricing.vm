@@ -1,0 +1,125 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+<script src="javascript/vm_js/pricing.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+ #* BEGIN PAGE CONTENT *#
+                <div class="page-content">
+				
+				   #* BEGIN PAGE HEADINGS *#
+				   <div class="portlet">
+						<div class="portlet-body">
+							<div class="page-heading">
+								<div class="col-xs-12 zero-padding">
+									<h1>#springMessage('label.pricing-and-money-matters')</h1>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+				   </div>
+                   #* END PAGE HEADINGS *#
+				   
+				   <br/>
+				   
+				   #* BEGIN FLAGS FORM *#
+                   <div class="portlet">
+                      <div class="portlet-title" title="#springMessage('label.pricing')">
+                         <div class="caption">
+                            #springMessage('label.pricing')
+                         </div>
+                         <div class="tools">
+                            
+                         </div>
+                      </div>
+					     #* start - success message *#
+             #if( $!{msg}=="success" )
+                    <div class="messages">
+		              <div role="alert" class="alert alert-success alert-dismissible fade in">
+		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+		                #springMessage('message.save-message') 
+					  </div>
+					 
+		            </div>
+           <script type="text/javascript"> elementFadeOut('.messages'); </script>
+			</div>
+			
+             #elseif( $failureMessage )  
+               <div class="messages">
+              <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                 $!{failureMessage} 
+                </div>
+				
+            </div>
+			<script type="text/javascript"> elementFadeOut('.messages'); </script>
+           #end
+           #* end - success message *#
+                      <div class="portlet-body form">
+						<div class="heading-bottom-text">
+						#if ($!{courseCompletionReport.contentOwnerStoreFront}=="true" && $!{cType} != 4) 
+							#springMessage('course.publishing.pricing.message')
+						#else
+							#springMessage('course.publishing.pricing.message.no.store')
+						#end
+						</div>
+						<br/>
+                        <form class="form-horizontal" action ="updatePricing" role="form" method="Post" id="frm_pricing_edit">
+						#springBind("cType")
+    					<input type="hidden"  name="cType" id="cType" value="$!{cType}">	
+							
+						#springBind("command.id")
+						<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+						
+						#springBind("command.name")
+						<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+												 
+						#springBind("command.businessKey")
+						<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+						
+                            <div class="form-group">
+							  <label class="col-md-3 control-label">
+							  #springMessage('label.msrp-list-price-usd')</label>
+							  <div class="col-md-6">
+								#springBind("command.mSRP")
+								<input type="text" maxlength = "10" class="form-control"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+							  </div>
+						    </div>
+							<div class="form-group">
+							  <label class="col-md-3 control-label">#springMessage('label.lowest-on-sale-price-usd')</label>
+							  <div class="col-md-6">
+								#springBind("command.lowestSalePrice")
+								<input type="text" maxlength = "10" class="form-control"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+							  </div>
+						    </div>
+						     #if ($!{courseCompletionReport.contentOwnerStoreFront}=="true" && $!{cType} != 4) 
+							    <div class="form-group">
+								  <label  class="col-md-3 control-label">#springMessage('label.manager-offers-from-here')</label>
+								  <div class="col-md-6">
+								  #springBind("command.manageSFPrice")	
+									<input type="checkbox" class="form-chkbox"  #if ($!{status.value}== true ) checked="checked" #end onClick="onOfferPrice ()"  id="chkManagerOffer" name="chkManagerOffer">
+									<input type='hidden' value='0' name="chkManagerOffer">
+								  </div>
+							   </div>
+							 #end
+						   #if ($!{courseCompletionReport.contentOwnerStoreFront}=="true" && $!{cType} != 4) 
+								<div class="form-group" id="priceOnStoreDiv" name="priceOnStoreDiv">
+								  <label class="col-md-3 control-label">#springMessage('label.offer-price-usd')</label>
+								  <div class="col-md-6">
+								  #springBind("command.offerprice")
+									<input maxlength="10" type="text" class="form-control" name="$!{status.expression}" id="$!{status.expression}" value="$number.format('#.00',$!{status.value})" #if  ($!{command.manageSFPrice}== false ) readonly #end >								
+								  </div>
+							    </div>
+							#end
+							<div class="form-actions fluid">
+                               <div class="col-md-offset-3 col-md-9">
+                                   <button class="btn blue" id="btnSave"  type="Submit">#springMessage('button.save')</button>                                                       
+                               </div>
+                            </div>
+						</form>
+					  </div>
+				   </div>
+                   #* END FLAGS FORM *#
+				   
+                </div>
+                #* END PAGE CONTENT *#
+#parse("footer.vm")

@@ -1,0 +1,9 @@
+[
+			#foreach($locationObject in $lstLocation)
+						#if( $foreach.hasNext )	
+							[ "<input id='${locationObject.id}' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='${locationObject.id}' name='location_checkboxes'>", "<a  class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation(${locationObject.id})'>${locationObject.locationname}</a>", "${locationObject.city}","${locationObject.state}"],
+							#else	
+							[ "<input id='${locationObject.id}' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='${locationObject.id}' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation(${locationObject.id})'>${locationObject.locationname}</a>", "${locationObject.city}","${locationObject.state}"]
+							#end
+							#end
+							]

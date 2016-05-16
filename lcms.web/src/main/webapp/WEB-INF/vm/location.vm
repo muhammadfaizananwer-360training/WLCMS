@@ -1,0 +1,129 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+#parse("modals.vm")
+#parse("branding.vm")
+
+
+
+<link rel="stylesheet" type="text/css" href="theme/executive/css/header.css" />
+
+
+<script src="javascript/vm_js/countries.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript//vm_js/location.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="theme/executive/scripts/table-managed.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"> 
+
+	
+	
+	  <div class="messages" id="msgdiv" ></div>
+	  
+     
+<div id="successMsg">
+</div>
+    
+              #if( $!{msg}=="success" )
+                    <div class="messages">
+             		 	<div role="alert" class="alert alert-success alert-dismissible fade in">
+                			<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                			#springMessage('course.structure.new-course-warning-message')
+			  		 	</div>
+			         </div>
+	   	<script type="text/javascript"> elementFadeOut('.messages'); </script>
+			  #end
+			  
+			  
+			   <div class="page-content">
+				
+				   #* BEGIN PAGE HEADINGS *#
+				   <div class="portlet">
+					<div class="portlet-body">
+						<div class="page-heading">
+							<div class="col-xs-12 zero-padding">
+								<h1>#springMessage('label.locations')</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				   </div>
+                   #* END PAGE HEADINGS *#
+				   
+                   #* BEGIN SUMMARY FORM PORTLET *#
+                   <div class="portlet">
+					  <div title="Manage Location" class="portlet-title">
+                         <div class="caption">
+                            #springMessage('label.manage-locations')
+                         </div>
+                         <div class="tools">
+                            
+                         </div>
+                      </div>
+                      <div class="portlet-body form">
+					  
+					  
+
+                         <table class="table table-striped table-bordered table-hover table-full-width" id="location_table">
+							<thead>
+							   <tr>
+								  <th width="10"><input type="checkbox" onclick="APP.CHECKBOX_WITH_BTN(this,true,'loc-delete-btn')" class="checker" name="location_checkbox_parent"></th>
+								  <th>#springMessage('label.location-name')</th>
+								  <th>#springMessage('label.city')</th>
+								  <th>#springMessage('label.state')</th>
+							   </tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						 </table>
+                      </div>
+                   </div>
+                   #* END SUMMARY FORM PORTLET *#
+                   #parse("footer.vm")
+                </div>
+	<script>			
+		jQuery(document).ready(function() { 
+
+
+	
+			APP.PLACEHOLDER_FIX();
+			APP.LEFT_NAV.init("OPEN","nav_accordion_1c");
+			COUNTRIES.PRINT_COUNTRY("country",239,"state");
+			
+			
+			TableManaged.tool_html = '<div class="btn-group pull-right"><a class="btn btn-default"  onclick="reset_modal()" href="javascript:table_minus_plus(\'PLUS\');" title="#springMessage('label.add-location')"><i class="icon-plus blue-text"></i></a><a class="btn btn-default disabled" disabled="disabled" id="loc-delete-btn" href="javascript:table_minus_plus(\'MINUS\');" title="Delele Location"><i class="icon-minus red-text"></i></a></div>';
+			oTb =APP.SEARCHGRID.init('#location_table',false,true);
+			
+			location_list();
+			
+			
+		
+    $("#addMyLocationform").validate({
+       rules: {
+            locationname: {
+            required: true
+            },
+			locationaddress: { required: true},
+        	locationcity: { required: true },
+        	country: { required: true },
+        	state: { required: true },
+        	
+        },
+        messages: {
+            locationname: {required : "Please enter a location name."},
+        	locationaddress: {required : "Please enter a street address."},
+        	locationcity: {required : "Please enter a city."},
+        	country: {required : "Please select a country."},
+        	state: {required : "Please select a state."}
+        	
+        },
+		
+    });
+    });
+		</script>	
+		

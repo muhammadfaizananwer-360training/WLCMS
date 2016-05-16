@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+
+        <title>aciTree radio-button demo - A javascript treeview control with jQuery</title>
+
+        <link rel="stylesheet" type="text/css" href="css/aciTree.css" media="all">
+        <link rel="stylesheet" type="text/css" href="css/demo.css" media="all">
+
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        
+        <script type="text/javascript" src="js/jquery.aciPlugin.min.js"></script>
+        <script type="text/javascript" src="js/jquery.aciTree.dom.js"></script>
+        <script type="text/javascript" src="js/jquery.aciTree.core.js"></script>
+        <script type="text/javascript" src="js/jquery.aciTree.selectable.js"></script>
+        <script type="text/javascript" src="js/jquery.aciTree.radio.js"></script>
+    </head>
+    <body>
+
+          <div id="tree" class="aciTree">
+          
+          <script class="code" type="text/javascript">
+
+                $(function(){
+
+                    // init the tree
+                    $('#tree').aciTree({
+                        ajax: {
+                            url: 'json/radio-button.json'
+                        },
+                        radio: true
+                    });
+					
+                });
+
+            </script>
+
+        </div>
+
+    </body>
+</html>

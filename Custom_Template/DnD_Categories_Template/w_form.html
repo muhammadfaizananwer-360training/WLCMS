@@ -1,0 +1,344 @@
+﻿	<script src="../Custom_Template/DnD_Categories_Template/data/dbString.js" language="javascript" type="text/javascript"></script>
+	<script src="../Custom_Template/DnD_Categories_Template/js/form/w_XMLParser.js" language="javascript" type="text/javascript"></script>
+	
+<script language="javascript" type="text/javascript">
+
+
+// ********************************************	XML Transformation into XSL
+function populateXml(sid){
+	
+	$(document).ready(function() {
+		$('#inputform_1234').attr('id','inputform_'+sid);
+		TEMPLATE.SID = sid;
+		TEMPLATE.IS_NEW = true;
+		TEMPLATE.DND_CAT_TEMPLATE = {
+			
+			//	BEGIN CHECK CATEGORY
+			CHECK_CATEGORY:function(trg){
+				
+				var $form = $("#inputform_"+TEMPLATE.SID);
+				var $column = $form.find("tbody.column");
+				var $options = $form.find("tbody.options");
+				var nCat = $column.children().length;
+				var nObjs = $options.children().length;
+				var checking = [];
+				var limit;
+				var $trg = $(trg);
+				switch(nCat)
+				{
+					case 3:
+						limit = 4;
+						break;
+					case 4:
+						limit = 3;
+						break;
+				}
+				
+				$options.children().each(function(i)
+				{
+					if(i != 0)
+					{
+						var $cCategory = $(this).find(".correctCategory > select");
+						var sID = $cCategory.val();
+						
+						if(typeof checking[sID] == "undefined")
+						{
+							checking[sID] = [];
+							checking[sID].push(sID);
+						}
+						else
+						{
+							checking[sID].push(sID);
+						}
+					}
+				});
+				
+				for(var i=0; i<checking.length; i++)
+				{
+					if(i != 0 && typeof checking[i] != "undefined")
+					{
+						var $opt = $trg.find("option[value='"+i+"']");
+						$opt.removeAttr("disabled");
+						
+						if($trg.val() != i && checking[i].length >= limit)
+						{
+							$opt.attr("disabled","disabled");
+						}
+					}
+				};
+			},
+			//	END CHECK CATEGORY
+			
+			//	BEGIN POPULATE LIST
+			POPULATE_LIST:function(){
+				
+				var $tBody = $("#inputform_"+TEMPLATE.SID).find("tbody.column");
+				var list = '<select class="form-control" onfocus="TEMPLATE.DND_CAT_TEMPLATE.CHECK_CATEGORY(this)"><option value="0">--Select--</option>';
+				var f = 0;
+				$tBody.children().each(function(i,elm)
+				{
+					var $inputs = $(this).find(".cat-title");
+					if($(this).attr("class") != "hide")
+					{
+						var val = $inputs.val();
+						if(val != "")
+						{
+							f++;
+							list += "<option value='"+f+"'>"+val+"</option>";
+						}
+					}
+				});
+				list += "</select>";
+				
+				$("#inputform_"+TEMPLATE.SID).find(".options > tr").each(function(i,elm)
+				{
+					var $cCategory = $(this).find(".correctCategory");
+					var selectedId = $cCategory.find("select").val();
+					$cCategory.html(list);
+					$cCategory.find("select").val(selectedId);
+					if(typeof $cCategory.find("select").val() == "object")
+					{
+						$cCategory.find("select").val(0);
+					}
+				});
+			},
+			//	END POPULATE LIST
+			
+			//	BEGIN CHANGE CATEGORY
+			CHANGE_CATEGORY:function(trg){
+			
+				var $trg = $(trg);
+				var $vbg = $("#venn_bg_"+TEMPLATE.SID);
+				var $tBody = $trg.parent().parent().parent().find(".column");
+				var $options = $("#inputform_"+TEMPLATE.SID).find("tbody.options");
+				var $upload = $options.parent().find(".upload.cond");
+				var rowLength = $options.children().length;
+				var $deleteLastRow;
+				var checking = [];
+				
+				switch($trg.val())
+				{
+					case "2":
+						if(rowLength == 10)
+						{
+							$deleteLastRow = $options.find("tr:last");
+							TEMPLATE.DND_CAT_TEMPLATE.DELETE_LAST_ROW($deleteLastRow,trg);
+							return;
+						}
+						else if(rowLength == 9)
+						{
+							$upload.addClass("disabled");
+						}
+						
+						$vbg.attr("disabled","disabled");
+						$vbg.removeAttr("checked");
+						$tBody.find("tr:last").remove();
+						break;
+						
+					case "3":
+						if(rowLength == 9)
+						{
+							$upload.removeClass("disabled");
+						}
+						
+						$vbg.removeAttr("disabled");
+						var $row = $tBody.find("tr.hide").clone();
+						$row.removeClass("hide");
+						$tBody.append($row);
+						
+						//	---------------- Checking all draggable object configration
+						$options.children().each(function(i)
+						{
+							if(i != 0)
+							{
+								var $cCategory = $(this).find(".correctCategory > select");
+								var sID = $cCategory.val();
+								
+								if(typeof checking[sID] == "undefined")
+								{
+									checking[sID] = [];
+									checking[sID].push(sID);
+								}
+								else
+								{
+									if(checking[sID].length >= 3)
+									{
+										$cCategory.val(0);
+									}
+									else
+									{
+										checking[sID].push(sID);
+									}
+								}
+							}
+						});
+						//	----------------------------------------------------------------
+						
+						break;
+				}
+				
+				//console.log("deleteLastRow: " + (typeof $deleteLastRow == "object"));
+				TEMPLATE.DND_CAT_TEMPLATE.POPULATE_LIST();
+			},
+			//	END CHANGE CATEGORY
+			
+			//	BEGIN CREATE ROW
+			CREATE_ROW:function(trg){
+				
+				var categories = $("#inputform_"+TEMPLATE.SID).find("tbody.column").children().length;
+				switch(categories-1)
+				{
+					case 2:
+						TEMPLATE.ADD_ROW(trg,"_p4",8);
+						break;
+					case 3:
+						TEMPLATE.ADD_ROW(trg,"_p4",9);
+						break;
+				}
+			},
+			//	END CREATE ROW
+			
+			//	BEGIN DELETE LAST ROW
+			DELETE_LAST_ROW:function($deleteLastRow,trg){
+			
+				TEMPLATE.CACHE = [$deleteLastRow,trg];
+				var $trgModal = $("#confirmationModal");
+				$(trg).prop('selectedIndex', 1);
+				
+				//	BEGIN TITLE, MESSAGE AND BUTTONS
+				var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
+				var msg = '<p>With two categories, only eight Draggable Objects are allowed. Switching to two categories will remove the last category below, and will remove the last Draggable Object you created.</p></p>Are you sure you want to take this action?</p>';
+				var btns = '<button type="button" class="btn blue" onclick="TEMPLATE.DND_CAT_TEMPLATE.CONFIRM_DELETE_LAST_ROW(true)" data-dismiss="modal">YES</button>'+
+							'<button type="button" class="btn btn-default" onclick="TEMPLATE.DND_CAT_TEMPLATE.CONFIRM_DELETE_LAST_ROW(false)" data-dismiss="modal">NO</button>';
+				//	END TITLE, MESSAGE AND BUTTONS
+				
+				$trgModal.find(".modal-title").html(title);
+				$trgModal.find(".modal-body").html(msg);
+				$trgModal.find(".modal-footer").html(btns);
+				
+				$trgModal.modal('show');
+			},
+			//	END DELETE LAST ROW
+			
+			//	BEGIN CONFIRM DELETE LAST ROW
+			CONFIRM_DELETE_LAST_ROW: function (confirm){
+			
+				if(confirm)
+				{
+					$(TEMPLATE.CACHE[1]).prop('selectedIndex', 0);
+					TEMPLATE.CACHE[0].remove();
+					TEMPLATE.DND_CAT_TEMPLATE.CHANGE_CATEGORY(TEMPLATE.CACHE[1]);
+				}
+				TEMPLATE.CACHE = "";
+			}
+			//	END CONFIRM DELETE LAST ROW
+		};
+	
+		// =======================================================
+		//	FOR TESTING
+		// =======================================================
+	/*	if(document.getElementById('txtXml').value != "undefined" && document.getElementById('txtXml').value != null && document.getElementById('txtXml').value != ""){
+			xmlSampleData = document.getElementById('txtXml').value;
+			TEMPLATE.IS_NEW = false;
+		}*/
+		
+		// =======================================================
+		//	FOR LIVE
+		// =======================================================
+		if(TEMPLATE.DATA != '')
+		{
+			xmlSampleData = TEMPLATE.DATA;
+			TEMPLATE.IS_NEW = false;
+		}
+		
+		TEMPLATE.DATA = $.parseXML(xmlSampleData);
+		$(TEMPLATE.DATA).find("root").attr("sid",sid);
+		
+		TEMPLATE.LOAD_XML("../Custom_Template/DnD_Categories_Template/xml/w_IB.xsl",getBackXSL);
+	});
+}
+
+function getBackXSL (xsl){
+	var chk1 = typeof (XSLTProcessor) == "undefined"; // All browsers
+	var chk2 = typeof (TEMPLATE.DATA.transformNode) != "undefined"; // IE 8 Only
+	//var chk3 = typeof (window.ActiveXObject) != "undefined"; // IE 9 and above
+	
+	if(chk1)
+	{
+		if(chk2)
+		{
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = TEMPLATE.DATA.transformNode(xsl);
+		}
+		else
+		{
+			var xslt = new ActiveXObject("Msxml2.XSLTemplate");
+			var xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+
+			xslDoc.load(xsl);
+			xslt.stylesheet = xslDoc;
+
+			var xslProc = xslt.createProcessor();
+			xslProc.input = TEMPLATE.DATA;
+			xslProc.transform();
+			document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xslProc.output;
+		}
+	}
+	else
+	{
+		var xsltProcessor = new XSLTProcessor();
+		var xmls = new XMLSerializer();
+		xsltProcessor.importStylesheet(xsl);
+		var xmlDoc2 = xsltProcessor.transformToDocument(TEMPLATE.DATA);
+		document.getElementById("inputform_"+TEMPLATE.SID).innerHTML = xmls.serializeToString(xmlDoc2);
+	}
+	
+	var $form = $("#inputform_"+TEMPLATE.SID);
+	//TEMPLATE.IS_NEW = false; // For Testing
+	APP.BODY_COLLAPSES("CLOSE");
+	APP.CKEDITOR("insText_"+TEMPLATE.SID, "TITLE");
+	TEMPLATE.CKEDITOR_BLUR("insText_"+TEMPLATE.SID,"_p1");
+	TEMPLATE.DM_GARBAGE_CLEANER();
+	TEMPLATE.FIX_HTML_TAGS($form.find(".draggableObject"));
+	TEMPLATE.FIX_HTML_TAGS($form.find(".correctFeedback"));
+	TEMPLATE.FIX_HTML_TAGS($form.find(".incorrectFeedback"));
+	
+	if(!TEMPLATE.IS_NEW)
+	{
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p1"),true);
+		
+		if($form.find(".promptAudio").children().length > 1)
+		{
+			TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p2"),true);
+			var $btns = $form.find(".promptAudio").parent().find(".td-header > th > .btn-group");
+			$btns.find(".upload").addClass("disabled");
+			$btns.find(".find").addClass("disabled");
+			$btns.find(".detach").removeClass("disabled");
+		}
+		
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p3"),true);
+		var $column = $form.find(".column");
+		var limit;
+		switch($column.children().length)
+		{
+			case 3:
+				limit = 8;
+				break;
+			case 4:
+				limit = 9;
+				break;
+		}
+		TEMPLATE.GREEN_ICON($("#slide_"+TEMPLATE.SID+"_p4"),true);
+		var length = $form.find(".options").children().length;
+		TEMPLATE.LIMIT_CHECK_ROW($form.find(".upload.cond"),length,limit);
+	}
+}
+
+</script>
+    <div id="inputform_1234"></div>
+	<input style="display:none;" type="text" id="txtXml" value=""/>
+    <div>
+		<button style="display:none;" id="btnGet" onclick="setXml();">btnGet</button>
+    </div>
+    <div>
+		<button style="display:none;" id="btnSet" onclick="populateXml('1234');">btnSet</button>
+    </div>

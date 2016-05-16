@@ -1,0 +1,108 @@
+#parse("header.vm")
+#parse("branding.vm")
+#parse("breadcrumb.vm")
+
+<script>
+	$(document).ready(function(){
+		 onlineRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.online.royalty.percentage')};
+		 classroomRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.classroom.royalty.percentage')};
+		 webinarRoyaltyDefaultValue = $!{lcmsProperties.getLCMSProperty('roaylty.settings.default.webinar.royalty.percentage')};
+		});
+</script>
+
+#* BEGIN MODALS *#
+<div class="modals">
+	
+	#* BEGIN DETAILS *#
+	<div class="modal fade" id="furtherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="further-details-label" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="further-details-label"><i class="icon-user"></i> #springMessage('author_permission_settings.label.author_permissions')</h3>
+		  </div>
+		  <div class="modal-body">
+		
+			<form id="detailForm" name="detailForm" class="form-horizontal" role="form" method="POST">
+				<input id="authorGrpId" name="authorGrpId" type="hidden" value="" />
+				<div class="form-body">
+				   <div class="form-group">
+					  <label class="col-md-3 control-label">#springMessage('author_permission_settings.label.username')</label>
+					  <div class="col-md-7">
+						<p id="usernameModel" name="usernameModel" class="form-control-static username"></p>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="col-md-3 control-label">#springMessage('author_permission_settings.label.full_name')</label>
+					  <div class="col-md-7">
+					  	<p class="form-control-static">Author's Full Name</p>
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="col-md-3 control-label">Permissions</label>
+					  <div class="col-md-7">
+						<div class="checkbox-list">
+							<label><input id="userPermissionId" name="userPermissionId" type="checkbox"> #springMessage('author_permission_settings.label.author_permissions')</label>
+							<label><input id="bulkUploadId" name="bulkUploadId" type="checkbox"> #springMessage('author_permission_settings.label.author_batch_import')</label>
+							<label><input id="npsRatingPermId" name="npsRatingPermId" type="checkbox"> #springMessage('author_permission_settings.label.rating_review')</label>
+							<label><input id="royaltySettingPermId" name="royaltySettingPermId" type="checkbox"> #springMessage('author_permission_settings.label.royalty_Settings')</label>
+							<label><input id="viewReportPermId" name="viewReportPermId" type="checkbox"> #springMessage('author_permission_settings.label.viewReport')</label>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			</form>
+			
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" id="saveBtn" name="saveBtn" class="btn blue" onClick="saveSettings();">#springMessage('author_permission_settings.label.save')</button>
+			<button type="button" id="cancelBtn" name="cancelBtn" class="btn btn-default" data-dismiss="modal">#springMessage('author_permission_settings.label.cancel')</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	#* END DETAILS *#
+	
+</div>
+#* END MODALS *#
+		
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
+	
+	#* BEGIN RESULTS TABLE PORTLET*#
+	<div class="portlet">
+	  <div class="portlet-title" title="Authors">
+		 <div class="caption">#springMessage('author_permission_settings.title.author')</div>
+		 <div class="tools">
+            
+         </div>
+	  </div>
+	  <div class="portlet-body">
+	  	
+	  	<table class="table table-striped table-bordered table-hover table-full-width" id="search_table">
+			<thead>
+			   <tr>
+				  <th width="1">#</th>
+				  <th>#springMessage('author_permission_settings.label.username')</th>
+				  <th>#springMessage('author_permission_settings.label.full_name')</th>
+				  <th>#springMessage('author_permission_settings.label.author_permissions')</th>
+				  <th>#springMessage('author_permission_settings.label.author_batch_import')</th>
+				  <th>#springMessage('author_permission_settings.label.rating_review')</th>
+				  <th>#springMessage('author_permission_settings.label.royalty_Settings')</th>
+				  <th>#springMessage('author_permission_settings.label.viewReport')</th>
+				  
+			   </tr>
+			</thead>
+			<tbody>
+			</tbody>
+		 </table>
+	  	
+	  </div>
+	</div>
+	#* END RESULTS TABLE PORTLET*#
+	
+</div>
+#* END PAGE CONTENT *#
+
+<script src="javascript/vm_js/author_permission_setting.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+#parse("footer.vm")

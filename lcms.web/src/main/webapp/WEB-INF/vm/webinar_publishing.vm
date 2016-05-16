@@ -1,0 +1,267 @@
+#parse("header.vm")
+#parse("leftPanel.vm")
+#parse("breadcrumb.vm")
+<script src="javascript/vm_js/publishing.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+
+
+			#* BEGIN CONFIRMATION *#
+			<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+			  <div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('button.close')</span></button>
+					<h3 class="modal-title" id="confirmation-label">
+						
+						#* Dynamic Title *#
+						
+					</h3>
+				  </div>
+				  <div class="modal-body">
+				
+					#* Dynamic Message *#
+					
+				  </div>
+				  <div class="modal-footer">
+				  
+					#* Dynamic Action Buttons *#
+					
+				  </div>
+				</div>
+			  </div>
+			</div>
+			#* END CONFIRMATION *#
+			
+				#* BEGIN PAGE CONTENT *#
+                <div class="page-content">
+				
+				   #* BEGIN PAGE HEADINGS *#
+				   <div class="portlet">
+					<div class="portlet-body">
+						<div class="page-heading">
+							<div class="col-xs-12 zero-padding">
+								<h1>#springMessage('label.publish-course')</h1>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				   </div>
+                   #* END PAGE HEADINGS *#
+
+				   
+				   
+				   <br>
+				   
+                    #* END TEXT *#
+				   <div>
+					#springMessage('course.publish.course.message')
+				   </div>
+				   #* END TEXT *#
+				   
+				   <br/>
+    			    #* start - success message *#
+                     #if( $!{msg}=="success" )
+                            <div class="messages">
+        		              <div role="alert" class="alert alert-success alert-dismissible fade in">
+        		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+        		                #springMessage('message.publish.save-message')
+        					  </div>
+        					 
+        		            </div>
+    						<script type="text/javascript"> elementFadeOut('.messages'); </script>
+        				   </div>
+                     #elseif( $failureMessage )  
+                       <div class="messages">
+                       <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                        <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                         $!{failureMessage} 
+                        </div>
+    				   </div>
+    				   <script type="text/javascript"> elementFadeOut('.messages'); </script>
+					 #end
+					 #set( $disablePublish = "true" )                    
+						#if ($!{command.IsScheduleSet}=="true" && $!{command.IsPresenterSet}=="true" && ($!{command.IsClassRoomSet}=="true" || $!{command.IsMeetingSet}=="true" ) && $!{command.IsAuthorInfoProvided}=="true")
+								#set( $disablePublish = "false" )
+						#end    																					   
+											
+						#if ($disablePublish == "true")  
+							 <div class="messages">
+                               <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                                 #springMessage('label.publish.completion-criteria') 
+                                </div>
+            				   </div>
+            				   <script type="text/javascript"> elementFadeOut('.messages'); </script>
+						#end
+                   #* BEGIN COMPLETION CHECK FORM *#
+                   <div class="portlet portlet-btn">
+                      <div class="portlet-title" title="Completion Check">
+                         <div class="caption">
+                            #springMessage('label.completion-check')
+                         </div>
+                         <div class="tools">
+                            <a href="" class="collapse"></a>
+                         </div>
+                      </div>
+                      <div class="portlet-body form">
+                        <div class="form-horizontal">
+                            <div class="form-body">
+							   <div class="form-group">
+								  <div class="col-md-offset-2 col-md-9">
+									<div class="form-list">		
+										#if ($!{cType} == 5)
+											#if ($!{command.IsScheduleSet}=="true") <div class="done"> #else <div class="not-done"> #end
+												<span>#springMessage('label.schedule-has-been-set')</span></div>
+											#if ($!{command.IsPresenterSet}=="true") <div class="done"> #else <div class="not-done"> #end
+												<span>#springMessage('label.instructor-has-been-set')</span></div>										
+											#if ($!{command.IsClassRoomSet}=="true") <div class="done"> #else <div class="not-done"> #end
+												<span>#springMessage('label.classroom-setup-has-been-specified')</span></div>											
+										#end
+										
+										#if ($!{cType} == 6)
+											#if ($!{command.IsScheduleSet}=="true") <div class="done"> #else <div class="not-done"> #end
+												<span>#springMessage('label.schedule-has-been-set-W')</span></div>
+											#if ($!{command.IsPresenterSet}=="true") <div class="done"> #else <div class="not-done"> #end
+												<span>#springMessage('label.instructor-has-been-set')</span></div>																				
+											#if ($!{command.IsMeetingSet}=="true") <div class="done"> #else <div class="not-done"> #end
+												<span>#springMessage('label.webinar-setup-has-been-specified')</span></div>
+										#end										
+										
+																					
+										#if ($!{command.IsAuthorInfoProvided}=="true") <div class="done"> #else <div class="not-done"> #end
+											<span>#springMessage('label.author-information-provided-marketing-area')</span>
+										</div>
+									</div>
+								  </div>
+							   </div>
+							</div>
+						</div>
+					  </div>
+				   </div>
+                   #* END COMPLETION CHECK FORM *#
+				   
+				   <form class="form-horizontal" action ="publishCourse" role="form" method="Post" id="frm_webinar_publish"> 
+    			     	#springBind("id")
+    					<input type="hidden"  name="id" id="id" value="$!{id}">
+							
+						#springBind("cType")
+    					<input type="hidden"  name="cType" id="cType" value="$!{cType}">	
+    						
+    					#springBind("command.courseName")
+    					<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+    											 
+    					#springBind("command.bussinessKey")
+    					<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+    					#* BEGIN SETTINGS FOR UPDATE PUBLISHING FORM *#		
+                  					   
+    				   #if ($!{command.publishStatus}=="false")
+        				   #* BEGIN SETTINGS FOR FIRST TIME PUBLISHING FORM *#
+                           <div class="portlet portlet-btn">
+                              <div class="portlet-title" title="#springMessage('label.settings-for-first-time-publishing')">
+                                 <div class="caption">
+                                    #springMessage('label.settings-for-first-time-publishing')
+                                 </div>
+                                 <div class="tools">
+                                    <a href="" class="collapse"></a>
+                                 </div>
+                              </div>
+        					
+                              <div class="portlet-body form">
+                                <div class="form-horizontal">
+        							<div class="form-body">
+        								<div class="form-group">
+        								  <div class="col-md-offset-2 col-md-9">
+        									 <div class="form-list">
+        										<div>
+        											<input type="checkbox" name="publishLMS" id="publishLMS" value="true" for="publish_lms" checked/>
+        											<span id="" >#springMessage('label.publish-only-to-the-learning-management-center').</span>
+        										</div>
+        											#if ($!{command.contentOwnerStoreFront}=="true") 
+        										<div>
+        											<input type="checkbox" name="publishSF" id="publishSF" value="true" for="publish_sf" />
+        											<span id="">#springMessage('label.publish-to-both-the-learning-management-center-and-my-storefront').</span>
+        										</div>
+        										  #else
+        										 	<div style="display:none">
+        											<input type="checkbox" name="publishSF" id="publishSF" value="true" for="publish_sf" />
+        											<span id="">#springMessage('label.publish-to-both-the-learning-management-center-and-my-storefront').</span>
+        										</div>										  
+        										  #end
+        									 </div>
+        									 <div id="err"></div>
+        								  </div>
+        								</div>
+        							</div>
+        						</div>
+        					  </div>
+        				   </div>
+                           #* END SETTINGS FOR FIRST TIME PUBLISHING FORM *#
+    				   #end 
+    				   #if ($!{command.publishStatus}=="true")
+        				   #* BEGIN SETTINGS FOR UPDATE PUBLISHING FORM *#
+                           <div class="portlet portlet-btn">
+                              <div class="portlet-title" title="#springMessage('label.settings-for-update-publishing')">
+                                 <div class="caption">
+                                    #springMessage('label.settings-for-update-publishing')
+                                 </div>
+                                 <div class="tools">
+                                    <a href="" class="collapse"></a>
+                                 </div>
+                              </div>
+                              <div class="portlet-body form">
+                                <div class="form-horizontal">
+        							<div class="form-body">
+        								<div class="form-group">
+        								  <div class="col-md-offset-2 col-md-9">
+        									 <div class="form-list">        										
+        										<div>
+        											<input type="checkbox" name="updateLMS" id="updateLMS" value="true" for="publish_lms" checked="true"/>
+        											<span id="publish_lms">#springMessage('label.update-the-course-class-content').</span>
+        										</div>
+        										#if ($!{command.contentOwnerStoreFront}=="true") 
+        										<div>
+        											<input type="checkbox" name="updateSF"  id="updateSF" value="true" for="publish_sf"/>
+        											<span id="publish_sf">#springMessage('label.make-the-course-available-on-your-storefront'). <br><small>(#springMessage('label.currently-the-course-is-only-available').)</small></span>
+        										</div>        																
+        										 #end
+        									 </div>
+        									 <div id="err"></div>
+        								  </div>
+        								</div>
+        							</div>
+        						</div>
+        					  </div>
+        				   </div>
+                           #* END SETTINGS FOR UPDATE PUBLISHING FORM *#
+    				   #end
+						
+					   
+    				   #* BEGIN ACTION BUTTONS *#
+    				   <div class="form-actions fluid">
+    					   <div class="col-md-offset-3 col-md-9">
+    						  <button type="button" #if ($disablePublish == "true") disabled #end class="btn blue" onClick = "showPublishAlert ('frm_webinar_publish')">#springMessage('button.publish')</button>
+    						  <button type="button" class="btn default">#springMessage('button.cancel')</button>
+    					   </div>
+    				   </div>
+    				   #* BEGIN ACTION BUTTONS *#
+				   </form>
+                </div>
+                #* END PAGE CONTENT *#
+				
+      
+
+
+
+#parse("footer.vm")
+<script>
+$(document).ready(function() {
+	APP.PLACEHOLDER_FIX();
+	APP.EDIT_OR_VIEW_TOGGLE();
+	APP.BODY_COLLAPSES();
+	APP.LEFT_NAV.init("OPEN", "nav_accordion_3");
+	$('#lnkWebinarPublishing a').addClass('active');
+	$("#frm_publish").trackChanges();
+	$("#currentFormName").val("frm_publish");
+});
+</script>

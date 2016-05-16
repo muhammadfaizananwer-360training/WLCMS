@@ -1,0 +1,74 @@
+     </div>
+            #* Workspace End *#
+        </div>
+        #* Main Content End *#
+        
+    </div>
+	
+    #* BEGIN SCRIPTS *#
+    
+    
+    <script type="text/javascript" src="theme/executive/plugins/bootstrap-3.1.1-dist/js/bootstrap.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/BrowserDetect.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/iosOverlay-js/js/iosOverlay.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/iosOverlay-js/js/spin.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/plugins/formTracking.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/scripts/jquery.validate.min.1.13.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/scripts/moment.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	
+		#* BEGIN PAGE LEVEL PLUGINS *#
+		<script type="text/javascript" src="theme/executive/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		
+		<script type="text/javascript" src="theme/executive/plugins/ckeditor/ckeditor.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		<script type="text/javascript" src="theme/executive/plugins/jquery.corner.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		<script type="text/javascript" src="theme/executive/plugins/data-tables/jquery.dataTables.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		<script type="text/javascript" src="theme/executive/plugins/data-tables/DT_bootstrap.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+        <script type="text/javascript" src="theme/executive/plugins/data-tables/dataTables.buttons.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+        <script type="text/javascript" src="theme/executive/plugins/data-tables/buttons.html5.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		<script type="text/javascript" src="theme/executive/scripts/table-managed.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		
+		<script type="text/javascript" src="theme/executive/plugins/additional-methods.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		<script type="text/javascript" src="theme/executive/plugins/bootstrap-fileupload/bootstrap-fileupload.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script> 
+		
+ 	 	<script type="text/javascript" src="theme/executive/plugins/plupload/moxie.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		<script type="text/javascript" src="theme/executive/plugins/plupload/plupload.dev.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script> 		
+		<script type="text/javascript" src="theme/executive/scripts/jquery.360.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+		#* END PAGE LEVEL PLUGINS *#
+	
+    <script type="text/javascript" src="theme/executive/scripts/template.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+    <script type="text/javascript" src="javascript/vm_js/template_custom.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script src="theme/executive/scripts/jquery-migrate.min.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
+	<script type="text/javascript" src="theme/executive/scripts/core.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>	
+	#* END SCRIPTS *#
+    
+
+	<script>		
+		$(document).ready(function(){
+		    $('li .dp-box').click( function(event){
+								event.stopPropagation();
+								$('.dp-box ul').toggle();
+							});
+
+							$(document).click( function(){
+								$('.dp-box ul').hide();
+							});
+		
+			});
+		APP.PLACEHOLDER_FIX();
+		/*
+		function table_minus_plus(CASE)
+		{
+			switch(CASE){
+				case "PLUS":
+					//window.open("new_slide.html","_self");
+					break;
+				case "MINUS":
+					
+					break;
+			}
+		}
+		*/
+	</script>
+	
+</body>
+</html>

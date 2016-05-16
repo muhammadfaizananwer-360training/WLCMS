@@ -1,0 +1,12 @@
+#parse("loginHeader.vm")
+#parse("breadcrumb.vm")
+<br>
+
+<h1>Thanks for signing up!</h1>
+<br>
+We've sent you an email confirming the account details you entered. Click the link in the email to start creating great elearning!
+<br>
+<br>
+The 360training Authoring team 
+
+#parse("footer.vm")

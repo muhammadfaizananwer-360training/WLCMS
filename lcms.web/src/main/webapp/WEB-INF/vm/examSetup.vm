@@ -1,0 +1,102 @@
+ #* BEGIN PANEL SETUP *#
+							  <div id="exam_setup_01" class="panel-body" style="display:none">
+								
+								#* BEGIN FORM *#
+								<div class="portlet">
+								  <div class="portlet-title">
+									 <div class="caption">
+										Final Exam Setup
+									 </div>
+									 <div class="tools">
+										
+									 </div>
+								  </div>
+								  <div class="portlet-body form">
+									 
+									<form id="form_exam_setup_01" name="form_exam_setup_01"  class="form-horizontal" role="form">
+										<div class="form-body">
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.number-of-target-questions-per-exam')"
+>Number of target questions per exam</label>
+											  <div class="col-md-6">
+												<input type="text" id="noTargetQuestionsForUpdateExam" name="noTargetQuestionsForUpdateExam" class="form-control" placeholder="Enter value in numeric" value="0" disabled>
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.randomize-questions')"
+>Randomize questions</label>
+											  <div class="col-md-6">
+												<input type="checkbox" id="chkrandomizeQuestionsForUpdateExam" name="chkrandomizeQuestionsForUpdateExam" class="form-chkbox" value="option1">
+											  
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.random-anwers')">Randomize answers</label>
+											  <div class="col-md-6">
+												<input type="checkbox" id="chkrandomizeAnswersForUpdateExam" name="chkrandomizeAnswersForUpdateExam" class="form-chkbox" value="option1">
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.time-permitted-for-exam')"
+>Time permitted for exam (minutes)</label>
+											  <div class="col-md-6">
+												<input type="text" id="timePermittedForUpdateExam" name="timePermittedForUpdateExam" class="form-control" placeholder="Enter value in numeric" value="15">
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="bottom" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.grade-questions')"
+>Grade questions</label>
+											  <div class="col-md-6">
+												<select class="form-control" id="oboGradeQuestionsForUpdateExam" name="oboGradeQuestionsForUpdateExam" >
+													<option value="1">After each question is answered</option>
+													<option value="2">After Exam is submitted</option>
+												</select>
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.allow-review-after-grading')"
+>Allow review after grading</label>
+											  <div class="col-md-6">
+												<input type="checkbox" id="allowReviewaftGradingForUpdateExam" name="allowReviewaftGradingForUpdateExam" class="form-chkbox" value="option1">
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.score-required-to-pass-exam')"
+>Score required to pass exam</label>
+											  <div class="col-md-6">
+												<input type="text" id="scoreRequiredPassForUpdateExam" name="scoreRequiredPassForUpdateExam" class="form-control" placeholder="Enter value in numeric" value="70">
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.number-of-attempts-permitted')"
+>Number of attempts permitted</label>
+											  <div class="col-md-6">
+												<input type="text" id="attemptsPermittedUpdateExam" name="attemptsPermittedUpdateExam" class="form-control" placeholder="Enter value in numeric" value="3">
+											  </div>
+										   </div>
+										   <div class="form-group">
+											  <label  class="col-md-3 control-label" data-trigger="hover" data-placement="top" data-container="body" data-toggle="popover" data-html="true" data-content=#springMessage('fes.action-to-take-if-fail-to-pass')"
+>Action to take if fail to pass</label>
+											  <div class="col-md-6">
+												<select class="form-control" id="actionOnFailtoPassForUpdateExam" name="actionOnFailtoPassForUpdateExam" >
+													<option value="1">Retake Course</option>
+                									<option value="2">Lock Course</option>
+                									<option value="3">Continue Course</option>
+												</select>
+											  </div>
+										   </div>
+										</div>
+									</form>
+									 
+								  </div>
+								</div>
+								#* END FORM *#
+												
+								#* BEGIN CLOSE BUTTON *#
+								<div class="footer">
+									<a href="#exam_setup_0" data-parent="#exam_accordion_0" data-toggle="collapse" class="accordion-toggle collapsed">CLOSE FINAL EXAM SETUP</a>
+								</div>
+								#* END CLOSE BUTTON *#
+								
+							  </div>
+						   #* END PANEL SETUP *#

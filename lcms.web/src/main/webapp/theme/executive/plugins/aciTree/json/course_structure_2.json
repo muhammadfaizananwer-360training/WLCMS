@@ -1,0 +1,29 @@
+[
+  {
+    "id": 0,
+    "label": "Course Name",
+    "inode": true,
+    "open": true,
+    "checkbox": false,
+    "radio": false,
+    "branch": [
+      {
+        "id": 1,
+        "label": "Lesson 1",
+        "inode": true,
+        "open": true,
+        "checkbox": false,
+        "radio": false,
+        "branch": [
+          {
+            "id": 2,
+            "label": "Page A",
+            "inode": false,
+            "checkbox": false,
+            "radio": true
+          }
+        ]
+      }
+    ]
+  }
+]
