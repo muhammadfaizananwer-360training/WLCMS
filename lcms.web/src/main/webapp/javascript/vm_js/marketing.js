@@ -49,7 +49,7 @@ $(document).ready(function(){
         	AuthorBackground: "Please add background information for the author or presenter of this course. This information will display on the store website to potential customers.<br>",
 			authorImageTableField: "Please upload an 86px x 86px image of the author or presenter of this course. The image will display along with the background information, on the store website.",
 			duration: "Please enter a numeric value and only 2 digits after decimal is allowed",
-			classInstructor: "Please select an instructor"
+			classInstructor: "Please select a instrucutor"
         },
         submitHandler: function(form)
         {

@@ -1,20 +1,5 @@
 package com.softech.ls360.lcms.contentbuilder.manager;
 
-import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
-import com.softech.ls360.lcms.contentbuilder.interfaces.ICourseParser;
-import com.softech.ls360.lcms.contentbuilder.model.Course;
-import com.softech.ls360.lcms.contentbuilder.model.Lesson;
-import com.softech.ls360.lcms.contentbuilder.model.Slide;
-import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
-import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
-import com.softech.ls360.lcms.contentbuilder.utils.WlcmsConstants;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +8,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
+import com.softech.ls360.lcms.contentbuilder.interfaces.ICourseParser;
+import com.softech.ls360.lcms.contentbuilder.model.Course;
+import com.softech.ls360.lcms.contentbuilder.model.Lesson;
+import com.softech.ls360.lcms.contentbuilder.model.Slide;
+import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
+import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
+import com.softech.ls360.lcms.contentbuilder.utils.WlcmsConstants;
+
 public class ExcelCourseParser implements ICourseParser{
 
 	private static Logger logger = LoggerFactory
@@ -30,7 +32,6 @@ public class ExcelCourseParser implements ICourseParser{
 	
 	private static int COURSE_TITLE_COLUMN_INDEX = 3;
 	private static int OBJECT_CONTENT_TYPE_COLUMN_INDEX = 0;
-	private static long DEFAULT_DURATION = 0;
 	private static String HEADER_TEXT_AT_COLUMN_0 = "Content Type";
 	private static String HEADER_TEXT_AT_COLUMN_1 = "Title";
 	private static String HEADER_TEXT_AT_COLUMN_2 = "Slide Template";
@@ -46,19 +47,17 @@ public class ExcelCourseParser implements ICourseParser{
 		Slide slide = new Slide();
 		String slideName = (String)getCellValue(row.getCell(OBJECT_CONTENT_TYPE_COLUMN_INDEX + 1));
 		
-		String duration = StringUtil.trimSuffix(TypeConvertor.AnyToString(row.getCell(OBJECT_CONTENT_TYPE_COLUMN_INDEX + 3)),".0");
-		Integer intDuration = TypeConvertor.AnyToInteger(duration);
-		if(intDuration != null){
-			if (intDuration > 99999){
+		String duration = StringUtil.trimSuffix(TypeConvertor.AnyToString(row.getCell(OBJECT_CONTENT_TYPE_COLUMN_INDEX + 3)),".0");  
+		if (TypeConvertor.AnyToInteger(duration)!=null){ 
+			if (TypeConvertor.AnyToInteger(duration)>99999){
 				throw new Throwable(" Slide Duration (In Seconds) cannot exceed five digits.");
-			} else if(intDuration < 0){
-				throw new Throwable(" Slide Duration (In Seconds) cannot be negative.");
-			} else {
-				slide.setDuration(intDuration);
+			}
+			else{
+				slide.setDuration(TypeConvertor.AnyToInteger(duration));
 			}
 		}
-		else {
-			slide.setDuration(DEFAULT_DURATION);
+		else{
+			slide.setDuration(0);
 		}			
 		
 		if(slideName == null || slideName.length() > 1000){
@@ -189,11 +188,9 @@ public class ExcelCourseParser implements ICourseParser{
 			}
 		}
 		catch(Throwable t){
-			//t.getMessage() has null value in case of NullPointerException
-			String exMsg = t.getMessage() == null ? "" : t.getMessage();
-			logger.error("=== ExCEL COURSE PARSING ERROR::" + exMsg);
+			logger.error("=== ExCEL COURSE PARSING ERROR::" + t.getMessage());
 			String errMsg = ""; 
-			errMsg = exMsg.startsWith(" ") ? "Error occurred on row [" + (currentRowIndex + 1) + "]." + exMsg +" Please edit the file and try again.":"Batch file is configured incorrectly. Error occurred on row [" + (currentRowIndex + 1) + "]. Please edit the file and try again." ;
+			errMsg = t.getMessage().startsWith(" ") ? "Error occurred on row [" + (currentRowIndex + 1) + "]." + t.getMessage() +" Please edit the file and try again.":"Batch file is configured incorrectly. Error occurred on row [" + (currentRowIndex + 1) + "]. Please edit the file and try again." ;			 
 			throw new BulkUplaodCourseException(errMsg, currentRowIndex);
 		}
 		finally{

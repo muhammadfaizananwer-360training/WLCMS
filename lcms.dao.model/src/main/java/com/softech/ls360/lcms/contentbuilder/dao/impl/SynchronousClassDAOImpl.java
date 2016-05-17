@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -295,10 +294,11 @@ public class SynchronousClassDAOImpl extends GenericDAOImpl<SynchronousClass> im
 	}
 	@Override
 	public boolean IsInstructorExist(List<Long> instructorIds) {
-		Query query = entityManager.createNativeQuery("select count(id) from SynchronousClass where CLASSINSTRUCTOR_ID in (:instructorIds)");
+		Query query = entityManager.createNativeQuery("select id from SynchronousClass where CLASSINSTRUCTOR_ID in (:instructorIds)");
 		query.setParameter("instructorIds", instructorIds);
-		int resultCount = TypeConvertor.AnyToInteger(query.getSingleResult());
-		return resultCount>0?true:false;
+		List lst = query.getResultList();
+
+		return lst.size()>0?true:false;
 	}
 	
 	
