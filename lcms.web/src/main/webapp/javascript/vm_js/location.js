@@ -26,7 +26,7 @@ function confirmDeleteObject (assetType, trg, event) {
 	var title = '<i class="glyphicon glyphicon-warning-sign"></i> Please Confirm';
 	var msg = '<p>This action will remove the location from this template. Do you want to continue?</p>';
 	var btns = '<button type="button" class="btn blue" onclick="delete_locations(); " data-dismiss="modal">YES</button>'+
-				'<button type="button" class="btn btn-default" onclick="unCheckCheckBoxesWhenCancelonClick()"  data-dismiss="modal">NO</button>';
+				'<button type="button" class="btn btn-default"  data-dismiss="modal">NO</button>';
 
 
 	$trgModal.find(".modal-title").html(title);
@@ -34,12 +34,6 @@ function confirmDeleteObject (assetType, trg, event) {
 	$trgModal.find(".modal-footer").html(btns);
 
 	$trgModal.modal('show');
-
-}
-
-function unCheckCheckBoxesWhenCancelonClick(){
-	$('input[name="location_checkboxes"]:checked').removeAttr('checked');
-    $('input[name="location_checkbox_parent"]:checked').removeAttr('checked');
 
 }
 

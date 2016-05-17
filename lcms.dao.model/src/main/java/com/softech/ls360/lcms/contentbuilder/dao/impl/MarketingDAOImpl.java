@@ -260,9 +260,10 @@ public class MarketingDAOImpl  extends GenericDAOImpl<CourseDTO> implements Mark
 
 	@Override
 	public boolean IsInstructorExist(List<Long> instructorIds) {
-		Query query = entityManager.createNativeQuery("select count(id) from course where CLASSINSTRUCTOR_ID in (:instructorIds)");
+		Query query = entityManager.createNativeQuery("select id from course where CLASSINSTRUCTOR_ID in (:instructorIds)");
 		query.setParameter("instructorIds", instructorIds);
-		int resultCount = TypeConvertor.AnyToInteger(query.getSingleResult());
-		return resultCount>0?true:false;
+		List lst = query.getResultList();
+
+		return lst.size()>0?true:false;
 	}
 }

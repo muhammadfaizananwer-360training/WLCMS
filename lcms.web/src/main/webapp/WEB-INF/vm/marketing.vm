@@ -64,7 +64,7 @@
 
                 <div class="col-md-6">
                     <label class="control-label-2">#springMessage("label.instructor")<span class="required">*</span></label>
-                        <select id="classInstructor" name="classInstructor" required data-msg-required="#springMessage('label.instructor.required.message')"  class="form-control">
+                        <select id="classInstructor" name="classInstructor" required data-msg-required="Please select a instructor."  class="form-control">
 
                             #*<option>-- Please select a instructor --</option>*#
                                 <option value=""></option>
