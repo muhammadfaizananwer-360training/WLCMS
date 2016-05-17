@@ -9,6 +9,7 @@ public class SynchronousSessionVO {
 	private String endDate;
 	private String endDateDisplay;
 	private String endTime;
+	private String sessionKey;
 	
 	public long getSyncClassId() {
 		return syncClassId;
@@ -58,7 +59,12 @@ public class SynchronousSessionVO {
 	public void setEndDateDisplay(String endDateDisplay) {
 		this.endDateDisplay = endDateDisplay;
 	}
-	
-	
-	
+
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
+	}
 }

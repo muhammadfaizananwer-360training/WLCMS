@@ -19,7 +19,7 @@
 				<table class="table table-striped table-bordered table-hover table-full-width" id="schedule_table_$classId">
 					<thead>
 						<tr class="td-header">
-						  <th colspan="6">
+						  <th colspan="7">
 							<div class='btn-group'>
 								<a class="btn btn-default" href="javascript:manageSession('add')" title="Add Session"><i class="icon-plus blue-text"></i></a>
 								<a class="btn btn-default disabled del-session" href="javascript:manageSession('delete')" title="Delete Session"><i class="icon-minus red-text"></i></a>
@@ -29,6 +29,7 @@
 						<tr class="td-header-bottom-border bg-gray-2">
 						  <th width="10"><input type="checkbox" class="checker" onclick="APP.CHECKBOX(this,true);Enable_Disable_Delete_Btn(this);" /></th>
 						  <th></th>
+							<th>Session Key</th>
 						  <th>Start date</th>
 						  <th>End date</th>
 						  <th>Start time</th>

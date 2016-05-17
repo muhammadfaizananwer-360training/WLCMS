@@ -436,6 +436,7 @@
 			  <div class="modal-dialog modal-lg">
 				<form id="frm_manual_session" action="" method="post" class="form-horizontal" role="form">
 					<input type="hidden" id="add_manual_sessionId" name="add_manual_sessionId"></input>
+                    <input type="hidden" id="add_manual_sessionKey" name="add_manual_sessionKey"></input>
 					<div class="modal-content">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

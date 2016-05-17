@@ -172,11 +172,13 @@ function getSessions(classId){
 						"	<td><input class='checks' name='session_checkboxes' value='"+ objSession[i].id +"' type='checkbox' onclick='APP.CHECKBOX(this,false);;Enable_Disable_Delete_Btn(this);' ></td>" +
 						"	<td><a href='javascript:;' onclick='manageSession(\"edit\",this)' class='anchor'><i class='icon-pencil'></i> Edit</a></td>" +
     					"	<td style='display:none' class='row-data' data-id = '" + objSession[i].id +
-        						"'  data-startDate = '" + objSession[i].startDate +
+								"'  data-sessionKey = '" + objSession[i].sessionKey +
+								"'  data-startDate = '" + objSession[i].startDate +
     							"'  data-endDate = '" + objSession[i].endDate +
     							"'  data-startTime = '" + objSession[i].startTime +
     							"'  data-endTime = '" + objSession[i].endTime +
 								"' ></td>" +
+						"	<td> " + objSession[i].sessionKey + " </td>"+
 						"	<td> " + objSession[i].startDateDisplay + " </td>"+
 						"	<td> " + objSession[i].endDateDisplay + " </td>"+
 						"	<td> " + objSession[i].startTime + " </td>"+
@@ -256,12 +258,13 @@ function saveManualSession()
 	var varStime 		    = $("#add_manual_startTime").val();
 	var varEtime 	        = $("#add_manual_endTime").val();
 	var sessionId 	        = $("#add_manual_sessionId").val();
+	var sessionKey 	        = $("#add_manual_sessionKey").val();
 	APP.AJAX({
 		url: 'saveManualSession',
 		dataType: "text",
 		type: "POST",
 		cache: false,
-		data: 'sessionId=' + sessionId + '&classId=' + varselectedClassId + '&sDate=' + varsDate + '&endDate=' + varEndDate + '&stime=' + varStime + '&etime=' + varEtime,
+		data: 'sessionId=' + sessionId + '&classId=' + varselectedClassId + '&sDate=' + varsDate + '&endDate=' + varEndDate + '&stime=' + varStime + '&etime=' + varEtime + '&sessionKey=' + sessionKey ,
     	async: false,
 		success: function(response) {
 			 objSession = $.parseJSON(response);
@@ -293,6 +296,7 @@ function manageSession(cnd,target){
 		$('#manual_end_date_modal').datepicker('setValue', data.attrData360("endDate"));
 		$("#add_manual_startTime").val(data.attrData360("startTime").toLowerCase());
 		$("#add_manual_endTime").val(data.attrData360("endTime").toLowerCase());
+		$("#add_manual_sessionKey").val(data.attrData360("sessionKey").toLowerCase());
 	}
 }
 
