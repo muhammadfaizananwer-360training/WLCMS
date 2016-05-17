@@ -21,7 +21,7 @@ public interface IClassroomCourseService {
 
     Collection<SyncSessionDTO> getClassSessions(VU360UserDetail user, String businessKey, String className);
 
-    SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, Long sessionId);
+    SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, String sessionKey);
 
     Collection<ClassInstructorDTO> getInstructors(VU360UserDetail user);
 

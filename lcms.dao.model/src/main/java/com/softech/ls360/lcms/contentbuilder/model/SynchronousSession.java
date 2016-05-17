@@ -37,6 +37,8 @@ public class SynchronousSession extends AbstractEntity implements Serializable{
 	private Long locationId;
 	
 	private String status;
+
+	private String sessionKey;
 	
 	SynchronousClass syncClass;
 	
@@ -91,6 +93,15 @@ public class SynchronousSession extends AbstractEntity implements Serializable{
 
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
+	}
+
+	@Column(name = "SESSION_KEY")
+	public String getSessionKey() {
+		return sessionKey;
+	}
+
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
 	}
 
 	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

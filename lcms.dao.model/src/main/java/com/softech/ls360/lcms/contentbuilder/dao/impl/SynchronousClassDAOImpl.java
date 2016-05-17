@@ -1,12 +1,6 @@
 package com.softech.ls360.lcms.contentbuilder.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -85,6 +79,17 @@ public class SynchronousClassDAOImpl extends GenericDAOImpl<SynchronousClass> im
         return null;
 
     }
+
+	@Override
+	@Transactional
+	public List<SynchronousClass> getSynchronousClassByCourseIdAndClassNames(long courseId, Collection<String> classNames) {
+		Query query = entityManager.createQuery(" SELECT sc FROM SynchronousClass sc   "
+				+ " WHERE sc.course.id=:COURSE_ID and sc.className in :classNames and sc.deleted=true");
+
+		query.setParameter("COURSE_ID", courseId);
+		query.setParameter("classNames", classNames);
+		return (List<SynchronousClass>) query.getResultList();
+	}
     
     
     @Override
@@ -153,6 +158,29 @@ public class SynchronousClassDAOImpl extends GenericDAOImpl<SynchronousClass> im
 
 		return null;
 
+	}
+
+	@Override
+	@Transactional
+	public List<SynchronousSession> getSyncSessionsByClassIdAndSessionKeys(Long classId, Collection<String> sessionKeys) {
+		Query query = entityManager.createQuery(" SELECT ss FROM SynchronousSession ss   "
+				+ " WHERE ss.syncClass.id =:classId"
+				+ " and ss.sessionKey in :sessionKeys"
+				+ " and ss.syncClass.deleted=true");
+
+		query.setParameter("classId", classId);
+		query.setParameter("sessionKeys", sessionKeys);
+		return (List<SynchronousSession>) query.getResultList();
+	}
+
+	@Override
+	@Transactional
+	public SynchronousSession getSyncSessionsByClassIdAndSessionKey(Long classId, String sessionKey) {
+		List<SynchronousSession> sessions = getSyncSessionsByClassIdAndSessionKeys(classId,Arrays.asList(sessionKey));
+		if (!sessions.isEmpty()) {
+			return sessions.get(0);
+		}
+		return null;
 	}
 	
 	@Override

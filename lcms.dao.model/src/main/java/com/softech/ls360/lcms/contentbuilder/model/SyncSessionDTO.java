@@ -12,6 +12,7 @@ public class SyncSessionDTO implements ControllableNode {
     private String action;
     private boolean error;
     private Long id;
+    private String sessionKey;
 
     public SyncClassDTO getSyncClass() {
         return syncClass;
@@ -46,15 +47,15 @@ public class SyncSessionDTO implements ControllableNode {
     }
     
     public String getKey() {
-        String start = "";
-        String end = "";
-        if(startDateTime != null) {
-            start = TypeConvertor.DateTimeToString(startDateTime);
-        }
-        if(endDateTime != null) {
-            end = TypeConvertor.DateTimeToString(endDateTime);
-        }
-        return start + " - " + end;
+       return getSessionKey();
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     public Long getId() {

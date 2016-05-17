@@ -74,7 +74,7 @@ public class CRClassParsingSubHndlr implements ITabularParsingSubHandler<SyncCla
         CourseVO course = courseHandler.getCourse(courseId);
         SyncClassDTO newCls = new SyncClassDTO();
         newCls.setClassName(className);
-        SyncClassDTO cls = (SyncClassDTO) getNode(course.getSyncClassesMap(), className, newCls);
+        SyncClassDTO cls = getNode(course.getSyncClassesMap(), className, newCls);
         if (cls == newCls) {
             cls.setCourse(course);
         }

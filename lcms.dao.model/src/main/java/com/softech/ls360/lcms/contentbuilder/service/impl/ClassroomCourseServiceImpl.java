@@ -100,29 +100,24 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
     private class SyncSessionValidatorAndPopulator implements Function2WithException<SyncSessionDTO, Object, Object, TabularDataException>, Function1WithException<SyncSessionDTO, Void, TabularDataException> {
 
         private VU360UserDetail user;
-        private Map<String, Map<String, Long>> classMapOfSessionsMap = new HashMap<>();
+        private Map<String, Map<String, String>> classMapOfSessionsMap = new HashMap<>();
 
         public SyncSessionValidatorAndPopulator(VU360UserDetail user) {
             this.user = user;
         }
 
-        private Map<String, Long> getDefinedSessionKeys(SyncClassDTO clsDto) {
+        private Map<String, String> getDefinedSessionKeys(SyncClassDTO clsDto) {
             String courseId = clsDto.getCourse().getCourseId();
             String className = clsDto.getClassName();
             String classKey = courseId.toLowerCase() + "::" + className.toLowerCase();
-            Map<String, Long> sessionsMap = classMapOfSessionsMap.get(classKey);
+            Map<String, String> sessionsMap = classMapOfSessionsMap.get(classKey);
             if (sessionsMap == null) {
                 sessionsMap = new HashMap<>();
                 classMapOfSessionsMap.put(classKey, sessionsMap);
                 SynchronousClass syncClass = syncClassDAO.getSynchronousClassByOwnerAndCourseAndClassName((int) user.getContentOwnerId(), clsDto.getCourse().getCourseId(), clsDto.getClassName());
                 if (syncClass != null) {
                     for (SynchronousSession session : syncClass.getSyncSession()) {
-                        SyncSessionDTO sessionDto = new SyncSessionDTO();
-                        sessionDto.setStartDateTime(session.getStartDateTime());
-                        sessionDto.setEndDateTime(session.getEndDateTime());
-
-                        String sessionKey = sessionDto.getKey();
-                        sessionsMap.put(sessionKey, session.getId());
+                        sessionsMap.put(session.getSessionKey().toLowerCase(),session.getSessionKey());
                     }
                 }
             }
@@ -135,15 +130,15 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
             //validate unique session
             if (!StringUtils.isEmpty(session.getAction())
                     && session.getAction().equalsIgnoreCase("Add")
-                    && getDefinedSessionKeys(session.getSyncClass()).containsKey(session.getKey())) {
-                throw new TabularDataException("Duplicate", null, -1, 0, "Course Id, Class Title, Session", session.getSyncClass().getCourse().getCourseId() + ", " + session.getSyncClass().getClassName() + " [" + session.getKey() + "]");
+                    && getDefinedSessionKeys(session.getSyncClass()).containsKey(session.getKey().toLowerCase())) {
+                throw new TabularDataException("Duplicate", null, -1, 0, "Course Id, Class Title, Session", session.getSyncClass().getCourse().getCourseId() + ", " + session.getSyncClass().getClassName() + ", " + session.getKey());
             }
 
-            //validate defined classes
+            //validate defined session
             if (!StringUtils.isEmpty(session.getAction())
                     && StringUtil.equalsAny(session.getAction(), true, "delete", "update", "child", "delete-child")
-                    && !getDefinedSessionKeys(session.getSyncClass()).containsKey(session.getKey())) {
-                throw new TabularDataException("Not Found In System", null, -1, 0, "Course Id, Class Title, , Session", session.getSyncClass().getCourse().getCourseId() + ", " + session.getSyncClass().getClassName() + "[" + session.getKey() + "]");
+                    && !getDefinedSessionKeys(session.getSyncClass()).containsKey(session.getKey().toLowerCase())) {
+                throw new TabularDataException("Not Found In System", null, -1, 0, "Course Id, Class Title, , Session", session.getSyncClass().getCourse().getCourseId() + ", " + session.getSyncClass().getClassName() + ", " + session.getKey());
             }
             return null;
         }
@@ -152,11 +147,10 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         public Void apply(SyncSessionDTO session) throws TabularDataException {
             if (!StringUtils.isEmpty(session.getAction())
                     && StringUtil.equalsAny(session.getAction(), true, "delete", "update", "child", "delete-child")) {
-                Long id = getDefinedSessionKeys(session.getSyncClass()).get(session.getKey());
-                if (id == null) {
-                    throw new TabularDataException("Not Found In System", null, -1, 0, "Course Id, Class Title, , Session", session.getSyncClass().getCourse().getCourseId() + ", " + session.getSyncClass().getClassName() + "[" + session.getKey() + "]");
+                String key = getDefinedSessionKeys(session.getSyncClass()).get(session.getKey().toLowerCase());
+                if (key == null) {
+                    throw new TabularDataException("Not Found In System", null, -1, 0, "Course Id, Class Title, , Session", session.getSyncClass().getCourse().getCourseId() + ", " + session.getSyncClass().getClassName() + " ," + session.getKey());
                 } else {
-                    session.setId(id);
                 }
             }
             return null;
@@ -309,7 +303,6 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         // ============ Classes =======
         for (CourseVO courseDto : existingCourses) {
             CourseDTO course = courseDAO.getCourseByOwnerIdAndBusinessKey((int) user.getContentOwnerId(), courseDto.getCourseId());
-            List<SynchronousClass> dbSynClasses = syncClassDAO.getSynchronousClassByCourseId(course.getId());
 
             Collection<SyncClassDTO> existingSyncClasses = CollectionHelper.filterCollection(courseDto.getSyncClasses(), new Function1<SyncClassDTO, SyncClassDTO>() {
                 @Override
@@ -331,8 +324,8 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
                 }
             });
 
-            validateDefinedClasses(user, course, dbSynClasses, existingSyncClasses);
-            validateUniqueClasses(user, course, dbSynClasses, newSyncClasses);
+            validateDefinedClasses(course, existingSyncClasses);
+            validateUniqueClasses(course , newSyncClasses);
 
             // ============ Sessions =======
             for (SyncClassDTO cls : existingSyncClasses) {
@@ -359,8 +352,8 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
                 SynchronousClass dbClass = syncClassDAO.getSynchronousClassByCourseIdAndClassName(course.getId(), cls.getClassName());
                 Set<SynchronousSession> dbDefinedSessions = dbClass.getSyncSession();
-                validateDefinedSessions(user, course, cls, dbDefinedSessions, existingSessions);
-                validateUniqueSessions(user, course, cls, dbDefinedSessions, newSessions);
+                validateDefinedSessions(dbClass, existingSessions);
+                validateUniqueSessions(dbClass, newSessions);
 
             }
 
@@ -459,12 +452,15 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
             }
         }
 
+        //get course group.
+        CourseGroup courseGroup = getCourseGroup(user);
+
         //add or update courses
         for (CourseVO courseDTO : validCourses) {
             CourseDTO course;
             CourseProviderDTO courseProviderDTO = null;
             if (StringUtil.equalsAny(courseDTO.getAction(), true, "add", "update")) {
-                course = addOrUpdateCourse(user, courseDTO);
+                course = addOrUpdateCourse(user,courseGroup,courseDTO);
 
                 //set course id to dto
                 courseDTO.setId(course.getId());
@@ -545,8 +541,9 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
                     if (StringUtil.equalsAny(syncSessionDTO.getAction(),true,"add","update")) {
                         SynchronousSession syncSession = addOrUpdateSyncSession(user, syncClass, syncSessionDTO);
                         syncSessionDTO.setId(syncSession.getId());
-                    } else if (syncSessionDTO.getId() != null && syncSessionDTO.getAction().equalsIgnoreCase("delete")) {
-                        syncClassDAO.deleteSession(syncSessionDTO.getId().toString(), new ObjectWrapper<Long>());
+                    } else if (syncSessionDTO.getAction().equalsIgnoreCase("delete")) {
+                        SynchronousSession syncSession = syncClassDAO.getSyncSessionsByClassIdAndSessionKey(syncClass.getId(),syncSessionDTO.getKey());
+                        syncClassDAO.deleteSession(syncSession.getId().toString(), new ObjectWrapper<Long>());
                     }
                 }
             }
@@ -747,12 +744,16 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
     @Transactional
     @Override
-    public SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, Long sessionId) {
+    public SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, String sessionKey) {
         SyncSessionDTO sessionDto = null;
-        SynchronousSession session = syncClassDAO.getSynchronousSessionBy((int) user.getContentOwnerId(), businessKey, className, sessionId);
-        if (session != null) {
-            sessionDto = new SyncSessionDTO();
-            entityToDTO(session, sessionDto);
+        SynchronousClass syncClass = syncClassDAO.getSynchronousClassByOwnerAndCourseAndClassName((int) user.getContentOwnerId(), businessKey, className);
+
+        if(syncClass != null) {
+            SynchronousSession session = syncClassDAO.getSyncSessionsByClassIdAndSessionKey(syncClass.getId(), sessionKey);
+            if (session != null) {
+                sessionDto = new SyncSessionDTO();
+                entityToDTO(session, sessionDto);
+            }
         }
         return sessionDto;
     }
@@ -996,51 +997,56 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
     }
 
-    private CourseDTO addOrUpdateCourse(VU360UserDetail user, CourseVO dto) {
+    private CourseDTO addOrUpdateCourse(VU360UserDetail user, CourseGroup courseGroup, CourseVO dto) {
+        try {
+            CourseDTO course = courseDAO.getCourseByOwnerIdAndBusinessKey((int) user.getContentOwnerId(), dto.getCourseId());
+            boolean update = false;
+            if (course != null) {
+                update = true;
+            } else {
+                course = new CourseDTO();
+                course.setBrandingId(Integer.valueOf(confDefaultBrandingId));
+                course.setCeus(new BigDecimal(0));
+                course.setBussinesskey(dto.getCourseId());
+                course.setKeywords(dto.getCourseId());
+                course.setProductPrice(BigDecimal.ONE);
+                course.setCurrency(confDefaultCurrency);
+                course.setBusinessunitId(Integer.valueOf(confDefaultBUId));
+                course.setCreatedDate(new Date());
+                course.setBusinessunitName(confDefaultBUName);
+                course.setGuid(UUID.randomUUID().toString().replaceAll("-", ""));
+                course.setContentownerId((int) user.getContentOwnerId());
+                course.setDeliveryMethodId(DeliveryMethod.Classroom.getDeliveryMethod());
+                course.setCourseType(CourseType.CLASSROOM_COURSE.getName());
+                course.setCreateUserId(user.getAuthorId());
+                course.setLanguage_id(1);
+                course.setCode(confDefaultCode);
+                course.setCourseGroup(new HashSet<CourseGroup>());
+                course.getCourseGroup().add(courseGroup);
+                course.setSource(user.getContentOwnerId() == 1 ? "360Training" : "eLM");
+            }
+            course.setLastUpdatedDate(new Date());
+            modelMapper.map(dto, course);
 
-        CourseDTO course = courseDAO.getCourseByOwnerIdAndBusinessKey((int) user.getContentOwnerId(), dto.getCourseId());
-        boolean update = false;
-        if (course != null) {
-            update = true;
-        } else {
-            course = new CourseDTO();
-            course.setBrandingId(Integer.valueOf(confDefaultBrandingId));
-            course.setCeus(new BigDecimal(0));
-            course.setBussinesskey(dto.getCourseId());
-            course.setKeywords(dto.getCourseId());
-            course.setProductPrice(BigDecimal.ONE);
-            course.setCurrency(confDefaultCurrency);
-            course.setBusinessunitId(Integer.valueOf(confDefaultBUId));
-            course.setCreatedDate(new Date());
-            course.setBusinessunitName(confDefaultBUName);
-            course.setGuid(UUID.randomUUID().toString().replaceAll("-", ""));
-            course.setContentownerId((int) user.getContentOwnerId());
-            course.setDeliveryMethodId(DeliveryMethod.Classroom.getDeliveryMethod());
-            course.setCourseType(CourseType.CLASSROOM_COURSE.getName());
-            course.setCreateUserId(user.getAuthorId());
-            course.setLanguage_id(1);
-            course.setCode(confDefaultCode);
-            course.setCourseGroup(new HashSet<CourseGroup>());
-            course.getCourseGroup().add(getCourseGroup(user));
+            if (dto.getCourseProvider() != null && dto.getCourseProvider().getInstructorBackground() != null) {
+                course.setAuthorBackground(dto.getCourseProvider().getInstructorBackground());
+            }
+
+            if (!StringUtils.isEmpty(dto.getInstructorEmail())) {
+                course.setClassInstructorId(instructorDAO.findByContentOwnerIdAndEmail(user.getContentOwnerId(), dto.getInstructorEmail()).getId());
+            }
+
+            if (update) {
+                course = courseDAO.updateCourse(course);
+            } else {
+                course = courseDAO.saveCourse(course);
+            }
+
+            return course;
+        } catch(Exception ex) {
+            logger.error("Course: " + dto.getCourseId());
+            throw ex;
         }
-        course.setLastUpdatedDate(new Date());
-        modelMapper.map(dto, course);
-
-        if (dto.getCourseProvider() != null && dto.getCourseProvider().getInstructorBackground() != null) {
-            course.setAuthorBackground(dto.getCourseProvider().getInstructorBackground());
-        }
-
-        if(!StringUtils.isEmpty(dto.getInstructorEmail())) {
-            course.setClassInstructorId(instructorDAO.findByContentOwnerIdAndEmail(user.getContentOwnerId(), dto.getInstructorEmail()).getId());
-        }
-
-        if (update) {
-            course = courseDAO.updateCourse(course);
-        } else {
-            course = courseDAO.saveCourse(course);
-        }
-
-        return course;
     }
 
     private CourseProvider addOrUpdateCourseProvider(VU360UserDetail user, CourseVO courseDTO, CourseDTO course) {
@@ -1096,33 +1102,24 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
     private SynchronousSession addOrUpdateSyncSession(VU360UserDetail user, SynchronousClass syncClass, SyncSessionDTO dto) {
 
-        SynchronousSession syncSession = null;
-        syncClass = syncClassDAO.getSynchronousClassById(syncClass.getId());
-        if (dto.getId() != null) {
-            for(SynchronousSession session : syncClass.getSyncSession()) {
-                if(dto.getId().equals(session.getId())) {
-                    syncSession = session;
-                    syncSession.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());
-                    syncSession.setId(dto.getId());
-                    break;
-                }
-            }
-        }
-
-        if(syncSession == null) {
+        SynchronousSession syncSession = syncClassDAO.getSyncSessionsByClassIdAndSessionKey(syncClass.getId(),dto.getKey());
+        boolean update = false;
+        if (syncSession != null) {
+            update = true;
+            syncSession.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());
+        } else {
             syncSession  = new SynchronousSession();
+            syncSession.setSyncClass(syncClass);
+            syncSession.setSessionKey(dto.getKey());
         }
 
-        syncSession.setSyncClass(syncClass);
+
         syncSession.setStartDateTime(dto.getStartDateTime());
         syncSession.setEndDateTime(dto.getEndDateTime());
         syncSession.setUpdateDate(new Date());
 
-        Set<SynchronousSession> sessionSet = syncClass.getSyncSession();
-        if (sessionSet == null) {
-            sessionSet = new HashSet<>();
-            syncClass.setSyncSession(sessionSet);
-        }
+        Set<SynchronousSession> sessionSet = new HashSet<>();
+        syncClass.setSyncSession(sessionSet);
         sessionSet.add(syncSession);
 
         syncClassDAO.saveClass(syncClass);
@@ -1213,18 +1210,28 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         }
     }
 
-    private void validateUniqueClasses(VU360UserDetail user, CourseDTO course, Collection<SynchronousClass> dbDefinedClasses, Collection<SyncClassDTO> classes) throws BulkUplaodCourseException {
-        //validate whether defined locations are really defined in database.
-        if (classes.isEmpty() || dbDefinedClasses.isEmpty()) {
+    private void validateUniqueClasses(CourseDTO course, Collection<SyncClassDTO> classes) throws BulkUplaodCourseException {
+        //validate whether locations are defined in database.
+        if (classes.isEmpty()) {
             return;
         }
 
-        Collection<String> duplicateClasses = CollectionHelper.getFoundItems(classes, dbDefinedClasses, new Function2<SyncClassDTO, SynchronousClass, String>() {
+        Collection<String> classNames = Collections2.transform(classes, new Function<SyncClassDTO, String>() {
+            @Override
+            public String apply(SyncClassDTO cls) {
+                return cls.getClassName();
+            }
+        });
+
+        Collection<SynchronousClass> dbDefinedClasses = syncClassDAO.getSynchronousClassByCourseIdAndClassNames(course.getId(), classNames);
+
+
+        Collection<String> duplicateClasses = CollectionHelper.getFoundItems(classNames, dbDefinedClasses, new Function2<String, SynchronousClass, String>() {
 
             @Override
-            public String apply(SyncClassDTO clsDto, SynchronousClass cls) {
-                if (clsDto.getClassName().trim().equalsIgnoreCase(cls.getClassName().trim())) {
-                    return clsDto.getClassName();
+            public String apply(String className, SynchronousClass cls) {
+                if (className.trim().equalsIgnoreCase(cls.getClassName().trim())) {
+                    return className;
                 }
                 return null;
             }
@@ -1236,9 +1243,10 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         }
     }
 
-    private void validateDefinedClasses(VU360UserDetail user, CourseDTO course, Collection<SynchronousClass> dbDefinedClasses, Collection<SyncClassDTO> classes) throws BulkUplaodCourseException {
-        //validate whether defined locations are really defined in database.
-        if (classes.isEmpty() || dbDefinedClasses.isEmpty()) {
+    private void validateDefinedClasses(CourseDTO course, Collection<SyncClassDTO> classes) throws BulkUplaodCourseException {
+
+        //validate whether locations are defined in database.
+        if (classes.isEmpty()) {
             return;
         }
 
@@ -1248,6 +1256,9 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
                 return cls.getClassName();
             }
         });
+
+        Collection<SynchronousClass> dbDefinedClasses = syncClassDAO.getSynchronousClassByCourseIdAndClassNames(course.getId(), classNames);
+
 
         Collection<String> missigClasses = CollectionHelper.getMissingItems(classNames, dbDefinedClasses, new Function2<String, SynchronousClass, Boolean>() {
             @Override
@@ -1263,7 +1274,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
     }
 
     private void validateUniqueLocations(VU360UserDetail user, Collection<LocationDTO> locations) throws BulkUplaodCourseException {
-        //validate whether defined locations are really defined in database.
+        //validate whether locations are defined in database.
         if (locations.isEmpty()) {
             return;
         }
@@ -1294,7 +1305,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
     }
 
     private void validateUniqueInstructors(VU360UserDetail user, Collection<ClassInstructorDTO> instructors) throws BulkUplaodCourseException {
-        //validate whether defined instructors are really defined in database.
+        //validate whether instructors are defined in database.
         if (instructors.isEmpty()) {
             return;
         }
@@ -1352,19 +1363,28 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
     }
 
 
-    //validate whether defined locations are really defined in database.
-    private void validateUniqueSessions(VU360UserDetail user, CourseDTO course, SyncClassDTO cls, Collection<SynchronousSession> dbDefinedSessions, Collection<SyncSessionDTO> sessions) throws BulkUplaodCourseException {
-        if (sessions.isEmpty() || dbDefinedSessions.isEmpty()) {
+    //validate whether locations are defined in database.
+    private void validateUniqueSessions(SynchronousClass cls, Collection<SyncSessionDTO> sessions) throws BulkUplaodCourseException {
+        if (sessions.isEmpty()) {
             return;
         }
 
-        Collection<String> duplicateSessions = CollectionHelper.getFoundItems(sessions, dbDefinedSessions, new Function2<SyncSessionDTO, SynchronousSession, String>() {
+        Collection<String> sessionKeys = Collections2.transform(sessions, new Function<SyncSessionDTO, String>() {
+            @Override
+            public String apply(SyncSessionDTO sessionDto) {
+                return sessionDto.getKey();
+            }
+        });
+
+        Collection<SynchronousSession> dbDefinedSessions = syncClassDAO.getSyncSessionsByClassIdAndSessionKeys(cls.getId(), sessionKeys);
+
+
+        Collection<String> duplicateSessions = CollectionHelper.getFoundItems(sessionKeys, dbDefinedSessions, new Function2<String, SynchronousSession, String>() {
 
             @Override
-            public String apply(SyncSessionDTO sessionDto, SynchronousSession session) {
-                if (TypeConvertor.DateToString(sessionDto.getStartDateTime()).equals(TypeConvertor.DateToString(session.getStartDateTime()))
-                        && TypeConvertor.DateTimeToString(sessionDto.getEndDateTime()).equals(TypeConvertor.DateTimeToString(session.getEndDateTime()))) {
-                    return TypeConvertor.DateTimeToString(sessionDto.getStartDateTime()) + " - " + TypeConvertor.DateTimeToString(sessionDto.getEndDateTime());
+            public String apply(String sessionKey, SynchronousSession session) {
+                if (sessionKey.equalsIgnoreCase(session.getSessionKey())) {
+                    return sessionKey;
                 }
                 return null;
             }
@@ -1372,37 +1392,36 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
         if (duplicateSessions.size() > 0) {
             throw new BulkUplaodCourseException("Duplicate", "Session", 0, 0,
-                    "", "(" + course.getBussinesskey() + "," + cls.getClassName() + ") " + "[" + Joiner.on(", ").join(duplicateSessions) + "]");
+                    "", "(" + cls.getCourse().getBussinesskey() + "," + cls.getClassName() + ") " + "[" + Joiner.on(", ").join(duplicateSessions) + "]");
         }
     }
 
-    private void validateDefinedSessions(VU360UserDetail user, CourseDTO course, SyncClassDTO cls, Collection<SynchronousSession> dbDefinedSessions, Collection<SyncSessionDTO> sessions) throws BulkUplaodCourseException {
-        //validate whether defined locations are really defined in database.
-        if (sessions.isEmpty() || dbDefinedSessions.isEmpty()) {
+    private void validateDefinedSessions(SynchronousClass cls, Collection<SyncSessionDTO> sessions) throws BulkUplaodCourseException {
+        //validate whether sessions are defined in database.
+        if (sessions.isEmpty()) {
             return;
         }
 
         Collection<String> sessionKeys = Collections2.transform(sessions, new Function<SyncSessionDTO, String>() {
             @Override
             public String apply(SyncSessionDTO sessionDto) {
-                if(sessionDto.getId() != null && sessionDto.getId() > 0) {
-                   return sessionDto.getId().toString();
-                } else {
-                    return sessionDto.getKey();
-                }
+                return sessionDto.getKey();
             }
         });
+
+        Collection<SynchronousSession> dbDefinedSessions = syncClassDAO.getSyncSessionsByClassIdAndSessionKeys(cls.getId(), sessionKeys);
+
 
         Collection<String> missingSessions = CollectionHelper.getMissingItems(sessionKeys, dbDefinedSessions, new Function2<String, SynchronousSession, Boolean>() {
             @Override
             public Boolean apply(String key, SynchronousSession session) {
-                return key.equals(session.getId().toString()) || key.equals(TypeConvertor.DateTimeToString(session.getStartDateTime()) + " - " + TypeConvertor.DateTimeToString(session.getEndDateTime()));
+                return key.equalsIgnoreCase(session.getSessionKey());
             }
         });
 
         if (missingSessions.size() > 0) {
             throw new BulkUplaodCourseException("Not Found In System", "Class", 0, 0,
-                    "", "(" + course.getBussinesskey() + "," + cls.getClassName() + ") " + "[" + Joiner.on(", ").join(missingSessions) + "]");
+                    "", "(" + cls.getCourse().getBussinesskey() + "," + cls.getClassName() + ") " + "[" + Joiner.on(", ").join(missingSessions) + "]");
         }
     }
 

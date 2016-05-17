@@ -7,7 +7,12 @@ import com.softech.common.event.ICallbackHandlerWithException;
 import com.softech.common.parsing.ExpressionConstant;
 import com.softech.common.parsing.TabularDataException;
 import com.softech.ls360.lcms.contentbuilder.dataimport.TabularParsingHndlrHelper.MetaData;
+
+import static com.softech.ls360.lcms.contentbuilder.dataimport.TabularParsingHndlrHelper.getNode;
 import static com.softech.ls360.lcms.contentbuilder.dataimport.TabularParsingHndlrHelper.validateRow;
+
+import com.softech.ls360.lcms.contentbuilder.model.CourseVO;
+import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -34,6 +39,7 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
         ACTION,
         COURSE_ID,
         CLASS_NAME,
+        SESSION_KEY,
         SESSION_START_DATE,
         SESSION_END_DATE,
         SESSION_START_TIME,
@@ -44,6 +50,7 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
         new MetaData("Action", false, null, String.class),
         new MetaData("Course ID", true, null, String.class),
         new MetaData("Class Title", true, null, String.class),
+        new MetaData("Session Key", true, null, String.class),
         new MetaData("Session Start Date", true, ExpressionConstant.SHORT_DATE, Date.class),
         new MetaData("Session End Date", true, ExpressionConstant.SHORT_DATE, Date.class),
         new MetaData("Session Start Time", true, ExpressionConstant.TIME, String.class, "Invalid Time"),
@@ -58,10 +65,13 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
     private Function1WithException<SyncSessionDTO, Void, TabularDataException> externalPopulator;
 
     private void validateOnDTOReady(SyncSessionDTO syncSession, Integer rowIndex) throws TabularDataException {
-        //start date must be after closing date
-        if (syncSession.getSyncClass().getEnrollmentCloseDate().getTime() > syncSession.getStartDateTime().getTime()) {
-            syncSession.setAction(null);
-            throw new TabularDataException("Start Date Before Close Date", getName(), rowIndex, ColumnIndexes.SESSION_START_DATE.ordinal(), metaData[ColumnIndexes.SESSION_START_DATE.ordinal()].getText(), TypeConvertor.DateTimeToString(syncSession.getStartDateTime()));
+
+        if(StringUtil.equalsAny(syncSession.getAction(),true,"update","add")) {
+            //start date must be after closing date
+            if (syncSession.getSyncClass().getEnrollmentCloseDate().getTime() > syncSession.getStartDateTime().getTime()) {
+                syncSession.setAction(null);
+                throw new TabularDataException("Start Date Before Close Date", getName(), rowIndex, ColumnIndexes.SESSION_START_DATE.ordinal(), metaData[ColumnIndexes.SESSION_START_DATE.ordinal()].getText(), TypeConvertor.DateTimeToString(syncSession.getStartDateTime()));
+            }
         }
     }
     
@@ -71,6 +81,18 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
         return courseId.toLowerCase() + "::" + className.toLowerCase();
     }
 
+    public SyncSessionDTO getSyncSession(String courseId, String className,String sessionKey) {
+        SyncClassDTO cls = classHandler.getSyncClass(courseId,className);
+        SyncSessionDTO newSession = new SyncSessionDTO();
+        newSession.setSessionKey(sessionKey);
+        SyncSessionDTO session = getNode(cls.getSessionsMap(), sessionKey, newSession);
+        if (session == newSession) {
+            session.setSyncClass(cls);
+        }
+        return session;
+    }
+
+
     @Override
     public boolean finalize(String tableName) {
         return true;
@@ -79,23 +101,11 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
     @Override
     public boolean handleRow(String tableName, Object[] row, int rowNum) throws TabularDataException {
         return TabularParsingHndlrHelper.handleRow(this, tableName, metaData, row, rowNum, populateHandlers, externalValidators, externalPopulator
-                , new String[]{"add","delete"});
+                , new String[]{"add","delete","update"});
     }
 
     @Override
     public boolean addRowDataToDTO(Object[] row, int rowNum, SyncSessionDTO syncSession) throws TabularDataException {
-        if (syncSession.getStartDateTime().getTime() >= syncSession.getEndDateTime().getTime()) {
-            throw new TabularDataException("Start Date After End Date", getName(), rowNum, ColumnIndexes.SESSION_END_DATE.ordinal(), metaData[ColumnIndexes.SESSION_END_DATE.ordinal()].getText() + ", " + metaData[ColumnIndexes.SESSION_END_TIME.ordinal()].getText(), TypeConvertor.DateTimeToString(syncSession.getEndDateTime()));
-        }
-        return true;
-    }
-
-    @Override
-    public SyncSessionDTO getDtoByRowKey(Object[] row, int rowNum) throws TabularDataException {
-        SyncSessionDTO syncSession = new SyncSessionDTO();
-        SyncClassDTO syncClass = classHandler.getSyncClass(TypeConvertor.AnyToString(row[ColumnIndexes.COURSE_ID.ordinal()]), TypeConvertor.AnyToString(row[ColumnIndexes.CLASS_NAME.ordinal()]));
-        syncSession.setSyncClass(syncClass);
-
         String strStartDate = TypeConvertor.AnyToString(row[ColumnIndexes.SESSION_START_DATE.ordinal()])
                 + " " + TypeConvertor.AnyToString(row[ColumnIndexes.SESSION_START_TIME.ordinal()]);
         try {
@@ -112,7 +122,19 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
             throw new TabularDataException("Invalid Date", getName(), rowNum, ColumnIndexes.SESSION_END_DATE.ordinal(), metaData[ColumnIndexes.SESSION_END_DATE.ordinal()].getText() + ", " + metaData[ColumnIndexes.SESSION_END_TIME.ordinal()].getText(), strEndDate);
         }
 
-        syncClass.getSessionsMap().put(syncSession.getKey().toLowerCase(), syncSession);
+        if (syncSession.getStartDateTime().getTime() >= syncSession.getEndDateTime().getTime()) {
+            throw new TabularDataException("Start Date After End Date", getName(), rowNum, ColumnIndexes.SESSION_END_DATE.ordinal(), metaData[ColumnIndexes.SESSION_END_DATE.ordinal()].getText() + ", " + metaData[ColumnIndexes.SESSION_END_TIME.ordinal()].getText(), TypeConvertor.DateTimeToString(syncSession.getEndDateTime()));
+        }
+        return true;
+    }
+
+    @Override
+    public SyncSessionDTO getDtoByRowKey(Object[] row, int rowNum) throws TabularDataException {
+        SyncSessionDTO syncSession = getSyncSession(
+                TypeConvertor.AnyToString(row[ColumnIndexes.COURSE_ID.ordinal()])
+                , TypeConvertor.AnyToString(row[ColumnIndexes.CLASS_NAME.ordinal()])
+                , TypeConvertor.AnyToString(row[ColumnIndexes.SESSION_KEY.ordinal()]));
+
         return syncSession;
     }
 
@@ -124,7 +146,7 @@ public class CRSessionParsingSubHndlr implements ITabularParsingSubHandler<SyncS
 
     @Override
     public boolean validateRowKey(Object[] row, int rowNum) throws TabularDataException {
-        boolean rowAccepted = validateRow(getName(), metaData, row, rowNum, (short) 0);
+        boolean rowAccepted = validateRow(getName(), metaData, row, rowNum, (short) 0, (short) 3);
         return rowAccepted;
     }
 
