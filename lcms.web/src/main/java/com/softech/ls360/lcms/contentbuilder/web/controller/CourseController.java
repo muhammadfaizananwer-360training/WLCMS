@@ -1,36 +1,20 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
 import com.softech.ls360.lcms.contentbuilder.dataimport.ClassroomParsingHndlr;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
+import com.softech.ls360.lcms.contentbuilder.manager.CourseImportUtility;
+import com.softech.ls360.lcms.contentbuilder.model.*;
+import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
+import com.softech.ls360.lcms.contentbuilder.service.ISlideService;
+import com.softech.ls360.lcms.contentbuilder.service.ISynchronousClassService;
+import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
 import com.softech.ls360.lcms.contentbuilder.utils.*;
+import com.softech.ls360.lcms.contentbuilder.utils.WlcmsConstants.DeliveryMethod;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.TypeComparator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,23 +25,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
-import com.softech.ls360.lcms.contentbuilder.manager.CourseImportUtility;
-import com.softech.ls360.lcms.contentbuilder.manager.ExcelDataWriter;
-import com.softech.ls360.lcms.contentbuilder.manager.OnlineCourseExportManager;
-import com.softech.ls360.lcms.contentbuilder.model.ContentObject;
-import com.softech.ls360.lcms.contentbuilder.model.Course;
-import com.softech.ls360.lcms.contentbuilder.model.CourseDTO;
-import com.softech.ls360.lcms.contentbuilder.model.CourseGroup;
-import com.softech.ls360.lcms.contentbuilder.model.SearchCourseFilter;
-import com.softech.ls360.lcms.contentbuilder.model.Slide;
-import com.softech.ls360.lcms.contentbuilder.model.SlideTemplate;
-import com.softech.ls360.lcms.contentbuilder.model.VU360UserDetail;
-import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
-import com.softech.ls360.lcms.contentbuilder.service.ISlideService;
-import com.softech.ls360.lcms.contentbuilder.service.ISynchronousClassService;
-import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
-import com.softech.ls360.lcms.contentbuilder.utils.WlcmsConstants.DeliveryMethod;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class CourseController {
@@ -77,51 +54,51 @@ public class CourseController {
 
 	@Autowired
 	ISynchronousClassService synchronoutService;
-	
+
 	@Autowired
 	CourseImportUtility importCourseManager;
-	
+
 	@Autowired
 	ClassroomParsingHndlr classroomParser;
 
 	SimpleDateFormat simplesyncsessionDateFormat = new SimpleDateFormat(
 			"MM/dd/yyyy hh:mm aa", Locale.getDefault());
-	
-	
+
+
 	@RequestMapping(value = "courseImport", method = RequestMethod.GET)
 	public @ResponseBody
 	ModelAndView courseImport(HttpServletRequest request,
-			HttpServletResponse response) throws Exception, BulkUplaodCourseException {
-		
+							  HttpServletResponse response) throws Exception, BulkUplaodCourseException {
+
 		String filePath = request.getParameter("filePath");
 		String courseId = request.getParameter("courseId");
-		
+
 		int courseIdInt = Integer.parseInt(courseId);
-		
+
 		importCourseManager.processCourseImport(filePath, CourseType.ONLINE_COURSE.getId(), courseService, courseIdInt);
-		
+
 		return new ModelAndView("course_overview");
 
 	}
-	
+
 	@RequestMapping(value = "processParsingFile", method = RequestMethod.POST)
 	public @ResponseBody
 	Object processExcelCourseFile(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		
+								  HttpServletResponse response) throws Exception {
+
 		String filePath = request.getParameter("filePath");
 		String courseId = request.getParameter("courseId");
 		String responseUploading = "true";
 		boolean gotError = false;
-		
+
 		int courseIdInt = Integer.parseInt(courseId);
 		try{
-		importCourseManager.processCourseImport(filePath, CourseType.ONLINE_COURSE.getId(), courseService, courseIdInt);
+			importCourseManager.processCourseImport(filePath, CourseType.ONLINE_COURSE.getId(), courseService, courseIdInt);
 		}catch(BulkUplaodCourseException e){
 			responseUploading = e.getMessage();
 			gotError = true;
 		}
-		
+
 		if(!gotError){
 			StringBuilder sb = new StringBuilder();
 			sb.append("redirect:/coursestructure?id=" + courseId);
@@ -129,7 +106,7 @@ public class CourseController {
 			sb.append("&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=4");
 			new ModelAndView(sb.toString());
 		}
-		
+
 		return responseUploading;
 
 	}
@@ -138,7 +115,7 @@ public class CourseController {
 	@RequestMapping(value = "getSlidesByContentObject", method = RequestMethod.POST)
 	public @ResponseBody
 	List<Slide> getSlidesByContentObject(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+										 HttpServletResponse response) throws Exception {
 
 		String varContendOjectId = request.getParameter("varCobjectId");
 		if (varContendOjectId != null) {
@@ -151,7 +128,7 @@ public class CourseController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
@@ -160,7 +137,7 @@ public class CourseController {
 	@RequestMapping(value = "isSlideComponentsHasData", method = RequestMethod.POST)
 	public @ResponseBody
 	String isSlideComponentsHasData(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+									HttpServletResponse response) throws Exception {
 
 		Slide slide = new Slide();
 		String id = request.getParameter("varSlideId");
@@ -208,7 +185,7 @@ public class CourseController {
 	@RequestMapping(value = "getContentObjectAllowQuiz", method = RequestMethod.POST)
 	public @ResponseBody
 	ContentObject getContentObjectAllowQuiz(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+											HttpServletResponse response) throws Exception {
 
 		String varContendOjectId = request.getParameter("varCobjectId");
 		if (varContendOjectId != null) {
@@ -223,7 +200,7 @@ public class CourseController {
 	@RequestMapping(value = "getContentObjectForEdit", method = RequestMethod.POST)
 	public @ResponseBody
 	ContentObject getContentObjectForEdit(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+										  HttpServletResponse response) throws Exception {
 
 		String varContendOjectId = request.getParameter("varCobjectId");
 		if (varContendOjectId != null) {
@@ -239,7 +216,7 @@ public class CourseController {
 			RequestMethod.POST, RequestMethod.GET })
 	public @ResponseBody
 	JsonResponse updateContentObject(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+									 HttpServletResponse response) throws Exception {
 		JsonResponse res = new JsonResponse();
 
 		String varContendOjectId = request.getParameter("varCobjectId");
@@ -289,9 +266,9 @@ public class CourseController {
 	// Get Content Structure Page
 	@RequestMapping(value = "coursestructure", method = RequestMethod.GET)
 	public ModelAndView createCourseStructure(HttpServletRequest request,HttpServletResponse response) {
-		
+
 		logger.debug("CourseController::createCourseStructure - Start");
-		
+
 		ModelAndView courseModelView = null;
 		if (request.getParameter("lessonOnly") != null && request.getParameter("lessonOnly").equals("true")) {
 			courseModelView = new ModelAndView("lesson_accordian");
@@ -392,14 +369,14 @@ public class CourseController {
 	@RequestMapping(value = "addLesson", method = RequestMethod.POST)
 	public @ResponseBody
 	ContentObject addLesson(HttpServletRequest request) {
-			
+
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
 		ContentObject co = new ContentObject();
 		// Integer course_ID = Integer.parseInt(
 		// request.getParameter("varCobjectId") );
-		
+
 		Integer couse_id =Integer.parseInt( request.getParameter("id")==null ? "0" : request.getParameter("id") );
 		String name = request.getParameter("name")==null ? "" : request.getParameter("name");
 		String description = request.getParameter("description")==null ? "" : request.getParameter("description");
@@ -433,7 +410,7 @@ public class CourseController {
 	@RequestMapping(value = "deleteLLO", method = RequestMethod.POST)
 	public @ResponseBody
 	String deleteLLO(@RequestParam("lessonId") int LLO_id,
-			@RequestParam("contentObject_id") int contentObject_id) {
+					 @RequestParam("contentObject_id") int contentObject_id) {
 		boolean bResult = false;
 		String sReturnval;
 		try {
@@ -478,12 +455,12 @@ public class CourseController {
 			return null;
 		}
 
-        // get Value from Database
+		// get Value from Database
 		String idToSearch = request.getParameter("id");
-        if (idToSearch == null)
-            return null;
+		if (idToSearch == null)
+			return null;
 
-        courseModelView.addObject("courseid", idToSearch.toString());
+		courseModelView.addObject("courseid", idToSearch.toString());
 		courseModelView.addObject("cType", request.getParameter("cType"));
 		// if there is nothing to search or
 
@@ -541,7 +518,7 @@ public class CourseController {
 			crs.setId(id);
 			crs.setName(name);
 			// Yasin WLCMS-183
-			crs.setBusinessunit_name(businessunitName);			
+			crs.setBusinessunit_name(businessunitName);
 			crs.setDescription(description);
 			crs.setKeywords(keywords);
 			crs.setLanguage_id(language_id);
@@ -594,7 +571,7 @@ public class CourseController {
 
 	@RequestMapping(value = "createcourse", method = RequestMethod.GET)
 	public ModelAndView uploadcourseonline(ModelMap model,
-			HttpServletRequest request) throws SQLException {
+										   HttpServletRequest request) throws SQLException {
 
 		String courseType = request
 				.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE);
@@ -609,18 +586,18 @@ public class CourseController {
 
 		switch (courseTypeE) {
 
-		case ONLINE_COURSE:
-			courseModelView = new ModelAndView("course_overview");
-			break;
-		case CLASSROOM_COURSE:
-			courseModelView = new ModelAndView("classroom_course_overview");
-			break;
-		case WEBINAR_COURSE:
-			courseModelView = new ModelAndView("webinar_course_overview");
-			break;
-		default:
-			courseModelView = new ModelAndView("course_overview");
-			break;
+			case ONLINE_COURSE:
+				courseModelView = new ModelAndView("course_overview");
+				break;
+			case CLASSROOM_COURSE:
+				courseModelView = new ModelAndView("classroom_course_overview");
+				break;
+			case WEBINAR_COURSE:
+				courseModelView = new ModelAndView("webinar_course_overview");
+				break;
+			default:
+				courseModelView = new ModelAndView("course_overview");
+				break;
 		}
 
 		request.getSession().setAttribute("courseTypeForMenu",
@@ -658,7 +635,7 @@ public class CourseController {
 			String varCourseConfTempId = LCMSProperties.getLCMSProperty("course.default.courseConfigurationTemplateId");
 			String varQuickBuildCourseType = LCMSProperties.getLCMSProperty("course.default.quickBuildCoursetype");
 
-			Date date = new Date(0);			
+			Date date = new Date(0);
 			crs.setName(name);
 			crs.setCeus(new BigDecimal(0));
 
@@ -674,15 +651,15 @@ public class CourseController {
 			crs.setCode(varCode);
 
 			Calendar cal = Calendar.getInstance();
- 
+
 			String cOntentOwnerIDwithMasking = LCMSDateUtils.addLeadingZeroes(6, user.getContentOwnerId());
 			String monthWithMasking = LCMSDateUtils.addLeadingZeroes(2,cal.get(Calendar.MONTH) + 1);
-			String dayWithMasking = LCMSDateUtils.addLeadingZeroes(2,cal.get(Calendar.DATE));			
+			String dayWithMasking = LCMSDateUtils.addLeadingZeroes(2,cal.get(Calendar.DATE));
 			long n3 = Math.round(Math.random() * 1000);
-			String GUIDD = cOntentOwnerIDwithMasking + "-"+ LCMSDateUtils.getTwoDigitYearValue() + monthWithMasking + dayWithMasking + "-" + n3;			
- 
-			crs.setGuid(GUIDD);	
-			crs.setProductprice(BigDecimal.ONE);			
+			String GUIDD = cOntentOwnerIDwithMasking + "-"+ LCMSDateUtils.getTwoDigitYearValue() + monthWithMasking + dayWithMasking + "-" + n3;
+
+			crs.setGuid(GUIDD);
+			crs.setProductprice(BigDecimal.ONE);
 			crs.setBusinessunit_id(Integer.valueOf(varBusinessUnitId));
 			crs.setCreatedDate(date);
 			crs.setLastUpdatedDate(date);
@@ -701,7 +678,7 @@ public class CourseController {
 			sb.append("redirect:/coursestructure?id=" + courseId);
 			sb.append("&msg=success");
 			sb.append("&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=4");
-			retURL = sb.toString();			
+			retURL = sb.toString();
 			return new ModelAndView(retURL);
 		} else {
 			courseModelView.addObject("name", name);
@@ -789,9 +766,9 @@ public class CourseController {
 	@RequestMapping(value = "deleteLesson", method = RequestMethod.POST)
 	public @ResponseBody
 	JsonResponse deleteLesson(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+							  HttpServletResponse response) throws Exception {
 		JsonResponse res = new JsonResponse();
-		
+
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
@@ -809,20 +786,20 @@ public class CourseController {
 	 * RequestMethod.GET}) public ModelAndView
 	 * showclassroomsetup(HttpServletRequest request) throws SQLException {
 	 * logger.debug("CourseController::classroomsetup - Start");
-	 * 
+	 *
 	 * ModelAndView scheduleView = new ModelAndView
 	 * ("/classroom/classroom_setup");
-	 * 
-	 * 
+	 *
+	 *
 	 * logger.debug("CourseController::classroomsetup - End");
-	 * 
+	 *
 	 * return scheduleView; }
 	 */
 
 	@RequestMapping(value = "setCourseDisplayOrder", method = RequestMethod.POST)
 	public @ResponseBody
 	JsonResponse setCourseDisplayOrder(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+									   HttpServletResponse response) throws Exception {
 		JsonResponse res = new JsonResponse();
 
 		String varLessonId = request.getParameter("varItemId");
@@ -866,7 +843,7 @@ public class CourseController {
 			String varCourseStatus = LCMSProperties
 					.getLCMSProperty("course.default.coursestatus");
 			String varCourseType = CourseType.getById(
-                    TypeConvertor.AnyToInteger(courseType)).getName();
+					TypeConvertor.AnyToInteger(courseType)).getName();
 			String varCode = LCMSProperties
 					.getLCMSProperty("course.default.code");
 			String varCurrency = LCMSProperties
@@ -904,7 +881,7 @@ public class CourseController {
 				return courseModelView;
 
 			}
-			
+
 
 			crs.setDescription(description);
 			crs.setKeywords(keywords);
@@ -955,24 +932,24 @@ public class CourseController {
 
 			switch (courseTypeE) {
 
-			case CLASSROOM_COURSE:
-				crs.setDeliveryMethodId(DeliveryMethod.Classroom.getDeliveryMethod());
-				courseModelView.setViewName("classroom_course_overview");
-				crs.setCourseType(CourseType.CLASSROOM_COURSE.getName());
-				lstcg = courseService.getCourseGroupByContentOwner(
-						user.getContentOwnerId(),
-						WlcmsConstants.COURSE_GROUP_CLASSROOM);
-				break;
-			case WEBINAR_COURSE:
-				crs.setDeliveryMethodId(DeliveryMethod.Webinar.getDeliveryMethod());
-				courseModelView.setViewName("webinar_course_overview");
-				crs.setCourseType(CourseType.WEBINAR_COURSE.getName());
-				lstcg = courseService.getCourseGroupByContentOwner(
-						user.getContentOwnerId(),
-						WlcmsConstants.COURSE_GROUP_WEBINAR);
-				break;
-			default:
-				break;
+				case CLASSROOM_COURSE:
+					crs.setDeliveryMethodId(DeliveryMethod.Classroom.getDeliveryMethod());
+					courseModelView.setViewName("classroom_course_overview");
+					crs.setCourseType(CourseType.CLASSROOM_COURSE.getName());
+					lstcg = courseService.getCourseGroupByContentOwner(
+							user.getContentOwnerId(),
+							WlcmsConstants.COURSE_GROUP_CLASSROOM);
+					break;
+				case WEBINAR_COURSE:
+					crs.setDeliveryMethodId(DeliveryMethod.Webinar.getDeliveryMethod());
+					courseModelView.setViewName("webinar_course_overview");
+					crs.setCourseType(CourseType.WEBINAR_COURSE.getName());
+					lstcg = courseService.getCourseGroupByContentOwner(
+							user.getContentOwnerId(),
+							WlcmsConstants.COURSE_GROUP_WEBINAR);
+					break;
+				default:
+					break;
 			}
 
 			Set<CourseGroup> lstNew = new HashSet<CourseGroup>();
@@ -1056,15 +1033,15 @@ public class CourseController {
 
 		switch (courseTypeE) {
 
-		case CLASSROOM_COURSE:
-			courseModelView = new ModelAndView("classroom_course_overview_edit");
-			break;
-		case WEBINAR_COURSE:
-			courseModelView = new ModelAndView("webinar_course_overview_edit");
-			break;
-		default:
-			courseModelView = new ModelAndView("classroom_course_overview_edit");
-			break;
+			case CLASSROOM_COURSE:
+				courseModelView = new ModelAndView("classroom_course_overview_edit");
+				break;
+			case WEBINAR_COURSE:
+				courseModelView = new ModelAndView("webinar_course_overview_edit");
+				break;
+			default:
+				courseModelView = new ModelAndView("classroom_course_overview_edit");
+				break;
 		}
 
 		courseModelView.addObject(WlcmsConstants.PARAMETER_COURSE_TYPE,
@@ -1086,9 +1063,9 @@ public class CourseController {
 		}
 
 		String idToSearch = request.getParameter("id");
-        if (idToSearch == null || idToSearch.length() <= 0) {
-            return null;
-        }
+		if (idToSearch == null || idToSearch.length() <= 0) {
+			return null;
+		}
 		courseModelView.addObject("courseid", idToSearch.toString());
 
 
@@ -1111,11 +1088,10 @@ public class CourseController {
 
 			if (objCourse.getCourseStatus().equalsIgnoreCase(WlcmsConstants.PUBLISH_STATUS_NOT_STARTED)) {
 				objCourse.setCoursePublishStatus(WlcmsConstants.PUBLISH_STATUS_NOT_PUBLISHED);
-			} 
+			}
 			else if (objCourse.getCourseStatus().equalsIgnoreCase(WlcmsConstants.PUBLISH_STATUS_PUBLISHED) && objCourse.getLastPublishedDate()!= null && (objCourse.getLastUpdatedDate().getTime()-objCourse.getLastPublishedDate().getTime() )>2000) {//in webinarcase somehow the publishing date and update date is different at publishing time so a 2 seconds difference
 				objCourse.setCoursePublishStatus(WlcmsConstants.PUBLISH_STATUS_CHANGES_NOT_PUBLISHED);
 			}
-			
 			else {
 				objCourse.setCoursePublishStatus(WlcmsConstants.PUBLISH_STATUS_PUBLISHED);
 			}
@@ -1123,6 +1099,9 @@ public class CourseController {
 				objCourse.setCourseStatus(WlcmsConstants.COURSE_STATUS_RETIRED);
 			} else {
 				objCourse.setCourseStatus(WlcmsConstants.COURSE_STATUS_ACTIVE);
+			}
+			if (objCourse.getCourseRating()==null){
+				objCourse.setCourseRating(WlcmsConstants.COURSE_RATING_PENDING);
 			}
 		}
 
@@ -1202,7 +1181,7 @@ public class CourseController {
 
 	@RequestMapping(value = "displayCourseOverview", method = RequestMethod.GET)
 	public ModelAndView showCourseOverview(ModelMap model,
-			HttpServletRequest request) throws SQLException {
+										   HttpServletRequest request) throws SQLException {
 		logger.debug("CourseController::showCourseOverview - Start");
 
 		String courseType = request
@@ -1295,5 +1274,5 @@ public class CourseController {
 				+ (courseList == null ? 0 : courseList.size()));
 		logger.info("In fetchCourses Controller:End");
 		return courseList;
-	}	
+	}
 }
