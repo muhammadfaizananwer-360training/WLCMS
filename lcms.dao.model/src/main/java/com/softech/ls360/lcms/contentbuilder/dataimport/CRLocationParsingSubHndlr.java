@@ -63,7 +63,7 @@ public class CRLocationParsingSubHndlr implements ITabularParsingSubHandler<Loca
     public LocationDTO getLocation(String locationName) {
         LocationDTO loc = new LocationDTO();
         loc.setLocationName(locationName);
-        return (LocationDTO) getNode(locations, locationName, loc);
+        return getNode(locations, locationName, loc);
         
     }
 

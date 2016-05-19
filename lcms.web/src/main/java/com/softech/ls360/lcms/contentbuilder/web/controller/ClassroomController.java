@@ -388,6 +388,7 @@ public class ClassroomController {
 
         for (SynchronousSession sc1aaa : sortedArray) {
             vo = new SynchronousSessionVO();
+            vo.setSessionKey(sc1aaa.getSessionKey());
             vo.setId(sc1aaa.getId().toString());
             if (sc1aaa.getStartDateTime() != null) {
                 vo.setStartDate(formatonlyDate.format(sc1aaa.getStartDateTime()));
@@ -491,6 +492,16 @@ public class ClassroomController {
             syncClass.setSyncSession(lstSession);
             syncClass.setClassStartDate(this.classStartDate);
             syncClass.setClassEndDate(this.classEndDate);
+
+            //generate session keys
+            String sessionkeyPrefix  = StringUtil.getRandom(5);
+            {
+                int i = 0;
+                for (SynchronousSession session : lstSession) {
+                    String sessionKey = sessionkeyPrefix + "-" + org.apache.commons.lang.StringUtils.leftPad(Integer.valueOf(++i).toString(),2,'0');
+                    session.setSessionKey(sessionKey);
+                }
+            }
             classService.saveSynchronousClass(syncClass);
         }
 
@@ -506,6 +517,7 @@ public class ClassroomController {
         String start_time = request.getParameter("stime");
         String end_time = request.getParameter("etime");
         String sessionId = request.getParameter("sessionId");
+        String sessionKey = request.getParameter("sessionKey");
         SynchronousSessionVO syncVO = new SynchronousSessionVO();
         SynchronousClass syncClass = classService.getSynchronousClassById(Long.parseLong(classId));
         Set<SynchronousSession> lstSession = new HashSet<SynchronousSession>();
@@ -520,6 +532,7 @@ public class ClassroomController {
         objSyncSess.setStartDateTime(startDateCal.getTime());
         objSyncSess.setEndDateTime(endTimeCal.getTime());
         objSyncSess.setSyncClass(syncClass);
+        objSyncSess.setSessionKey(sessionKey);
         if (!StringUtils.isEmpty(sessionId)) {
             objSyncSess.setId(TypeConvertor.AnyToLong(sessionId));//Long.valueOf(sessionId));
             objSyncSess.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());

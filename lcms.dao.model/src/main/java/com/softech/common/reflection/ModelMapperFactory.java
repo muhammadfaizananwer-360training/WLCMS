@@ -38,6 +38,7 @@ public class ModelMapperFactory {
                 skip(destination.getCourseStatus());
                 skip(destination.getCode());
                 skip(destination.getCourseType());
+                skip(destination.getSource());
             }
         });
 

@@ -107,18 +107,18 @@ public class ClassroomApiController {
         return cls;
     }
 
-    private static SyncSessionDTO encloseSession(SyncClassDTO cls, Long id) {
-        return encloseSession(cls, id, null);
+    private static SyncSessionDTO encloseSession(SyncClassDTO cls, String sessionKey) {
+        return encloseSession(cls, sessionKey, null);
     }
 
-    private static SyncSessionDTO encloseSession(SyncClassDTO cls, Long id, SyncSessionDTO session) {
+    private static SyncSessionDTO encloseSession(SyncClassDTO cls, String sessionKey, SyncSessionDTO session) {
         if (session == null) {
             session = new SyncSessionDTO();
             session.setAction("child");
         }
 
         cls.getSessionsMap().put("session", session);
-        session.setId(id);
+        session.setSessionKey(sessionKey);
 
         return session;
     }
@@ -900,7 +900,7 @@ public class ClassroomApiController {
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
         Collection<SyncSessionDTO> dto = classroomService.getClassSessions(user, courseId, className);
         Type listType = new TypeToken<Collection<SyncSessionAPIDTO>>() {}.getType();
-        Collection<SyncClassAPIDTO> apiDto = modelMapper.map(dto, listType);
+        Collection<SyncSessionAPIDTO> apiDto = modelMapper.map(dto, listType);
         response.setData(apiDto);
         return new ResponseEntity<Object>(response, httpStatus);
     }
@@ -908,11 +908,11 @@ public class ClassroomApiController {
 
     /**
      * It returns the synchronous session of particular class.
-     * <h1>API Path: /courses/{courseId}/classes/{className}/sessions/{sessionId}</h1>
+     * <h1>API Path: /courses/{courseId}/classes/{className}/sessions/{sessionKey}</h1>
      *
      * @param courseId  the business key of the course.
      * @param className the name of the class, the session will be returned of.
-     * @param sessionId the id of the session that will be returned.
+     * @param sessionKey the id of the session that will be returned.
      * @param userName  login id of author.
      * @return {@code RestResponse} will be returned with session object as {@code data}. JSON Sample is given below for more details.<br/>
      * <pre>
@@ -929,16 +929,16 @@ public class ClassroomApiController {
      * }}
      * </pre>
      */
-    @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionId}", method = RequestMethod.GET)
+    @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionKey}", method = RequestMethod.GET)
     ResponseEntity<Object> getSession(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @PathVariable("sessionId") Long sessionId
+            , @PathVariable("sessionKey") String sessionKey
             , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        SyncSessionDTO dto = classroomService.getClassSession(user, courseId, className, sessionId);
+        SyncSessionDTO dto = classroomService.getClassSession(user, courseId, className, sessionKey);
         if(dto != null) {
             SyncSessionAPIDTO apiDto = modelMapper.map(dto, SyncSessionAPIDTO.class);
             response.setData(apiDto);
@@ -987,7 +987,7 @@ public class ClassroomApiController {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
-        encloseSession(encloseClass(encloseCourse(classroom, courseId), className), 1L, session);
+        encloseSession(encloseClass(encloseCourse(classroom, courseId), className), session.getSessionKey(), session);
         session.setAction("add");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
         RestResponse response = classroomController.importClassroomCourses(classroom, user);
@@ -997,7 +997,7 @@ public class ClassroomApiController {
 
     /**
      * It modifies the synchronous session of particular class.
-     * <h1>API Path: /courses/{courseId}/classes/{className}/sessions/{sessionId}</h1>
+     * <h1>API Path: /courses/{courseId}/classes/{className}/sessions/{sessionKey}</h1>
      *
      * @param session   the object, the session will be modified with. JSON Sample is given below.
      *                  <p><pre/>
@@ -1008,7 +1008,7 @@ public class ClassroomApiController {
      *                  }
      *                  }
      *                  </p>
-     * @param sessionId the id of the session that will be modified.
+     * @param sessionKey the id of the session that will be modified.
      * @param courseId  the business key of the course.
      * @param className the name of the class, the session will be modified of.
      * @param userName  login id of author.
@@ -1023,16 +1023,16 @@ public class ClassroomApiController {
      * }}
      * </pre>
      */
-    @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionKey}", method = RequestMethod.PUT)
     ResponseEntity<Object> updateSession(@RequestBody SyncSessionDTO session
             , @PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @PathVariable("sessionId") Long sessionId
+            , @PathVariable("sessionKey") String sessionKey
             , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
-        encloseSession(encloseClass(encloseCourse(classroom, courseId), className), sessionId, session);
+        encloseSession(encloseClass(encloseCourse(classroom, courseId), className), sessionKey, session);
         session.setAction("update");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
         RestResponse response = classroomController.importClassroomCourses(classroom, user);
@@ -1042,9 +1042,9 @@ public class ClassroomApiController {
 
     /**
      * It deletes the synchronous session of particular class.
-     * <h1>API Path: /courses/{courseId}/classes/{className}/sessions/{sessionId}</h1>
+     * <h1>API Path: /courses/{courseId}/classes/{className}/sessions/{sessionKey}</h1>
      *
-     * @param sessionId the id of the session that will be deleted.
+     * @param sessionKey the id of the session that will be deleted.
      * @param courseId  the business key of the course.
      * @param className the name of the class, the session will be deleted from.
      * @param userName  login id of author.
@@ -1059,15 +1059,15 @@ public class ClassroomApiController {
      * }}
      * </pre>
      */
-    @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionKey}", method = RequestMethod.DELETE)
     ResponseEntity<Object> deleteSession(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @PathVariable("sessionId") Long sessionId
+            , @PathVariable("sessionKey") String sessionKey
             , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
-        SyncSessionDTO session = encloseSession(encloseClass(encloseCourse(classroom, courseId), className), sessionId);
+        SyncSessionDTO session = encloseSession(encloseClass(encloseCourse(classroom, courseId), className), sessionKey);
         session.setAction("delete");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
         RestResponse response = classroomController.importClassroomCourses(classroom, user);
