@@ -159,7 +159,7 @@
                 </div>
             </div>
            </div>
-		   <div>#springMessage('lablel.overview.page.description')</div>
+		   <div>#springMessage('label.overview.page.description')</div>
 		   <br>
            #* END PAGE HEADINGS *#
            <div class="messages" id="msgdiv" ></div>
