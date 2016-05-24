@@ -42,19 +42,19 @@
                 <input type="hidden" name="duration" id="duration"/>
                 <div class="form-body">
                     <div class="form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label id="overview-title" class="control-label-2">#springMessage('label.overview.title.caption')<span class="required">*</span></label>
                             <input type="text" id="name" class="form-control" data-required="1" placeholder="#springMessage('label.overview.title.placeholder')" value = "$!{name}" name="name" maxlength="500">
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label  class="control-label-2">#springMessage('label.overview.description.caption')<span class="required">*</span></label>
                             <textarea id="description" name="description" class="form-control" rows="3" maxlength="1000" placeholder="#springMessage('label.overview.description.placeholder')">$!{description}</textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label  class="control-label-2">#springMessage('label.overview.language.caption')<span class="required">*</span></label>
                             <select class="form-control" id="language_id" name="language_id" value="">
                                 <option value="1">#springMessage('label.english')</option>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-6 keyword-height">
+                        <div class="col-md-12 keyword-height">
                             <label  class="control-label-2">#springMessage('label.overview.keywords.caption')<span class="required">*</span></label>
                             <input type="text" class="form-control tags" id="keywords" name="keywords"  value="$!{keywords}" data-role="tagsinput" maxlength="1000" placeholder="#springMessage('label.overview.keywords.placeholder')"/>
                         </div>

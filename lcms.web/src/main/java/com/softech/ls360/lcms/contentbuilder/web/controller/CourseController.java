@@ -1100,9 +1100,6 @@ public class CourseController {
 			} else {
 				objCourse.setCourseStatus(WlcmsConstants.COURSE_STATUS_ACTIVE);
 			}
-			if (objCourse.getCourseRating()==null){
-				objCourse.setCourseRating(WlcmsConstants.COURSE_RATING_PENDING);
-			}
 		}
 
 		logger.debug("CourseController::editCourseD - End");
