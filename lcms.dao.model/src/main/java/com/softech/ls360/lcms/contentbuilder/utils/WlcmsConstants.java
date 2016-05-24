@@ -27,9 +27,6 @@ public interface WlcmsConstants {
 	String COURSE_GROUP_CLASSROOM = "Classroom Courses";
 	String COURSE_GROUP_WEBINAR = "Webinar Courses";
 
-	//course rating
-	String COURSE_RATING_PENDING = "Pending";
-
 	//email
 	String SUPPORT_360TRAINING_EMAIL_ADDRESS = "support@360training.com";
 	String WEBINAR_SERVICE_PROVIDER_360TRAINING = "360training";
