@@ -72,6 +72,8 @@
                         <div class="col-md-12">
                             <input type="hidden" id="id" class="form-control" placeholder="" value = "${status.value}" name="id">
                         </div>
+                        #springBind("command.bussinesskey")
+                        <input type="hidden" id="CourseID" class="form-control" value = "${status.value}" name="CourseID">
                     </div>
                     <div class="form-group">
                         <div class="col-sm-4">
