@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @SuppressWarnings("serial")
 @Entity
 public class CourseCompletionReport implements Serializable{
-	
+
 	@Id
 	int CourseConfigurationId;
 	boolean quizEnabled;
@@ -24,14 +24,14 @@ public class CourseCompletionReport implements Serializable{
 	boolean contentOwnerStoreFront;
 	private int contentOwnerId;
 	private int courseType;
-	
+
 	boolean quizMastery;
 	boolean examMastery;
 	Integer quizQuestionCount;
 	Integer examQuestionCount;
 	private boolean agreeWithSpecifiedTextEnabled;
 	private String agreeWithSpecifiedText;
-	
+
 	private boolean completionPostAssessmentAttempted;
 	private boolean isSetCourseExpiration;
 	// webinar fields
@@ -40,13 +40,16 @@ public class CourseCompletionReport implements Serializable{
 	boolean IsMeetingSet;
 	boolean IsClassRoomSet;
 	boolean IsAuthorInfoProvided;
-        Integer examQuestionToAskCount;
-	
+	Double lowestPrice;
+	Double offerPrice;
+	String lastPublishDate;
+	Integer examQuestionToAskCount;
 
-		public CourseCompletionReport(int courseConfigurationId,
-			boolean quizEnabled, boolean preAssessmentEnabled,
-			boolean postAssesssmentEnabled, boolean atleastOneScenePerCO,
-			boolean contentObjectPresent,boolean contentOwnerStoreFront) {
+
+	public CourseCompletionReport(int courseConfigurationId,
+								  boolean quizEnabled, boolean preAssessmentEnabled,
+								  boolean postAssesssmentEnabled, boolean atleastOneScenePerCO,
+								  boolean contentObjectPresent,boolean contentOwnerStoreFront) {
 		super();
 		CourseConfigurationId = courseConfigurationId;
 		this.quizEnabled = quizEnabled;
@@ -56,7 +59,7 @@ public class CourseCompletionReport implements Serializable{
 		this.contentObjectPresent = contentObjectPresent;
 		this.contentOwnerStoreFront = contentOwnerStoreFront;
 	}
-	
+
 	public CourseCompletionReport() {
 		// TODO Auto-generated constructor stub
 	}
@@ -97,7 +100,7 @@ public class CourseCompletionReport implements Serializable{
 	public void setContentObjectPresent(boolean contentObjectPresent) {
 		this.contentObjectPresent = contentObjectPresent;
 	}
-		
+
 
 
 	public int getCourseId() {
@@ -107,7 +110,7 @@ public class CourseCompletionReport implements Serializable{
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
 	}
-	
+
 	public boolean isCourseExpired() {
 		return courseExpired;
 	}
@@ -139,15 +142,15 @@ public class CourseCompletionReport implements Serializable{
 	public void setBussinessKey(String bussinessKey) {
 		this.bussinessKey = bussinessKey;
 	}
-	
+
 	public boolean isContentOwnerStoreFront() {
 		return contentOwnerStoreFront;
 	}
-	
+
 	public void setContentOwnerStoreFront(boolean contentOwnerStoreFront) {
 		this.contentOwnerStoreFront = contentOwnerStoreFront;
 	}
-	
+
 	public int getContentOwnerId() {
 		return contentOwnerId;
 	}
@@ -213,7 +216,7 @@ public class CourseCompletionReport implements Serializable{
 		IsScheduleSet = isScheduleSet;
 	}
 
-	
+
 
 	public boolean isIsMeetingSet() {
 		return IsMeetingSet;
@@ -264,19 +267,43 @@ public class CourseCompletionReport implements Serializable{
 		this.isSetCourseExpiration = isSetCourseExpiration;
 	}
 
-    public Integer getExamQuestionToAskCount() {
-        return examQuestionToAskCount;
-    }
+	public Integer getExamQuestionToAskCount() {
+		return examQuestionToAskCount;
+	}
 
-    public void setExamQuestionToAskCount(Integer examQuestionToAskCount) {
-        this.examQuestionToAskCount = examQuestionToAskCount;
-    }
+	public void setExamQuestionToAskCount(Integer examQuestionToAskCount) {
+		this.examQuestionToAskCount = examQuestionToAskCount;
+	}
 
-    public int getCourseType() {
-        return courseType;
-    }
+	public int getCourseType() {
+		return courseType;
+	}
 
-    public void setCourseType(int courseType) {
-        this.courseType = courseType;
-    }
+	public void setCourseType(int courseType) {
+		this.courseType = courseType;
+	}
+
+	public String getLastPublishDate() {
+		return lastPublishDate;
+	}
+
+	public void setLastPublishDate(String lastPublishDate) {
+		this.lastPublishDate = lastPublishDate;
+	}
+
+	public Double getLowestPrice() {
+		return lowestPrice;
+	}
+
+	public void setLowestPrice(Double lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+
+	public Double getOfferPrice() {
+		return offerPrice;
+	}
+
+	public void setOfferPrice(Double offerPrice) {
+		this.offerPrice = offerPrice;
+	}
 }
