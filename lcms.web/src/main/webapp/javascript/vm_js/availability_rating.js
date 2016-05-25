@@ -27,7 +27,7 @@ $(document).ready(function(){
 		{
 			datePicker_1 = new Date(ev.date);
 			checks[0] = datePicker_1.setHours(0,0,0,0) <= now.setHours(0,0,0,0);
-			if(datePicker_2 !== null && datePicker_2 !== undefined){ 
+			if(datePicker_2 !== null && datePicker_2 !== 'undefined'){
 				checks[1][0] = datePicker_2.setHours(0,0,0,0) >= datePicker_1.setHours(0,0,0,0);
 			}
 
