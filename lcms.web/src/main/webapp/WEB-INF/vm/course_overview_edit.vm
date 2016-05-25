@@ -1,5 +1,5 @@
 #macro(replaceQuote $var)
-$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
+	$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
 #end
 
 #parse("header.vm")
@@ -8,161 +8,161 @@ $stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
 #parse("branding.vm")
 
 #* BEGIN PAGE CONTENT *#
-        <div class="page-content">
-        
-           #* BEGIN PAGE HEADINGS *#
-                <div class="portlet">
-            <div class="portlet-body">
-                <div class="page-heading">
-                    <div class="col-xs-12 zero-padding">
-                        <h1>#springMessage('label.course-overview')</h1>					 
-                    </div>
-                    <div class="clearfix"></div>
+<div class="page-content">
+
+#* BEGIN PAGE HEADINGS *#
+    <div class="portlet">
+        <div class="portlet-body">
+            <div class="page-heading">
+                <div class="col-xs-12 zero-padding">
+                    <h1>#springMessage('label.course-overview')</h1>
                 </div>
+                <div class="clearfix"></div>
             </div>
-           </div>
-		   <div>#springMessage('lablel.overview.page.description')</div>
-		   <br>
-           #* END PAGE HEADINGS *#
-           <div class="messages" id="msgdiv" ></div>
-		   
-		   #* start - success message *#
-             #if( $!{msg}=="success" && $!{isUpdate}=="true")
-                    <div class="messages">
-		              <div role="alert" class="alert alert-success alert-dismissible fade in">
-		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">Close</span> </button>
-		                <strong>Success! </strong>It’s been saved. 
-					  </div>
-					 
-		            </div>
-			<script type="text/javascript"> elementFadeOut('.messages'); </script>            
-			
-             #elseif( $failureMessage )  
-               <div class="messages">
-              <div role="alert" class="alert alert-danger alert-dismissible fade in">
-                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">Close</span> </button>
-                 $!{failureMessage} 
-                </div>
-				
-            </div>
-			<script type="text/javascript"> elementFadeOut('.messages'); </script>
-           #end
-           #* end - success message *#
-           
-           #* BEGIN SUMMARY FORM PORTLET *#
-           <div class="portlet">
-              <div class="portlet-body form">
-                 <form class="form-horizontal" action ="updateCourse" role="form" method="Post" id="frm_overview_edit">
-                    <div class="form-body">
-						
-						#springBind("cType")
-    					<input type="hidden"  name="cType" id="cType" value="$!{cType}">	
-							
-						<div class="form-group" style="display:none">
-							#springBind("command.id")
-                           <label  class="col-md-3 control-label">ID <span class="required" aria-required="true"> * </span></label>
-                           <div class="col-md-6">
-                             <input type="hidden" id="id" class="form-control" placeholder="" value = "${status.value}" name="id">							 	
-                          </div>
-						  #springBind("command.bussinesskey")
-						  <input type="hidden" id="CourseID" class="form-control" value = "${status.value}" name="CourseID">
-                       </div>
-					   <div class="form-group">
-									<div class="col-sm-4">
-										<dl>
-											#springBind("command.courseStatus")
-											<dt>Course status</dt>
-											<dd id="course_status"><i id="course_statusI" ></i> $!{status.value}</dd>
-										</dl>
-										<hr>
-									</div>
-									<div class="col-sm-4">
-										<dl>
-											#springBind("command.coursePublishStatus")
-											<dt>Publish status</dt>
-											<dd id="publish_status"><i id="publish_statusI" ></i> $!{status.value}</dd>
-										</dl>
-										<hr>
-									</div>
-									<div class="col-sm-4">
-										<dl>
-											#springBind("command.courseRating")
-											<dt>Course rating</dt>
-											<dd id="course_rating"><i id="course_ratingI" ></i> $!{status.value}</dd>
-										</dl>
-										<hr>
-									</div>
-								</div>
-						<div class="form-group">
-							<div class="col-md-12">
-								#springBind("command.name")
-								<label id="overview-title" class="control-label-2">#springMessage('label.overview.title.caption')<span class="required">*</span></label>
-								<input id="name" class="form-control" data-required="1" type="text" placeholder="#springMessage('label.overview.title.placeholder')" value ='#replaceQuote($!{status.value})'  name="name" maxlength="255">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-12">
-								#springBind("command.description")
-								<label class="control-label-2">#springMessage('label.overview.description.caption')<span class="required">*</span>
-								<textarea id="description" name="description" data-required="1" maxlength="1000" class="form-control" placeholder="#springMessage('label.overview.description.placeholder')" rows="3">${status.value}</textarea>
-							</div>
-						</div>			
-						<div class="form-group">
-							<div class="col-md-12">
-								#springBind("command.language_id")
-								<label class="control-label-2">#springMessage('label.overview.language.caption')<span class="required">*</span></label>
-									 <select  class="form-control" id="language_id" name="language_id" value="${status.value}">
-										<option value=1 #if (${status.value} == 1) selected="selected" #end>English</option>
-										<option value=5 #if (${status.value} == 5) selected="selected" #end>Spanish</option>
-									 </select>
-							</div>
-						</div>			
-						<div class="form-group">
-							<div class="col-md-12">
-								#springBind("command.businessunitName")
-								<label class="control-label-2">#springMessage('label.overview.category.caption')<span class="required">*</span></label>
-								<select name="businessunitName" id = name="businessunitName" class="form-control" value="${status.value}">
-									<option  value="#springMessage('label.overview.category.placeholder')"  #if (${status.value} == "#springMessage('label.overview.category.placeholder')") selected="selected" #end>#springMessage('label.overview.category.placeholder')</option>
-									<option value="#springMessage('select.industry.option.all')" #if (${status.value} == "#springMessage('select.industry.option.all')") selected="selected" #end>#springMessage('select.industry.option.all')</option>
-									<option value="#springMessage('select.industry.option.business')" #if (${status.value} == "#springMessage('select.industry.option.business')") selected="selected" #end>#springMessage('select.industry.option.business')</option>
-									<option value="#springMessage('select.industry.option.cosmetology')" #if (${status.value} == "#springMessage('select.industry.option.cosmetology')") selected="selected" #end>#springMessage('select.industry.option.cosmetology')</option>
-									<option value="#springMessage('select.industry.option.environmental')" #if (${status.value} == "#springMessage('select.industry.option.environmental')") selected="selected" #end>#springMessage('select.industry.option.environmental')</option>
-									<option value="#springMessage('select.industry.option.financial')" #if (${status.value} == "#springMessage('select.industry.option.financial')") selected="selected" #end>#springMessage('select.industry.option.financial')</option>
-									<option value="#springMessage('select.industry.option.food')" #if (${status.value} == "#springMessage('select.industry.option.food')") selected="selected" #end>#springMessage('select.industry.option.food')</option>
-									<option value="#springMessage('select.industry.option.heathcare')" #if (${status.value} == "#springMessage('select.industry.option.heathcare')") selected="selected" #end>#springMessage('select.industry.option.heathcare')</option>
-									<option value="#springMessage('select.industry.option.hr')" #if (${status.value} == "#springMessage('select.industry.option.hr')") selected="selected" #end>#springMessage('select.industry.option.hr')</option>
-									<option value="#springMessage('select.industry.option.industrial')" #if (${status.value} == "#springMessage('select.industry.option.industrial')") selected="selected" #end>#springMessage('select.industry.option.industrial')</option>
-									<option value="#springMessage('select.industry.option.insurance')" #if (${status.value} == "#springMessage('select.industry.option.insurance')") selected="selected" #end>#springMessage('select.industry.option.insurance')</option>
-									<option value="#springMessage('select.industry.option.itcert')" #if (${status.value} == "#springMessage('select.industry.option.itcert')") selected="selected" #end>#springMessage('select.industry.option.itcert')</option>
-									<option value="#springMessage('select.industry.option.itskills')" #if (${status.value} == "#springMessage('select.industry.option.itskills')") selected="selected" #end>#springMessage('select.industry.option.itskills')</option>
-									<option value="#springMessage('select.industry.option.power')" #if (${status.value} == "#springMessage('select.industry.option.power')") selected="selected" #end>#springMessage('select.industry.option.power')</option>
-									<option value="#springMessage('select.industry.option.quality')" #if (${status.value} == "#springMessage('select.industry.option.quality')") selected="selected" #end>#springMessage('select.industry.option.quality')</option>
-									<option value="#springMessage('select.industry.option.realestate')" #if (${status.value} == "#springMessage('select.industry.option.realestate')") selected="selected" #end>#springMessage('select.industry.option.realestate')</option>
-									<option value="#springMessage('select.industry.option.trades')" #if (${status.value} == "#springMessage('select.industry.option.trades')") selected="selected" #end>#springMessage('select.industry.option.trades')</option>
-									<option value="#springMessage('select.industry.option.other')" #if (${status.value} == "#springMessage('select.industry.option.other')") selected="selected" #end>#springMessage('select.industry.option.other')</option>
-								</select>
-							</div>
-						</div>
-                     	<div class="form-group">
-							<div class="col-md-12">
-								#springBind("command.keywords")
-								<label class="control-label-2">#springMessage('label.overview.keywords.caption')<span class="required">*</span></label>
-								<input type="text" class="form-control" data-role="tagsinput"  id="keywords" name="keywords" value="$!{status.value}" maxlength="1000"  placeholder="#springMessage('label.overview.keywords.placeholder')" >						 
-							</div>
-						</div>		                        
-                    </div>
-					<div class="form-actions fluid">
-						<div class="col-md-12">
-                          <button class="btn blue" id="btnSave"  type="Submit">Save</button>
-                          <button type="button" class="btn default" OnClick="EditUrl();">Cancel</button>                             
-                       </div>
-                    </div>
-                 </form>
-              </div>
-           </div>
-           #* END SUMMARY FORM PORTLET *#
-           
         </div>
+    </div>
+    <div>#springMessage('label.overview.page.description')</div>
+    <br>
+#* END PAGE HEADINGS *#
+    <div class="messages" id="msgdiv" ></div>
+
+#* start - success message *#
+	#if( $!{msg}=="success" && $!{isUpdate}=="true")
+        <div class="messages">
+            <div role="alert" class="alert alert-success alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span></button>
+                <strong>Success! </strong>It&#39;s been saved.
+            </div>
+
+        </div>
+        <script type="text/javascript"> elementFadeOut('.messages'); </script>
+
+	#elseif( $failureMessage )
+        <div class="messages">
+            <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span></button>
+				$!{failureMessage}
+            </div>
+
+        </div>
+        <script type="text/javascript"> elementFadeOut('.messages'); </script>
+	#end
+#* end - success message *#
+
+#* BEGIN SUMMARY FORM PORTLET *#
+    <div class="portlet">
+        <div class="portlet-body form">
+            <form class="form-horizontal" action ="updateCourse" role="form" method="Post" id="frm_overview_edit">
+                <div class="form-body">
+
+					#springBind("cType")
+                    <input type="hidden"  name="cType" id="cType" value="$!{cType}">
+
+                    <div class="form-group" style="display:none">
+						#springBind("command.id")
+                        <label  class="col-md-3 control-label">ID <span class="required" aria-required="true"> * </span></label>
+                        <div class="col-md-6">
+                            <input type="hidden" id="id" class="form-control" placeholder="" value = "${status.value}" name="id">
+                        </div>
+						#springBind("command.bussinesskey")
+                        <input type="hidden" id="CourseID" class="form-control" value = "${status.value}" name="CourseID">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <dl>
+								#springBind("command.courseStatus")
+                                <dt>Course status</dt>
+                                <dd id="course_status"><i id="course_statusI" ></i> $!{status.value}</dd>
+                            </dl>
+                            <hr>
+                        </div>
+                        <div class="col-sm-4">
+                            <dl>
+								#springBind("command.coursePublishStatus")
+                                <dt>Publish status</dt>
+                                <dd id="publish_status"><i id="publish_statusI" ></i> $!{status.value}</dd>
+                            </dl>
+                            <hr>
+                        </div>
+                        <div class="col-sm-4">
+                            <dl>
+								#springBind("command.courseRating")
+                                <dt>Course rating</dt>
+                                <dd id="course_rating"><i id="course_ratingI" ></i> $!{status.value}</dd>
+                            </dl>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+							#springBind("command.name")
+                            <label id="overview-title" class="control-label-2">#springMessage('label.overview.title.caption')<span class="required">*</span></label>
+                            <input id="name" class="form-control" data-required="1" type="text" placeholder="#springMessage('label.overview.title.placeholder')" value ='#replaceQuote($!{status.value})'  name="name" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+							#springBind("command.description")
+                            <label class="control-label-2">#springMessage('label.overview.description.caption')<span class="required">*</span>
+                                <textarea id="description" name="description" data-required="1" maxlength="1000" class="form-control" placeholder="#springMessage('label.overview.description.placeholder')" rows="3">${status.value}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+							#springBind("command.language_id")
+                            <label class="control-label-2">#springMessage('label.overview.language.caption')<span class="required">*</span></label>
+                            <select  class="form-control" id="language_id" name="language_id" value="${status.value}">
+                                <option value=1 #if (${status.value} == 1) selected="selected" #end>#springMessage('label.english')</option>
+                                <option value=5 #if (${status.value} == 5) selected="selected" #end>#springMessage('label.spanish')</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+							#springBind("command.businessunitName")
+                            <label class="control-label-2">#springMessage('label.overview.category.caption')<span class="required">*</span></label>
+                            <select name="businessunitName" id = name="businessunitName" class="form-control" value="${status.value}">
+                                <option  value="#springMessage('label.overview.category.placeholder')"  #if (${status.value} == "#springMessage('label.overview.category.placeholder')") selected="selected" #end>#springMessage('label.overview.category.placeholder')</option>
+                                <option value="#springMessage('select.industry.option.all')" #if (${status.value} == "#springMessage('select.industry.option.all')") selected="selected" #end>#springMessage('select.industry.option.all')</option>
+                                <option value="#springMessage('select.industry.option.business')" #if (${status.value} == "#springMessage('select.industry.option.business')") selected="selected" #end>#springMessage('select.industry.option.business')</option>
+                                <option value="#springMessage('select.industry.option.cosmetology')" #if (${status.value} == "#springMessage('select.industry.option.cosmetology')") selected="selected" #end>#springMessage('select.industry.option.cosmetology')</option>
+                                <option value="#springMessage('select.industry.option.environmental')" #if (${status.value} == "#springMessage('select.industry.option.environmental')") selected="selected" #end>#springMessage('select.industry.option.environmental')</option>
+                                <option value="#springMessage('select.industry.option.financial')" #if (${status.value} == "#springMessage('select.industry.option.financial')") selected="selected" #end>#springMessage('select.industry.option.financial')</option>
+                                <option value="#springMessage('select.industry.option.food')" #if (${status.value} == "#springMessage('select.industry.option.food')") selected="selected" #end>#springMessage('select.industry.option.food')</option>
+                                <option value="#springMessage('select.industry.option.heathcare')" #if (${status.value} == "#springMessage('select.industry.option.heathcare')") selected="selected" #end>#springMessage('select.industry.option.heathcare')</option>
+                                <option value="#springMessage('select.industry.option.hr')" #if (${status.value} == "#springMessage('select.industry.option.hr')") selected="selected" #end>#springMessage('select.industry.option.hr')</option>
+                                <option value="#springMessage('select.industry.option.industrial')" #if (${status.value} == "#springMessage('select.industry.option.industrial')") selected="selected" #end>#springMessage('select.industry.option.industrial')</option>
+                                <option value="#springMessage('select.industry.option.insurance')" #if (${status.value} == "#springMessage('select.industry.option.insurance')") selected="selected" #end>#springMessage('select.industry.option.insurance')</option>
+                                <option value="#springMessage('select.industry.option.itcert')" #if (${status.value} == "#springMessage('select.industry.option.itcert')") selected="selected" #end>#springMessage('select.industry.option.itcert')</option>
+                                <option value="#springMessage('select.industry.option.itskills')" #if (${status.value} == "#springMessage('select.industry.option.itskills')") selected="selected" #end>#springMessage('select.industry.option.itskills')</option>
+                                <option value="#springMessage('select.industry.option.power')" #if (${status.value} == "#springMessage('select.industry.option.power')") selected="selected" #end>#springMessage('select.industry.option.power')</option>
+                                <option value="#springMessage('select.industry.option.quality')" #if (${status.value} == "#springMessage('select.industry.option.quality')") selected="selected" #end>#springMessage('select.industry.option.quality')</option>
+                                <option value="#springMessage('select.industry.option.realestate')" #if (${status.value} == "#springMessage('select.industry.option.realestate')") selected="selected" #end>#springMessage('select.industry.option.realestate')</option>
+                                <option value="#springMessage('select.industry.option.trades')" #if (${status.value} == "#springMessage('select.industry.option.trades')") selected="selected" #end>#springMessage('select.industry.option.trades')</option>
+                                <option value="#springMessage('select.industry.option.other')" #if (${status.value} == "#springMessage('select.industry.option.other')") selected="selected" #end>#springMessage('select.industry.option.other')</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+							#springBind("command.keywords")
+                            <label class="control-label-2">#springMessage('label.overview.keywords.caption')<span class="required">*</span></label>
+                            <input type="text" class="form-control" data-role="tagsinput"  id="keywords" name="keywords" value="$!{status.value}" maxlength="1000"  placeholder="#springMessage('label.overview.keywords.placeholder')" >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-12">
+                        <button class="btn blue" id="btnSave"  type="Submit">#springMessage('button.save')</button>
+                        <button type="button" class="btn default" OnClick="EditUrl();">#springMessage('button.cancel')</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+#* END SUMMARY FORM PORTLET *#
+
+</div>
 #* END PAGE CONTENT *#
 <script src="javascript/vm_js/constants.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/overview_edit.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>

@@ -159,7 +159,7 @@
                 </div>
             </div>
            </div>
-		   <div>#springMessage('lablel.overview.page.description')</div>
+		   <div>#springMessage('label.overview.page.description')</div>
 		   <br>
            #* END PAGE HEADINGS *#
            <div class="messages" id="msgdiv" ></div>
@@ -208,7 +208,7 @@
 					<div class="form-group">
 						<div class="col-md-12">
 							<label class="control-label-2">#springMessage('label.overview.category.caption')<span class="required">*</span></label>
-							<select name="industry" id = name="industry" class="form-control">
+							<select name="industry" id="industry" class="form-control">
 								<option selected value="#springMessage('label.overview.category.placeholder')">#springMessage('label.overview.category.placeholder')</option>
 								<option value="#springMessage('select.industry.option.all')">#springMessage('select.industry.option.all')</option>
 								<option value="#springMessage('select.industry.option.business')">#springMessage('select.industry.option.business')</option>

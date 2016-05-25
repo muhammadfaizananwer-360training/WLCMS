@@ -4,88 +4,108 @@
 #parse("branding.vm")
 
 #* BEGIN PAGE CONTENT *#
-        <div class="page-content">
-        
-           #* BEGIN PAGE HEADINGS *#
-           <div class="portlet">
-            <div class="portlet-body">
-                <div class="page-heading">
-                    <div class="col-xs-12 zero-padding">
-                        <h1>Overview</h1>
-                    </div>
-                    <div class="clearfix"></div>
+<div class="page-content">
+
+#* BEGIN PAGE HEADINGS *#
+    <div class="portlet">
+        <div class="portlet-body">
+            <div class="page-heading">
+                <div class="col-xs-12 zero-padding">
+                    <h1>#springMessage('label.course-overview')</h1>
                 </div>
+                <div class="clearfix"></div>
             </div>
-           </div>
-           #* END PAGE HEADINGS *#
-           <div class="messages" id="msgdiv" ></div>
-		   
-           
-           
-           #* start - success message *#
-           #if( $failureMessage )		
-		   		<div class="messages">
-				  <div role="alert" class="alert alert-danger alert-dismissible fade in">
-				    <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">Close</span> </button>
-				    	$!{failureMessage} 
-				    </div>
-				    elementFadeOut('.messages');
-				</div>
-           #end
-           #* end - success message *#
-           
-           #* BEGIN SUMMARY FORM PORTLET *#
-           <div class="portlet">
-              <div class="portlet-body form">
-              <form action="createClassroomWebinarCourse" class="form-horizontal" method="Post"  role="form" id="frm_overview">
-              		<input type="hidden" id="cType" name="cType" value="$cType" />
-              		<input type="hidden" name="duration" id="duration"/>
-                    <div class="form-body">
-                       <div class="form-group">
-                          <label id="overview-title" class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content=#springMessage('tt.overview.title_classroom')">Title</span><span class="required">*</span></label>
-                          <div class="col-md-6">
-                             <input type="text" id="name" class="form-control" data-required="1" placeholder="Enter course title." value = "$!{name}" name="name" maxlength="500">
-                          </div>
-                       </div>
-                       <div class="form-group">
-                          <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content=#springMessage('tt.overview.description')">Description</span><span class="required">*</span></label>
-                          <div class="col-md-6">
-                             
-                             <textarea id="description" name="description" class="form-control" rows="3" maxlength="1000" placeholder="Enter words or phrases that help describe the course.">$!{description}</textarea>
-						  </div>
-                       </div>
-                       <div class="form-group">
-                          <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content=#springMessage('tt.overview.language')">Language</span><span class="required">*</span></label>
-                          <div class="col-md-6">
-                                   <select class="form-control" id="language_id" name="language_id" value="">
-                                    <option value="1">English</option>
-                                    <option value="5">Spanish</option>
-                                   </select>
-                          </div>
-                       </div>
-                       
-                       <div class="form-group">
-                          <label  class="col-md-3 control-label"><span data-trigger="hover" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content=#springMessage('tt.overview.keywords')">Keywords</span><span class="required">*</span></label>
-                          <div class="col-md-6 keyword-height">
-							 <input type="text" class="form-control tags" id="keywords" name="keywords"  value="$!{keywords}" data-role="tagsinput" maxlength="1000" placeholder="Enter keywords."/>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="form-actions fluid">
-                       <div class="col-md-offset-3 col-md-9">
-
-
-							<button class="btn blue" id="btnSave"  type="Submit">Save</button>
-							<button type="button" class="btn default" onClick="location.href='/lcms/coursetype'">Cancel</button>   	
-							
-                       </div>
-                    </div>
-                 </form>
-              </div>
-           </div>
-           #* END SUMMARY FORM PORTLET *#
-           
         </div>
+    </div>
+    <div>#springMessage('label.overview.page.description')</div>
+    <br>
+#* END PAGE HEADINGS *#
+    <div class="messages" id="msgdiv" ></div>
+
+#* start - success message *#
+    #if( $failureMessage )
+        <div class="messages">
+            <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+                $!{failureMessage}
+            </div>
+            elementFadeOut('.messages');
+        </div>
+    #end
+#* end - success message *#
+
+#* BEGIN SUMMARY FORM PORTLET *#
+    <div class="portlet">
+        <div class="portlet-body form">
+            <form action="createClassroomWebinarCourse" class="form-horizontal" method="Post"  role="form" id="frm_overview">
+                <input type="hidden" id="cType" name="cType" value="$cType" />
+                <input type="hidden" name="duration" id="duration"/>
+                <div class="form-body">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label id="overview-title" class="control-label-2">#springMessage('label.overview.title.caption')<span class="required">*</span></label>
+                            <input type="text" id="name" class="form-control" data-required="1" placeholder="#springMessage('label.overview.title.placeholder')" value = "$!{name}" name="name" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label  class="control-label-2">#springMessage('label.overview.description.caption')<span class="required">*</span></label>
+                            <textarea id="description" name="description" class="form-control" rows="3" maxlength="1000" placeholder="#springMessage('label.overview.description.placeholder')">$!{description}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label  class="control-label-2">#springMessage('label.overview.language.caption')<span class="required">*</span></label>
+                            <select class="form-control" id="language_id" name="language_id" value="">
+                                <option value="1">#springMessage('label.english')</option>
+                                <option value="5">#springMessage('label.spanish')</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="control-label-2">#springMessage('label.overview.category.caption')<span class="required">*</span></label>
+                            <select name="industry" id="industry" class="form-control">
+                                <option selected value="#springMessage('label.overview.category.placeholder')">#springMessage('label.overview.category.placeholder')</option>
+                                <option value="#springMessage('select.industry.option.all')">#springMessage('select.industry.option.all')</option>
+                                <option value="#springMessage('select.industry.option.business')">#springMessage('select.industry.option.business')</option>
+                                <option value="#springMessage('select.industry.option.cosmetology')">#springMessage('select.industry.option.cosmetology')</option>
+                                <option value="#springMessage('select.industry.option.environmental')">#springMessage('select.industry.option.environmental')</option>
+                                <option value="#springMessage('select.industry.option.financial')">#springMessage('select.industry.option.financial')</option>
+                                <option value="#springMessage('select.industry.option.food')">#springMessage('select.industry.option.food')</option>
+                                <option value="#springMessage('select.industry.option.heathcare')">#springMessage('select.industry.option.heathcare')</option>
+                                <option value="#springMessage('select.industry.option.hr')">#springMessage('select.industry.option.hr')</option>
+                                <option value="#springMessage('select.industry.option.industrial')">#springMessage('select.industry.option.industrial')</option>
+                                <option value="#springMessage('select.industry.option.insurance')">#springMessage('select.industry.option.insurance')</option>
+                                <option value="#springMessage('select.industry.option.itcert')">#springMessage('select.industry.option.itcert')</option>
+                                <option value="#springMessage('select.industry.option.itskills')">#springMessage('select.industry.option.itskills')</option>
+                                <option value="#springMessage('select.industry.option.power')">#springMessage('select.industry.option.power')</option>
+                                <option value="#springMessage('select.industry.option.quality')">#springMessage('select.industry.option.quality')</option>
+                                <option value="#springMessage('select.industry.option.realestate')">#springMessage('select.industry.option.realestate')</option>
+                                <option value="#springMessage('select.industry.option.trades')">#springMessage('select.industry.option.trades')</option>
+                                <option value="#springMessage('select.industry.option.other')">#springMessage('select.industry.option.other')</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 keyword-height">
+                            <label  class="control-label-2">#springMessage('label.overview.keywords.caption')<span class="required">*</span></label>
+                            <input type="text" class="form-control tags" id="keywords" name="keywords"  value="$!{keywords}" data-role="tagsinput" maxlength="1000" placeholder="#springMessage('label.overview.keywords.placeholder')"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-12">
+                        <button class="btn blue" id="btnSave"  type="Submit">#springMessage('button.save')</button>
+                        <button type="button" class="btn default" onClick="location.href='/lcms/coursetype'">#springMessage('button.cancel')</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+#* END SUMMARY FORM PORTLET *#
+
+</div>
 #* END PAGE CONTENT *#
 
 #parse("footer.vm")
