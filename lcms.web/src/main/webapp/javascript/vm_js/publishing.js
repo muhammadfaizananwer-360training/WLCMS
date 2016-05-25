@@ -16,6 +16,8 @@ $(document).ready(function() {
 		return chk;
 	}, '')
 
+
+
 });
 function getUrlParameter(sParam)
 {
@@ -32,9 +34,9 @@ function getUrlParameter(sParam)
 }
 $(function() {
 	$(':checkbox').change(function() {
-		callValidator();
-	});
 
+       // callValidator();
+	});
 
 	$("#frm_publish")
 		.validate(
@@ -205,6 +207,7 @@ function elementFadeOut(id) {
 
 function callValidator(){
 	var cType = getParameterByName('cType');
+    alert('sffffdf')
 
 	if(cType != null && cType == WLCMS_CONSTANTS_COURSE_TYPE.ONLINE_COURSE )
 		$("#frm_publish").valid();
