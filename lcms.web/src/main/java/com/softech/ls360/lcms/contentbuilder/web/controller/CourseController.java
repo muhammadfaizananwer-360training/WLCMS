@@ -1113,6 +1113,7 @@ public class CourseController {
 			@RequestParam("name") String name,
 			@RequestParam("description") String description,
 			@RequestParam("language_id") int language_id,
+			@RequestParam("businessunitName") String businessunitName,
 			@RequestParam("duration") String duration,
 			@RequestParam("keywords") String keywords,
 			@RequestParam(WlcmsConstants.PARAMETER_COURSE_TYPE) String courseType) {
@@ -1146,6 +1147,7 @@ public class CourseController {
 			courseDB.setDescription(description);
 			courseDB.setKeywords(keywords);
 			courseDB.setLanguage_id(language_id);
+			courseDB.setBusinessunitName(businessunitName);
 			courseDB.setLastUpdateUser(user.getAuthorId());
 			courseDB.setContentownerId((int) user.getContentOwnerId());
 			courseDB.setLastUpdatedDate(date);

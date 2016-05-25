@@ -33,7 +33,6 @@
                 <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span></button>
                 <strong>Success! </strong>It&#39;s been saved.
             </div>
-
         </div>
         <script type="text/javascript"> elementFadeOut('.messages'); </script>
     #elseif( $!{msg}=="success" )
@@ -45,14 +44,12 @@
 
             <script type="text/javascript"> elementFadeOut('.messages'); </script>
         </div>
-
     #elseif( $failureMessage )
         <div class="messages">
             <div role="alert" class="alert alert-danger alert-dismissible fade in">
                 <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
                 $!{failureMessage}
             </div>
-
         </div>
         <script type="text/javascript"> elementFadeOut('.messages'); </script>
     #end
