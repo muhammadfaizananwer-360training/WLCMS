@@ -823,6 +823,7 @@ public class CourseController {
 			@RequestParam("description") String description,
 			// @RequestParam("file") MultipartFile file,
 			@RequestParam("language_id") int language_id,
+			@RequestParam("industry") String industry,
 			@RequestParam("duration") String duration,
 			@RequestParam("keywords") String keywords,
 			@RequestParam(WlcmsConstants.PARAMETER_COURSE_TYPE) String courseType) {
@@ -848,10 +849,10 @@ public class CourseController {
 					.getLCMSProperty("course.default.code");
 			String varCurrency = LCMSProperties
 					.getLCMSProperty("course.default.currency");
-			String varBusinessUnitId = LCMSProperties
-					.getLCMSProperty("course.default.businessunitId");
-			String varBusinessUnitName = LCMSProperties
-					.getLCMSProperty("course.default.businessunitName");
+			//String varBusinessUnitId = LCMSProperties
+					//.getLCMSProperty("course.default.businessunitId");
+			//String varBusinessUnitName = LCMSProperties
+					//.getLCMSProperty("course.default.businessunitName");
 			// String varCourseConfTempId =
 			// LCMSProperties.getLCMSProperty("course.default.courseConfigurationTemplateId");
 			// String varQuickBuildCourseType =
@@ -873,6 +874,7 @@ public class CourseController {
 				courseModelView.addObject("name", name);
 				courseModelView.addObject("description", description);
 				courseModelView.addObject("language_id", language_id);
+				courseModelView.addObject("businessunitName", industry);
 				courseModelView.addObject("duration", duration);
 				courseModelView.addObject("keywords", keywords);
 				courseModelView.addObject("failureMessage", LCMSProperties
@@ -886,6 +888,7 @@ public class CourseController {
 			crs.setDescription(description);
 			crs.setKeywords(keywords);
 			crs.setLanguage_id(language_id);
+			crs.setBusinessunitName(industry);
 
 			// LdapUserDetailsImpl userd =
 			// (LdapUserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -913,10 +916,10 @@ public class CourseController {
 			crs.setBussinesskey(businessKey);
 			crs.setProductPrice(BigDecimal.ONE);
 			crs.setCurrency(varCurrency);
-			crs.setBusinessunitId(Integer.valueOf(varBusinessUnitId));
+			//crs.setBusinessunitId(Integer.valueOf(varBusinessUnitId));
 			crs.setCreatedDate(date);
 			crs.setLastUpdatedDate(date);
-			crs.setBusinessunitName(varBusinessUnitName);
+			//crs.setBusinessunitName(varBusinessUnitName);
 			crs.setLastModifiedDate(simplesyncsessionDateFormat
 					.format(new Date()));
 			String GUID = UUID.randomUUID().toString().replaceAll("-", "");
@@ -1001,6 +1004,7 @@ public class CourseController {
 			courseModelView.addObject("name", name);
 			courseModelView.addObject("description", description);
 			courseModelView.addObject("language_id");
+			courseModelView.addObject("businessunitName", industry);
 			courseModelView.addObject("duration", duration);
 			courseModelView.addObject("keywords", keywords);
 			courseModelView.addObject("context", context);
@@ -1113,6 +1117,7 @@ public class CourseController {
 			@RequestParam("name") String name,
 			@RequestParam("description") String description,
 			@RequestParam("language_id") int language_id,
+			@RequestParam("businessunitName") String businessunitName,
 			@RequestParam("duration") String duration,
 			@RequestParam("keywords") String keywords,
 			@RequestParam(WlcmsConstants.PARAMETER_COURSE_TYPE) String courseType) {
@@ -1146,6 +1151,7 @@ public class CourseController {
 			courseDB.setDescription(description);
 			courseDB.setKeywords(keywords);
 			courseDB.setLanguage_id(language_id);
+			courseDB.setBusinessunitName(businessunitName);
 			courseDB.setLastUpdateUser(user.getAuthorId());
 			courseDB.setContentownerId((int) user.getContentOwnerId());
 			courseDB.setLastUpdatedDate(date);

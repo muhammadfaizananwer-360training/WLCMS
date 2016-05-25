@@ -148,37 +148,8 @@ $( document ).ready(function() {
 	var myvalcourse;
 	var myvalcoursestatusa;
 
-	if(cType != null && cType == WLCMS_CONSTANTS_COURSE_TYPE.WEBINAR_COURSE) {
-		myvalpublish = $(".publish_status input[value]").val().toLowerCase();
-		myvalcourse = $(".course_rating input[value]").val().toLowerCase();
-		myvalcoursestatusa = $(".course_status input[value]").val().toLowerCase();
-
-		var mylabelpublish = $("#publish_status").text().toLowerCase();
-		var mylabelpending = $("#course_rating").text().toLowerCase();
-		var mylabelcoursestatusa = $("#course_status").text().toLowerCase();
-
-		if ( (myvalpublish == "not published" || myvalpublish == "changes not published"  ) && mylabelpublish == "publish status") {
-			$(".publish_status").append("<span class='input-group-addon addon2'><i class='icon-exclamation' style='color: #ffb848'></i></span>");
-		}
-		if (  myvalpublish == ""  && mylabelpublish == "publish status") {
-			$(".publish_status").append('<span class="input-group-addon addon2"><i class="icon-remove" style="color: #e02222"></i></span>');
-		}
-		if  ( (myvalcourse == "pending" || myvalcourse === undefined || myvalcourse === "") && mylabelpending == "course rating"){
-			$(".course_rating").append('<span class="input-group-addon addon2"><i class="icon-exclamation" style="color: #ffb848"></i></span>');
-		} else {
-			$(".course_rating").append('<span class="input-group-addon addon2"><i class="icon-ok green-text"></i></span>');
-		}
-		if (myvalpublish == "published" && mylabelpublish == "publish status") {
-			$(".publish_status").append('<span class="input-group-addon addon2"><i class="icon-ok green-text"></i></span>');
-		}
-		if (myvalcoursestatusa == "retired" && mylabelcoursestatusa == "course status"){
-			$(".course_status").append('<span class="input-group-addon addon2"><i class="icon-remove" style="color: #e02222"></i></span>');
-		} else if (myvalcoursestatusa == "active" && mylabelcoursestatusa == "course status"){
-			$(".course_status").append('<span class="input-group-addon addon2"><i class="icon-ok green-text"></i></span>');
-		} else if( ( myvalcoursestatusa === "" || myvalcoursestatusa === undefined || myvalcoursestatusa === null ) && mylabelcoursestatusa == "course status") {
-			$(".course_status").append("<span class='input-group-addon addon2'><i class='icon-exclamation' style='color: #ffb848'></i></span>");
-		}
-	} else {//Online courses OR classroom courses
+	//Online/classroom/webinar courses
+	if(cType != null) {
 		myvalpublish = $("#publish_status").text().toLowerCase().trim();
 		myvalcourse = $("#course_rating").text().toLowerCase().trim();
 		myvalcoursestatusa = $("#course_status").text().toLowerCase().trim();
