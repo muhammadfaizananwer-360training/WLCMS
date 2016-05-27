@@ -511,7 +511,7 @@ var $360 = (function () {
             nextPostActivity: function (increament) {
                 var index = uploader.currentActivityIndex || 0;
                 if (postActivities.length > index && postActivities[index]) {
-                    if (increament === null || increament === true) {
+                    if (increament === undefined ||increament === null || increament === true) {
                         uploader.currentActivityIndex = index + 1;
                     }
                     return {
