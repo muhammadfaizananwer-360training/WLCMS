@@ -14,6 +14,7 @@ public class SyncClassAPIDTO {
     private String className;
     private String locationName;
     private Collection<SyncSessionAPIDTO> sessions;
+    private String instructorEmail;
 
     public Collection<SyncSessionAPIDTO> getSessions() {
         return sessions;
@@ -61,5 +62,13 @@ public class SyncClassAPIDTO {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+    }
+
+    public String getInstructorEmail() {
+        return instructorEmail;
+    }
+
+    public void setInstructorEmail(String instructorEmail) {
+        this.instructorEmail = instructorEmail;
     }
 }
