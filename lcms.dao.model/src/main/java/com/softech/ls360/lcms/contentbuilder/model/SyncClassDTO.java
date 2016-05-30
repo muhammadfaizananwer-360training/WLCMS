@@ -1,5 +1,6 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.Collection;
 import java.util.Date;
@@ -9,6 +10,8 @@ import java.util.Map;
 public class SyncClassDTO implements ControllableNode {
 
     private Long id;
+
+    @Range(min = 1, message="zero or less")
     private Long maximumClassSize;
     private Long locId;
     private Integer timeZoneId;
