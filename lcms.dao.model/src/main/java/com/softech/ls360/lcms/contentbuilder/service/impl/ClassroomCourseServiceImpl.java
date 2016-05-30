@@ -173,6 +173,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
     private void entityToDTO(CourseDTO entity, CourseVO dto, boolean deep) {
         modelMapper.map(entity, dto);
         dto.setCourseId(entity.getBussinesskey());
+
         if (deep) {
             for (SynchronousClass cls : entity.getSyncClass()) {
                 SyncClassDTO clsDto = new SyncClassDTO();
@@ -180,7 +181,25 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
                 dto.getSyncClassesMap().put(clsDto.getId().toString(), clsDto);
             }
             dto.setSyncClasses(dto.getSyncClassesMap().values());
-            dto.setSyncClassesMap(null);
+        }
+        dto.setSyncClassesMap(null);
+
+
+        //course provider
+        CourseProvider courseProvider = courseProviderDAO.loadProviderbyCourseId(entity.getId());
+        if (courseProvider != null) {
+            CourseProviderDTO providerDto = new CourseProviderDTO();
+            entityToDTO(courseProvider, providerDto);
+            providerDto.setInstructorBackground(entity.getAuthorBackground());
+            dto.setCourseProvider(providerDto);
+        }
+
+        //instructor
+        if(entity.getClassInstructorId() != null) {
+            ClassInstructor instructor = instructorDAO.getById(entity.getClassInstructorId());
+            if(instructor != null) {
+                dto.setInstructorEmail(instructor.getEmail());
+            }
         }
     }
 
@@ -194,6 +213,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         modelMapper.map(entity, dto);
         dto.setLocId(entity.getLocation().getId());
         dto.setLocationName(entity.getLocation().getLocationname());
+
         if (deep) {
             for (SynchronousSession session : entity.getSyncSession()) {
                 SyncSessionDTO sessionDto = new SyncSessionDTO();
@@ -202,12 +222,22 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
             }
 
             dto.setSessions(dto.getSessionsMap().values());
-            dto.setSessionsMap(null);
         }
 
+        dto.setSessionsMap(null);
+
+        //time zone.
         TimeZone timezone = syncClassDAO.getTimeZoneById(entity.getTimeZoneId());
         String timeZoneText = "(" + timezone.getCode() + " " + timezone.getHours() + ":" + ((timezone.getMinutes() == 0) ? "00" : timezone.getMinutes()) + ") " + timezone.getZone();
         dto.setTimeZoneText(timeZoneText);
+
+        //instructor
+        if(entity.getClassInstructorId() != null) {
+            ClassInstructor instructor = instructorDAO.getById(entity.getClassInstructorId());
+            if(instructor != null) {
+                dto.setInstructorEmail(instructor.getEmail());
+            }
+        }
     }
 
     private void entityToDTO(SynchronousSession entity, SyncSessionDTO dto) {
@@ -355,7 +385,20 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
                 validateDefinedSessions(dbClass, existingSessions);
                 validateUniqueSessions(dbClass, newSessions);
 
+
+                //Session start date with close date.
+                for(SyncSessionDTO session : cls.getSessions()) {
+                    if (!StringUtils.isEmpty(session.getAction()) && StringUtil.equalsAny(session.getAction(), true, "update", "add")) {
+                         if(dbClass.getEnrollmentCloseDate().getTime() > session.getStartDateTime().getTime()) {
+                             throw new BulkUplaodCourseException("Start Date Before Enrollment Close Date", "Session", 0, 0,
+                                     "", "enrollment date: " + TypeConvertor.DateToString(dbClass.getEnrollmentCloseDate()));
+                         }
+                    }
+                }
+
             }
+
+
 
         }
 
@@ -675,6 +718,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
     }
 
     @Override
+    @Transactional
     public void importCourses(VU360UserDetail user, ClassroomImportDTO classroom,boolean ignoreCourse) throws BulkUplaodCourseException {
         validateCourses(user, classroom,ignoreCourse);
         importCoursesWithoutValidation(user, classroom,ignoreCourse);
@@ -688,21 +732,18 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         if (course != null) {
             dto = new CourseVO();
             entityToDTO(course, dto, deep);
-
-            CourseProvider courseProvider = courseProviderDAO.loadProviderbyCourseId(course.getId());
-            if (courseProvider != null) {
-                CourseProviderDTO providerDto = new CourseProviderDTO();
-                entityToDTO(courseProvider, providerDto);
-                providerDto.setInstructorBackground(course.getAuthorBackground());
-                dto.setCourseProvider(providerDto);
-            }
         }
         return dto;
     }
 
     @Transactional
     @Override
-    public Collection<SyncClassDTO> getCourseClasses(VU360UserDetail user, String businessKey, boolean deep) {
+    public Collection<SyncClassDTO> getCourseClasses(VU360UserDetail user, String businessKey, boolean deep) throws BulkUplaodCourseException {
+        //validate data
+        CourseVO courseDto = new CourseVO();
+        courseDto.setCourseId(businessKey);
+        validateDefinedCourses(user,Arrays.asList(courseDto));
+
         Collection<SyncClassDTO> classes = new ArrayList<>();
         CourseDTO course = courseDAO.getCourseByOwnerIdAndBusinessKey((int) user.getContentOwnerId(), businessKey);
         if (course != null) {
@@ -717,7 +758,13 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
     @Transactional
     @Override
-    public SyncClassDTO getCourseClass(VU360UserDetail user, String businessKey, String className, boolean deep) {
+    public SyncClassDTO getCourseClass(VU360UserDetail user, String businessKey, String className, boolean deep) throws BulkUplaodCourseException {
+
+        //validate data
+        CourseVO courseDto = new CourseVO();
+        courseDto.setCourseId(businessKey);
+        validateDefinedCourses(user,Arrays.asList(courseDto));
+
         SyncClassDTO clsDto = null;
         SynchronousClass cls = syncClassDAO.getSynchronousClassByOwnerAndCourseAndClassName((int) user.getContentOwnerId(), businessKey, className);
         if (cls != null) {
@@ -729,7 +776,20 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
     @Transactional
     @Override
-    public Collection<SyncSessionDTO> getClassSessions(VU360UserDetail user, String businessKey, String className) {
+    public Collection<SyncSessionDTO> getClassSessions(VU360UserDetail user, String businessKey, String className) throws BulkUplaodCourseException {
+
+        //validate data
+        CourseVO courseDto = new CourseVO();
+        courseDto.setCourseId(businessKey);
+        validateDefinedCourses(user,Arrays.asList(courseDto));
+
+        CourseDTO course = courseDAO.getCourseByOwnerIdAndBusinessKey((int) user.getContentOwnerId(), businessKey);
+        SyncClassDTO classDto = new SyncClassDTO();
+        classDto.setCourse(courseDto);
+        classDto.setClassName(className);
+        validateDefinedClasses(course,Arrays.asList(classDto));
+
+
         Collection<SyncSessionDTO> sessions = new ArrayList<>();
         SynchronousClass cls = syncClassDAO.getSynchronousClassByOwnerAndCourseAndClassName((int) user.getContentOwnerId(), businessKey, className);
         if (cls != null) {
@@ -744,7 +804,19 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
     @Transactional
     @Override
-    public SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, String sessionKey) {
+    public SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, String sessionKey) throws BulkUplaodCourseException {
+
+        //validate data
+        CourseVO courseDto = new CourseVO();
+        courseDto.setCourseId(businessKey);
+        validateDefinedCourses(user,Arrays.asList(courseDto));
+
+        CourseDTO course = courseDAO.getCourseByOwnerIdAndBusinessKey((int) user.getContentOwnerId(), businessKey);
+        SyncClassDTO classDto = new SyncClassDTO();
+        classDto.setCourse(courseDto);
+        classDto.setClassName(className);
+        validateDefinedClasses(course,Arrays.asList(classDto));
+
         SyncSessionDTO sessionDto = null;
         SynchronousClass syncClass = syncClassDAO.getSynchronousClassByOwnerAndCourseAndClassName((int) user.getContentOwnerId(), businessKey, className);
 
@@ -1093,7 +1165,11 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         if (update) {
             syncClass = syncClassDAO.update(syncClass);
         } else {
+            //some values, which are populated from the database directly are not getting populated.
             syncClass = syncClassDAO.saveClass(syncClass);
+
+            //so populating them explicitly.
+            syncClass = syncClassDAO.getById(syncClass.getId());
         }
         return syncClass;
 
@@ -1239,7 +1315,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
         if (duplicateClasses.size() > 0) {
             throw new BulkUplaodCourseException("Duplicate", "Class", 0, 0,
-                    "", course.getBussinesskey() + "[" + Joiner.on(", ").join(duplicateClasses) + "]");
+                    "", course.getBussinesskey() + " [" + Joiner.on(", ").join(duplicateClasses) + "]");
         }
     }
 
@@ -1269,7 +1345,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
 
         if (missigClasses.size() > 0) {
             throw new BulkUplaodCourseException("Not Found In System", "Class", 0, 0,
-                    "", course.getBussinesskey() + "[" + Joiner.on(", ").join(missigClasses) + "]");
+                    "", course.getBussinesskey() + " [" + Joiner.on(", ").join(missigClasses) + "]");
         }
     }
 
