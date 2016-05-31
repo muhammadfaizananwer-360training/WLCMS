@@ -1,6 +1,4 @@
-#macro(replaceQuote $var)
-	$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")
-#end
+#macro(replaceQuote $var)$stringUtil.sub($stringUtil.sub($var, "'","&#39;"),'"',"&#34;")#end
 
 #parse("header.vm")
 #parse("leftPanel.vm")
@@ -97,7 +95,7 @@
                         <div class="col-md-12">
 							#springBind("command.name")
                             <label id="overview-title" class="control-label-2">#springMessage('label.overview.title.caption')<span class="required">*</span></label>
-                            <input id="name" class="form-control" data-required="1" type="text" placeholder="#springMessage('label.overview.title.placeholder')" value ='$!{status.value}'  name="name" maxlength="255">
+                            <input id="name" class="form-control" data-required="1" type="text" value='#replaceQuote($!{status.value})' placeholder="#springMessage('label.overview.title.placeholder')" name="name" maxlength="255">
                         </div>
                     </div>
                     <div class="form-group">
