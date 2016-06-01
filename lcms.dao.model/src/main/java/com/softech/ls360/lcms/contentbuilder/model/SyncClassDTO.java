@@ -1,5 +1,6 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotPastDate;
 import org.hibernate.validator.constraints.Range;
 
 import java.util.Collection;
@@ -19,7 +20,7 @@ public class SyncClassDTO implements ControllableNode {
     @NotEmpty
     private String timeZoneText;
 
-    @NotEmpty
+    @NotEmpty @NotPastDate
     private Date enrollmentCloseDate;
 
     @NotEmpty
