@@ -58,7 +58,7 @@ public class ClassRoomImportTest extends AbstractLcmsTest {
     }
     
     @Test()
-    public void importExcelFile() throws IOException, BulkUplaodCourseException {
+    public void importExcelFile() throws IOException, TabularDataException {
         
         String testFilePath = "excels/classroom2.xlsx";
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername("admin.manager@360training.com");
@@ -72,7 +72,7 @@ public class ClassRoomImportTest extends AbstractLcmsTest {
                                 + "\nColumn Number: " + ex.getColumnIndex()
                                 + "\nColumn: " + ex.getColumnName()
                                 + "\nErrorText: " + ex.getErrorText());
-            throw new BulkUplaodCourseException(ex);
+            throw ex;
         }
     }
     

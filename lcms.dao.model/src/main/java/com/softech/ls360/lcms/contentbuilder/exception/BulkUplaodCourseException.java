@@ -18,19 +18,4 @@ public class BulkUplaodCourseException extends TabularDataException{
 			String errorAtColumnText, String errorText) {
 		super(message, errorOnTable, errorAtRow, errorAtColumnIndex, errorAtColumnText, errorText);
 	}
-	
-	public BulkUplaodCourseException(TabularDataException tabularException) {
-		this(tabularException.getMessage(), tabularException.getTableName(), tabularException.getRowNumber()
-				, tabularException.getColumnIndex(), tabularException.getColumnName()
-				, tabularException.getErrorText());
-	}
-
-    @Override
-    public String toString() {
-        return super.toString() + " [" + getErrorText() + "]";
-    }
-        
-        
-
-	
 }

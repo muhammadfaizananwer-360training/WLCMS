@@ -1,16 +1,31 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+
 import java.util.Map;
 
 public class LocationDTO implements ControllableNode {
 
     private String description = null;
+
+    @NotEmpty
     private String locationName = null;
+
+    @NotEmpty
     private String city = null;
+
+    @NotEmpty
     private String state = null;
+
+    @NotEmpty
     private String zip = null;
+
+    @NotEmpty
     private String country = null;
+
+    @NotEmpty
     private String address = null;
+
     private String phone = null;
     private String action;
     private boolean error;
