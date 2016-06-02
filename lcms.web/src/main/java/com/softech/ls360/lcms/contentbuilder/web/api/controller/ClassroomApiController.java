@@ -5,9 +5,6 @@
  */
 package com.softech.ls360.lcms.contentbuilder.web.api.controller;
 
-import com.google.common.base.Joiner;
-import com.softech.common.validator.InvalidField;
-import com.softech.common.validator.InvalidModelException;
 import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
 import com.softech.ls360.lcms.contentbuilder.model.*;
 import com.softech.ls360.lcms.contentbuilder.service.IClassroomCourseService;
@@ -25,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
 /**

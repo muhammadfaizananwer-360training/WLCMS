@@ -226,9 +226,6 @@
 							#springMessage('label.publishing.criteria.meet')
                         </div>
 
-
-
-
                         <div class="form-horizontal">
                             <div class="form-body">
                                 <table class="table bg-gray-2">
@@ -283,7 +280,7 @@
 											#end
 										#end
 										#if ($!{command.publishStatus}=="true")
-                                        <tr id="offerInitial">
+                                        <tr id="offerInitial" class="hide">
                                             <td>#springMessage('label.publish.market.place')<br>
                                                 <span class="help-block">#springMessage('label.publish.market.place.initial.message')</span></td>
                                             <td class="text-right">
@@ -293,7 +290,7 @@
                                             </td>
                                         </tr>
 										#end
-                                    <tr id="offerInprogress">
+                                    <tr id="offerInprogress" class="hide">
                                         <td colspan="2">
                                             <div class="alert alert-info zero-margin">
                                                 <h2><strong>#springMessage('label.publish.looking.offer')</strong></h2>
@@ -303,21 +300,20 @@
                                                 <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
 											#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
                                                 <small>#springMessage('label.publish.offer.inprogress.sale')</small>
-                                                <br><br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                                <br>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="offerFail">
+                                    <tr id="offerFail" class="hide">
                                         <td colspan="2">
                                             <div class="alert alert-danger zero-margin">
                                                 <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
                                                 <br>
-                                                <p>#springMessage('label.publish.offer.check.email')</p>
-                                                <br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                                <p>#springMessage('label.publish.offer.check.email')</p>                                                
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="offerSuccess">
+                                    <tr id="offerSuccess" class="hide">
                                         <td colspan="2">
                                             <div class="alert alert-success zero-margin">
                                                 <h2><strong>#springMessage('label.publish.offer.success.accepted')</strong></h2>
@@ -335,7 +331,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="offerPrice">
+                                    <tr id="offerPrice" class="hide">
                                         <td colspan="2">
                                             <div class="collapse" id="collapseExample">
                                                 <ul class="list-inline hint-in-table">
@@ -360,15 +356,11 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="portlet">
                         <div class="portlet-body">
                             <button id="publishBtn" #if($showQuizError =="true" || $showExamError  == "true") disabled #end class="btn blue input-small" onClick = "showPublishAlert ('frm_publish')">#springMessage('button.publish')</button>
@@ -381,248 +373,189 @@
             </div>
 		#* END PAGE CONTENT *#
 
+#parse("footer.vm")
 
+<script>
 
-
-			#parse("footer.vm")
-
-            <script>
-
-                var thisCourse = {criteria:true,lms:false,sf:false,updateContent:false,threesixty:false,offerState:0};
-                $(document).ready(function() {
-                    APP.PLACEHOLDER_FIX();
-                    APP.EDIT_OR_VIEW_TOGGLE();
-                    APP.BODY_COLLAPSES();
-                    APP.LEFT_NAV.init("OPEN", "nav_accordion_3");
-                    $('#lnkPublishing a').addClass('active');
-                    $("#frm_publish").trackChanges();
-                    $("#currentFormName").val("frm_publish");
-
-
-                    var courseId = getUrlParameter ('id');
-                    var cType = getUrlParameter ('cType');
-                    APP.AJAX({
-                        url: "displayOfferPage",
-                        dataType: "text",
-                        type: "POST",
-                        cache: false,
-                        data:'hidCourseId='+courseId+'&cType='+cType,
-                        async: false,
-                        success: function(response) {
-                            obj = $.parseJSON(response);
-                            if(obj.result.offerStatus=="Accepted"){
-                                thisCourse.offerState=3;
-                            }else if(obj.result.offerStatus=="Rejected"){
-                                thisCourse.offerState=2;
-                            }else if(obj.result.offerStatus=="Pending"){
-                                thisCourse.offerState=1;
-                            }
-                        }
-                    });
-                    publishCases();
-                    $('#collapseExample').on('hidden.bs.collapse', function () {
-
-                        if(!thisCourse.threesixty)
-                        {
-                            $("#offerPrice").addClass("hide");
-                        }
-                    });
-
-                    $('.make-switch').on('switch-change', function (e, data) {
-                        switch($(this).attr("id"))
-                        {
-                            case "publisToLMSBtn":
-                                thisCourse.lms = data.value;
-                                $("#publishLMS").val(data.value)
-                                break;
-                            case "publisToSFBtn":
-                                thisCourse.sf = data.value;
-                                $("#publishSF").val(data.value)
-                                break;
-                            case "updateToLMSBtn":
-                                thisCourse.lms = data.value;
-                                $("#updateLMS").val(data.value)
-                                break;
-                            case "updateToSFBtn":
-                                thisCourse.sf = data.value;
-                                $("#updateSF").val(data.value)
-                                break;
-                            case "updateCouseContent":
-                                thisCourse.updateContent = data.value;
-                                $("#updateCouseContent").val(data.value)
-                                break;
-                            case "publisTo360Btn":
-                                thisCourse.threesixty = data.value;
-                                $("#publis360Btn").val(data.value)
-                                if(data.value)
-                                {
-                                    $("#offerPrice").removeClass("hide");
-                                    $("#collapseExample").collapse('show');
-                                    var val =  $("#offerPrice").offset().top-100;
-                                    $("html,body").animate({scrollTop: val},600);
-                                    $("label.error").hide();
-                                    $(".error").removeClass("error");
-
-
-
-                                }
-                                else
-                                {
-                                    $("#collapseExample").collapse('hide');
-                                }
-                                break;
-                        }
-                        publishBtnToggling();
-                    });
-                    //	END APP **************************************************************
-
-                });
-
-
-                /*$(document).ready(function ()
+var thisCourse = {criteria:true,lms:false,sf:false,updateContent:false,threesixty:false,offerState:0};
+$(document).ready(function() {
+    APP.PLACEHOLDER_FIX();
+    APP.EDIT_OR_VIEW_TOGGLE();
+    APP.BODY_COLLAPSES();
+    APP.LEFT_NAV.init("OPEN", "nav_accordion_3");
+    $('#lnkPublishing a').addClass('active');
+    $("#frm_publish").trackChanges();
+    $("#currentFormName").val("frm_publish");
+    var courseId = getUrlParameter ('id');
+    var cType = getUrlParameter ('cType');
+    APP.AJAX({
+        url: "displayOfferPage",
+        dataType: "text",
+        type: "POST",
+        cache: false,
+        data:'hidCourseId='+courseId+'&cType='+cType,
+        async: false,
+        success: function(response) {
+            obj = $.parseJSON(response);
+            if(obj.result.offerStatus=="Accepted"){
+                thisCourse.offerState=3;
+            }else if(obj.result.offerStatus=="Rejected"){
+                thisCourse.offerState=2;
+            }else if(obj.result.offerStatus=="Pending"){
+                thisCourse.offerState=1;
+            }
+        }
+    });
+    publishCases();
+    $('#collapseExample').on('hidden.bs.collapse', function () {
+        if(thisCourse.threesixty)
+        {
+            $("#offerPrice").removeClass("hide");
+        }
+    });
+    $('.make-switch').on('switch-change', function (e, data) {
+        switch($(this).attr("id"))
+        {
+            case "publisToLMSBtn":
+                thisCourse.lms = data.value;
+                $("#publishLMS").val(data.value)
+                break;
+            case "publisToSFBtn":
+                thisCourse.sf = data.value;
+                $("#publishSF").val(data.value)
+                break;
+            case "updateToLMSBtn":
+                thisCourse.lms = data.value;
+                $("#updateLMS").val(data.value)
+                break;
+            case "updateToSFBtn":
+                thisCourse.sf = data.value;
+                $("#updateSF").val(data.value)
+                break;
+            case "updateCouseContent":
+                thisCourse.updateContent = data.value;
+                $("#updateCouseContent").val(data.value)
+                break;
+            case "publisTo360Btn":
+                thisCourse.threesixty = data.value;
+                $("#publis360Btn").val(data.value)
+                if(data.value)
                 {
-                    //	BEGIN APP **************************************************************
-                    APP.PLACEHOLDER_FIX();
-                    APP.LEFT_NAV.init("OPEN","nav_accordion_3");
-                    APP.MODE_INIT("#atr_mode");
-                    APP.BODY_COLLAPSES();
-*/
-
-                function publishCases()
-                {
-                    publishBtnToggling();
-                    switch(thisCourse.offerState)
-                    {
-                        case 0:
-                            $("#offerInitial").removeClass("hide");
-                            $("#offerInprogress").addClass("hide");
-                            $("#offerFail").addClass("hide");
-                            $("#offerSuccess").addClass("hide");
-                            $("#offerPrice").addClass("hide");
-                            break;
-                        case 1:
-                            $("#offerInitial").addClass("hide");
-                            $("#offerInprogress").removeClass("hide");
-                            $("#offerFail").addClass("hide");
-                            $("#offerSuccess").addClass("hide");
-                            $("#offerPrice").addClass("hide");
-                            break;
-                        case 2:
-                            $("#offerInitial").addClass("hide");
-                            $("#offerInprogress").addClass("hide");
-                            $("#offerFail").removeClass("hide");
-                            $("#offerSuccess").addClass("hide");
-                            $("#offerPrice").addClass("hide");
-                            break;
-                        case 3:
-                            $("#offerInitial").addClass("hide");
-                            $("#offerInprogress").addClass("hide");
-                            $("#offerFail").addClass("hide");
-                            $("#offerSuccess").removeClass("hide");
-                            $("#offerPrice").addClass("hide");
-                            break;
-                    }
-                    /*}
-                    else
-                    {
-                        $("#offerInitial").removeClass("hide");
-                        $("#offerInprogress").addClass("hide");
-                        $("#offerFail").addClass("hide");
-                        $("#offerSuccess").addClass("hide");
-                        $("#offerPrice").addClass("hide");
-                    }*/
+                    $("#offerPrice").removeClass("hide");
+                    $("#collapseExample").collapse('show');
+                    var val =  $("#offerPrice").offset().top-100;
+                    $("html,body").animate({scrollTop: val},600);
+                    $("label.error").hide();
+                    $(".error").removeClass("error");
                 }
-
-                function publishBtnToggling()
+                else
                 {
-                    if($("#publishLMS").val()!=undefined && $criteria && thisCourse.lms)
-                    {
-                        $("#publishBtn").removeAttr("disabled").removeClass("disabled");
-
-                    }
-                    else if ($("#publishLMS").val()==undefined && $criteria && ( thisCourse.lms || thisCourse.sf || thisCourse.updateContent || (thisCourse.threesixty && thisCourse.offerState == 0)))
-                    {
-                        $("#publishBtn").removeAttr("disabled").removeClass("disabled");
-                    }
-                    else
-                    {
-                        $("#publishBtn").attr("disabled","disabled").addClass("disabled");
-                    }
+                    $("#collapseExample").collapse('hide');
                 }
+                break;
+        }
+        publishBtnToggling();
+    });
+    //	END APP **************************************************************
+});
+function publishCases()
+{
+    publishBtnToggling();
+    switch(thisCourse.offerState)
+    {
+        case 0:
+            $("#offerInitial").removeClass("hide");
+            break;
+        case 1:
+            $("#offerInprogress").removeClass("hide");
+            break;
+        case 2:
+            $("#offerFail").removeClass("hide");
+            break;
+        case 3:
+            $("#offerSuccess").removeClass("hide");
+            break;
+    }
+}
+function publishBtnToggling()
+{
+    if($("#publishLMS").val()!=undefined && $criteria && thisCourse.lms)
+    {
+        $("#publishBtn").removeAttr("disabled").removeClass("disabled");
+    }
+    else if ($("#publishLMS").val()==undefined && $criteria && ( thisCourse.lms || thisCourse.sf || thisCourse.updateContent || (thisCourse.threesixty && thisCourse.offerState == 0)))
+    {
+        $("#publishBtn").removeAttr("disabled").removeClass("disabled");
+    }
+    else
+    {
+        $("#publishBtn").attr("disabled","disabled").addClass("disabled");
+    }
+}
+function cancelOffer(isConfirmed)
+{
+    if(!isConfirmed)
+    {
+        //	BEGIN - MODAL BOX -------------------------------
+        var $trgModal = $("#confirmationModal");
+        //	BEGIN TITLE, MESSAGE AND BUTTONS
+        var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
+        var msg = '<p>This action will remove the offer from this course. Do you want to continue?</p>';
+        var btns = '<button type="button" class="btn blue" onclick="cancelOffer(true)" data-dismiss="modal">YES</button>'+
+                '<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>';
+        //	END TITLE, MESSAGE AND BUTTONS
+			$trgModal.find(".modal-title").html(title);
+			$trgModal.find(".modal-body").html(msg);
+			$trgModal.find(".modal-footer").html(btns);
+			$trgModal.modal('show');
+        //	END - MODAL BOX --------------------------------
+    }
+    else
+    {
+        $('#publisTo360Btn').bootstrapSwitch('setState', false);
+        thisCourse.threesixty = false;
+        thisCourse.offerState = 0;
+        publishCases();
+    }
+}
+function publishCourseNow()
+{
+	$trgModal = $("#extractingModal");
+		$trgModal.modal({backdrop: 'static', keyboard: false});
+    $(".ui-ios-overlay").remove();
+    var opts = {
+        lines: 13, // The number of lines to draw
+        length: 5, // The length of each line
+        width: 5, // The line thickness
+        radius: 10, // The radius of the inner circle
+        corners: 0, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        direction: 1, // 1: clockwise, -1: counterclockwise
+        color: '#fff', // #rgb or #rrggbb or array of colors
+        speed: 1, // Rounds per second
+        trail: 60, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: false, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: '50%', // Top position relative to parent
+        left: '50%' // Left position relative to parent
+    };
+    var target = document.getElementById('foo');
+    var spinner = new Spinner(opts).spin(target);
+    var overlay = iosOverlay({
+        text: "Please wait...",
+        spinner: spinner
+    });
+    window.setTimeout(function(){
+        overlay.hide();
+			$trgModal.modal('hide');
+        if(thisCourse.threesixty && thisCourse.offerState!=3)
+        {
+            thisCourse.offerState = 3;
+        }
+        publishCases();
+    }, 4e3);
+}
 
-                function cancelOffer(isConfirmed)
-                {
-                    if(!isConfirmed)
-                    {
-                        //	BEGIN - MODAL BOX -------------------------------
-                        var $trgModal = $("#confirmationModal");
-
-                        //	BEGIN TITLE, MESSAGE AND BUTTONS
-                        var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
-                        var msg = '<p>This action will remove the offer from this course. Do you want to continue?</p>';
-                        var btns = '<button type="button" class="btn blue" onclick="cancelOffer(true)" data-dismiss="modal">YES</button>'+
-                                '<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>';
-                        //	END TITLE, MESSAGE AND BUTTONS
-
-							$trgModal.find(".modal-title").html(title);
-							$trgModal.find(".modal-body").html(msg);
-							$trgModal.find(".modal-footer").html(btns);
-
-							$trgModal.modal('show');
-                        //	END - MODAL BOX --------------------------------
-                    }
-                    else
-                    {
-                        $('#publisTo360Btn').bootstrapSwitch('setState', false);
-                        thisCourse.threesixty = false;
-                        thisCourse.offerState = 0;
-                        publishCases();
-                    }
-                }
-
-                function publishCourseNow()
-                {
-					$trgModal = $("#extractingModal");
-						$trgModal.modal({backdrop: 'static', keyboard: false});
-
-                    $(".ui-ios-overlay").remove();
-
-                    var opts = {
-                        lines: 13, // The number of lines to draw
-                        length: 5, // The length of each line
-                        width: 5, // The line thickness
-                        radius: 10, // The radius of the inner circle
-                        corners: 0, // Corner roundness (0..1)
-                        rotate: 0, // The rotation offset
-                        direction: 1, // 1: clockwise, -1: counterclockwise
-                        color: '#fff', // #rgb or #rrggbb or array of colors
-                        speed: 1, // Rounds per second
-                        trail: 60, // Afterglow percentage
-                        shadow: false, // Whether to render a shadow
-                        hwaccel: false, // Whether to use hardware acceleration
-                        className: 'spinner', // The CSS class to assign to the spinner
-                        zIndex: 2e9, // The z-index (defaults to 2000000000)
-                        top: '50%', // Top position relative to parent
-                        left: '50%' // Left position relative to parent
-                    };
-
-                    var target = document.getElementById('foo');
-                    var spinner = new Spinner(opts).spin(target);
-
-                    var overlay = iosOverlay({
-                        text: "Please wait...",
-                        spinner: spinner
-                    });
-
-                    window.setTimeout(function(){
-                        overlay.hide();
-							$trgModal.modal('hide');
-
-                        if(thisCourse.threesixty && thisCourse.offerState!=3)
-                        {
-                            thisCourse.offerState = 3;
-                        }
-                        publishCases();
-                    }, 4e3);
-                }
-            </script>
+</script>
