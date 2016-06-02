@@ -213,6 +213,7 @@ function table_minus_plus(cnd)
 	{
         //$("#add-lesson-label").text('Edit');
         $("#addClassInstructorModal").modal('show');
+        $("#addClassInstructorModal form").validate().resetForm();
 
 	}
 	else
