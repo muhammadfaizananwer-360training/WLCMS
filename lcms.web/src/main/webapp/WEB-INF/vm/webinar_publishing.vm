@@ -393,7 +393,7 @@
                 <div class="portlet">
                     <div class="portlet-body">
                         <button id="publishBtn" type="button" #if ($disablePublish == "true") disabled #end class="btn blue input-small"  onClick ="ProceedtoPublishWebinarClassRoom('frm_webinar_publish',thisCourse.validation)">#springMessage('button.publish')</button>
-                        <small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>
+                        #if($!{command.lastPublishDate})<small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>#end
                     </div>
                 </div>
 			#* BEGIN ACTION BUTTONS *#

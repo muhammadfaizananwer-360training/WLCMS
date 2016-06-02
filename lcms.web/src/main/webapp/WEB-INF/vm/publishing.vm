@@ -309,7 +309,7 @@
                                             <div class="alert alert-danger zero-margin">
                                                 <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
                                                 <br>
-                                                <p>#springMessage('label.publish.offer.check.email')</p>                                                
+                                                <p>#springMessage('label.publish.offer.check.email')</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -364,7 +364,7 @@
                     <div class="portlet">
                         <div class="portlet-body">
                             <button id="publishBtn" #if($showQuizError =="true" || $showExamError  == "true") disabled #end class="btn blue input-small" onClick = "showPublishAlert ('frm_publish')">#springMessage('button.publish')</button>
-                            <small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>
+                            #if($!{command.lastPublishDate})<small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>#end
                         </div>
                     </div>
 
