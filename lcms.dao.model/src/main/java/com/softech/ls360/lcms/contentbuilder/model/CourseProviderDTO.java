@@ -1,10 +1,24 @@
 package com.softech.ls360.lcms.contentbuilder.model;
+
+import com.softech.common.parsing.ExpressionConstant;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+
 public class CourseProviderDTO {
 	private CourseVO course;
-	private String name;
-	private String email;
-	private String phoneNo;
-        private String instructorBackground;
+
+    @NotEmpty
+    private String name;
+
+    @NotEmpty @Pattern(regexp = ExpressionConstant.EMAIL, message = "invalid")
+    private String email;
+
+    @NotEmpty
+    private String phoneNo;
+
+    @NotEmpty
+    private String instructorBackground;
     public CourseVO getCourse() {
         return course;
     }

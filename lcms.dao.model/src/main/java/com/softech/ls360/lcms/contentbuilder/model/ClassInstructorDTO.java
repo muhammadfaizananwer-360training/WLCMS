@@ -1,5 +1,9 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 
+import com.softech.common.parsing.ExpressionConstant;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+
+import javax.validation.constraints.Pattern;
 import java.util.Map;
 
 /**
@@ -7,9 +11,17 @@ import java.util.Map;
  */
 public class ClassInstructorDTO implements ControllableNode {
     private Long id;
+
+    @NotEmpty
     private String firstName;
+
+    @NotEmpty
     private String lastName;
+
+    @NotEmpty @Pattern(regexp = ExpressionConstant.EMAIL, message = "invalid")
     private String email;
+
+    @NotEmpty
     private String phoneNo;
     private String background;
     private String action;

@@ -211,23 +211,7 @@ public class ClassroomController {
         return response;
 
     }
-    public RestResponse importClassroomCourses(ClassroomImportDTO classroom, VU360UserDetail user) {
-        return  importClassroomCourses(classroom,user,false);
-    }
-    
-    public RestResponse importClassroomCourses(ClassroomImportDTO classroom, VU360UserDetail user,boolean ignoreCourse) {
 
-        RestResponse response = new RestResponse();
-        try {
-            classroomService.importCourses(user, classroom,ignoreCourse);
-            response.setInfo("done");
-        } catch (Exception e) {
-            response.setError("classroomImportPage-error");
-            response.setData(e.toString());
-            logger.error(e.getMessage(), e);
-        }
-        return response;
-    }
 
     @RequestMapping(value = "classroomImportPage", method = RequestMethod.GET)
     public ModelAndView showclassroomImportPage() {
@@ -458,6 +442,7 @@ public class ClassroomController {
             syncClass.setSyncSession(lstSession);
             syncClass.setClassStartDate(this.classStartDate);
             syncClass.setClassEndDate(this.classEndDate);
+            generateSessionKeys(lstSession);
             classService.saveSynchronousClass(syncClass);
         } else if (recurring_pattren.equals("weekly")) {
             if (add_sess_number_week_days != null) {
@@ -475,6 +460,7 @@ public class ClassroomController {
             syncClass.setSyncSession(lstSession);
             syncClass.setClassStartDate(this.classStartDate);
             syncClass.setClassEndDate(this.classEndDate);
+            generateSessionKeys(lstSession);
             classService.saveSynchronousClass(syncClass);
         } else if (recurring_pattren.equals("daily")) {
             if (number_days != null) {
@@ -492,20 +478,23 @@ public class ClassroomController {
             syncClass.setSyncSession(lstSession);
             syncClass.setClassStartDate(this.classStartDate);
             syncClass.setClassEndDate(this.classEndDate);
-
-            //generate session keys
-            String sessionkeyPrefix  = StringUtil.getRandom(5);
-            {
-                int i = 0;
-                for (SynchronousSession session : lstSession) {
-                    String sessionKey = sessionkeyPrefix + "-" + org.apache.commons.lang.StringUtils.leftPad(Integer.valueOf(++i).toString(),2,'0');
-                    session.setSessionKey(sessionKey);
-                }
-            }
+            generateSessionKeys(lstSession);
             classService.saveSynchronousClass(syncClass);
         }
 
         return "success";
+    }
+
+    private void generateSessionKeys(Collection<SynchronousSession> lstSession) {
+        //generate session keys
+        String sessionkeyPrefix  = StringUtil.getRandom(5);
+        {
+            int i = 0;
+            for (SynchronousSession session : lstSession) {
+                String sessionKey = sessionkeyPrefix + "-" + org.apache.commons.lang.StringUtils.leftPad(Integer.valueOf(++i).toString(),2,'0');
+                session.setSessionKey(sessionKey);
+            }
+        }
     }
 
     @RequestMapping(value = "saveManualSession", method = RequestMethod.POST)

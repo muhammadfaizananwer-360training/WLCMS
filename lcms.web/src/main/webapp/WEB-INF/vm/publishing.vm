@@ -300,7 +300,7 @@
                                                 <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
 											#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
                                                 <small>#springMessage('label.publish.offer.inprogress.sale')</small>
-                                                <br><br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                                <br>
                                             </div>
                                         </td>
                                     </tr>
@@ -309,8 +309,7 @@
                                             <div class="alert alert-danger zero-margin">
                                                 <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
                                                 <br>
-                                                <p>#springMessage('label.publish.offer.check.email')</p>
-                                                <br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                                <p>#springMessage('label.publish.offer.check.email')</p>                                                
                                             </div>
                                         </td>
                                     </tr>

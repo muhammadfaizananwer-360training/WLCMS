@@ -5,6 +5,10 @@
  */
 package com.softech.ls360.lcms.contentbuilder.web.api.controller;
 
+import com.google.common.base.Joiner;
+import com.softech.common.validator.InvalidField;
+import com.softech.common.validator.InvalidModelException;
+import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
 import com.softech.ls360.lcms.contentbuilder.model.*;
 import com.softech.ls360.lcms.contentbuilder.service.IClassroomCourseService;
 import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
@@ -21,14 +25,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -36,7 +44,7 @@ import java.util.Random;
  */
 @RestController
 @RequestMapping(value = "api/classroom")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class ClassroomApiController {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ClassroomApiController.class);
@@ -81,6 +89,9 @@ public class ClassroomApiController {
         return loc;
     }
 
+    private static ClassInstructorDTO encloseInstructor(ClassroomImportDTO classroom, String email) {
+        return encloseInstructor(classroom,email,null);
+    }
     private static ClassInstructorDTO encloseInstructor(ClassroomImportDTO classroom, String email, ClassInstructorDTO inst) {
         if (inst == null) {
             inst = new ClassInstructorDTO();
@@ -129,8 +140,28 @@ public class ClassroomApiController {
         }
     }
 
+    public RestResponse importClassroomCourses(ClassroomImportDTO classroom, VU360UserDetail user) throws BulkUplaodCourseException {
+        return  importClassroomCourses(classroom,user,false);
+    }
 
-    //TODO imports
+    public RestResponse importClassroomCourses(ClassroomImportDTO classroom, VU360UserDetail user,boolean ignoreCourse) throws BulkUplaodCourseException {
+        RestResponse response = new RestResponse();
+        classroomService.importCourses(user, classroom,ignoreCourse);
+        response.setInfo("ok");
+        return response;
+    }
+
+
+    @ExceptionHandler(BulkUplaodCourseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestResponse handleApiException(BulkUplaodCourseException e) {
+        RestResponse response = new RestResponse();
+        ErrorDetailsAPIDTO errorDetails = modelMapper.map(e.getExceptionDetail(),ErrorDetailsAPIDTO.class);
+        response.setError("conflict");
+        response.setData(errorDetails);
+        return response;
+    }
 
     @RequestMapping(value = "importSheet", method = RequestMethod.POST)
     ResponseEntity<Object> importSheet(@RequestBody MultipartFile file
@@ -189,11 +220,11 @@ public class ClassroomApiController {
 
     @RequestMapping(value = "importJson", method = RequestMethod.POST)
     ResponseEntity<Object> importJson(@RequestBody ClassroomImportDTO classroom
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -262,7 +293,7 @@ public class ClassroomApiController {
      */
     @RequestMapping(value = "instructors/{email}", method = RequestMethod.GET)
     ResponseEntity<Object> getInstructor(@PathVariable("email") String email
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -271,6 +302,9 @@ public class ClassroomApiController {
         if(dto != null) {
             ClassInstructorAPIDTO apiDto = modelMapper.map(dto, ClassInstructorAPIDTO.class);
             response.setData(apiDto);
+        } else {
+            throw new BulkUplaodCourseException("Not Found In System", "Instructor", 0, 0,
+                    "", email );
         }
         return new ResponseEntity<Object>(response, httpStatus);
     }
@@ -294,15 +328,15 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "instructors", method = RequestMethod.POST)
-    ResponseEntity<Object> addInstructor(@RequestBody ClassInstructorDTO instructor
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+    ResponseEntity<Object> addInstructor(@Valid @RequestBody ClassInstructorDTO instructor
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         classroom.getInstructors().add(instructor);
         instructor.setAction("add");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user, true);
+        RestResponse response = importClassroomCourses(classroom, user, true);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -326,16 +360,16 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "instructors/{email}", method = RequestMethod.PUT)
-    ResponseEntity<Object> updateInstructor(@RequestBody ClassInstructorDTO instructor
+    ResponseEntity<Object> updateInstructor(@Valid @RequestBody ClassInstructorDTO instructor
             , @PathVariable("email") String email
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseInstructor(classroom, email, instructor);
         instructor.setAction("update");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user, true);
+        RestResponse response = importClassroomCourses(classroom, user, true);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -411,7 +445,7 @@ public class ClassroomApiController {
      */
     @RequestMapping(value = "locations/{locationName}", method = RequestMethod.GET)
     ResponseEntity<Object> getLocation(@PathVariable("locationName") String locationName
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -420,6 +454,9 @@ public class ClassroomApiController {
         if(dto != null) {
             LocationAPIDTO apiDto = modelMapper.map(dto, LocationAPIDTO.class);
             response.setData(apiDto);
+        } else {
+            throw new BulkUplaodCourseException("Not Found In System", "Location", 0, 0,
+                    "", locationName );
         }
         return new ResponseEntity<Object>(response, httpStatus);
     }
@@ -453,15 +490,15 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "locations", method = RequestMethod.POST)
-    ResponseEntity<Object> addLocation(@RequestBody LocationDTO location
-                    , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+    ResponseEntity<Object> addLocation(@Valid @RequestBody LocationDTO location
+                    , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         classroom.getLocations().add(location);
         location.setAction("add");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user, true);
+        RestResponse response = importClassroomCourses(classroom, user, true);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -494,16 +531,16 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "locations/{locationName}", method = RequestMethod.PUT)
-    ResponseEntity<Object> updateLocation(@RequestBody LocationDTO location
+    ResponseEntity<Object> updateLocation(@Valid @RequestBody LocationDTO location
             , @PathVariable("locationName") String locationName
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseLocation(classroom, locationName, location);
         location.setAction("update");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user, true);
+        RestResponse response = importClassroomCourses(classroom, user, true);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -547,7 +584,7 @@ public class ClassroomApiController {
     @RequestMapping(value = "courses/{courseId}", method = RequestMethod.GET)
     ResponseEntity<Object> getCourse(@PathVariable("courseId") String courseId
             , @RequestParam(name = "deep", defaultValue = "false") boolean deep
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -556,6 +593,9 @@ public class ClassroomApiController {
         if(dto != null) {
             CourseAPIDTO apiDto = modelMapper.map(dto, CourseAPIDTO.class);
             response.setData(apiDto);
+        } else {
+            throw new BulkUplaodCourseException("Not Found In System", "Course", 0, 0,
+                    "", courseId);
         }
         return new ResponseEntity<Object>(response, httpStatus);
     }
@@ -597,15 +637,15 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "courses", method = RequestMethod.POST)
-    ResponseEntity<Object> addCourse(@RequestBody CourseVO course
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
-
+    ResponseEntity<Object> addCourse(@Valid @RequestBody CourseVO course
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         classroom.getCourses().add(course);
+        encloseInstructor(classroom,course.getInstructorEmail());
         course.setAction("add");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -647,15 +687,16 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "courses/{courseId}", method = RequestMethod.PUT)
-    ResponseEntity<Object> updateCourse(@RequestBody CourseVO course, @PathVariable("courseId") String courseId
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+    ResponseEntity<Object> updateCourse(@Valid @RequestBody CourseVO course, @PathVariable("courseId") String courseId
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseCourse(classroom, courseId, course);
+        encloseInstructor(classroom,course.getInstructorEmail());
         course.setAction("update");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -688,7 +729,7 @@ public class ClassroomApiController {
     @RequestMapping(value = "courses/{courseId}/classes", method = RequestMethod.GET)
     ResponseEntity<Object> getClasses(@PathVariable("courseId") String courseId
             , @RequestParam(name = "deep", defaultValue = "false") boolean deep
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -730,7 +771,7 @@ public class ClassroomApiController {
     ResponseEntity<Object> getClass(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
             , @RequestParam(name = "deep", defaultValue = "false") boolean deep
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -739,6 +780,9 @@ public class ClassroomApiController {
         if(dto != null) {
             SyncClassAPIDTO apiDto = modelMapper.map(dto, SyncClassAPIDTO.class);
             response.setData(apiDto);
+        }else {
+            throw new BulkUplaodCourseException("Not Found In System", "Class", 0, 0,
+                    "", courseId + " [" + className + "]" );
         }
         return new ResponseEntity<Object>(response, httpStatus);
     }
@@ -774,16 +818,17 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "courses/{courseId}/classes", method = RequestMethod.POST)
-    ResponseEntity<Object> addClass(@RequestBody SyncClassDTO cls
+    ResponseEntity<Object> addClass(@Valid @RequestBody SyncClassDTO cls
             , @PathVariable("courseId") String courseId
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseClass(encloseCourse(classroom, courseId), cls.getClassName(), cls);
+        encloseInstructor(classroom,cls.getInstructorEmail());
         cls.setAction("add");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -818,17 +863,18 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "courses/{courseId}/classes/{className}", method = RequestMethod.PUT)
-    ResponseEntity<Object> updateClass(@RequestBody SyncClassDTO cls
+    ResponseEntity<Object> updateClass(@Valid @RequestBody SyncClassDTO cls
             , @PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseClass(encloseCourse(classroom, courseId), className, cls);
+        encloseInstructor(classroom,cls.getInstructorEmail());
         cls.setAction("update");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -854,14 +900,14 @@ public class ClassroomApiController {
     @RequestMapping(value = "courses/{courseId}/classes/{className}", method = RequestMethod.DELETE)
     ResponseEntity<Object> deleteClass(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         SyncClassDTO cls = encloseClass(encloseCourse(classroom, courseId), className);
         cls.setAction("delete");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -893,7 +939,7 @@ public class ClassroomApiController {
     @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions", method = RequestMethod.GET)
     ResponseEntity<Object> getSessions(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -933,7 +979,7 @@ public class ClassroomApiController {
     ResponseEntity<Object> getSession(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
             , @PathVariable("sessionKey") String sessionKey
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         RestResponse response = new RestResponse();
@@ -942,6 +988,9 @@ public class ClassroomApiController {
         if(dto != null) {
             SyncSessionAPIDTO apiDto = modelMapper.map(dto, SyncSessionAPIDTO.class);
             response.setData(apiDto);
+        } else {
+            throw new BulkUplaodCourseException("Not Found In System", "Session", 0, 0,
+                    "", "(" + courseId + "," + className + ") [" + sessionKey + "]" );
         }
         return new ResponseEntity<Object>(response, httpStatus);
     }
@@ -980,17 +1029,17 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions", method = RequestMethod.POST)
-    ResponseEntity<Object> addSession(@RequestBody SyncSessionDTO session
+    ResponseEntity<Object> addSession(@Valid @RequestBody SyncSessionDTO session
             , @PathVariable("courseId") String courseId
             , @PathVariable("className") String className
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseSession(encloseClass(encloseCourse(classroom, courseId), className), session.getSessionKey(), session);
         session.setAction("add");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -1024,18 +1073,18 @@ public class ClassroomApiController {
      * </pre>
      */
     @RequestMapping(value = "courses/{courseId}/classes/{className}/sessions/{sessionKey}", method = RequestMethod.PUT)
-    ResponseEntity<Object> updateSession(@RequestBody SyncSessionDTO session
+    ResponseEntity<Object> updateSession(@Valid @RequestBody SyncSessionDTO session
             , @PathVariable("courseId") String courseId
             , @PathVariable("className") String className
             , @PathVariable("sessionKey") String sessionKey
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         encloseSession(encloseClass(encloseCourse(classroom, courseId), className), sessionKey, session);
         session.setAction("update");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 
@@ -1063,14 +1112,14 @@ public class ClassroomApiController {
     ResponseEntity<Object> deleteSession(@PathVariable("courseId") String courseId
             , @PathVariable("className") String className
             , @PathVariable("sessionKey") String sessionKey
-            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) {
+            , @RequestParam(name = "userName", defaultValue = "admin.manager@360training.com") String userName) throws BulkUplaodCourseException {
 
         HttpStatus httpStatus = HttpStatus.OK;
         ClassroomImportDTO classroom = new ClassroomImportDTO();
         SyncSessionDTO session = encloseSession(encloseClass(encloseCourse(classroom, courseId), className), sessionKey);
         session.setAction("delete");
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername(userName);
-        RestResponse response = classroomController.importClassroomCourses(classroom, user);
+        RestResponse response = importClassroomCourses(classroom, user);
         return new ResponseEntity<Object>(response, httpStatus);
     }
 }
