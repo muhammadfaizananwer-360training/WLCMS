@@ -1,8 +1,10 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -176,6 +178,10 @@ public class PublishingController {
 		courseCompletionReport.setContentOwnerId(contentOwnerId);
 		//CourseCompletionReport.setContentOwnerId(Integer.parseInt(contentOwnerId));
 		courseCompletionReport = publishingService.getCompletionReport(courseCompletionReport);
+		String dateString = courseCompletionReport.getLastPublishDate();
+		if(dateString != null && !dateString.trim().equals("")){
+			courseCompletionReport.setLastPublishDate(changeFormat(dateString));
+		}
 
 		courseModelView.addObject("command", courseCompletionReport);
 		courseModelView.addObject("offer", request.getParameter("offer")==null?"0":request.getParameter("offer"));
@@ -191,11 +197,17 @@ public class PublishingController {
 		}
 
 
-
 		logger.info("QuizController::publishing - END");
 		return courseModelView;
 	}
 
+	//change date format for view
+	private String changeFormat(String dateString)throws ParseException {
+		DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");//e.g "06/02/2016 11:01 AM"
+		Date dt = inputFormat.parse(dateString);
+		DateFormat outputFormat = new SimpleDateFormat("MMM. dd, yyyy | hh:mma");//e.g "Jun. 02, 2016 | 11:01AM"
+		return outputFormat.format(dt);
+	}
 
 	@RequestMapping(value = "webinar_publishing",  method={RequestMethod.POST, RequestMethod.GET})
 	ModelAndView webinarPublishing(HttpServletRequest request, HttpServletResponse response)throws Exception {
@@ -215,6 +227,10 @@ public class PublishingController {
 		courseCompletionReport.setCourseType(TypeConvertor.AnyToInteger(cType));
 		courseCompletionReport = publishingService.getWebinarCompletionReport(courseCompletionReport);
 
+		String dateString = courseCompletionReport.getLastPublishDate();
+		if(dateString != null && !dateString.trim().equals("")){
+			courseCompletionReport.setLastPublishDate(changeFormat(dateString));
+		}
 		courseModelView.addObject("command", courseCompletionReport);
 		courseModelView.addObject("id", idToSearch);
 		courseModelView.addObject("cType", cType);
