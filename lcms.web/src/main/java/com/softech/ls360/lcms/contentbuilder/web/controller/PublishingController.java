@@ -588,7 +588,6 @@ public class PublishingController {
 		String msg = "&msg=success";
 		boolean isErrorFound = false;
 		VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Boolean thirdPartyDistr = false;
 		Boolean varResaleClassroomW = false;
 		Boolean mobileTablet = false;
 
@@ -601,22 +600,17 @@ public class PublishingController {
 		String learnerAccessToCourse = request.getParameter("learnerAccessToCourse");
 
 		if (getCourseType ==CourseType.ONLINE_COURSE.getId()){
-			thirdPartyDistr = !Boolean.parseBoolean(request.getParameter("offeredForDistribution")==null ? "false" :request.getParameter("offeredForDistribution"));
 			mobileTablet = !Boolean.parseBoolean(request.getParameter("eligibleForMobileTablet")==null ? "false" :request.getParameter("eligibleForMobileTablet"));
 		}
 
-		else{
-			varResaleClassroomW = Boolean.parseBoolean(request.getParameter("varResale")==null ? "false" :request.getParameter("varResale"));
-			mobileTablet = Boolean.parseBoolean(request.getParameter("eligibleForMobileTablet")==null ? "false" :request.getParameter("eligibleForMobileTablet"));
-		}
-
+		Boolean thirdPartyDistr = !Boolean.parseBoolean(request.getParameter("offeredForDistribution")==null ? "false" :request.getParameter("offeredForDistribution"));
 		Boolean subscription = Boolean.parseBoolean(request.getParameter("subscription")==null ? "false" :request.getParameter("subscription"));
-		Boolean varResale = getCourseType == CourseType.ONLINE_COURSE.getId() ? thirdPartyDistr : varResaleClassroomW;
+		Boolean varResale = thirdPartyDistr;
 		Boolean distributionSCORM = thirdPartyDistr;
 		Boolean distributionAICC = thirdPartyDistr;
-		Boolean reportingToRegulator = Boolean.parseBoolean(request.getParameter("reportingToRegulator")==null ? "false" :request.getParameter("reportingToRegulator"));;
+		Boolean reportingToRegulator = Boolean.parseBoolean(request.getParameter("reportingToRegulator")==null ? "false" :request.getParameter("reportingToRegulator"));
 		Boolean requireShippable = Boolean.parseBoolean(request.getParameter("requireShippableItems")==null ? "false" :request.getParameter("requireShippableItems"));
-		Boolean thirdPartyCourse = Boolean.parseBoolean(request.getParameter("thirdPartyCourse")==null ? "false" :request.getParameter("thirdPartyCourse"));;
+		Boolean thirdPartyCourse = Boolean.parseBoolean(request.getParameter("thirdPartyCourse")==null ? "false" :request.getParameter("thirdPartyCourse"));
 
 		if(idToSearch == null || idToSearch.length() == 0){
 
