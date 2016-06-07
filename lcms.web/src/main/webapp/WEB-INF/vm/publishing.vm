@@ -32,21 +32,19 @@
     <br/>
 
 #* BEGIN COMPLETION CHECK FORM *#
-<div class="portlet">
-    <div class="portlet-title" title="#springMessage('label.publish.criteria')">
-        <div class="caption">
-			#springMessage('label.publish.criteria')
+    <div class="portlet portlet-btn">
+        <div class="portlet-title" title="#springMessage('label.publish.criteria')">
+            <div class="caption">
+        		#springMessage('label.publish.criteria')
+            </div>
+            <div class="tools">
+                <a href="" class="collapse"></a>
+            </div>
         </div>
-        <div class="tools">
-
-        </div>
-    </div>
-
 	#set( $showQuizError = "false" )
 	#set( $showExamError = "false" )
 	#set( $criteria = "true" )
 	#set( $offer = $!{offer} )
-
 	#if ($!{command.quizMastery}=="true" && $!{command.quizQuestionCount} == 0)
 		#set( $showQuizError = "true" )
 	#end
@@ -54,6 +52,7 @@
 		#set( $showExamError = "true" )
 	#end
 
+    <div class="portlet-body" style="display: block;">
 	#if ( $showQuizError =="true" || $showExamError  == "true")
         <div class="messages">
             <div role="alert" class="alert alert-danger alert-dismissible fade in">
@@ -84,7 +83,6 @@
 
         </div>
         <script type="text/javascript"> elementFadeOut('.messages'); </script>
-    </div>
 	#elseif( $failureMessage )
         <div class="messages">
             <div role="alert" class="alert alert-danger alert-dismissible fade in">
@@ -94,15 +92,11 @@
         </div>
         <script type="text/javascript"> elementFadeOut('.messages'); </script>
 	#end
-
 #* end - success message *#
-    <div class="portlet-body">
         <div heading-bottom-text>
 			#springMessage('course.publish.completion-check-message')
         </div>
         <div class="form-horizontal">
-
-
             <div class="form-body">
                 <table class="table bg-gray-2">
                     <tbody>
@@ -121,7 +115,6 @@
                                 </td>
                             </tr>
 							#end
-
 						#end
 						#if ($!{command.examMastery} == "true" || $!{command.completionPostAssessmentAttempted} == "true")
 							#if ($!{showExamError} != "true") <tr>
@@ -198,16 +191,21 @@
                     </tbody>
                 </table>
             </div>
-            <div class="portlet">
-                <div class="portlet-title" title="Publishing Settings">
-                    <div class="caption">
-						#springMessage('label.publishing.settings')
-                    </div>
-                    <div class="tools">
-
-                    </div>
-                </div>
-
+        </div>
+        </div>
+    </div>
+    <br />
+    <div class="portlet portlet-btn">
+        <div class="portlet-title" title="#springMessage('label.publishing.settings')">
+            <div class="caption">
+				#springMessage('label.publishing.settings')
+            </div>
+            <div class="tools">
+                <a href="" class="collapse"></a>
+            </div>
+        </div>
+        <div class="portlet-body" style="display: block;">
+            <br />
 			#* END COMPLETION CHECK FORM *#
                 <form class="form-horizontal" action ="publishCourse" role="form" method="Post" id="frm_publish">
 					#springBind("id")
@@ -225,12 +223,10 @@
                         <div class="heading-bottom-text">
 							#springMessage('label.publishing.criteria.meet')
                         </div>
-
                         <div class="form-horizontal">
                             <div class="form-body">
                                 <table class="table bg-gray-2">
                                     <tbody>
-
 										#if ($!{command.publishStatus}=="false")
                                         <tr>
                                             <td> #springMessage('label.publish-only-to-the-learning-management-center')</td>
@@ -309,7 +305,7 @@
                                             <div class="alert alert-danger zero-margin">
                                                 <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
                                                 <br>
-                                                <p>#springMessage('label.publish.offer.check.email')</p>                                                
+                                                <p>#springMessage('label.publish.offer.check.email')</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -364,13 +360,14 @@
                     <div class="portlet">
                         <div class="portlet-body">
                             <button id="publishBtn" #if($showQuizError =="true" || $showExamError  == "true") disabled #end class="btn blue input-small" onClick = "showPublishAlert ('frm_publish')">#springMessage('button.publish')</button>
-                            <small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>
+                            #if($!{command.lastPublishDate})<small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>#end
                         </div>
                     </div>
-
 				#* BEGIN ACTION BUTTONS *#
                 </form>
             </div>
+        </div>
+    </div>
 		#* END PAGE CONTENT *#
 
 #parse("footer.vm")

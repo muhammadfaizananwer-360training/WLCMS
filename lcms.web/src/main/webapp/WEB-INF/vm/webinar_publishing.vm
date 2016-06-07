@@ -5,7 +5,6 @@
 <script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 
-
 #* BEGIN CONFIRMATION *#
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -60,16 +59,16 @@
 
     <br/>
 
-<div class="portlet">
+<div class="portlet portlet-btn">
     <div class="portlet-title" title="#springMessage('label.publish.criteria')">
         <div class="caption">
 			#springMessage('label.publish.criteria')
         </div>
         <div class="tools">
-
+            <a href="" class="collapse"></a>
         </div>
     </div>
-
+    <div class="portlet-body" style="display: block;">
 #* start - success message *#
 	#if( $!{msg}=="success" )
         <div class="messages">
@@ -80,7 +79,6 @@
 
         </div>
         <script type="text/javascript"> elementFadeOut('.messages'); </script>
-    </div>
 	#elseif( $failureMessage )
         <div class="messages">
             <div role="alert" class="alert alert-danger alert-dismissible fade in">
@@ -94,7 +92,6 @@
 	#if ($!{command.IsScheduleSet}=="true" && $!{command.IsPresenterSet}=="true" && ($!{command.IsClassRoomSet}=="true" || $!{command.IsMeetingSet}=="true" ) && $!{command.IsAuthorInfoProvided}=="true")
 		#set( $disablePublish = "false" )
 	#end
-
 	#if ($disablePublish == "true")
         <div class="messages">
             <div role="alert" class="alert alert-danger alert-dismissible fade in">
@@ -105,16 +102,14 @@
         <script type="text/javascript"> elementFadeOut('.messages'); </script>
 	#end
 #* BEGIN COMPLETION CHECK FORM *#
-    <div class="portlet-body">
+
         <div heading-bottom-text>
 			#springMessage('course.publish.completion-check-message')
         </div>
         <div class="form-horizontal">
-
             <table class="table bg-gray-2">
                 <tbody>
 					#if ($!{cType} == 5)
-
 						#if ($!{command.IsScheduleSet}=="true")
                         <tr>
                             <td>#springMessage('label.schedule-has-been-set')</td>
@@ -130,8 +125,7 @@
                             </td>
                         </tr>
 						#end
-
-						#if ($!{command.IsPresenterSet}=="true")
+ 						#if ($!{command.IsPresenterSet}=="true")
                         <tr>
                             <td>#springMessage('label.instructor-has-been-set')</td>
                             <td class="text-right  green-text">
@@ -146,7 +140,6 @@
                             </td>
                         </tr>
 						#end
-
 						#if ($!{command.IsClassRoomSet}=="true")
                         <tr>
                             <td>#springMessage('label.classroom-setup-has-been-specified')</td>
@@ -162,12 +155,9 @@
                             </td>
                         </tr>
 						#end
-
 					#end
-
-					#if ($!{cType} == 6)
-
-						#if ($!{command.IsScheduleSet}=="true")
+ 					#if ($!{cType} == 6)
+  						#if ($!{command.IsScheduleSet}=="true")
                         <tr>
                             <td>#springMessage('label.schedule-has-been-set-W')</td>
                             <td class="text-right  green-text">
@@ -182,8 +172,7 @@
                             </td>
                         </tr>
 						#end
-
-						#if ($!{command.IsPresenterSet}=="true")
+   						#if ($!{command.IsPresenterSet}=="true")
                         <tr>
                             <td>#springMessage('label.instructor-has-been-set')</td>
                             <td class="text-right  green-text">
@@ -198,8 +187,7 @@
                             </td>
                         </tr>
 						#end
-
-						#if ($!{command.IsMeetingSet}=="true")
+ 						#if ($!{command.IsMeetingSet}=="true")
                         <tr>
                             <td>#springMessage('label.webinar-setup-has-been-specified')</td>
                             <td class="text-right  green-text">
@@ -215,8 +203,7 @@
                         </tr>
 						#end
 					#end
-
-					#if ($!{command.IsAuthorInfoProvided}=="true")
+ 					#if ($!{command.IsAuthorInfoProvided}=="true")
                     <tr>
                         <td>#springMessage('label.author-information-provided-marketing-area')</td>
                         <td class="text-right  green-text">
@@ -234,171 +221,174 @@
                 </tbody>
             </table>
         </div>
-        <div class="portlet">
-            <div class="portlet-title" title="Publishing Settings">
-                <div class="caption">
-					#springMessage('label.publishing.settings')
-                </div>
-                <div class="tools">
+    </div>
+</div>
+<br />
+<div class="portlet portlet-btn">
+   <div class="portlet-title" title="#springMessage('label.publishing.settings')">
+        <div class="caption">
+        	#springMessage('label.publishing.settings')
+        </div>
+        <div class="tools">
+            <a href="" class="collapse"></a>
+        </div>
+   </div>
 
+		#* END COMPLETION CHECK FORM *#
+    <div class="portlet-body" style="display: block;">
+        <form class="form-horizontal" action ="publishCourse" role="form" method="Post" id="frm_webinar_publish">
+			#springBind("id")
+            <input type="hidden"  name="id" id="id" value="$!{id}">
+
+			#springBind("cType")
+            <input type="hidden"  name="cType" id="cType" value="$!{cType}">
+
+			#springBind("command.courseName")
+            <input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+
+			#springBind("command.bussinessKey")
+            <input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+		#* BEGIN SETTINGS FOR UPDATE PUBLISHING FORM *#
+            <div class="form-horizontal">
+                <div class="form-body">
+                    <table class="table bg-gray-2">
+                        <tbody>
+ 							#if ($!{command.publishStatus}=="false")
+                            <tr>
+                                <td> #springMessage('label.publish-only-to-the-learning-management-center')</td>
+                                <td class="text-right">
+                                    <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                        <input type="checkbox" name="publishLMS" id="publishLMS">
+                                    </div>
+                                </td>
+                            </tr>
+								#if ($!{command.contentOwnerStoreFront}=="true")
+                                <tr>
+                                    <td> #springMessage('label.publish.my.store.front')</td>
+                                    <td class="text-right">
+                                        <div id="publisToSFBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                            <input type="checkbox" name="publishSF" id="publishSF">
+                                        </div>
+                                    </td>
+                                </tr>
+								#end
+							#end
+							#if ($!{command.publishStatus}=="true")
+                            <tr>
+                                <td>#springMessage('label.update.publish-only-to-the-learning-management-center')</td>
+                                <td class="text-right">
+                                    <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                        <input type="checkbox" name="updateLMS" id="updateLMS">
+                                    </div>
+                                </td>
+                            </tr>
+								#if ($!{command.contentOwnerStoreFront}=="true")
+                                <tr>
+                                    <td> #springMessage('label.update.publish.my.store.front')</td>
+                                    <td class="text-right">
+                                        <div id="publisToSFBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                            <input type="checkbox" name="updateSF" id="updateSF">
+                                        </div>
+                                    </td>
+                                </tr>
+								#end
+							#end
+							#if ($!{command.publishStatus}=="true")
+                            <tr id="offerInitial" class="hide">
+                                <td>#springMessage('label.publish.market.place')<br>
+                                    <span class="help-block">#springMessage('label.publish.market.place.initial.message')</span></td>
+                                <td class="text-right">
+                                    <div id="publisTo360Btn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                        <input type="checkbox" name="publis360Btn" id="publis360Btn">
+                                    </div>
+                                </td>
+                            </tr>
+							#end
+                        <tr id="offerInprogress" class="hide">
+                            <td colspan="2">
+                                <div class="alert alert-info zero-margin">
+                                    <h2><strong>#springMessage('label.publish.looking.offer')</strong></h2>
+                                    <br>
+                                    <p>#springMessage('label.publish.progress.message')</p>
+                                    <br>
+                                    <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
+								#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
+                                    <small>#springMessage('label.publish.offer.inprogress.sale')</small>
+                                    <br><br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="offerFail" class="hide">
+                            <td colspan="2">
+                                <div class="alert alert-danger zero-margin">
+                                    <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
+                                    <br>
+                                    <p>#springMessage('label.publish.offer.check.email')</p>
+                                    <br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="offerSuccess" class="hide">
+                            <td colspan="2">
+                                <div class="alert alert-success zero-margin">
+                                    <h2><strong>#springMessage('label.publish.offer.success.accepted')</strong></h2>
+                                    <br>
+                                    <p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email'):</p>
+                                    <br>
+                                    <ul>
+                                        <li>#springMessage('label.title-of-the-course')</li>
+                                        <li>#springMessage('default.SearchHeaderCourseID')</li>
+                                        <li>#springMessage('label.username-of-the-account-owner')</li>
+                                    </ul>
+                                    <br>
+                                    <u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>
+                                    <small>#springMessage('label.publish.offer.success.resellers')</small>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="offerPrice" class="hide">
+                            <td colspan="2">
+                                <div class="collapse" id="collapseExample">
+                                    <ul class="list-inline hint-in-table">
+                                        <li class="top"><img src="theme/executive/img/offer-price.png" style="width:100%"></li>
+                                        <li class="middle">
+                                            <div>
+                                                <label class="control-label-2">#springMessage('label.publish.offer.price.list.price')<span class="required">*</span></label>
+                                                <div class="input-icon">
+                                                    <i class="icon-usd"></i>
+                                                    <input type="number" id="mSRP"  name="mSRP" class="form-control" placeholder="0.00">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="control-label-2">#springMessage('label.publish.offer.price.lowest')<span class="required">*</span></label>
+                                                <div class="input-icon">
+                                                    <i class="icon-usd"></i>
+                                                    <input type="number" class="form-control" id="lowestSalePrice"  name="lowestSalePrice" placeholder="0.00">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-		#* END COMPLETION CHECK FORM *#
-
-            <form class="form-horizontal" action ="publishCourse" role="form" method="Post" id="frm_webinar_publish">
-				#springBind("id")
-                <input type="hidden"  name="id" id="id" value="$!{id}">
-
-				#springBind("cType")
-                <input type="hidden"  name="cType" id="cType" value="$!{cType}">
-
-				#springBind("command.courseName")
-                <input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
-
-				#springBind("command.bussinessKey")
-                <input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
-			#* BEGIN SETTINGS FOR UPDATE PUBLISHING FORM *#
-                <div class="form-horizontal">
-                    <div class="form-body">
-                        <table class="table bg-gray-2">
-                            <tbody>
-
-								#if ($!{command.publishStatus}=="false")
-                                <tr>
-                                    <td> #springMessage('label.publish-only-to-the-learning-management-center')</td>
-                                    <td class="text-right">
-                                        <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
-                                            <input type="checkbox" name="publishLMS" id="publishLMS">
-                                        </div>
-                                    </td>
-                                </tr>
-									#if ($!{command.contentOwnerStoreFront}=="true")
-                                    <tr>
-                                        <td> #springMessage('label.publish.my.store.front')</td>
-                                        <td class="text-right">
-                                            <div id="publisToSFBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
-                                                <input type="checkbox" name="publishSF" id="publishSF">
-                                            </div>
-                                        </td>
-                                    </tr>
-									#end
-								#end
-								#if ($!{command.publishStatus}=="true")
-                                <tr>
-                                    <td>#springMessage('label.update.publish-only-to-the-learning-management-center')</td>
-                                    <td class="text-right">
-                                        <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
-                                            <input type="checkbox" name="updateLMS" id="updateLMS">
-                                        </div>
-                                    </td>
-                                </tr>
-									#if ($!{command.contentOwnerStoreFront}=="true")
-                                    <tr>
-                                        <td> #springMessage('label.update.publish.my.store.front')</td>
-                                        <td class="text-right">
-                                            <div id="publisToSFBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
-                                                <input type="checkbox" name="updateSF" id="updateSF">
-                                            </div>
-                                        </td>
-                                    </tr>
-									#end
-								#end
-								#if ($!{command.publishStatus}=="true")
-                                <tr id="offerInitial" class="hide">
-                                    <td>#springMessage('label.publish.market.place')<br>
-                                        <span class="help-block">#springMessage('label.publish.market.place.initial.message')</span></td>
-                                    <td class="text-right">
-                                        <div id="publisTo360Btn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
-                                            <input type="checkbox" name="publis360Btn" id="publis360Btn">
-                                        </div>
-                                    </td>
-                                </tr>
-								#end
-                            <tr id="offerInprogress" class="hide">
-                                <td colspan="2">
-                                    <div class="alert alert-info zero-margin">
-                                        <h2><strong>#springMessage('label.publish.looking.offer')</strong></h2>
-                                        <br>
-                                        <p>#springMessage('label.publish.progress.message')</p>
-                                        <br>
-                                        <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
-									#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
-                                        <small>#springMessage('label.publish.offer.inprogress.sale')</small>
-                                        <br><br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr id="offerFail" class="hide">
-                                <td colspan="2">
-                                    <div class="alert alert-danger zero-margin">
-                                        <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
-                                        <br>
-                                        <p>#springMessage('label.publish.offer.check.email')</p>
-                                        <br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr id="offerSuccess" class="hide">
-                                <td colspan="2">
-                                    <div class="alert alert-success zero-margin">
-                                        <h2><strong>#springMessage('label.publish.offer.success.accepted')</strong></h2>
-                                        <br>
-                                        <p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email'):</p>
-                                        <br>
-                                        <ul>
-                                            <li>#springMessage('label.title-of-the-course')</li>
-                                            <li>#springMessage('default.SearchHeaderCourseID')</li>
-                                            <li>#springMessage('label.username-of-the-account-owner')</li>
-                                        </ul>
-                                        <br>
-                                        <u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>
-                                        <small>#springMessage('label.publish.offer.success.resellers')</small>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr id="offerPrice" class="hide">
-                                <td colspan="2">
-                                    <div class="collapse" id="collapseExample">
-                                        <ul class="list-inline hint-in-table">
-                                            <li class="top"><img src="theme/executive/img/offer-price.png" style="width:100%"></li>
-                                            <li class="middle">
-                                                <div>
-                                                    <label class="control-label-2">#springMessage('label.publish.offer.price.list.price')<span class="required">*</span></label>
-                                                    <div class="input-icon">
-                                                        <i class="icon-usd"></i>
-                                                        <input type="number" id="mSRP"  name="mSRP" class="form-control" placeholder="0.00">
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label class="control-label-2">#springMessage('label.publish.offer.price.lowest')<span class="required">*</span></label>
-                                                    <div class="input-icon">
-                                                        <i class="icon-usd"></i>
-                                                        <input type="number" class="form-control" id="lowestSalePrice"  name="lowestSalePrice" placeholder="0.00">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
 			#* END SETTINGS FOR UPDATE PUBLISHING FORM *#
 
-			#* BEGIN ACTION BUTTONS *#
-                <div class="portlet">
-                    <div class="portlet-body">
-                        <button id="publishBtn" type="button" #if ($disablePublish == "true") disabled #end class="btn blue input-small"  onClick ="ProceedtoPublishWebinarClassRoom('frm_webinar_publish',thisCourse.validation)">#springMessage('button.publish')</button>
-                        <small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>
-                    </div>
+		#* BEGIN ACTION BUTTONS *#
+            <div class="portlet">
+                <div class="portlet-body">
+                    <button id="publishBtn" type="button" #if ($disablePublish == "true") disabled #end class="btn blue input-small"  onClick ="ProceedtoPublishWebinarClassRoom('frm_webinar_publish',thisCourse.validation)">#springMessage('button.publish')</button>
+                    #if($!{command.lastPublishDate})<small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>#end
                 </div>
-			#* BEGIN ACTION BUTTONS *#
-            </form>
-        </div>
+            </div>
+		#* BEGIN ACTION BUTTONS *#
+        </form>
+    </div>
+</div>
 	#* END PAGE CONTENT *#
 
 #parse("footer.vm")
