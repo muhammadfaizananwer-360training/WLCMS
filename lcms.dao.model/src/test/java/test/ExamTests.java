@@ -1,5 +1,9 @@
-package com.softech.ls360.lcms.contentbuilder.service.test;
+package test;
 
+import com.softech.ls360.lcms.contentbuilder.model.ExamConfiguration;
+import com.softech.ls360.lcms.contentbuilder.service.IExamService;
+import com.softech.ls360.lcms.contentbuilder.test.AbstractLcmsTest;
+import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +12,9 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import com.softech.ls360.lcms.contentbuilder.model.ExamConfiguration;
-import com.softech.ls360.lcms.contentbuilder.service.IExamService;
-import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, SlideServiceTest.class})
-@ContextConfiguration(locations = { "classpath:app-context.xml" })
-public class ExamTests extends AbstractTestExecutionListener{
+public class ExamTests extends AbstractLcmsTest{
 
 	
 	final String COURSE_ID = "111633"; 

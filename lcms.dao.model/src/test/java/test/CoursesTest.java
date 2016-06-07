@@ -1,9 +1,8 @@
-package com.softech.ls360.lcms.contentbuilder.service.test;
+package test;
 
 
-import java.util.UUID;
-
-import org.junit.Assert;
+import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
+import com.softech.ls360.lcms.contentbuilder.test.AbstractLcmsTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.softech.ls360.lcms.contentbuilder.model.ContentObject;
-import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, TestsImpl.class})
-@ContextConfiguration(locations = { "classpath:app-context.xml" })
-public class TestsImpl extends AbstractTestExecutionListener {
+public class CoursesTest extends AbstractLcmsTest {
     
 	//@Autowired
    // protected CourseDAO courseDao;

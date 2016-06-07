@@ -17,9 +17,10 @@ import com.softech.ls360.lcms.contentbuilder.model.VU360User;
 import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml","file:src/main/webapp/WEB-INF/spring-security.xml","file:src/main/webapp/WEB-INF/spring-ws.xml" })
+@ContextConfiguration(locations = { "classpath:mvc-dispatcher-servlet-unit.xml" })
 @ActiveProfiles(profiles = "test")
 public abstract class AbstractLcmsTest extends AbstractTestExecutionListener {
+
 
 	@Autowired
 	protected VU360UserService userService;

@@ -1,33 +1,25 @@
-package com.softech.ls360.lcms.contentbuilder.service.test;
+package test;
 
-import com.softech.ls360.lcms.contentbuilder.model.ClassInstructor;
 import com.softech.ls360.lcms.contentbuilder.repository.ClassInstructorRepository;
+import com.softech.ls360.lcms.contentbuilder.service.IClassInstructorService;
 import com.softech.ls360.lcms.contentbuilder.service.impl.ClassInstructorServiceImpl;
+import com.softech.ls360.lcms.contentbuilder.test.AbstractLcmsTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.List;
-
 /**
  * Created by muhammad.imran on 4/21/2016.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, SynchronousClassServiceTest.class})
-@ContextConfiguration(locations = { "classpath:app-context.xml" })
-public class ClassInstructorTest extends AbstractTestExecutionListener {
+public class ClassInstructorTest extends AbstractLcmsTest {
 
     @Autowired
-    public ClassInstructorServiceImpl classInstructorService;
+    public IClassInstructorService classInstructorService;
 
     @Autowired
     public ClassInstructorRepository classInstructorRepository;

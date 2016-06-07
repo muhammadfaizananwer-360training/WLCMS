@@ -1,7 +1,10 @@
-package com.softech.ls360.lcms.contentbuilder.service.test;
+package test;
 
-import static org.junit.Assert.assertNotNull;
-
+import com.softech.ls360.lcms.contentbuilder.model.Slide;
+import com.softech.ls360.lcms.contentbuilder.model.SlideAsset;
+import com.softech.ls360.lcms.contentbuilder.service.ISlideService;
+import com.softech.ls360.lcms.contentbuilder.test.AbstractLcmsTest;
+import com.softech.ls360.lcms.contentbuilder.utils.JsonResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.softech.ls360.lcms.contentbuilder.model.Slide;
-import com.softech.ls360.lcms.contentbuilder.model.SlideAsset;
-import com.softech.ls360.lcms.contentbuilder.service.ISlideService;
-import com.softech.ls360.lcms.contentbuilder.utils.JsonResponse;
+import static org.junit.Assert.assertNotNull;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, SlideServiceTest.class})
-@ContextConfiguration(locations = { "classpath:app-context.xml" })
-public class SlideServiceTest  extends AbstractTestExecutionListener
+public class SlideServiceTest  extends AbstractLcmsTest
 {
 	@Autowired
 	ISlideService slideService;
