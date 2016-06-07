@@ -1,8 +1,10 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -176,6 +178,10 @@ public class PublishingController {
 		courseCompletionReport.setContentOwnerId(contentOwnerId);
 		//CourseCompletionReport.setContentOwnerId(Integer.parseInt(contentOwnerId));
 		courseCompletionReport = publishingService.getCompletionReport(courseCompletionReport);
+		String dateString = courseCompletionReport.getLastPublishDate();
+		if(dateString != null && !dateString.trim().equals("")){
+			courseCompletionReport.setLastPublishDate(changeFormat(dateString));
+		}
 
 		courseModelView.addObject("command", courseCompletionReport);
 		courseModelView.addObject("offer", request.getParameter("offer")==null?"0":request.getParameter("offer"));
@@ -191,11 +197,17 @@ public class PublishingController {
 		}
 
 
-
 		logger.info("QuizController::publishing - END");
 		return courseModelView;
 	}
 
+	//change date format for view
+	private String changeFormat(String dateString)throws ParseException {
+		DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");//e.g "06/02/2016 11:01 AM"
+		Date dt = inputFormat.parse(dateString);
+		DateFormat outputFormat = new SimpleDateFormat("MMM. dd, yyyy | hh:mma");//e.g "Jun. 02, 2016 | 11:01AM"
+		return outputFormat.format(dt);
+	}
 
 	@RequestMapping(value = "webinar_publishing",  method={RequestMethod.POST, RequestMethod.GET})
 	ModelAndView webinarPublishing(HttpServletRequest request, HttpServletResponse response)throws Exception {
@@ -215,6 +227,10 @@ public class PublishingController {
 		courseCompletionReport.setCourseType(TypeConvertor.AnyToInteger(cType));
 		courseCompletionReport = publishingService.getWebinarCompletionReport(courseCompletionReport);
 
+		String dateString = courseCompletionReport.getLastPublishDate();
+		if(dateString != null && !dateString.trim().equals("")){
+			courseCompletionReport.setLastPublishDate(changeFormat(dateString));
+		}
 		courseModelView.addObject("command", courseCompletionReport);
 		courseModelView.addObject("id", idToSearch);
 		courseModelView.addObject("cType", cType);
@@ -572,7 +588,6 @@ public class PublishingController {
 		String msg = "&msg=success";
 		boolean isErrorFound = false;
 		VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Boolean thirdPartyDistr = false;
 		Boolean varResaleClassroomW = false;
 		Boolean mobileTablet = false;
 
@@ -585,22 +600,17 @@ public class PublishingController {
 		String learnerAccessToCourse = request.getParameter("learnerAccessToCourse");
 
 		if (getCourseType ==CourseType.ONLINE_COURSE.getId()){
-			thirdPartyDistr = !Boolean.parseBoolean(request.getParameter("offeredForDistribution")==null ? "false" :request.getParameter("offeredForDistribution"));
 			mobileTablet = !Boolean.parseBoolean(request.getParameter("eligibleForMobileTablet")==null ? "false" :request.getParameter("eligibleForMobileTablet"));
 		}
 
-		else{
-			varResaleClassroomW = Boolean.parseBoolean(request.getParameter("varResale")==null ? "false" :request.getParameter("varResale"));
-			mobileTablet = Boolean.parseBoolean(request.getParameter("eligibleForMobileTablet")==null ? "false" :request.getParameter("eligibleForMobileTablet"));
-		}
-
+		Boolean thirdPartyDistr = !Boolean.parseBoolean(request.getParameter("offeredForDistribution")==null ? "false" :request.getParameter("offeredForDistribution"));
 		Boolean subscription = Boolean.parseBoolean(request.getParameter("subscription")==null ? "false" :request.getParameter("subscription"));
-		Boolean varResale = getCourseType == CourseType.ONLINE_COURSE.getId() ? thirdPartyDistr : varResaleClassroomW;
+		Boolean varResale = thirdPartyDistr;
 		Boolean distributionSCORM = thirdPartyDistr;
 		Boolean distributionAICC = thirdPartyDistr;
-		Boolean reportingToRegulator = Boolean.parseBoolean(request.getParameter("reportingToRegulator")==null ? "false" :request.getParameter("reportingToRegulator"));;
+		Boolean reportingToRegulator = Boolean.parseBoolean(request.getParameter("reportingToRegulator")==null ? "false" :request.getParameter("reportingToRegulator"));
 		Boolean requireShippable = Boolean.parseBoolean(request.getParameter("requireShippableItems")==null ? "false" :request.getParameter("requireShippableItems"));
-		Boolean thirdPartyCourse = Boolean.parseBoolean(request.getParameter("thirdPartyCourse")==null ? "false" :request.getParameter("thirdPartyCourse"));;
+		Boolean thirdPartyCourse = Boolean.parseBoolean(request.getParameter("thirdPartyCourse")==null ? "false" :request.getParameter("thirdPartyCourse"));
 
 		if(idToSearch == null || idToSearch.length() == 0){
 

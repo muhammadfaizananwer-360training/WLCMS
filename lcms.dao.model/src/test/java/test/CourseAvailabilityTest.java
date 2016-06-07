@@ -1,10 +1,8 @@
-package com.softech.ls360.lcms.contentbuilder.service.test;
+package test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-
+import com.softech.ls360.lcms.contentbuilder.model.CourseAvailability;
+import com.softech.ls360.lcms.contentbuilder.service.IPublishingService;
+import com.softech.ls360.lcms.contentbuilder.test.AbstractLcmsTest;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,14 +13,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.softech.ls360.lcms.contentbuilder.model.CourseAvailability;
-import com.softech.ls360.lcms.contentbuilder.service.IPublishingService;
+import java.sql.SQLException;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, CourseAvailabilityTest.class})
-@ContextConfiguration(locations = { "classpath:app-context.xml" })
-public class CourseAvailabilityTest extends AbstractTestExecutionListener{
+public class CourseAvailabilityTest extends AbstractLcmsTest{
 
 
 	private static Logger logger = Logger.getLogger(CourseAvailabilityTest.class);

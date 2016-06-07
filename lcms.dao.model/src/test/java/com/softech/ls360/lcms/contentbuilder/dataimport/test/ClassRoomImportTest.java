@@ -9,12 +9,18 @@ import com.softech.ls360.lcms.contentbuilder.dataimport.CRSessionParsingSubHndlr
 import com.softech.ls360.lcms.contentbuilder.dataimport.ClassroomParsingHndlr;
 import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
 import com.softech.ls360.lcms.contentbuilder.model.VU360UserDetail;
+import com.softech.ls360.lcms.contentbuilder.service.IClassroomCourseService;
 import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
 import com.softech.ls360.lcms.contentbuilder.service.impl.ClassroomCourseServiceImpl;
 import static org.junit.Assert.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.softech.ls360.lcms.contentbuilder.utils.IOConvertor;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.softech.ls360.lcms.contentbuilder.test.AbstractLcmsTest;
@@ -36,43 +42,23 @@ public class ClassRoomImportTest extends AbstractLcmsTest {
     @Autowired
     private CRLocationParsingSubHndlr locationSubHandler;
     
+
     @Autowired
-    private LocationDAO locationDAO;
-    
-    @Autowired
-    private ClassroomCourseServiceImpl classroomService;
+    private IClassroomCourseService classroomService;
     
     @Autowired
     private VU360UserService userService;
 
-    
-    //@Test()
-    public void parseExcelFile() throws IOException, Exception {
-        
-        String testFilePath = "excels/classroom2.xlsx";
-        initializeHandlers();
-        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(testFilePath)) {
-            assertNotNull("classpath:" + testFilePath + " file not available for testing.", is);
-            classroomHandler.parseCourse(is);
-        } 
-    }
-    
-    @Test()
+
+    @Test(expected=TabularDataException.class)
     public void importExcelFile() throws IOException, TabularDataException {
         
         String testFilePath = "excels/classroom2.xlsx";
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername("admin.manager@360training.com");
         try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(testFilePath)) {
             assertNotNull("classpath:" + testFilePath + " file not available for testing.", is);
-            classroomService.importCourses(user, (byte[])null,true);
-        }catch (TabularDataException ex) {
-            System.out.println(ex.getMessage()
-                                + "\nSheet Name: " + ex.getTableName()
-                                + "\nRow Number: " + ex.getRowNumber()
-                                + "\nColumn Number: " + ex.getColumnIndex()
-                                + "\nColumn: " + ex.getColumnName()
-                                + "\nErrorText: " + ex.getErrorText());
-            throw ex;
+            byte[] fileData = IOConvertor.convertStreamToDataBytes(is);
+            classroomService.importCourses(user, fileData,true);
         }
     }
     

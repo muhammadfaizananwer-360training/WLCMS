@@ -50,7 +50,7 @@ public class VelocityTemplateResolver implements TemplateResolver {
 
     }
     
-    public String parseText(VelocityContext velocityContext,String text) {
+    public String evaluateText(VelocityContext velocityContext,String text) {
         StringWriter resultWriter = new StringWriter();
         velocityEngine.evaluate(velocityContext, resultWriter, text, text);
         String result = resultWriter.toString();

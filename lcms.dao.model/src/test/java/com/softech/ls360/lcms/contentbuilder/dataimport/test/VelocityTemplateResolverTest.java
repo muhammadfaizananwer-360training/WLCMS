@@ -24,7 +24,7 @@ public class VelocityTemplateResolverTest extends AbstractLcmsTest {
         
         VU360UserDetail user = (VU360UserDetail) userService.loadUserByUsername("admin.manager@360training.com");
         Map model = new HashMap();
-        String text = templateResolver.resolveTemplate(user, "here is user name = ${user.userDisplayName}", model);
+        String text = templateResolver.resolveTemplate(user, "test.vm", model);
         System.out.print(text);
     }
 }
