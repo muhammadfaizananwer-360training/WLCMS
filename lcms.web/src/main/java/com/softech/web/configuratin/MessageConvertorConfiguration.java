@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,7 +41,17 @@ public class MessageConvertorConfiguration  {
 
     @Autowired
     public void updateJacksonConvertor(RequestMappingHandlerAdapter handlerAdapter) {
-        handlerAdapter.getMessageConverters().add(0,customJackson2HttpMessageConverter());
+
+        //remove default jakson convertor
+        Iterator<HttpMessageConverter<?>> convertorsIterator = handlerAdapter.getMessageConverters().iterator();
+        while (convertorsIterator.hasNext()) {
+            HttpMessageConverter converter = convertorsIterator.next();
+            if(converter instanceof AbstractJackson2HttpMessageConverter) {
+                convertorsIterator.remove();
+            }
+        }
+
+        handlerAdapter.getMessageConverters().add(customJackson2HttpMessageConverter());
     }
 
 }
