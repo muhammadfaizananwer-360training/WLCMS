@@ -80,10 +80,9 @@
                 #end
                 <div class="form-group">
                     <div class="col-md-12">
-                        <input type="hidden" id="authorImageTableField" name="authorImageTableField" />
-
                         <label class="control-label-2">#springMessage('label.information.author.desc') #if ($!{cType} == "6" || $!{cType} == "5")  <span class="required">*</span> #end</label>
-                        <span class="help-block">#springMessage('label.information.image.size')</span>
+                        <input type="hidden" id="authorImageTableField" name="authorImageTableField" />
+						<span class="help-block">#springMessage('label.information.image.size')</span>
                         <div class="table-scrollable" id="icc_container_0" style="margin-top:0 !important">
                             <table class="table table-str-border table-bordered drop-widget">
                               <thead >
