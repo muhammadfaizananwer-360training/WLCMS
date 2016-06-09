@@ -256,24 +256,25 @@ function SaveMarketing () {
 	var cType = getParameterByName('cType');
 
 	if(cType != null && (cType == WLCMS_CONSTANTS_COURSE_TYPE.CLASSROOM_COURSE || cType == WLCMS_CONSTANTS_COURSE_TYPE.WEBINAR_COURSE)){
+
 		var editor = CKEDITOR.instances.AuthorBackground;
 		var vName = editor.getData();
 		vName = $(vName).html ();
 		var vNameEscaped = escape(vName);
-
 		editor.updateElement();
+
 		var authorBackGroundProvided = $("#frm_marketing").validate().element("#AuthorBackground");
 		var authorImageProvided = $("#frm_marketing").validate().element("#authorImageTableField");
+		var instructorValidated = cType === WLCMS_CONSTANTS_COURSE_TYPE.CLASSROOM_COURSE?
+			$("#frm_marketing").validate().element("#classInstructor"):
+			true;
 
-		if (!authorBackGroundProvided || !authorImageProvided  ) {
+
+		if (!authorBackGroundProvided || !authorImageProvided || !instructorValidated  ) {
 			TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
 			return;
 		}
-        if(cType=='5' && !$("#frm_marketing").validate().element("#classInstructor")){
-            TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
-            return;
 
-        }
 	}
 
 	course_id 		 =  getParameterByName('id');
