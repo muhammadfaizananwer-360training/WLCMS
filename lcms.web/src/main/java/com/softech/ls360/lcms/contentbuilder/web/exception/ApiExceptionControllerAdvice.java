@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 
 @ControllerAdvice(annotations = RestController.class)
 public class ApiExceptionControllerAdvice {
@@ -52,6 +54,20 @@ public class ApiExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestResponse handleApiException(HttpMessageNotReadableException e) {
+        return exceptionAdvise.handleApiException(e);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ResponseBody
+    public RestResponse handleApiException(HttpMediaTypeNotSupportedException e) {
+        return exceptionAdvise.handleApiException(e);
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ResponseBody
+    public RestResponse handleApiException(MultipartException e) {
         return exceptionAdvise.handleApiException(e);
     }
 }
