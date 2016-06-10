@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.softech.ls360.lcms.contentbuilder.web.controller.CourseController;
@@ -70,10 +72,30 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestResponse handleApiException(HttpMessageNotReadableException e) {
-        List<InvalidField> invalidFields = new ArrayList<>();
         RestResponse response = new RestResponse();
         response.setError("corrupt-data");
         response.setData("unable to parse data");
+        return response;
+    }
+
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ResponseBody
+    public RestResponse handleApiException(HttpMediaTypeNotSupportedException e) {
+        RestResponse response = new RestResponse();
+        response.setError("invalid-media");
+        response.setData("Media Type is not supported");
+        return response;
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ResponseBody
+    public RestResponse handleApiException(MultipartException e) {
+        RestResponse response = new RestResponse();
+        response.setError("invalid-media");
+        response.setData("Not multipart request");
         return response;
     }
 }
