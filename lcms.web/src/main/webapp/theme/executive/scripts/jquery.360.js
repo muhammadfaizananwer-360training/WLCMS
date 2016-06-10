@@ -180,7 +180,7 @@ var $360 = (function () {
                 } else if (response.warning != null) {
                     msg = response.warning;
                     mode = 2;
-                } else if (response.info != null) {
+                } else if (!(response.info || response.info === "ok")) {
                     msg = response.info;
                 }
 
