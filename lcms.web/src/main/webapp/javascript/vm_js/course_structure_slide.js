@@ -158,7 +158,14 @@ function addVideoSlide(btn) {
 	var vName = $(form).find("#slideTitle").val();
 	//defaults
 	$(form).find("#hidSlideTemplateIdForAddForm").val(Template_Visual_Streaming_Center_ID);
-	$(form).find("#duration").val("0");
+	//get duration of slide in seconds and fill duration field
+	var file = $(form).find('.upload-360').uploader360().files[0];
+	if(file && file.media && file.media.duration && (!isNaN(file.media.duration))) {
+		//get floor of the value as mostly used format of display value
+		$(form).find('#duration').val(Math.floor(file.media.duration));
+	} else {//if video encoding is not supported by browser then set default
+		$(form).find('#duration').val("0");
+	}
 	//extra params for creating Asset
 	var extraParams = {
 			cboAssetTypeVisual: "mp4",

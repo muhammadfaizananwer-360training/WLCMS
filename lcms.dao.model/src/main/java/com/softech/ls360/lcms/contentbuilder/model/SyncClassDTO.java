@@ -1,4 +1,8 @@
 package com.softech.ls360.lcms.contentbuilder.model;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotPastDate;
+import org.hibernate.validator.constraints.Range;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,13 +11,25 @@ import java.util.Map;
 public class SyncClassDTO implements ControllableNode {
 
     private Long id;
+
+    @Range(min = 1, message="zero or less")
     private Long maximumClassSize;
     private Long locId;
     private Integer timeZoneId;
+
+    @NotEmpty
     private String timeZoneText;
+
+    @NotEmpty @NotPastDate
     private Date enrollmentCloseDate;
+
+    @NotEmpty
     private String className;
+
+    @NotEmpty
     private String locationName;
+
+    @NotEmpty
     private String instructorEmail;
     private CourseVO course;
     private Collection<SyncSessionDTO> sessions;
@@ -110,9 +126,10 @@ public class SyncClassDTO implements ControllableNode {
     public Collection<SyncSessionDTO> getSessions() {
         if(sessions != null) {
             return sessions;
-        } else {
+        } else if(sessionsMap != null)  {
             return sessionsMap.values();
         }
+        return null;
     }
 
     public void setSessions(Collection<SyncSessionDTO> sessions) {

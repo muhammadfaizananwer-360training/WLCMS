@@ -15,13 +15,13 @@ import java.util.Collection;
 public interface IClassroomCourseService {
     CourseVO getCourse(VU360UserDetail user, String businessKey, boolean deep);
 
-    Collection<SyncClassDTO> getCourseClasses(VU360UserDetail user, String businessKey, boolean deep);
+    Collection<SyncClassDTO> getCourseClasses(VU360UserDetail user, String businessKey, boolean deep) throws BulkUplaodCourseException;
 
-    SyncClassDTO getCourseClass(VU360UserDetail user, String businessKey, String className, boolean deep);
+    SyncClassDTO getCourseClass(VU360UserDetail user, String businessKey, String className, boolean deep) throws BulkUplaodCourseException;
 
-    Collection<SyncSessionDTO> getClassSessions(VU360UserDetail user, String businessKey, String className);
+    Collection<SyncSessionDTO> getClassSessions(VU360UserDetail user, String businessKey, String className) throws BulkUplaodCourseException;
 
-    SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, Long sessionId);
+    SyncSessionDTO getClassSession(VU360UserDetail user, String businessKey, String className, String sessionKey) throws BulkUplaodCourseException;
 
     Collection<ClassInstructorDTO> getInstructors(VU360UserDetail user);
 

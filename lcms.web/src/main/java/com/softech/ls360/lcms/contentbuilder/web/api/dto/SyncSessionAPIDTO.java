@@ -7,16 +7,16 @@ import java.util.Date;
  */
 public class SyncSessionAPIDTO {
 
-    private Long id;
     private Date startDateTime;
     private Date endDateTime;
+    private String sessionKey;
 
-    public Long getId() {
-        return id;
+    public String getSessionKey() {
+        return sessionKey;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     public Date getStartDateTime() {

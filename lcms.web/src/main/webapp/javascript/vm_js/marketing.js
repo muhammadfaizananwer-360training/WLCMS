@@ -49,7 +49,7 @@ $(document).ready(function(){
         	AuthorBackground: "Please add background information for the author or presenter of this course. This information will display on the store website to potential customers.<br>",
 			authorImageTableField: "Please upload an 86px x 86px image of the author or presenter of this course. The image will display along with the background information, on the store website.",
 			duration: "Please enter a numeric value and only 2 digits after decimal is allowed",
-			classInstructor: "Please select a instrucutor"
+			classInstructor: "Please select an instructor"
         },
         submitHandler: function(form)
         {
@@ -256,24 +256,25 @@ function SaveMarketing () {
 	var cType = getParameterByName('cType');
 
 	if(cType != null && (cType == WLCMS_CONSTANTS_COURSE_TYPE.CLASSROOM_COURSE || cType == WLCMS_CONSTANTS_COURSE_TYPE.WEBINAR_COURSE)){
+
 		var editor = CKEDITOR.instances.AuthorBackground;
 		var vName = editor.getData();
 		vName = $(vName).html ();
 		var vNameEscaped = escape(vName);
-
 		editor.updateElement();
+
 		var authorBackGroundProvided = $("#frm_marketing").validate().element("#AuthorBackground");
 		var authorImageProvided = $("#frm_marketing").validate().element("#authorImageTableField");
+		var instructorValidated = cType === WLCMS_CONSTANTS_COURSE_TYPE.CLASSROOM_COURSE?
+			$("#frm_marketing").validate().element("#classInstructor"):
+			true;
 
-		if (!authorBackGroundProvided || !authorImageProvided  ) {
+
+		if (!authorBackGroundProvided || !authorImageProvided || !instructorValidated  ) {
 			TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
 			return;
 		}
-        if(cType=='5' && !$("#frm_marketing").validate().element("#classInstructor")){
-            TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
-            return;
 
-        }
 	}
 
 	course_id 		 =  getParameterByName('id');

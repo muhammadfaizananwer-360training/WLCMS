@@ -374,42 +374,7 @@
 		<property name="maxRetries" value="${ftp.fms.retries}" />
 		<property name="enabled" value="${ftp.fms.enabled}" />
 	</bean>
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-	    <property name="messageConverters">
-	        <list>
-	            <!--Adding the default message converters-->
-	            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
-	            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-	                <property name="writeAcceptCharset" value="false"/>
-	            </bean>
-	            <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
-	            <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter"/>
-	
-	            <!--Adding our custom JSON converter-->
-	            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-				    <property name="objectMapper">
-				        <bean class="com.fasterxml.jackson.databind.ObjectMapper">
-				            <property name="dateFormat">
-								<bean class="com.softech.ls360.lcms.contentbuilder.utils.Custom360DateFormat" destroy-method="" >
-					            	<property name="dateFormat">
-					            		<bean class="java.text.SimpleDateFormat">
-							            	<constructor-arg type="java.lang.String" value="MM/dd/yyyy"/>     
-							    		</bean>
-					            	</property>
-					            	<property name="dateTimeFormat">
-					            		<bean class="java.text.SimpleDateFormat">
-							            	<constructor-arg type="java.lang.String" value="MM/dd/yyyy hh:mm a"/>     
-							    		</bean>
-					            	</property>
-					    		</bean>
-							</property>
-				        </bean>
-				    </property>
-				</bean>
-	        </list>
-	    </property>
-	</bean>
-		
+
 	<tx:annotation-driven />
 
 	<!-- Setting up static resources -->

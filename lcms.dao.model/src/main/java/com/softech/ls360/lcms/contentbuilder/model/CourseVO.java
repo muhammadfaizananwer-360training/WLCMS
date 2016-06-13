@@ -1,5 +1,8 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -7,10 +10,17 @@ import java.util.Map;
 
 public class CourseVO implements Serializable,ControllableNode {
 
+
     private Long id;
     private String courseStatus = "Not Started";
-    private String courseId = null;//bussinessKey    
+
+    @NotEmpty
+    private String courseId = null;//bussinessKey
+
+    @NotEmpty
     private String name = null;
+
+    @NotEmpty
     private String description;
     private String keywords;
     private String courseType;
@@ -18,14 +28,20 @@ public class CourseVO implements Serializable,ControllableNode {
     private String code;
     private String guid;
     private String currency;
+
+    @NotEmpty @Valid
     private CourseProviderDTO courseProvider;
     private String additionalMaterials;
     private String intendedAudience;
     private String coursePrereq;
     private Map<String, SyncClassDTO> syncClassesMap;
     private Collection<SyncClassDTO> syncClasses;
+
+    @NotEmpty
     private String instructorEmail;
     private String action;
+
+    @NotEmpty
     private String businessunitName;
     private String topicsCovered;
     private String learningObjectives;
@@ -143,9 +159,10 @@ public class CourseVO implements Serializable,ControllableNode {
     public Collection<SyncClassDTO> getSyncClasses() {
         if(syncClasses != null) {
             return syncClasses;
-        } else  {
-          return syncClassesMap.values();
+        } else if(syncClassesMap != null)  {
+            return syncClassesMap.values();
         }
+        return null;
     }
 
     public String getInstructorEmail() {

@@ -58,19 +58,19 @@ function showProgressLoader(message){
 }
 
 function hideProgressLoader(){
-	$.removeCookie('fileDownloadToken'); 
+	clearInterval(fileDownloadCheckTimer);
+    $.removeCookie('fileDownloadToken');
 	$("#loader-overlay").fadeOut();
 	$("#bg-loader").fadeOut();	  
 }
 var fileDownloadCheckTimer;
   function blockUIForDownload() {
     var token = $('#download_token_value_id').val();
-    fileDownloadCheckTimer = setTimeout(function () {
-		
-      var cookieValue = $.cookie('fileDownloadToken');
+    fileDownloadCheckTimer = setInterval(function () {
+	  var cookieValue = $.cookie('fileDownloadToken');
 	  if (cookieValue == token)
        hideProgressLoader();
-    }, 1000);
+	 }, 2000);
   }
 </script>            
 

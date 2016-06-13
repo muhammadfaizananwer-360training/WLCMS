@@ -1,7 +1,10 @@
 package com.softech.ls360.lcms.contentbuilder.utils;
 
 import java.io.BufferedReader;
+import java.math.BigInteger;
 import java.sql.Clob;
+import java.util.Random;
+
 import org.springframework.util.StringUtils;
 
 public class StringUtil {
@@ -75,6 +78,11 @@ public class StringUtil {
             return str.substring(0,str.length() - suffix.length());
         }
         return str;
+    }
+
+    public static String getRandom(int length) {
+        Random random = new Random();
+        return new BigInteger(length * 5, random).toString(32).toUpperCase(); //five bit representation of a number.
     }
 
 }

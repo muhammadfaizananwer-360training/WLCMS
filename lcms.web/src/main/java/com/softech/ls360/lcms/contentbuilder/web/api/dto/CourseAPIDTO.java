@@ -23,6 +23,7 @@ public class CourseAPIDTO {
     private String topicsCovered;
     private String learningObjectives;
     private String propValue;
+    private String instructorEmail;
 
     public String getCourseStatus() {
         return courseStatus;
@@ -150,5 +151,13 @@ public class CourseAPIDTO {
 
     public void setPropValue(String propValue) {
         this.propValue = propValue;
+    }
+
+    public String getInstructorEmail() {
+        return instructorEmail;
+    }
+
+    public void setInstructorEmail(String instructorEmail) {
+        this.instructorEmail = instructorEmail;
     }
 }

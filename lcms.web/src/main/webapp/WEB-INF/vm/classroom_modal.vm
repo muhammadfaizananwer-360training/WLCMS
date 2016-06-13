@@ -116,7 +116,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3">#springMessage("label.instructor")<span class="required">*</span></label>
                                     <div class="col-md-7">
-                                        <select class="form-control" id="classInstructor" name="classInstructor" required data-msg-required="Please select an instructor. If none display, then add an instructor from the Provider tab.">
+                                        <select class="form-control" id="classInstructor" name="classInstructor" required data-msg-required="#springMessage('label.instructor.required.message.none.display')">
                                             <option value=""></option>
 											#foreach ($classIns in $classInstructors)
                                                 <option value="$classIns.id">$classIns.firstName</option>
@@ -436,6 +436,7 @@
 			  <div class="modal-dialog modal-lg">
 				<form id="frm_manual_session" action="" method="post" class="form-horizontal" role="form">
 					<input type="hidden" id="add_manual_sessionId" name="add_manual_sessionId"></input>
+                    <input type="hidden" id="add_manual_sessionKey" name="add_manual_sessionKey"></input>
 					<div class="modal-content">
 					  <div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

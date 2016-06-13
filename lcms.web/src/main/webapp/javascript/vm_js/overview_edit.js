@@ -8,14 +8,12 @@ $(document).ready(function(){
 	$("#currentFormName").val("frm_overview_edit");
 
 	$.validator.addMethod("valueNotEquals", function(value, element, arg){
-		  return arg != value;
-		 }, "Select A Category.");
-
+		return arg != value;
+	}, "Select A Category.");
 });
 
-
 $(function() {
-    // Setup form validation on the #register-form element
+	// Setup form validation on the #register-form element
 	var cType = getParameterByName('cType');
 	var bRequired = false;
 
@@ -28,13 +26,12 @@ $(function() {
 		$(".bootstrap-tagsinput input").removeAttr("placeholder");
 		var errors = false;
 		var tagchecker = $("#keywords").parent().find(".bootstrap-tagsinput > span");
-        if(tagchecker.length == 0)
+		if(tagchecker.length == 0)
 		{
-
 			errors = true;
 			if(!$("#keywords").parent().find("label").hasClass("error"))
 			{
-			$("#keywords").parent().append("<label for='keywords' generated='true' class='error'>Please enter at least one keyword. Separate keywords by using a comma ( , ).</label>");
+				$("#keywords").parent().append("<label for='keywords' generated='true' class='error'>Please enter at least one keyword. Separate keywords by using a comma ( , ).</label>");
 			}
 			$("#keywords").parent().find(".bootstrap-tagsinput").addClass("error");
 		}
@@ -45,7 +42,6 @@ $(function() {
 			$("#keywords").parent().find(".bootstrap-tagsinput").removeClass("error");
 			$(".bootstrap-tagsinput").siblings("label").remove();
 		}
-
 		return errors;
 	});
 
@@ -55,11 +51,10 @@ $(function() {
 		var tagchecker = $("#keywords").parent().find(".bootstrap-tagsinput > span");
 		if(tagchecker.length == 0)
 		{
-
 			errors = true;
 			if(!$("#keywords").parent().find("label").hasClass("error"))
 			{
-			$("#keywords").parent().append("<label for='keywords' generated='true' class='error'>Please enter at least one keyword. Separate keywords by using a comma ( , ).</label>");
+				$("#keywords").parent().append("<label for='keywords' generated='true' class='error'>Please enter at least one keyword. Separate keywords by using a comma ( , ).</label>");
 			}
 			$("#keywords").parent().find(".bootstrap-tagsinput").addClass("error");
 		}
@@ -70,10 +65,8 @@ $(function() {
 			$("#keywords").parent().find(".bootstrap-tagsinput").removeClass("error");
 			$(".bootstrap-tagsinput").siblings("label.error").remove();
 		}
-
 		return errors;
 	});
-
 
 	// KeyWords Validation Field
 	function tagchecker()
@@ -93,40 +86,39 @@ $(function() {
 			$("#keywords").parent().find(".bootstrap-tagsinput").removeClass("error");
 			$(".bootstrap-tagsinput").siblings("label.error").remove();
 		}
-
 		return errors;
 	}
 
 
-    $("#frm_overview_edit").validate({
+	$("#frm_overview_edit").validate({
 
-        // Specify the validation rules
-        rules: {
-        	name: "required",
-        	description: "required",
-        	language_id: "required",
+		// Specify the validation rules
+		rules: {
+			name: "required",
+			description: "required",
+			language_id: "required",
 			businessunitName: { valueNotEquals: "Select A Category" },
 			keywords:{
-        		required:bRequired
-        		}
+				required:bRequired
+			}
 
-        },
-        // Specify the validation error messages
-        messages: {
-        	name: "Please enter your title here",
-        	description: "Please enter your description here",
-        	language_id: "Please select your language",
+		},
+		// Specify the validation error messages
+		messages: {
+			name: "Please enter your title here",
+			description: "Please enter your description here",
+			language_id: "Please select your language",
 			businessunitName: "Please select a category",
 			keywords: "Please enter at least one keyword. Separate keywords by using a comma(,)."
-        },
+		},
 
-        submitHandler: function(form)
-        {
+		submitHandler: function(form)
+		{
 			if(!tagchecker())
 			{
 				form.submit();
 			}
-        },
+		},
 
 		invalidHandler: function(event, validator) {
 			var errors = validator.numberOfInvalids();
@@ -134,110 +126,66 @@ $(function() {
 			errors = tagchecker();
 
 			if (errors) {
-					TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
+				TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
 			} else {
 				$("#msgdiv").html('');
 			}
 			elementFadeOut("#msgdiv");
 		}
-    });
+	});
 
-    var courseType = getUrlParameter ("cType");
-    $("#courseType").val(courseType);
+	var courseType = getUrlParameter ("cType");
+	$("#courseType").val(courseType);
 
- });
-
+});
 
 $( document ).ready(function() {
-    course_id = getUrlParameter ("id");
-	 $('#id').val (course_id);
-	 $('input[name="id"]').val(course_id);
+	course_id = getUrlParameter ("id");
+	$('#id').val (course_id);
+	$('input[name="id"]').val(course_id);
 	var cType = getParameterByName('cType');
 	var myvalpublish ;
 	var myvalcourse;
 	var myvalcoursestatusa;
 
-	if(cType != null && (cType == WLCMS_CONSTANTS_COURSE_TYPE.CLASSROOM_COURSE || cType == WLCMS_CONSTANTS_COURSE_TYPE.WEBINAR_COURSE)){
-	  myvalpublish = $(".publish_status input[value]").val().toLowerCase();
-	  myvalcourse = $(".course_rating input[value]").val().toLowerCase();
-	  myvalcoursestatusa = $(".course_status input[value]").val().toLowerCase();
+	//Online/classroom/webinar courses
+	if(cType != null) {
+		myvalpublish = $("#publish_status").text().toLowerCase().trim();
+		myvalcourse = $("#course_rating").text().toLowerCase().trim();
+		myvalcoursestatusa = $("#course_status").text().toLowerCase().trim();
 
-	 var mylabelpublish = $("#publish_status").text().toLowerCase();
-	 var mylabelpending = $("#course_rating").text().toLowerCase();
-	 var mylabelcoursestatusa = $("#course_status").text().toLowerCase();
-
-		if ( (myvalpublish == "not published" || myvalpublish == "changes not published"  ) && mylabelpublish == "publish status") {
-		$(".publish_status").append("<span class='input-group-addon addon2'><i class='icon-exclamation' style='color: #ffb848'></i></span>");
-			}
-		if (  myvalpublish == ""  && mylabelpublish == "publish status") {
-		$(".publish_status").append('<span class="input-group-addon addon2"><i class="icon-remove" style="color: #e02222"></i></span>');
-			}
-
-		if  ( (myvalcourse == "pending" || myvalcourse === undefined || myvalcourse === "") && mylabelpending == "course rating"){
-		$(".course_rating").append('<span class="input-group-addon addon2"><i class="icon-exclamation" style="color: #ffb848"></i></span>');
-			} else {
-		$(".course_rating").append('<span class="input-group-addon addon2"><i class="icon-ok green-text"></i></span>');
-			}
-
-		if (myvalpublish == "published" && mylabelpublish == "publish status") {
-		$(".publish_status").append('<span class="input-group-addon addon2"><i class="icon-ok green-text"></i></span>');
-			}
-
-		if (myvalcoursestatusa == "retired" && mylabelcoursestatusa == "course status"){
-		$(".course_status").append('<span class="input-group-addon addon2"><i class="icon-remove" style="color: #e02222"></i></span>');
-			}
-
-		else if (myvalcoursestatusa == "active" && mylabelcoursestatusa == "course status"){
-		$(".course_status").append('<span class="input-group-addon addon2"><i class="icon-ok green-text"></i></span>');
-			}
-
-		else if( ( myvalcoursestatusa === "" || myvalcoursestatusa === undefined || myvalcoursestatusa === null ) && mylabelcoursestatusa == "course status") {
-		$(".course_status").append("<span class='input-group-addon addon2'><i class='icon-exclamation' style='color: #ffb848'></i></span>");
-			}
-	}
-
-	else{//Online courses
-		 myvalpublish = $("#publish_status").text().toLowerCase().trim();
-		 myvalcourse = $("#course_rating").text().toLowerCase().trim();
-		 myvalcoursestatusa = $("#course_status").text().toLowerCase().trim();
-
-		 if ( myvalcourse == "pending" || myvalcourse === undefined || myvalcourse === "" ){
+		if ( myvalcourse == "pending" || myvalcourse === undefined || myvalcourse === "" ){
 			$("#course_ratingI").html('<i class="icon-exclamation" style="color: #ffb848"></i>');
-			} else {
+		} else {
 			$("#course_ratingI").html('<i class="icon-ok green-text"></i>');
-			}
+		}
 
 		if (myvalpublish == "published") {
 			$("#publish_statusI").html('<i class="icon-ok green-text"></i>');
-			}
-		else if (myvalpublish == "not published" || myvalpublish == "changes not published" || myvalpublish === undefined || myvalpublish === "" ){
+		} else if (myvalpublish == "not published" || myvalpublish == "changes not published" || myvalpublish === undefined || myvalpublish === "" ){
 			$("#publish_statusI").html('<i class="icon-exclamation" style="color: #ffb848"></i>');
-			}
+		}
 
 		if (myvalcoursestatusa == "retired"){
 			$("#course_statusI").html('<i class="icon-exclamation" style="color: #ffb848"></i>');
-			}
-		else if (myvalcoursestatusa == "active"){
+		} else if (myvalcoursestatusa == "active"){
 			$("#course_statusI").html('<i class="icon-ok green-text"></i>');
-			}
-		  }
-		});
-
-
-
+		}
+	}
+});
 
 function getUrlParameter(sParam)
 {
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++)
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam)
-        {
-            return sParameterName[1];
-        }
-    }
+	var sPageURL = window.location.search.substring(1);
+	var sURLVariables = sPageURL.split('&');
+	for (var i = 0; i < sURLVariables.length; i++)
+	{
+		var sParameterName = sURLVariables[i].split('=');
+		if (sParameterName[0] == sParam)
+		{
+			return sParameterName[1];
+		}
+	}
 }
 
 function gotoEdit (courseid)
@@ -247,17 +195,15 @@ function gotoEdit (courseid)
 
 function EditUrl()
 {
-
 	var orignalurl = window.location.href;
 	var updatedurl = orignalurl.replace("&msg=success","");
 	window.location.href = updatedurl ;
-
 }
 
 //Yasin
 function elementFadeOut(id)
 {
 	setTimeout(function(){
-        $(id).html('');
-    },9000);
+		$(id).html('');
+	},9000);
 }

@@ -5,271 +5,554 @@
 <script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/publishing.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 
-                #* BEGIN PAGE CONTENT *#
-                <div class="page-content">
-				
-				   #* BEGIN PAGE HEADINGS *#
-				   <div class="portlet">
-						<div class="portlet-body">
-							<div class="page-heading">
-								<div class="col-xs-12 zero-padding">
-									<h1>#springMessage('label.publish-course')</h1>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-				   </div>
-                   #* END PAGE HEADINGS *#
-				   
-				   <br/>				   
-				   
-				   #* END TEXT *#
-				   <div>
-					#springMessage('course.publish.course.message')
-				   </div>
-				   #* END TEXT *#
-				   
-				   <br/>
-				   
-                   #* BEGIN COMPLETION CHECK FORM *#
-                   <div class="portlet portlet-btn">
-                      <div class="portlet-title" title="Completion Check">
-                         <div class="caption">
-                            #springMessage('label.completion-check')
-                         </div>
-					
-                         <div class="tools">
-                            <a href="" class="collapse"></a>
-                         </div>						 
-                      </div>
-						
-						#set( $showQuizError = "false" )
-						#set( $showExamError = "false" )
-					
-						#if ($!{command.quizMastery}=="true" && $!{command.quizQuestionCount} == 0)
-							#set( $showQuizError = "true" )					
-						#end
-						#if (($!{command.examMastery}=="true"  || $!{command.completionPostAssessmentAttempted}=="true") && $!{command.examQuestionToAskCount} == 0)
-							#set( $showExamError = "true" )
-						#end
-					  
-					  #if ( $showQuizError =="true" || $showExamError  == "true")  
-					   <div class="messages">
-                       <div role="alert" class="alert alert-danger alert-dismissible fade in">
-                        <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
-							#if($showQuizError =="true")
-								#springMessage('publishing.quiz.error')
-								<br/>
-							#end
-							#if ($showExamError  == "true")								
-                                                            #if ($command.examQuestionCount  == 0)
-                                                                #springMessage('publishing.exam.error')
-                                                            #else
-                                                                #springMessage('publishing.exam-to-ask.error')
-                                                            #end
-							#end
-                        </div>
-					   </div>
-					   <script type="text/javascript"> elementFadeOut('.messages'); </script>
-					  #end
-					  
-					 #* start - success message *#
-                     #if( $!{msg}=="success" )
-                            <div class="messages">
-        		              <div role="alert" class="alert alert-success alert-dismissible fade in">
-        		                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
-        		                #springMessage('message.publish.save-message') 
-        					  </div>
-        					 
-        		            </div>
-							<script type="text/javascript"> elementFadeOut('.messages'); </script>
-        				   </div>
-                     #elseif( $failureMessage )  
-                       <div class="messages">
-                       <div role="alert" class="alert alert-danger alert-dismissible fade in">
-                        <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
-                         $!{failureMessage} 
-                        </div>
-					   </div>
-					   <script type="text/javascript"> elementFadeOut('.messages'); </script>
-                   #end
+#* BEGIN PAGE CONTENT *#
+<div class="page-content">
 
-                   #* end - success message *#
-                      <div class="portlet-body form">
-						<div>
-							#springMessage('course.publish.completion-check-message')
-						</div>
+#* BEGIN PAGE HEADINGS *#
+    <div class="portlet">
+        <div class="portlet-body">
+            <div class="page-heading">
+                <div class="col-xs-12 zero-padding">
+                    <h1>#springMessage('label.publish-course')</h1>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+#* END PAGE HEADINGS *#
+
+    <br/>
+
+#* END TEXT *#
+    <div>
+		#springMessage('course.publish.course.message')
+    </div>
+#* END TEXT *#
+
+    <br/>
+
+#* BEGIN COMPLETION CHECK FORM *#
+    <div class="portlet portlet-btn">
+        <div class="portlet-title" title="#springMessage('label.publish.criteria')">
+            <div class="caption">
+        		#springMessage('label.publish.criteria')
+            </div>
+            <div class="tools">
+                <a href="" class="collapse"></a>
+            </div>
+        </div>
+	#set( $showQuizError = "false" )
+	#set( $showExamError = "false" )
+	#set( $criteria = "true" )
+	#set( $offer = $!{offer} )
+	#if ($!{command.quizMastery}=="true" && $!{command.quizQuestionCount} == 0)
+		#set( $showQuizError = "true" )
+	#end
+	#if (($!{command.examMastery}=="true"  || $!{command.completionPostAssessmentAttempted}=="true") && $!{command.examQuestionToAskCount} == 0)
+		#set( $showExamError = "true" )
+	#end
+
+    <div class="portlet-body" style="display: block;">
+	#if ( $showQuizError =="true" || $showExamError  == "true")
+        <div class="messages">
+            <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+				#if($showQuizError =="true")
+					#springMessage('publishing.quiz.error')
+                    <br/>
+				#end
+				#if ($showExamError  == "true")
+					#if ($command.examQuestionCount  == 0)
+						#springMessage('publishing.exam.error')
+					#else
+						#springMessage('publishing.exam-to-ask.error')
+					#end
+				#end
+            </div>
+        </div>
+        <script type="text/javascript"> elementFadeOut('.messages'); </script>
+	#end
+
+#* start - success message *#
+	#if( $!{msg}=="success" )
+        <div class="messages">
+            <div role="alert" class="alert alert-success alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+				#springMessage('message.publish.save-message')
+            </div>
+
+        </div>
+        <script type="text/javascript"> elementFadeOut('.messages'); </script>
+	#elseif( $failureMessage )
+        <div class="messages">
+            <div role="alert" class="alert alert-danger alert-dismissible fade in">
+                <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
+				$!{failureMessage}
+            </div>
+        </div>
+        <script type="text/javascript"> elementFadeOut('.messages'); </script>
+	#end
+#* end - success message *#
+        <div heading-bottom-text>
+			#springMessage('course.publish.completion-check-message')
+        </div>
+        <div class="form-horizontal">
+            <div class="form-body">
+                <table class="table bg-gray-2">
+                    <tbody>
+						#if ($!{command.quizMastery} == "true")
+							#if ($!{command.quizEnabled}=="true")<tr>
+                                <td>#springMessage('label.course.contain.quiz')</td>
+                                <td class="text-right  green-text">
+                                    <h3 class="glyphicon glyphicon-ok-sign zero-margin"></h3>
+                                </td>
+                            </tr>
+							#else <tr class="error">
+								#set( $criteria="false" )
+                                <td>#springMessage('label.course.contain.quiz')</td>
+                                <td class="text-right">
+                                    <h3 class="glyphicon  glyphicon-remove-sign zero-margin"></h3>
+                                </td>
+                            </tr>
+							#end
+						#end
+						#if ($!{command.examMastery} == "true" || $!{command.completionPostAssessmentAttempted} == "true")
+							#if ($!{showExamError} != "true") <tr>
+                                <td>#springMessage('lable.text.course-contains-final-exam').</td>
+                                <td class="text-right green-text">
+                                    <h3 class="glyphicon glyphicon-ok-sign  zero-margin"></h3>
+                                </td>
+                            </tr>
+							#else <tr class="error">#set( $criteria="false" )
+                                <td>#springMessage('lable.text.course-contains-final-exam').</td>
+                                <td class="text-right">
+                                    <h3 class="glyphicon glyphicon-remove-sign  zero-margin"></h3>
+                                </td>
+                            </tr>
+							#end
+						#end
+						#if ($!{command.contentObjectPresent}=="true") <tr>
+                            <td>#springMessage('label.course-has-at-least-1-lesson-folder')</td>
+                            <td class="text-right green-text">
+                                <h3 class="glyphicon glyphicon-ok-sign  zero-margin "></h3>
+                            </td>
+                        </tr>
+						#else  <tr class="error">#set( $criteria="false" )
+                            <td>#springMessage('label.course-has-at-least-1-lesson-folder')</td>
+                            <td class="text-right">
+                                <h3 class="glyphicon glyphicon-remove-sign  zero-margin "></h3>
+                            </td>
+                        </tr>
+						#end
+						#if ($!{command.atleastOneScenePerCO}=="true") <tr>
+                            <td>#springMessage('label.each-lesson-folder-has-at-least-1-slide')</td>
+                            <td class="text-right green-text">
+                                <h3 class="glyphicon glyphicon-ok-sign zero-margin"></h3>
+                            </td>
+
+                        </tr>
+						#else <tr class="error">#set( $criteria="false" )
+                            <td>#springMessage('label.each-lesson-folder-has-at-least-1-slide')</td>
+                            <td class="text-right">
+                                <h3 class="glyphicon glyphicon-remove-sign zero-margin"></h3>
+                            </td>
+                        </tr>
+						#end
+						#if ($!{command.setCourseExpiration} == "true")
+							#if ($!{command.courseExpired}=="false") <tr >
+                                <td>#springMessage('label.course-expiration-date-is-a-future-date').</td>
+                                <td class="text-right green-text">
+                                    <h3 class="glyphicon glyphicon-ok-sign zero-margin"></h3>
+                                </td>
+                            </tr>
+							#else <tr class="error">#set( $criteria="false" )
+                                <td>#springMessage('label.course-expiration-date-is-a-future-date').</td>
+                                <td class="text-right">
+                                    <h3 class="glyphicon glyphicon-remove-sign zero-margin"></h3>
+                                </td>
+                            </tr>
+							#end
+						#end
+						#if ($!{command.agreeWithSpecifiedTextEnabled}=="true" )
+							#if (!$!stringUtil.isEmpty($!{command.agreeWithSpecifiedText}))<tr>
+                                <td>#springMessage('label.agreement-text-is-provided').</td>
+                                <td class="text-right  green-text">
+                                    <h3 class="glyphicon glyphicon-ok-sign zero-margin"></h3>
+                                </td>
+                            </tr>
+							#else <tr class="error">#set( $criteria="false" )
+                                <td>#springMessage('label.agreement-text-is-provided').</td>
+                                <td class="text-right">
+                                    <h3 class="glyphicon glyphicon-remove-sign zero-margin"></h3>
+                                </td>
+                            </tr>
+							#end
+						#end
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+    <br />
+    <div class="portlet portlet-btn">
+        <div class="portlet-title" title="#springMessage('label.publishing.settings')">
+            <div class="caption">
+				#springMessage('label.publishing.settings')
+            </div>
+            <div class="tools">
+                <a href="" class="collapse"></a>
+            </div>
+        </div>
+        <div class="portlet-body" style="display: block;">
+            <br />
+			#* END COMPLETION CHECK FORM *#
+                <form class="form-horizontal" action ="publishCourse" role="form" method="Post" id="frm_publish">
+					#springBind("id")
+                    <input type="hidden"  name="id" id="id" value="$!{id}">
+
+					#springBind("command.courseName")
+                    <input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+
+					#springBind("command.bussinessKey")
+                    <input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
+
+                    <input type="hidden" id="cType" class="form-control" value="$!{cType}" name="cType">
+                    <input type="hidden"  name="errorExist" id="errorExist" value="0">
+                    <div class="portlet-body">
+                        <div class="heading-bottom-text">
+							#springMessage('label.publishing.criteria.meet')
+                        </div>
                         <div class="form-horizontal">
                             <div class="form-body">
-							   <div class="form-group">
-								  <div class="col-md-offset-2 col-md-9">
-									<div class="form-list">
-										#if ($!{command.quizMastery} == "true")
-    										#if ($!{command.quizEnabled}=="true") <div class="done"> #else <div class="not-done"> #end
-    											<span>Course contains at least 1 quiz.</span>
-    										</div>
+                                <table class="table bg-gray-2">
+                                    <tbody>
+										#if ($!{command.publishStatus}=="false")
+                                        <tr>
+                                            <td> #springMessage('label.publish-only-to-the-learning-management-center')</td>
+                                            <td class="text-right">
+                                                <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                                    <input type="checkbox" name="publishLMS" id="publishLMS">
+                                                </div>
+                                            </td>
+                                        </tr>
+											#if ($!{command.contentOwnerStoreFront}=="true")
+                                            <tr>
+                                                <td> #springMessage('label.publish.my.store.front')</td>
+                                                <td class="text-right">
+                                                    <div id="publisToSFBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                                        <input type="checkbox" name="publishSF" id="publishSF">
+                                                    </div>
+                                                </td>
+                                            </tr>
+											#end
 										#end
-										#if ($!{command.examMastery} == "true" || $!{command.completionPostAssessmentAttempted} == "true")
-    										#if ($!{showExamError} != "true") <div class="done"> #else <div class="not-done"> #end
-    											<span>#springMessage('lable.text.course-contains-final-exam').</span>
-    										</div>
+										#if ($!{command.publishStatus}=="true")
+                                        <tr>
+                                            <td>#springMessage('label.update.publish-only-to-the-learning-management-center')</td>
+                                            <td class="text-right">
+                                                <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                                    <input type="checkbox" name="updateLMS" id="updateLMS">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#springMessage('label.update-the-course-content')</td>
+                                            <td class="text-right">
+                                                <div id="publisToLMSBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                                    <input type="checkbox" name="updateCouseContent" id="updateCouseContent">
+                                                </div>
+                                            </td>
+                                        </tr>
+											#if ($!{command.contentOwnerStoreFront}=="true")
+                                            <tr>
+                                                <td> #springMessage('label.update.publish.my.store.front')</td>
+                                                <td class="text-right">
+                                                    <div id="publisToSFBtn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                                        <input type="checkbox" name="updateSF" id="updateSF">
+                                                    </div>
+                                                </td>
+                                            </tr>
+											#end
 										#end
-										#if ($!{command.contentObjectPresent}=="true") <div class="done"> #else <div class="not-done"> #end
-											<span>#springMessage('label.course-has-at-least-1-lesson-folder').</span>
-										</div>
-										#if ($!{command.atleastOneScenePerCO}=="true") <div class="done"> #else <div class="not-done"> #end
-											<span>#springMessage('label.each-lesson-folder-has-at-least-1-slide').</span>
-										</div>
-										
-										#if ($!{command.setCourseExpiration} == "true")
-    										#if ($!{command.courseExpired}=="false") <div class="done"> #else <div class="not-done"> #end
-    											<span>#springMessage('label.course-expiration-date-is-a-future-date').</span>
-    										</div>
+										#if ($!{command.publishStatus}=="true")
+                                        <tr id="offerInitial" class="hide">
+                                            <td>#springMessage('label.publish.market.place')<br>
+                                                <span class="help-block">#springMessage('label.publish.market.place.initial.message')</span></td>
+                                            <td class="text-right">
+                                                <div id="publisTo360Btn" class="make-switch" data-on="primary" data-off="default" data-on-label="Yes" data-off-label="No">
+                                                    <input type="checkbox" name="publis360Btn" id="publis360Btn">
+                                                </div>
+                                            </td>
+                                        </tr>
 										#end
-										#if ($!{command.agreeWithSpecifiedTextEnabled}=="true" )
-											#if (!$!stringUtil.isEmpty($!{command.agreeWithSpecifiedText})) <div class="done"> #else <div class="not-done"> #end
-												<span>#springMessage('label.agreement-text-is-provided').</span>
-											</div>
-										#end
-									</div>
-								  </div>
-							   </div>
-							</div>
-						</div>
-					  </div>
-				   </div>
-				   
-				  
-                   #* END COMPLETION CHECK FORM *#
-				   <form class="form-horizontal" action ="publishCourse" role="form" method="Post" id="frm_publish"> 
-    				   	#springBind("id")
-    					<input type="hidden"  name="id" id="id" value="$!{id}">
-							
-						#springBind("command.courseName")
-						<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
-												 
-						#springBind("command.bussinessKey")
-						<input type="hidden"  name="$!{status.expression}" id="$!{status.expression}" value="$!{status.value}">
-							
-						<input type="hidden" id="cType" class="form-control" value="$!{cType}" name="cType">
-						<input type="hidden"  name="errorExist" id="errorExist" value="0">
-							
-				   #if ($!{command.publishStatus}=="false")
-				   #* BEGIN SETTINGS FOR FIRST TIME PUBLISHING FORM *#
-                   <div class="portlet portlet-btn">
-                      <div class="portlet-title" title="#springMessage('label.settings-for-first-time-publishing')">
-                         <div class="caption">
-                            #springMessage('label.settings-for-first-time-publishing')
-                         </div>
-                         <div class="tools">
-                            <a href="" class="collapse"></a>
-                         </div>
-                      </div>
-					
-                      <div class="portlet-body form">
-                        <div class="form-horizontal">
-							<div class="form-body">
-								<div class="form-group">
-								  <div class="col-md-offset-2 col-md-9">
-									 <div class="form-list">
-										<div>
-											<input type="checkbox" name="publishLMS" id="publishLMS" value="true" for="publish_lms" checked />
-											<span id="" >#springMessage('label.publish-only-to-the-learning-management-center').</span>
-										</div>
-											#if ($!{command.contentOwnerStoreFront}=="true") 
-										<div>
-											<input type="checkbox" name="publishSF" id="publishSF" value="true" for="publish_sf" />
-											<span id="">#springMessage('label.publish-to-both-the-learning-management-center-and-my-storefront').</span>
-										</div>
-										  #else
-										 	<div style="display:none">
-											<input type="checkbox" name="publishSF" id="publishSF" value="true" for="publish_sf" />
-											<span id="">#springMessage('label.publish-to-both-the-learning-management-center-and-my-storefront').</span>
-										</div>										  
-										  #end
-									 </div>
-									 <div id="err"></div>
-								  </div>
-								</div>
-							</div>
-						</div>
-					  </div>
-				   </div>
-                   #* END SETTINGS FOR FIRST TIME PUBLISHING FORM *#
-				   #end 
-				   #if ($!{command.publishStatus}=="true")
-				   #* BEGIN SETTINGS FOR UPDATE PUBLISHING FORM *#
-                   <div class="portlet portlet-btn">
-                      <div class="portlet-title" title="#springMessage('label.settings-for-update-publishing')">
-                         <div class="caption">
-                            #springMessage('label.settings-for-update-publishing')
-                         </div>
-                         <div class="tools">
-                            <a href="" class="collapse"></a>
-                         </div>
-                      </div>
-                      <div class="portlet-body form">
-                        <div class="form-horizontal">
-							<div class="form-body">
-								<div class="form-group">
-								  <div class="col-md-offset-2 col-md-9">
-									 <div class="form-list">
-										<div>
-											<input type="checkbox" name="updateCouseContent" id="updateCouseContent" value="true" checked/>
-											<span>#springMessage('label.update-the-course-content').</span>
-										</div>
-										<div>
-											<input type="checkbox" name="updateLMS" id="updateLMS" value="true" for="publish_lms"/>
-											<span id="publish_lms">#springMessage('label.update-the-overview-marketing').</span>
-										</div>
-										#if ($!{command.contentOwnerStoreFront}=="true") 
-										<div>
-											<input type="checkbox" name="updateSF" id="updateSF" value="true" for="publish_sf"/>
-											<span id="publish_sf">#springMessage('label.make-the-course-available-on-your-storefront'). <br><small>(#springMessage('label.currently-the-course-is-only-available').)</small></span>
-										</div>
-										 #else
-										 <div style="display:none">
-											<input type="checkbox" name="updateSF" value="true" for="publish_sf"/>
-											<span id="publish_sf">#springMessage('label.make-the-course-available-on-your-storefront'). <br><small>(#springMessage('label.currently-the-course-is-only-available').)</small></span>
-										</div>										
-										 #end
-									 </div>
-									 <div id="err"></div>
-								  </div>
-								</div>
-							</div>
-						</div>
-					  </div>
-				   </div>
-                   #* END SETTINGS FOR UPDATE PUBLISHING FORM *#
-				   #end
-				   
-				   
-				   #* BEGIN ACTION BUTTONS *#
-				   <div class="form-actions fluid">
-					   <div class="col-md-offset-3 col-md-9">
-						  <button  #if($showQuizError =="true" || $showExamError  == "true") disabled #end class="btn blue" onClick = "showPublishAlert ('frm_publish')">#springMessage('button.publish')</button>
-						  <button type="button" class="btn default">#springMessage('button.cancel')</button>                              
-					   </div>
-				   </div>
-				   
-				   #* BEGIN ACTION BUTTONS *#
-				 </form>  
-                </div>
-                #* END PAGE CONTENT *#
-      
-
-
+                                    <tr id="offerInprogress" class="hide">
+                                        <td colspan="2">
+                                            <div class="alert alert-info zero-margin">
+                                                <h2><strong>#springMessage('label.publish.looking.offer')</strong></h2>
+                                                <br>
+                                                <p>#springMessage('label.publish.progress.message')</p>
+                                                <br>
+                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
+											#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
+                                                <small>#springMessage('label.publish.offer.inprogress.sale')</small>
+                                                <br>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="offerFail" class="hide">
+                                        <td colspan="2">
+                                            <div class="alert alert-danger zero-margin">
+                                                <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
+                                                <br>
+                                                <p>#springMessage('label.publish.offer.check.email')</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="offerSuccess" class="hide">
+                                        <td colspan="2">
+                                            <div class="alert alert-success zero-margin">
+                                                <h2><strong>#springMessage('label.publish.offer.success.accepted')</strong></h2>
+                                                <br>
+                                                <p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email'):</p>
+                                                <br>
+                                                <ul>
+                                                    <li>#springMessage('label.title-of-the-course')</li>
+                                                    <li>#springMessage('default.SearchHeaderCourseID')</li>
+                                                    <li>#springMessage('label.username-of-the-account-owner')</li>
+                                                </ul>
+                                                <br>
+                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
+                                                <small>#springMessage('label.publish.offer.success.resellers')</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="offerPrice" class="hide">
+                                        <td colspan="2">
+                                            <div class="collapse" id="collapseExample">
+                                                <ul class="list-inline hint-in-table">
+                                                    <li class="top"><img src="theme/executive/img/offer-price.png" style="width:100%"></li>
+                                                    <li class="middle">
+                                                        <div>
+                                                            <label class="control-label-2">#springMessage('label.publish.offer.price.list.price')<span class="required">*</span></label>
+                                                            <div class="input-icon">
+                                                                <i class="icon-usd"></i>
+                                                                <input type="number" id="mSRP" name="mSRP" class="form-control" placeholder="0.00">
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="control-label-2">#springMessage('label.publish.offer.price.lowest')<span class="required">*</span></label>
+                                                            <div class="input-icon">
+                                                                <i class="icon-usd"></i>
+                                                                <input type="number" class="form-control" id="lowestSalePrice" name="lowestSalePrice" placeholder="0.00">
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet">
+                        <div class="portlet-body">
+                            <button id="publishBtn" #if($showQuizError =="true" || $showExamError  == "true") disabled #end class="btn blue input-small" onClick = "showPublishAlert ('frm_publish')">#springMessage('button.publish')</button>
+                            #if($!{command.lastPublishDate})<small id="publish_stamp" class="help-block">Last Published on $!{command.lastPublishDate}</small>#end
+                        </div>
+                    </div>
+				#* BEGIN ACTION BUTTONS *#
+                </form>
+            </div>
+        </div>
+    </div>
+		#* END PAGE CONTENT *#
 
 #parse("footer.vm")
+
 <script>
+
+var thisCourse = {criteria:true,lms:false,sf:false,updateContent:false,threesixty:false,offerState:0};
 $(document).ready(function() {
-	APP.PLACEHOLDER_FIX();
-	APP.EDIT_OR_VIEW_TOGGLE();
-	APP.BODY_COLLAPSES();
-	APP.LEFT_NAV.init("OPEN", "nav_accordion_3");
-	$('#lnkPublishing a').addClass('active');
-	$("#frm_publish").trackChanges();
-	$("#currentFormName").val("frm_publish");
+    APP.PLACEHOLDER_FIX();
+    APP.EDIT_OR_VIEW_TOGGLE();
+    APP.BODY_COLLAPSES();
+    APP.LEFT_NAV.init("OPEN", "nav_accordion_3");
+    $('#lnkPublishing a').addClass('active');
+    $("#frm_publish").trackChanges();
+    $("#currentFormName").val("frm_publish");
+    var courseId = getUrlParameter ('id');
+    var cType = getUrlParameter ('cType');
+    APP.AJAX({
+        url: "displayOfferPage",
+        dataType: "text",
+        type: "POST",
+        cache: false,
+        data:'hidCourseId='+courseId+'&cType='+cType,
+        async: false,
+        success: function(response) {
+            obj = $.parseJSON(response);
+            if(obj.result.offerStatus=="Accepted"){
+                thisCourse.offerState=3;
+            }else if(obj.result.offerStatus=="Rejected"){
+                thisCourse.offerState=2;
+            }else if(obj.result.offerStatus=="Pending"){
+                thisCourse.offerState=1;
+            }
+        }
+    });
+    publishCases();
+    $('#collapseExample').on('hidden.bs.collapse', function () {
+        if(thisCourse.threesixty)
+        {
+            $("#offerPrice").removeClass("hide");
+        }
+    });
+    $('.make-switch').on('switch-change', function (e, data) {
+        switch($(this).attr("id"))
+        {
+            case "publisToLMSBtn":
+                thisCourse.lms = data.value;
+                $("#publishLMS").val(data.value)
+                break;
+            case "publisToSFBtn":
+                thisCourse.sf = data.value;
+                $("#publishSF").val(data.value)
+                break;
+            case "updateToLMSBtn":
+                thisCourse.lms = data.value;
+                $("#updateLMS").val(data.value)
+                break;
+            case "updateToSFBtn":
+                thisCourse.sf = data.value;
+                $("#updateSF").val(data.value)
+                break;
+            case "updateCouseContent":
+                thisCourse.updateContent = data.value;
+                $("#updateCouseContent").val(data.value)
+                break;
+            case "publisTo360Btn":
+                thisCourse.threesixty = data.value;
+                $("#publis360Btn").val(data.value)
+                if(data.value)
+                {
+                    $("#offerPrice").removeClass("hide");
+                    $("#collapseExample").collapse('show');
+                    var val =  $("#offerPrice").offset().top-100;
+                    $("html,body").animate({scrollTop: val},600);
+                    $("label.error").hide();
+                    $(".error").removeClass("error");
+                }
+                else
+                {
+                    $("#collapseExample").collapse('hide');
+                }
+                break;
+        }
+        publishBtnToggling();
+    });
+    //	END APP **************************************************************
 });
+function publishCases()
+{
+    publishBtnToggling();
+    switch(thisCourse.offerState)
+    {
+        case 0:
+            $("#offerInitial").removeClass("hide");
+            break;
+        case 1:
+            $("#offerInprogress").removeClass("hide");
+            break;
+        case 2:
+            $("#offerFail").removeClass("hide");
+            break;
+        case 3:
+            $("#offerSuccess").removeClass("hide");
+            break;
+    }
+}
+function publishBtnToggling()
+{
+    if($("#publishLMS").val()!=undefined && $criteria && thisCourse.lms)
+    {
+        $("#publishBtn").removeAttr("disabled").removeClass("disabled");
+    }
+    else if ($("#publishLMS").val()==undefined && $criteria && ( thisCourse.lms || thisCourse.sf || thisCourse.updateContent || (thisCourse.threesixty && thisCourse.offerState == 0)))
+    {
+        $("#publishBtn").removeAttr("disabled").removeClass("disabled");
+    }
+    else
+    {
+        $("#publishBtn").attr("disabled","disabled").addClass("disabled");
+    }
+}
+function cancelOffer(isConfirmed)
+{
+    if(!isConfirmed)
+    {
+        //	BEGIN - MODAL BOX -------------------------------
+        var $trgModal = $("#confirmationModal");
+        //	BEGIN TITLE, MESSAGE AND BUTTONS
+        var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
+        var msg = '<p>This action will remove the offer from this course. Do you want to continue?</p>';
+        var btns = '<button type="button" class="btn blue" onclick="cancelOffer(true)" data-dismiss="modal">YES</button>'+
+                '<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>';
+        //	END TITLE, MESSAGE AND BUTTONS
+			$trgModal.find(".modal-title").html(title);
+			$trgModal.find(".modal-body").html(msg);
+			$trgModal.find(".modal-footer").html(btns);
+			$trgModal.modal('show');
+        //	END - MODAL BOX --------------------------------
+    }
+    else
+    {
+        $('#publisTo360Btn').bootstrapSwitch('setState', false);
+        thisCourse.threesixty = false;
+        thisCourse.offerState = 0;
+        publishCases();
+    }
+}
+function publishCourseNow()
+{
+	$trgModal = $("#extractingModal");
+		$trgModal.modal({backdrop: 'static', keyboard: false});
+    $(".ui-ios-overlay").remove();
+    var opts = {
+        lines: 13, // The number of lines to draw
+        length: 5, // The length of each line
+        width: 5, // The line thickness
+        radius: 10, // The radius of the inner circle
+        corners: 0, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        direction: 1, // 1: clockwise, -1: counterclockwise
+        color: '#fff', // #rgb or #rrggbb or array of colors
+        speed: 1, // Rounds per second
+        trail: 60, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: false, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: '50%', // Top position relative to parent
+        left: '50%' // Left position relative to parent
+    };
+    var target = document.getElementById('foo');
+    var spinner = new Spinner(opts).spin(target);
+    var overlay = iosOverlay({
+        text: "Please wait...",
+        spinner: spinner
+    });
+    window.setTimeout(function(){
+        overlay.hide();
+			$trgModal.modal('hide');
+        if(thisCourse.threesixty && thisCourse.offerState!=3)
+        {
+            thisCourse.offerState = 3;
+        }
+        publishCases();
+    }, 4e3);
+}
+
 </script>

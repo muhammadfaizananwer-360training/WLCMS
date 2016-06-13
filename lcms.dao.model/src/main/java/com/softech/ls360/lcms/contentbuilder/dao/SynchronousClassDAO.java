@@ -1,5 +1,6 @@
 package com.softech.ls360.lcms.contentbuilder.dao;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -34,11 +35,21 @@ public interface SynchronousClassDAO extends GenericDAO<SynchronousClass> {
 	
 	public List <SynchronousClass> getSynchronousClassByCourseId (long courseId);
         public SynchronousClass getSynchronousClassByCourseIdAndClassName (long courseId,String className);
-	SynchronousClass getSynchronousClassByOwnerAndCourseAndClassName(Integer ownerId,String courseBusinessKey, String className);
+
+	@Transactional
+	List<SynchronousClass> getSynchronousClassByCourseIdAndClassNames(long courseId, Collection<String> classNames);
+
+	SynchronousClass getSynchronousClassByOwnerAndCourseAndClassName(Integer ownerId, String courseBusinessKey, String className);
         public SynchronousSession getSynchronousSessionBy(Integer ownerId,String courseBusinessKey, String className,Date startTime,Date endTime);
 
 	@Transactional
 	SynchronousSession getSynchronousSessionBy(Integer ownerId, String courseBusinessKey, String className, Long sessionId);
+
+	@Transactional
+	List<SynchronousSession> getSyncSessionsByClassIdAndSessionKeys(Long classId, Collection<String> sessionKeys);
+
+	@Transactional
+	SynchronousSession getSyncSessionsByClassIdAndSessionKey(Long classId, String sessionKey);
 
 	public List <SynchronousClass> getDeletedandUnDeletedSynchronousClassByCourseId (long courseId);
 	

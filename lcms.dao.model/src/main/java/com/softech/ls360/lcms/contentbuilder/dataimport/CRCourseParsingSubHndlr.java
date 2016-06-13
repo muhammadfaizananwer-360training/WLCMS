@@ -80,7 +80,7 @@ public class CRCourseParsingSubHndlr implements ITabularParsingSubHandler<Course
     public CourseVO getCourse(String courseId) {
         CourseVO course = new CourseVO();
         course.setCourseId(courseId);
-        return (CourseVO) getNode(courses, courseId, course);
+        return getNode(courses, courseId, course);
     }
     
     

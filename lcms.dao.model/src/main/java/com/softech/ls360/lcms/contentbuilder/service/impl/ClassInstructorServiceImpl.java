@@ -64,14 +64,7 @@ public class ClassInstructorServiceImpl implements IClassInstructorService{
         return classInstructorRepository.findByContentOwnerId(contentOwnerId);
     }
 
-    @Override
-    public List<ClassInstructor> findAll() {
 
-        List<ClassInstructor> classInstructors = (List<ClassInstructor>) classInstructorRepository.findAll();
-        if(classInstructors!=null)
-            return classInstructors;
-        return null;
-    }
 
     @Override
     public int deleteInstructors(String commasepareteIds)throws Exception {
@@ -82,20 +75,10 @@ public class ClassInstructorServiceImpl implements IClassInstructorService{
             ids.add(TypeConvertor.AnyToLong(strArray[i]));
         }
         if(synchronousClassDAO.IsInstructorExist(ids)) {
-            throw new Exception() {
-                @Override
-                public String getMessage() {
-                    return "Error in classroom";
-                }
-            };
+            throw new Exception("Error in classroom");
         }
         if(marketingDAO.IsInstructorExist(ids)) {
-            throw new Exception() {
-                @Override
-                public String getMessage() {
-                    return "Error in course";
-                }
-            };
+            throw new Exception("Error in course");
         }
        return classInstructorRepository.updateByIdIn(ids);
 

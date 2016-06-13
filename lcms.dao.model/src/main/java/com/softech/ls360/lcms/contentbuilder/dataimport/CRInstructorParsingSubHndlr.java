@@ -54,7 +54,7 @@ public class CRInstructorParsingSubHndlr implements ITabularParsingSubHandler<Cl
     public ClassInstructorDTO getInstructor(String email) {
         ClassInstructorDTO loc = new ClassInstructorDTO();
         loc.setEmail(email);
-        return (ClassInstructorDTO) getNode(instructors, email, loc);
+        return getNode(instructors, email, loc);
 
     }
 

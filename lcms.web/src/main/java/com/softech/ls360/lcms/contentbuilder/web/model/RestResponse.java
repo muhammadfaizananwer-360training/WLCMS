@@ -3,7 +3,7 @@ package com.softech.ls360.lcms.contentbuilder.web.model;
 public class RestResponse {
 	private String error;
 	private String warning;
-	private String info;
+	private String info = "ok";
 	private Object data;
 	
 	public String getError() {
@@ -11,12 +11,14 @@ public class RestResponse {
 	}
 	public void setError(String error) {
 		this.error = error;
+		info = null;
 	}
 	public String getWarning() {
 		return warning;
 	}
 	public void setWarning(String warning) {
 		this.warning = warning;
+		info = null;
 	}
 	public String getInfo() {
 		return info;

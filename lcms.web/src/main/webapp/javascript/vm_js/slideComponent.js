@@ -1,6 +1,8 @@
 
 var isSlideTypeVSC;
 function getSlideComponent(varSlideId){
+	//It must be converted to string to work in === type checking operator
+	varSlideId = varSlideId.toString();
 	getSlideTemplateId();
 	if(!($("#hidId").val()===varSlideId && $('#slideSetup_1_'+varSlideId).hasClass( "panel-collapse a2 collapse in" )))
 	{

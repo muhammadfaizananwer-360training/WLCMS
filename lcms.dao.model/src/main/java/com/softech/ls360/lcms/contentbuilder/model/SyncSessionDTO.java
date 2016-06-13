@@ -1,17 +1,32 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 
-import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotFalse;
+import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotPastDate;
+
 import java.util.Date;
 import java.util.Map;
 
 
+@NotFalse(
+        messages = {"End Date Before Start Date"} ,
+        properties={"endDateTime"},
+        verifiers = {"validDateRange"})
 public class SyncSessionDTO implements ControllableNode {
     private SyncClassDTO syncClass;
+
+
+    @NotEmpty @NotPastDate
     private Date startDateTime;
+
+    @NotEmpty
     private Date endDateTime;
     private String action;
     private boolean error;
     private Long id;
+
+    @NotEmpty
+    private String sessionKey;
 
     public SyncClassDTO getSyncClass() {
         return syncClass;
@@ -46,15 +61,15 @@ public class SyncSessionDTO implements ControllableNode {
     }
     
     public String getKey() {
-        String start = "";
-        String end = "";
-        if(startDateTime != null) {
-            start = TypeConvertor.DateTimeToString(startDateTime);
-        }
-        if(endDateTime != null) {
-            end = TypeConvertor.DateTimeToString(endDateTime);
-        }
-        return start + " - " + end;
+       return getSessionKey();
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     public Long getId() {
@@ -94,8 +109,12 @@ public class SyncSessionDTO implements ControllableNode {
     public Map<String, ControllableNode> getChildren() {
         return null;
     }
-    
-    
-    
-    
+
+    public Boolean getValidDateRange(){
+        if(startDateTime != null && endDateTime != null) {
+            return startDateTime.getTime() <= endDateTime.getTime();
+        }
+
+        return null;
+    }
 }
