@@ -324,7 +324,7 @@
                                     <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
                                     <br>
                                     <p>#springMessage('label.publish.offer.check.email')</p>
-                                    <br><a href="javascript:cancelOffer(false);" class="btn btn-default">#springMessage('label.publish.offer.cancel.offer')</a>
+                                    <br><a href="javascript:cancelOffer(false);" class="btn btn-default hidden">#springMessage('label.publish.offer.cancel.offer')</a>
                                 </div>
                             </td>
                         </tr>
