@@ -382,7 +382,7 @@ function detachAsset (assetType) {
 		dataType: "text",
 		type: "POST",
 		cache: false,
-		data:'varSlideId='+ slide_id+ '&assetVersion_id='+ assetVersion_id+'&course_id='+course_id ,
+		data:'varSlideId='+ slide_id+ '&assetVersion_id='+ assetVersion_id+'&course_id='+course_id + assetVersion_id +'&assetType='+assetType,
 		async: false,
 		success: function(response) {
 				trg.closest('table').find(' tbody tr:first').remove ();
@@ -789,7 +789,16 @@ function addVideoAsset(form){
 	if (!$(form).valid()) {
 		return false;
 	}
-  // Create the iframe...
+	//get duration of uploaded video in seconds and set it to form field
+	var file = $(form).find('.upload-360').uploader360().files[0];
+	if(file && file.media && file.media.duration && (!isNaN(file.media.duration))) {
+		//get floor of the value as mostly used format of its display value
+		var duration = Math.floor(file.media.duration);
+		$(form).find('#duration').val(duration);
+	} else {
+		$(form).find('#duration').val("0");
+	}
+	// Create the iframe...
     var iframe = document.createElement("iframe");
     iframe.setAttribute("id", "upload_iframe");
     iframe.setAttribute("name", "upload_iframe");

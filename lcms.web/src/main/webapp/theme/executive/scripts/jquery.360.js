@@ -445,6 +445,14 @@ var $360 = (function () {
                 },
                 ChunkUploaded: function (up, file, server) {
                     var response = JSON.parse(server.response);
+                    //if this optional value found in first chunk then set it to
+                    // var and uploader options to make it usable for all next chunks
+                    if(response.data.fileServer){
+                        fileServer = response.data.fileServer;
+                        var mp = uploader.getOption("multipart_params");
+                        mp["fileServer"] = fileServer;
+                        uploader.setOption("multipart_params", mp);
+                    }
                     if (response.error != null) {
                         this.trigger('Error', {
                             code: 99990,
