@@ -293,7 +293,7 @@
                                                 <br>
                                                 <p>#springMessage('label.publish.progress.message')</p>
                                                 <br>
-                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$number.currency($command.offerPrice)</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$number.currency($command.lowestPrice)</strong> </p></u>
+                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{number.currency($command.offerPrice)}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{number.currency($command.lowestPrice)}</strong> </p></u>
 											#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
                                                 <small>#springMessage('label.publish.offer.inprogress.sale')</small>
                                                 <br>
@@ -322,7 +322,7 @@
                                                     <li>#springMessage('label.username-of-the-account-owner')</li>
                                                 </ul>
                                                 <br>
-                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$number.currency($command.offerPrice)</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$number.currency($command.lowestPrice)</strong> </p></u>
+                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{number.currency($command.offerPrice)}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{number.currency($command.lowestPrice)}</strong> </p></u>
                                                 <small>#springMessage('label.publish.offer.success.resellers')</small>
                                             </div>
                                         </td>

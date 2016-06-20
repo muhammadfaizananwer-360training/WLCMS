@@ -1,15 +1,7 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.softech.common.mail.MailAsyncManager;
+import com.softech.ls360.lcms.contentbuilder.manager.WebinarMeetingURLManager;
 import com.softech.ls360.lcms.contentbuilder.model.*;
 import com.softech.ls360.lcms.contentbuilder.service.*;
 import com.softech.ls360.lcms.contentbuilder.utils.*;
@@ -21,11 +13,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.softech.common.mail.MailAsyncManager;
-import com.softech.ls360.lcms.contentbuilder.manager.WebinarMeetingURLManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -477,7 +474,7 @@ public class PublishingController {
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage ());
-			msg = "&failureMessage=Course publishing could not be performed. " ;
+			msg = "&failureMessage=Course%20publishing%20could%20not%20be%20performed.";
 		}
 
 		if (updateCouseContent)
