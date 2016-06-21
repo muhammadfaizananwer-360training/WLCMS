@@ -293,7 +293,7 @@
                                                 <br>
                                                 <p>#springMessage('label.publish.progress.message')</p>
                                                 <br>
-                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{number.currency($command.offerPrice)}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{number.currency($command.lowestPrice)}</strong> </p></u>
+                                                <p><strong>#springMessage('label.publish.offer.success.offer.msrp') $!{number.currency($command.offerPrice)} #springMessage('label.publish.offer.success.offer.lowest') $!{number.currency($command.lowestPrice)}</strong></p>
 											#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
                                                 <small>#springMessage('label.publish.offer.inprogress.sale')</small>
                                                 <br>
@@ -322,7 +322,7 @@
                                                     <li>#springMessage('label.username-of-the-account-owner')</li>
                                                 </ul>
                                                 <br>
-                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{number.currency($command.offerPrice)}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{number.currency($command.lowestPrice)}</strong> </p></u>
+                                                <p><strong>#springMessage('label.publish.offer.success.offer.msrp') $!{number.currency($command.offerPrice)} #springMessage('label.publish.offer.success.offer.lowest') $!{number.currency($command.lowestPrice)}.</strong></p>
                                                 <small>#springMessage('label.publish.offer.success.resellers')</small>
                                             </div>
                                         </td>
@@ -337,14 +337,14 @@
                                                             <label class="control-label-2">#springMessage('label.publish.offer.price.list.price')<span class="required">*</span></label>
                                                             <div class="input-icon">
                                                                 <i class="icon-usd"></i>
-                                                                <input type="number" id="mSRP" name="mSRP" class="form-control" placeholder="0.00">
+                                                                <input type="number" id="mSRP" name="mSRP" class="form-control" placeholder="0.00" #if($command.offerPrice != 1.0) value="$!{command.offerPrice}" #end>
                                                             </div>
                                                         </div>
                                                         <div>
                                                             <label class="control-label-2">#springMessage('label.publish.offer.price.lowest')<span class="required">*</span></label>
                                                             <div class="input-icon">
                                                                 <i class="icon-usd"></i>
-                                                                <input type="number" class="form-control" id="lowestSalePrice" name="lowestSalePrice" placeholder="0.00">
+                                                                <input type="number" class="form-control" id="lowestSalePrice" name="lowestSalePrice" placeholder="0.00" #if($command.lowestPrice != 0.0) value="$!{command.lowestPrice}" #end>
                                                             </div>
                                                         </div>
                                                     </li>
