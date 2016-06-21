@@ -342,13 +342,13 @@ public class PublishingController {
 
 		String msg = "&msg=success";
 
-
-		Boolean publishSF = Boolean.parseBoolean(request.getParameter("publishSF")==null ? "false" :request.getParameter("publishSF") );
-		Boolean publishLMS = Boolean.parseBoolean(request.getParameter("publishLMS")==null ? "false" :request.getParameter("publishLMS"));
-		Boolean updateCouseContent = Boolean.parseBoolean(request.getParameter("updateCouseContent")==null ? "false" :request.getParameter("updateCouseContent"));
-		Boolean updateLMS = Boolean.parseBoolean(request.getParameter("updateLMS")==null ? "false" :request.getParameter("updateLMS"));
-		Boolean updateSF = Boolean.parseBoolean(request.getParameter("updateSF")==null ? "false" :request.getParameter("updateSF"));
-		Boolean publis360Btn = Boolean.parseBoolean(request.getParameter("publis360Btn")==null ? "false" :request.getParameter("publis360Btn"));
+		//radio button param value is null in case of unchecked. In case of checked, it is 'on' or anything defined by value attribute
+		Boolean publishSF = request.getParameter("publishSF") != null;
+		Boolean publishLMS = request.getParameter("publishLMS") != null;
+		Boolean updateCouseContent = request.getParameter("updateCouseContent") != null;
+		Boolean updateLMS = request.getParameter("updateLMS") != null;
+		Boolean updateSF = request.getParameter("updateSF") != null;
+		Boolean publis360Btn = request.getParameter("publis360Btn") != null;
 
 		String sErrorMsg = "";
 
