@@ -1,19 +1,5 @@
 package com.softech.ls360.lcms.contentbuilder.dao.impl;
 
-
-import java.sql.Clob;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.ParameterMode;
-import javax.persistence.Query;
-import javax.persistence.StoredProcedureQuery;
-
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.softech.ls360.lcms.contentbuilder.dao.GenericDAOImpl;
 import com.softech.ls360.lcms.contentbuilder.dao.PublishingDAO;
 import com.softech.ls360.lcms.contentbuilder.dao.SPCallingParams;
@@ -23,6 +9,16 @@ import com.softech.ls360.lcms.contentbuilder.model.CoursePricing;
 import com.softech.ls360.lcms.contentbuilder.utils.LCMS_Util;
 import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.ParameterMode;
+import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
+import java.sql.Clob;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
 
 public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements PublishingDAO{
 
@@ -44,7 +40,7 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 			courseRow = (Object[]) course;
 			Clob cm = (Clob )courseRow[1];
 			String courseName = StringUtil.clobStringConversion(cm);
-			pricing.setId(Long.valueOf(courseRow[0].toString()));
+			pricing.setId(Long.parseLong(courseRow[0].toString()));
 			pricing.setName(courseName);
 			pricing.setBusinessKey(courseRow[2] == null ? "" : courseRow[2].toString());
 			pricing.setmSRP(courseRow[3] == null ? "1.00" : courseRow[3].toString());
@@ -116,12 +112,12 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 			Object [] coursCompletionRptRow = (Object[]) objCoursCompletionRpt;
 
 			courseCompletionReport.setPostAssesssmentEnabled(coursCompletionRptRow[1] == null ? false : Boolean.valueOf(coursCompletionRptRow[1].toString()));
-			courseCompletionReport.setQuizEnabled(coursCompletionRptRow[2] == null ? false : new Boolean(coursCompletionRptRow[2].toString()));
+			courseCompletionReport.setQuizEnabled(coursCompletionRptRow[2] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[2].toString()));
 			courseCompletionReport.setContentObjectPresent(coursCompletionRptRow[3] == null ? false : new Boolean(coursCompletionRptRow[3].toString()));
 			courseCompletionReport.setAtleastOneScenePerCO(coursCompletionRptRow[4] == null ? false : new Boolean(coursCompletionRptRow[4].toString()));
 			courseCompletionReport.setCourseExpired(coursCompletionRptRow[5] == null ? false : new Boolean(coursCompletionRptRow[5].toString()));
 			courseCompletionReport.setPublishStatus(coursCompletionRptRow[6] == null ? false : new Boolean(coursCompletionRptRow[6].toString()));
-			courseCompletionReport.setCourseId(coursCompletionRptRow[7] == null ? 0 : Integer.valueOf(coursCompletionRptRow[7].toString()));
+			courseCompletionReport.setCourseId(coursCompletionRptRow[7] == null ? 0 : Integer.parseInt(coursCompletionRptRow[7].toString()));
 			courseCompletionReport.setCourseName(coursCompletionRptRow[8] == null ? "" : coursCompletionRptRow[8].toString());
 			courseCompletionReport.setBussinessKey(coursCompletionRptRow[9] == null ? "" : coursCompletionRptRow[9].toString());
 			courseCompletionReport.setContentOwnerStoreFront(coursCompletionRptRow[10] == null ? false : new Boolean(coursCompletionRptRow[10].toString()));
@@ -165,7 +161,7 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 
 			Object [] coursCompletionRptRow = (Object[]) objCoursCompletionRpt;
 			courseCompletionReport.setIsScheduleSet(coursCompletionRptRow[0] == null ? false : Boolean.valueOf (coursCompletionRptRow[0].toString()));
-			courseCompletionReport.setIsPresenterSet(coursCompletionRptRow[1] == null ? false : new Boolean(coursCompletionRptRow[1].toString()));
+			courseCompletionReport.setIsPresenterSet(coursCompletionRptRow[1] == null ? false : Boolean.valueOf(coursCompletionRptRow[1].toString()));
 			courseCompletionReport.setIsMeetingSet(coursCompletionRptRow[2] == null ? false : new Boolean(coursCompletionRptRow[2].toString()));
 			courseCompletionReport.setCourseName(coursCompletionRptRow[3] == null ? "" : coursCompletionRptRow[3].toString());
 			courseCompletionReport.setBussinessKey(coursCompletionRptRow[4] == null ? "" : coursCompletionRptRow[4].toString());
