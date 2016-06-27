@@ -2,14 +2,11 @@ package com.softech.ls360.lcms.contentbuilder.service.impl;
 
 import com.softech.ls360.lcms.contentbuilder.dao.MarketingDAO;
 import com.softech.ls360.lcms.contentbuilder.dao.SynchronousClassDAO;
-import com.softech.ls360.lcms.contentbuilder.dao.impl.MarketingDAOImpl;
 import com.softech.ls360.lcms.contentbuilder.model.ClassInstructor;
 import com.softech.ls360.lcms.contentbuilder.repository.ClassInstructorRepository;
 import com.softech.ls360.lcms.contentbuilder.service.IClassInstructorService;
 import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -30,15 +27,15 @@ public class ClassInstructorServiceImpl implements IClassInstructorService{
     @Override
     @Transactional
     public ClassInstructor save(ClassInstructor obj) {
-        ClassInstructor persistObj = new ClassInstructor();
+
         ClassInstructor emailVerifyObj = classInstructorRepository.findByEmail(obj.getEmail());
 
         if(emailVerifyObj!=null && ((obj.getId()!=null && !emailVerifyObj.getId().equals(obj.getId())) || obj.getId()==null)) {
             obj.setEmail("Email exist");
             return obj;
         }
-        if(obj.getId()!=null && !obj.getId().equals("")){
-            persistObj = classInstructorRepository.findOne(obj.getId());
+        if(obj.getId()!=null && !obj.getId().equals(0L)){
+            ClassInstructor persistObj = classInstructorRepository.findOne(obj.getId());
             persistObj.setPhoneNo(obj.getPhoneNo());
             persistObj.setFirstName(obj.getFirstName());
             persistObj.setLastName(obj.getLastName());

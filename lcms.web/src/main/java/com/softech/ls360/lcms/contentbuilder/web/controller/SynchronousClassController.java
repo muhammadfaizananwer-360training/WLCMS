@@ -1,18 +1,10 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.softech.ls360.lcms.contentbuilder.model.*;
+import com.softech.ls360.lcms.contentbuilder.model.TimeZone;
+import com.softech.ls360.lcms.contentbuilder.service.*;
+import com.softech.ls360.lcms.contentbuilder.utils.WlcmsConstants;
+import com.softech.ls360.lcms.contentbuilder.web.vo.SynchronousClassVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,67 +15,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
-
-
-
-import com.softech.ls360.lcms.contentbuilder.model.Address;
-import com.softech.ls360.lcms.contentbuilder.model.Course;
-import com.softech.ls360.lcms.contentbuilder.model.CourseDTO;
-import com.softech.ls360.lcms.contentbuilder.model.CourseProvider;
-import com.softech.ls360.lcms.contentbuilder.model.Location;
-import com.softech.ls360.lcms.contentbuilder.model.SynchronousClass;
-import com.softech.ls360.lcms.contentbuilder.model.SynchronousSession;
-import com.softech.ls360.lcms.contentbuilder.model.TimeZone;
-import com.softech.ls360.lcms.contentbuilder.model.VU360UserDetail;
-import com.softech.ls360.lcms.contentbuilder.service.ICourseProviderService;
-import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
-import com.softech.ls360.lcms.contentbuilder.service.IOfferService;
-import com.softech.ls360.lcms.contentbuilder.service.IPublishingService;
-import com.softech.ls360.lcms.contentbuilder.service.ISynchronousClassService;
-import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
-import com.softech.ls360.lcms.contentbuilder.utils.WlcmsConstants;
-import com.softech.ls360.lcms.contentbuilder.web.vo.SynchronousClassVO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class SynchronousClassController {
 
 	@Autowired
 	ISynchronousClassService synchronousService;
-	
+
 	@Autowired
 	ICourseService courseService;
-	
+
 	@Autowired
 	ISynchronousClassService synchronoutService;
-	
+
 	@Autowired
 	IOfferService offerService;
-	
+
 	@Autowired
 	IPublishingService publishingService;
-	
+
 	@Autowired
 	VU360UserService vu360UserService;
-	
+
 	@Autowired
 	ICourseProviderService courseProviderService;
-	
+
 	final String COURSE_STATUS = "Active";
 	final String CLASS_TYPE= "Unlimited";
-	
+
 	DateFormat formatonlyDate = new SimpleDateFormat("MM/dd/yyyy");
 	SimpleDateFormat formatOnlyTime = new SimpleDateFormat("h:mm a");
 	SimpleDateFormat simplesyncsessionDateFormat=new SimpleDateFormat("MM/dd/yyyy hh:mm aa",Locale.getDefault());
 	SimpleDateFormat formatDateWithTime = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-	
+
 	private static Logger logger = LoggerFactory.getLogger(SynchronousClassController.class);
-	
+
 	// Send to Class room page
 	@RequestMapping(value = "classroomsetup", method={RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView classroomSetup(HttpServletRequest request) throws SQLException {
 		logger.debug("classroomsetup - Start");
-		
+
 		String varSyncClassId = request.getParameter("varSyncClassId");
 		SynchronousClassVO  syncClassVO =null;
 		String courseId = request.getParameter("id");
@@ -91,11 +68,11 @@ public class SynchronousClassController {
 		SynchronousClass sccc=null;
 		Location objLoc = null;
 		CourseDTO courseDB = courseService.getCourseById(Long.parseLong(courseId));
-		
+
 			if(varSyncClassId==null){
-				
+
 				List <SynchronousClass> lstSyncClass = synchronousService.getSynchronousClassByCourseId(Long.parseLong(courseId));
-			
+
 				if(lstSyncClass.size()>0){
 					syncClassVO = new SynchronousClassVO();
 					syncClassVO.setSyncClassId(lstSyncClass.get(0).getId());
@@ -107,10 +84,10 @@ public class SynchronousClassController {
 					 return scheduleView;
 				}
 			}else{
-				sccc= synchronousService.getSynchronousClassWithLocationInfo(Long.valueOf(varSyncClassId));
+				sccc= synchronousService.getSynchronousClassWithLocationInfo(Long.parseLong(varSyncClassId));
 			}
 			scheduleView.addObject(WlcmsConstants.PARAMETER_COURSE_TYPE,  request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE));
-		
+
 			try{
 				//syncClassVO.setClassSize("0");
 				scheduleView.addObject("courseObj", courseDB);
@@ -120,10 +97,10 @@ public class SynchronousClassController {
 				scheduleView.addObject("syncClassVO", syncClassVO);
 			}catch(NullPointerException npe){
 				scheduleView.addObject("syncClassVO", syncClassVO);
-				return scheduleView;			    	
+				return scheduleView;
 			}
-		
-			
+
+
 			syncClassVO.setClassSize(sccc.getMaximumClassSize()+"");
 			syncClassVO.setLocation(objLoc.getLocationname());
 			syncClassVO.setCity(objLoc.getCity());
@@ -133,26 +110,26 @@ public class SynchronousClassController {
 			syncClassVO.setPhone(objLoc.getPhone());
 			syncClassVO.setDescription(objLoc.getDescription());
 			syncClassVO.setAddress(objLoc.getAddress().getStreetAddress());
-			
-		
-		 
+
+
+
 		 if (request.getParameter("msg") != null) {
 			 scheduleView.addObject("msg", "success");
 		 }
-	
+
 		logger.debug("classroomsetup - End");
 
 		scheduleView.addObject("syncClassnull", 1);
 		scheduleView.addObject("courseObj", courseDB);
 		scheduleView.addObject("syncClassVO", syncClassVO);
-		
+
 		 return scheduleView;
 	}
 
-	
+
 	@RequestMapping(value = "saveClassroomSetup", method={RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView saveClassroomSetup(HttpServletRequest request) {
-		
+
 
 		String maximumClassSize = request.getParameter("maximumClassSize");
 		String location_name = request.getParameter("location_name");
@@ -162,31 +139,31 @@ public class SynchronousClassController {
 		String country = request.getParameter("country");
 		String state = request.getParameter("state");
 		String location_phone = request.getParameter("location_phone");
-		String location_description = request.getParameter("location_description");		
-		
+		String location_description = request.getParameter("location_description");
+
 		String rdoClassroomlimit = request.getParameter("rdoClassroomlimit");
-		
+
 		String courseId = request.getParameter("varCourseId");
 		String courseType = request.getParameter("cType");
 		String varSyncClassId = request.getParameter("varSyncClassId");
 		SynchronousClass scForSessAdd=null;
 		Address objAddress = new Address();
 		Location objLocation = new Location();
-		    
-		
+
+
 		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    scForSessAdd = synchronousService.getSynchronousClassWithLocationInfo(Long.parseLong( varSyncClassId ));
-	   
+
 	    if(scForSessAdd==null)
-	    {	  
+	    {
 		    scForSessAdd = synchronousService.getSynchronousClassById(Long.parseLong( varSyncClassId ));
-		    
+
 		    if(rdoClassroomlimit != null &&  rdoClassroomlimit.equals(CLASS_TYPE))
 		    	scForSessAdd.setMaximumClassSize(Long.MAX_VALUE);
 		    else
 		    	scForSessAdd.setMaximumClassSize(Long.valueOf(maximumClassSize));
-		    
-		    
+
+
 		    objLocation.setLocationname(location_name);
 		    objLocation.setCity(location_city);
 		    objLocation.setZip(location_postcode);
@@ -196,13 +173,13 @@ public class SynchronousClassController {
 		    objLocation.setDescription(location_description);
 		    objLocation.setEnabledtf("1");
 		    objLocation.setContentownerId((int)principal.getContentOwnerId());
-		    
+
 		    objAddress.setCity(location_city);
 		    objAddress.setStreetAddress(location_address);
 		    objAddress.setZipcode(location_postcode);
 		    objAddress.setState(state);
 		    objAddress.setCountry(country);
-		    
+
 		    objLocation.setAddress(objAddress);
 		    scForSessAdd.setLocation(objLocation);
 	    }else{
@@ -218,22 +195,22 @@ public class SynchronousClassController {
 		    objLocation.setState(state);
 		    objLocation.setPhone(location_phone);
 		    objLocation.setDescription(location_description);
-		    
+
 		    objAddress = scForSessAdd.getLocation().getAddress();
 		    objAddress.setCity(location_city);
 		    objAddress.setStreetAddress(location_address);
 		    objAddress.setZipcode(location_postcode);
 		    objAddress.setState(state);
 		    objAddress.setCountry(country);
-		    
+
 		    objLocation.setAddress(objAddress);
 		    scForSessAdd.setLocation(objLocation);
 	    }
-	    
+
 	    synchronousService.saveSynchronousClass(scForSessAdd);
-		
-		
-		
+
+
+
 	    return new ModelAndView("redirect:/classroomsetup?id="+courseId + "&msg=success&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=" + courseType);
 	}
 	// send to Schedule page
@@ -243,22 +220,22 @@ public class SynchronousClassController {
 		SynchronousClassVO  syncClassVO =null;
 		ModelAndView scheduleView = new ModelAndView ("schedule");
 		boolean isCoursepublished = false;
-		
+
 		try
 		{
 			//if(request.getParameter("varSyncClassId")!=null){
 				String courseId = request.getParameter("id");
 				List <SynchronousClass> lstSyncClass = synchronoutService.getSynchronousClassByCourseId(Long.parseLong(courseId));
 				CourseDTO courseDB = courseService.getCourseById(Long.parseLong(courseId));
-				
-				syncClassVO = this.setScheduleFormFields(lstSyncClass); 	
-			//}	
-				
+
+				syncClassVO = this.setScheduleFormFields(lstSyncClass);
+			//}
+
 			TimeZone objtimezone = new TimeZone();
 			List<TimeZone> lstTimeZone = null;
-			
+
 			lstTimeZone = synchronoutService.getAllTimezone(objtimezone);
-			
+
 			if(courseDB != null)
 			{
 				if(courseDB.getCourseStatus() == "Published")
@@ -269,20 +246,20 @@ public class SynchronousClassController {
 			 //if(lstTimeZone != null)
 			 //logger.debug("TimeZone: "+ lstTimeZone.size());
 			 scheduleView.addObject("lstTimeZone", lstTimeZone);
-			 
+
 			 String idToSearch = request.getParameter("id");
 			 scheduleView.addObject("courseid", idToSearch.toString());
 			 scheduleView.addObject("status", (courseDB==null?null:courseDB.getCourseStatus()));
 			 scheduleView.addObject("name", (courseDB==null?null:courseDB.getName()));
 			 scheduleView.addObject("type", (courseDB==null?null:courseDB.getCourseType()));
-			 scheduleView.addObject("courseObj", courseDB);			 
+			 scheduleView.addObject("courseObj", courseDB);
 			 scheduleView.addObject(WlcmsConstants.PARAMETER_COURSE_TYPE,  request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE));
-			 
+
 			 if (request.getParameter("msg") != null) {
 				 scheduleView.addObject("msg", "success");
 				}
-			 
-			 
+
+
 		}
 		catch (Exception e)
 		{
@@ -290,58 +267,58 @@ public class SynchronousClassController {
 		}
 		logger.debug("CourseController::showSchedule - End");
 
-		
+
 		 scheduleView.addObject("syncClassVO", syncClassVO);
 		 return scheduleView;
 	}
 
-	
-	
+
+
 	public SynchronousClassVO setScheduleFormFields(List <SynchronousClass> lstSyncClass){
-		
+
 		SynchronousClassVO vo = new SynchronousClassVO();
-		
+
 		Iterator<SynchronousClass> iterSyncClass = lstSyncClass.iterator();
 		while (iterSyncClass.hasNext()) {
 			SynchronousClass sc1 = iterSyncClass.next();
 			Set <SynchronousSession> sccc1 =  sc1.getSyncSession();
-			
+
 			Iterator<SynchronousSession> iter2 = sccc1.iterator();
-			
-			
+
+
 			if(sc1.getEnrollmentCloseDate()!=null)
 				vo.setSyncClassId(sc1.getId());
 				vo.setEnrollmentCloseDate( formatonlyDate.format(sc1.getEnrollmentCloseDate()));
-			
-			
+
+
 			if(sc1.getClassStartDate()!=null)
 				vo.setCourseStartDate(formatonlyDate.format(sc1.getClassStartDate()));
-			
+
 			if(sc1.getTimeZoneId() !=null)
 				vo.setTimeZone(Integer.toString(sc1.getTimeZoneId()));
-			
-			
+
+
 			    while (iter2.hasNext()){
 			    	SynchronousSession sc1aaa = iter2.next();
-			    	
+
 			    	if(sc1aaa.getStartDateTime()!=null)
 			    		vo.setCourseStartTime(formatOnlyTime.format(sc1aaa.getStartDateTime()));
-			    	
+
 			    	if(sc1aaa.getEndDateTime()!=null)
 			    		vo.setCourseEndTime(formatOnlyTime.format(sc1aaa.getEndDateTime()));
-	    			
+
 			    }
-		    
+
 		}
-		
+
 		return vo;
 	}
-	
-	
+
+
 	@RequestMapping(value = "saveSchedule", method={RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView saveSchedule(HttpServletRequest request) {
-		
-		
+
+
 		String timezone = request.getParameter("timezome");
 		String enrollmentCloseDate = request.getParameter("enroll_date");
 		String courseStartDate = request.getParameter("start_date");
@@ -350,55 +327,55 @@ public class SynchronousClassController {
 		String courseId = request.getParameter("varCourseId");
 		String varSyncClassId = request.getParameter("varSyncClassId");
 		String courseType = request.getParameter("cType");
-		
+
 		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		try {
 
-			
+
 			String completeStartDate = courseStartDate + " " + start_time;
 			String completeEndDate = courseStartDate + " " + end_time;
-			  
+
 			SynchronousClass scForSessAdd=null;
-			
-			
+
+
 			if(varSyncClassId != null && Long.parseLong(varSyncClassId)>0 ){
 				List <SynchronousClass> lstSyncClass = synchronoutService.getSynchronousClassByCourseId(Long.parseLong(courseId));
-				
-				
+
+
 				Iterator<SynchronousClass> iter = lstSyncClass.iterator();
 	    		while (iter.hasNext()) {
 	    			scForSessAdd = iter.next();
-	    			CourseDTO secondCourse = courseService.getCourseById(Long.valueOf(courseId));
+	    			CourseDTO secondCourse = courseService.getCourseById(Long.parseLong(courseId));
 	    			secondCourse.setLastUpdatedDate(new Date());
 	    			secondCourse.setLastUpdateUser(principal.getAuthorId());
 					scForSessAdd.setCourse(secondCourse);
-	    			
+
 					scForSessAdd.setClassStatus("Active");
 		    		scForSessAdd.setClassStartDate(simplesyncsessionDateFormat.parse(completeStartDate));
 					scForSessAdd.setClassEndDate(simplesyncsessionDateFormat.parse(completeEndDate));
 					scForSessAdd.setEnrollmentCloseDate(formatDateWithTime.parse(enrollmentCloseDate+ " 23:59:59"));
 					scForSessAdd.setTimeZoneId(Integer.valueOf(timezone));
-					
-	    			
+
+
 	    			Set <SynchronousSession> lstSyncSess =  scForSessAdd.getSyncSession();
 	    			Iterator<SynchronousSession> iter2 = lstSyncSess.iterator();
 	    			    while (iter2.hasNext()){
 	    			    	SynchronousSession syncSess = iter2.next();
-	    			    	
+
 	    		    		syncSess.setSyncClass(scForSessAdd);
 	    		    		syncSess.setStartDateTime(simplesyncsessionDateFormat.parse(completeStartDate));
 	    		    		syncSess.setEndDateTime(simplesyncsessionDateFormat.parse(completeEndDate));
-	    		    		Set<SynchronousSession> getSyncSession = new HashSet<SynchronousSession>(); 
+	    		    		Set<SynchronousSession> getSyncSession = new HashSet<SynchronousSession>();
 	    		    		getSyncSession.add(syncSess);
 	    		    		scForSessAdd.setSyncSession(getSyncSession);
 	    			    }
-	    		    
+
 	    			}
-	    		
+
 	    		synchronoutService.saveSynchronousClass(scForSessAdd);
 			}else{
-				
+
 				scForSessAdd = new SynchronousClass();
 	    		CourseDTO secondCourse = courseService.getCourseById(Long.valueOf(courseId));
     			secondCourse.setLastUpdatedDate(new Date());
@@ -406,34 +383,34 @@ public class SynchronousClassController {
 				//CourseDTO secondCourse = new CourseDTO();
 				//secondCourse.setId(Long.valueOf(courseId));
 				scForSessAdd.setCourse(secondCourse);
-				
+
 	    		scForSessAdd.setClassName(secondCourse.getName());
 	    		scForSessAdd.setClassStatus(COURSE_STATUS);
 	    		scForSessAdd.setClassStartDate(simplesyncsessionDateFormat.parse(completeStartDate));
 				scForSessAdd.setClassEndDate(simplesyncsessionDateFormat.parse(completeStartDate));
 				scForSessAdd.setEnrollmentCloseDate(formatDateWithTime.parse(enrollmentCloseDate+ " 23:59:59"));
 				scForSessAdd.setTimeZoneId(Integer.valueOf(timezone));
-				
+
 				SynchronousSession syncSess = new SynchronousSession();
 	    		syncSess.setSyncClass(scForSessAdd);
 	    		syncSess.setStartDateTime(simplesyncsessionDateFormat.parse(completeStartDate));
 	    		syncSess.setEndDateTime(simplesyncsessionDateFormat.parse(completeEndDate));
-	    		Set<SynchronousSession> getSyncSession = new HashSet<SynchronousSession>(); 
+	    		Set<SynchronousSession> getSyncSession = new HashSet<SynchronousSession>();
 	    		getSyncSession.add(syncSess);
 	    		scForSessAdd.setSyncSession(getSyncSession);
 	    		synchronoutService.saveSynchronousClass(scForSessAdd);
 			}
-			
-    		
 
+
+		} catch (RuntimeException ex) {
+			throw ex;//SonarQube recommendation
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
-		
+
 		return new ModelAndView("redirect:/schedule?id="+courseId + "&msg=success&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=" + courseType);
 	}
-	
+
 	// send to Schedule page
 	@RequestMapping(value = "instructor", method={RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView showinstructor(HttpServletRequest request) throws SQLException {
@@ -471,10 +448,10 @@ public class SynchronousClassController {
 						break;
 					}
 				syncClassVO.setSyncClassId(objSyncClass.getId());
-				
-					
+
+
 				}
-		
+
 			/*if(lstSyncClass!=null){
 				SynchronousClass objSyncClass = lstSyncClass.get(0);
 				syncClassVO.setSyncClassId(objSyncClass.getId());
@@ -483,7 +460,7 @@ public class SynchronousClassController {
 				syncClassVO.setPresenterEmail(objSyncClass.getPresenterEmail());
 				syncClassVO.setPresenterPhone(objSyncClass.getPresenterPhone());
 			}*/
-			
+
 		}catch(Exception ex){
 			logger.debug(ex.getMessage());
 		}
@@ -491,15 +468,15 @@ public class SynchronousClassController {
 		instructorView.addObject("courseObj", courseDB);
 		instructorView.addObject("syncClassVO", syncClassVO);
 		instructorView.addObject(WlcmsConstants.PARAMETER_COURSE_TYPE,  request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE));
-		
+
 		return instructorView;
 	}
-	
+
 	// send to Schedule page
 	@RequestMapping(value = "saveInstructor", method={RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView saveInstructor(HttpServletRequest request) throws SQLException {
 		logger.debug("CourseController::showinstructor - Start");
-		
+
 		//ModelAndView scheduleView = new ModelAndView ("instructor");
 		String courseId = request.getParameter("varCourseId");
 		String presenterFirstName = request.getParameter("presenter_firstname");
@@ -511,7 +488,7 @@ public class SynchronousClassController {
 		String email = request.getParameter("email_address");
 		String courseProviderId = request.getParameter("courseProviderId");
 		String phoneNo = request.getParameter("phone_no");
-		
+
 		CourseProvider courseProvider = new CourseProvider();
 		//CourseDTO course = new CourseDTO();
 		CourseDTO course = courseService.getCourseById(Long.parseLong(courseId));
@@ -521,16 +498,16 @@ public class SynchronousClassController {
 		courseProvider.setPhoneNo(phoneNo);
 		courseProvider.setId((courseProviderId!=null && !courseProviderId.equals(""))?Long.valueOf(courseProviderId):null);
 		courseProviderService.save(courseProvider);
-		
-		
-		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
+
+
+		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List <SynchronousClass> lstSyncClass = synchronoutService.getDeletedandUnDeletedSynchronousClassByCourseId(Long.parseLong(courseId));
-		
+
 		SynchronousClass scForSessAdd = null;
 		Iterator<SynchronousClass> iter = lstSyncClass.iterator();
 		while (iter.hasNext()) {
 			scForSessAdd = iter.next();
-			CourseDTO secondCourse = courseService.getCourseById(Long.valueOf(courseId));
+			CourseDTO secondCourse = courseService.getCourseById(Long.parseLong(courseId));
 			secondCourse.setLastUpdatedDate(new Date());
 			secondCourse.setLastUpdateUser(principal.getAuthorId());
 			scForSessAdd.setCourse(secondCourse);
@@ -538,32 +515,32 @@ public class SynchronousClassController {
 			scForSessAdd.setPresenterLastName(presenterLastName);
 			scForSessAdd.setPresenterEmail(presenterEmail);
 			scForSessAdd.setPresenterPhone(presenterPhone);
-		
+
 			synchronoutService.saveSynchronousClass(scForSessAdd);
-	
+
 			logger.debug("CourseController::showinstructor - End");
 		}
-			
+
 		return new ModelAndView("redirect:/instructor?id=" + courseId + "&msg=success&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=" + courseType);
 	}
-	
-	
+
+
 	// send to Schedule page
 		@RequestMapping(value = "saveWebinarSetup", method={RequestMethod.POST, RequestMethod.GET})
 		public ModelAndView saveWebinarSetUp(HttpServletRequest request) throws SQLException {
 			logger.debug("SynchronousCourseController::showWebinarSetup - Start");
-			
+
 			String courseId = request.getParameter("varCourseId");
 			String meetingURL = request.getParameter("MEETINGURL");
 			String meetingPassCode = request.getParameter("MEETINGPASSCODE");
 			String dialinNumber = request.getParameter("DIAL_IN_NUMBER");
 			String additionalInformation = request.getParameter("ADDITIONAL_INFORMATION");
 			String webinarServiceProvider = request.getParameter("WEBINAR_SERVICE_PROVIDER");
-			
+
 			VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			
+
 			List <SynchronousClass> lstSyncClass = synchronoutService.getSynchronousClassByCourseId(Long.parseLong(courseId));
-					
+
 			SynchronousClass scForSessAdd = null;
 			Iterator<SynchronousClass> iter = lstSyncClass.iterator();
 			while (iter.hasNext()) {
@@ -577,12 +554,12 @@ public class SynchronousClassController {
 				scForSessAdd.setDialInNumber(dialinNumber);
 				scForSessAdd.setAdditionalInformation(additionalInformation);
 				scForSessAdd.setWebinarServiceProvider(webinarServiceProvider);
-			
+
 				synchronoutService.saveSynchronousClass(scForSessAdd);
-		
+
 				logger.debug("SynchronousCourseController::showWebinarSetup - End");
 			}
-				
+
 	    		return new ModelAndView("redirect:/webinarSetup?id="+courseId + "&cType=6" + "&msg=success");
 		}
 
@@ -593,11 +570,11 @@ public class SynchronousClassController {
 			ModelAndView scheduleView = new ModelAndView ("webinar_setup");
 			String courseId = request.getParameter("id");
 			CourseDTO courseDB = courseService.getCourseById(Long.parseLong(courseId));
-					
-			
+
+
 			try{
 			List <SynchronousClass> lstSyncClass = synchronoutService.getSynchronousClassByCourseId(Long.parseLong(courseId));
-			
+
 			if(lstSyncClass!=null){
 				SynchronousClass objSyncClass = lstSyncClass.get(0);
 				syncClassVO = new SynchronousClassVO();
@@ -608,12 +585,12 @@ public class SynchronousClassController {
 				syncClassVO.setAdditionalInformation(objSyncClass.getAdditionalInformation());
 				syncClassVO.setWebinarServiceProvider(objSyncClass.getWebinarServiceProvider());
 				syncClassVO.setMeetingId(objSyncClass.getMeetingId());
-				
+
 				if(objSyncClass.getClassStartDate() != null){
 					syncClassVO.setCourseStartDate(objSyncClass.getClassStartDate().toString());
 				}
 				syncClassVO.setPresenterEmail(objSyncClass.getPresenterEmail());
-				
+
 			}
 			}catch(Exception ex){
 				logger.debug(ex.getMessage());
@@ -625,27 +602,27 @@ public class SynchronousClassController {
 			scheduleView.addObject("courseObj", courseDB);
 			return scheduleView;
 		}
-		
+
 		@RequestMapping(value = "deleteClassroom", method = RequestMethod.POST)
 		public @ResponseBody String deleteClassroom(
 				HttpServletRequest request, HttpServletResponse response
 				) {
-			
+
 			logger.debug("LocationController::deleteLocation - Start");
 
 			String deleteId =  request.getParameter("class_id");
-			
-		
+
+
 			//location.setAddress(address);
 			//location.setId(Long.parseLong(locationId));
-			
-			synchronousService.deleteClassroom(Long.parseLong(deleteId));
-			
-			
 
-			
+			synchronousService.deleteClassroom(Long.parseLong(deleteId));
+
+
+
+
 			return deleteId;
-			
+
 		}
-		
+
 }

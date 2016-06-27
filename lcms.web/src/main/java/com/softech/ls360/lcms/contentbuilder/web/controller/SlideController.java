@@ -609,21 +609,24 @@ public class SlideController {
 		String asset_id = request.getParameter("asset_id");
 		String lesson_Id = request.getParameter("lesson_Id");
 		String course_id = request.getParameter("course_id");
+		int intCourseId = 0;//default if not found
+		if(course_id != null && !course_id.trim().equals(""))
+			intCourseId = Integer.parseInt(course_id.trim());
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		int sequanceMax = assetService.getSpprtMtrSequanceMax(TypeConvertor.AnyToInteger(lesson_Id), TypeConvertor.AnyToInteger(course_id));
 
 		SupportMaterial smVO =new SupportMaterial();
 		smVO.setContentObjectId(TypeConvertor.AnyToInteger(lesson_Id));
-		smVO.setCourseId(Integer.valueOf(course_id));
+		smVO.setCourseId(intCourseId);
 		smVO.setType(asset_type);
 		smVO.setCreatedUserId(user.getAuthorId());
 		//smVO.setCreatedDate(cal.getTime());
 		smVO.setAssetId( Long.valueOf(asset_id ));
 		smVO.setSequence( ++sequanceMax );
 		assetService.insertSupportMaterial(smVO);
-		assetService.setSpprtMtrDisplayOrderOnAddDlt(Integer.parseInt(course_id), Integer.parseInt(lesson_Id), 1);
-		updateCourseModifiedDateandLastUpdateUser(Long.parseLong(((course_id == null || course_id.equals("")) ? "0" : course_id)));
+		assetService.setSpprtMtrDisplayOrderOnAddDlt(intCourseId, Integer.parseInt(lesson_Id), 1);
+		updateCourseModifiedDateandLastUpdateUser(intCourseId);
 		res.setStatus("SUCCESS");
 		return res;
 	}

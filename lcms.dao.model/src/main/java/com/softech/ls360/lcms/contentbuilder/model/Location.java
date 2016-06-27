@@ -1,56 +1,36 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 
 
 @Entity
 @Table(name = "LOCATION")
 public class Location implements Serializable{
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/*@Id
 	@javax.persistence.TableGenerator(name = "LOCATION_ID", table = "VU360_SEQ", pkColumnName = "TABLE_NAME", valueColumnName = "NEXT_ID", pkColumnValue = "LOCATION", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LOCATION_ID")*/
-	
+
 	private Long id;
 	private String enabledtf = null;
 	private String streetAddress;
 	/*private Set<SynchronousClass> classrooms = new HashSet<SynchronousClass>(
 			0);
 	*/
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	@Transient
 	public String getStreetAddress() {
 		return streetAddress;
@@ -58,27 +38,27 @@ public class Location implements Serializable{
 
 
 	public void setStreetAddress(String streetAddress) {
-		streetAddress = streetAddress;
+		this.streetAddress = streetAddress;
 	}
 
 
 	@TableGenerator(
-	        name="seqSynchronousClass", 
+	        name="seqSynchronousClass",
 	        table="VU360_SEQ",
-	        pkColumnName="TABLE_NAME", 
-	        valueColumnName="NEXT_ID", 
+	        pkColumnName="TABLE_NAME",
+	        valueColumnName="NEXT_ID",
 	        pkColumnValue="LOCATION",
 	        allocationSize = 1)
 	    @Id
-	    @GeneratedValue(strategy=GenerationType.TABLE, generator="seqSynchronousClass") 
+	    @GeneratedValue(strategy=GenerationType.TABLE, generator="seqSynchronousClass")
 		public Long getId() {
 		  return id;
 		 }
-		
-		
-		
-	
-		
+
+
+
+
+
 		@Column(name="ENABLEDTF")
 		public String getEnabledtf() {
 			return enabledtf;
@@ -88,9 +68,9 @@ public class Location implements Serializable{
 			this.enabledtf = enabledtf;
 		}
 
-	
-	
-	
+
+
+
 	@Column(name="DESCRIPTION")
 	 public String getDescription() {
 		return description;
@@ -139,11 +119,11 @@ public class Location implements Serializable{
 		this.phone = phone;
 	}
 
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	@Column(name="CITY")
 	public String getCity() {
 		return city;
@@ -171,12 +151,12 @@ public class Location implements Serializable{
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	/*@OneToMany(fetch = FetchType.LAZY,mappedBy="location",cascade=CascadeType.ALL)
 	public Set<SynchronousClass> getClassrooms() {
 		return classrooms;
@@ -194,30 +174,30 @@ public class Location implements Serializable{
 
 
 	private String description = null;
-	
-	
+
+
 	private String locationname = null;
-	
-	
+
+
 	private String city = null;
-	
-	
+
+
 	private String state = null;
-	
-	
+
+
 	private String zip = null;
-	
-	
+
+
 	private String country = null;
-	
-	
+
+
 	private String phone = null;
-	
-	
+
+
 	private Integer contentownerId = null;
-	
-	
-	
+
+
+
 
 	@Column(name="CONTENTOWNER_ID")
 	public Integer getContentownerId() {
