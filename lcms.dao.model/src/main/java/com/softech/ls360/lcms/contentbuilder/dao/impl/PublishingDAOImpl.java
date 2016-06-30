@@ -111,21 +111,21 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 
 			Object [] coursCompletionRptRow = (Object[]) objCoursCompletionRpt;
 
-			courseCompletionReport.setPostAssesssmentEnabled(coursCompletionRptRow[1] == null ? false : Boolean.valueOf(coursCompletionRptRow[1].toString()));
+			courseCompletionReport.setPostAssesssmentEnabled(coursCompletionRptRow[1] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[1].toString()));
 			courseCompletionReport.setQuizEnabled(coursCompletionRptRow[2] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[2].toString()));
-			courseCompletionReport.setContentObjectPresent(coursCompletionRptRow[3] == null ? false : new Boolean(coursCompletionRptRow[3].toString()));
-			courseCompletionReport.setAtleastOneScenePerCO(coursCompletionRptRow[4] == null ? false : new Boolean(coursCompletionRptRow[4].toString()));
-			courseCompletionReport.setCourseExpired(coursCompletionRptRow[5] == null ? false : new Boolean(coursCompletionRptRow[5].toString()));
-			courseCompletionReport.setPublishStatus(coursCompletionRptRow[6] == null ? false : new Boolean(coursCompletionRptRow[6].toString()));
+			courseCompletionReport.setContentObjectPresent(coursCompletionRptRow[3] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[3].toString()));
+			courseCompletionReport.setAtleastOneScenePerCO(coursCompletionRptRow[4] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[4].toString()));
+			courseCompletionReport.setCourseExpired(coursCompletionRptRow[5] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[5].toString()));
+			courseCompletionReport.setPublishStatus(coursCompletionRptRow[6] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[6].toString()));
 			courseCompletionReport.setCourseId(coursCompletionRptRow[7] == null ? 0 : Integer.parseInt(coursCompletionRptRow[7].toString()));
 			courseCompletionReport.setCourseName(coursCompletionRptRow[8] == null ? "" : coursCompletionRptRow[8].toString());
 			courseCompletionReport.setBussinessKey(coursCompletionRptRow[9] == null ? "" : coursCompletionRptRow[9].toString());
-			courseCompletionReport.setContentOwnerStoreFront(coursCompletionRptRow[10] == null ? false : new Boolean(coursCompletionRptRow[10].toString()));
-			courseCompletionReport.setExamMastery(coursCompletionRptRow[11] == null ? false : new Boolean(coursCompletionRptRow[11].toString()));
-			courseCompletionReport.setQuizMastery(coursCompletionRptRow[12] == null ? false : new Boolean(coursCompletionRptRow[12].toString()));
-			courseCompletionReport.setQuizQuestionCount(Integer.parseInt(coursCompletionRptRow[13] == null ? "" : coursCompletionRptRow[13].toString()));
-			courseCompletionReport.setExamQuestionCount(Integer.parseInt(coursCompletionRptRow[14] == null ? "" : coursCompletionRptRow[14].toString()));
-			courseCompletionReport.setAgreeWithSpecifiedTextEnabled(coursCompletionRptRow[15] == null ? false : new Boolean(coursCompletionRptRow[15].toString()));
+			courseCompletionReport.setContentOwnerStoreFront(coursCompletionRptRow[10] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[10].toString()));
+			courseCompletionReport.setExamMastery(coursCompletionRptRow[11] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[11].toString()));
+			courseCompletionReport.setQuizMastery(coursCompletionRptRow[12] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[12].toString()));
+			courseCompletionReport.setQuizQuestionCount(coursCompletionRptRow[13] == null ? 0 : Integer.parseInt(coursCompletionRptRow[13].toString()));
+			courseCompletionReport.setExamQuestionCount(coursCompletionRptRow[14] == null ? 0 : Integer.parseInt(coursCompletionRptRow[14].toString()));
+			courseCompletionReport.setAgreeWithSpecifiedTextEnabled(coursCompletionRptRow[15] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[15].toString()));
 			courseCompletionReport.setLastPublishDate(TypeConvertor.DateTimeToString((Date) coursCompletionRptRow[20]));
 			courseCompletionReport.setOfferPrice(TypeConvertor.AnyToDouble(coursCompletionRptRow[21]));
 			courseCompletionReport.setLowestPrice(TypeConvertor.AnyToDouble(coursCompletionRptRow[22]));
@@ -138,8 +138,8 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 				logger.error("Error in method:getCompletionReport" + e.getMessage() );
 				e.printStackTrace();
 			}
-			courseCompletionReport.setCompletionPostAssessmentAttempted(coursCompletionRptRow[17] == null ? false : new Boolean (coursCompletionRptRow[17].toString()));
-			courseCompletionReport.setSetCourseExpiration (coursCompletionRptRow[18] == null ? false : new Boolean (coursCompletionRptRow[18].toString()));
+			courseCompletionReport.setCompletionPostAssessmentAttempted(coursCompletionRptRow[17] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[17].toString()));
+			courseCompletionReport.setSetCourseExpiration (coursCompletionRptRow[18] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[18].toString()));
 			courseCompletionReport.setExamQuestionToAskCount(TypeConvertor.AnyToInteger(coursCompletionRptRow[19]));
 		}
 
@@ -160,15 +160,15 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 		for (Object objCoursCompletionRpt : coursCompletionRpts) {
 
 			Object [] coursCompletionRptRow = (Object[]) objCoursCompletionRpt;
-			courseCompletionReport.setIsScheduleSet(coursCompletionRptRow[0] == null ? false : Boolean.valueOf (coursCompletionRptRow[0].toString()));
-			courseCompletionReport.setIsPresenterSet(coursCompletionRptRow[1] == null ? false : Boolean.valueOf(coursCompletionRptRow[1].toString()));
-			courseCompletionReport.setIsMeetingSet(coursCompletionRptRow[2] == null ? false : new Boolean(coursCompletionRptRow[2].toString()));
+			courseCompletionReport.setIsScheduleSet(coursCompletionRptRow[0] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[0].toString()));
+			courseCompletionReport.setIsPresenterSet(coursCompletionRptRow[1] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[1].toString()));
+			courseCompletionReport.setIsMeetingSet(coursCompletionRptRow[2] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[2].toString()));
 			courseCompletionReport.setCourseName(coursCompletionRptRow[3] == null ? "" : coursCompletionRptRow[3].toString());
 			courseCompletionReport.setBussinessKey(coursCompletionRptRow[4] == null ? "" : coursCompletionRptRow[4].toString());
-			courseCompletionReport.setContentOwnerStoreFront(coursCompletionRptRow[5] == null ? false : new Boolean(coursCompletionRptRow[5].toString()));
-			courseCompletionReport.setPublishStatus(coursCompletionRptRow[6] == null ? false : new Boolean(coursCompletionRptRow[6].toString()));
-			courseCompletionReport.setIsClassRoomSet(coursCompletionRptRow[7] == null ? false : new Boolean(coursCompletionRptRow[7].toString()));
-			courseCompletionReport.setAuthorInfoProvided(coursCompletionRptRow[8] == null ? false : new Boolean(coursCompletionRptRow[8].toString()));
+			courseCompletionReport.setContentOwnerStoreFront(coursCompletionRptRow[5] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[5].toString()));
+			courseCompletionReport.setPublishStatus(coursCompletionRptRow[6] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[6].toString()));
+			courseCompletionReport.setIsClassRoomSet(coursCompletionRptRow[7] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[7].toString()));
+			courseCompletionReport.setAuthorInfoProvided(coursCompletionRptRow[8] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[8].toString()));
 			courseCompletionReport.setLastPublishDate(TypeConvertor.DateTimeToString((Date) coursCompletionRptRow[9]));
 			courseCompletionReport.setOfferPrice(TypeConvertor.AnyToDouble(coursCompletionRptRow[10]));
 			courseCompletionReport.setLowestPrice(TypeConvertor.AnyToDouble(coursCompletionRptRow[11]));

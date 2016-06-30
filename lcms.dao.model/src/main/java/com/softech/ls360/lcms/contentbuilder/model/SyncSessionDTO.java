@@ -4,6 +4,7 @@ import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty
 import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotFalse;
 import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotPastDate;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import java.util.Map;
         messages = {"End Date Before Start Date"} ,
         properties={"endDateTime"},
         verifiers = {"validDateRange"})
-public class SyncSessionDTO implements ControllableNode {
+public class SyncSessionDTO implements ControllableNode, Serializable {
     private SyncClassDTO syncClass;
 
 
@@ -59,7 +60,7 @@ public class SyncSessionDTO implements ControllableNode {
     public void setAction(String tag) {
         this.action = tag;
     }
-    
+
     public String getKey() {
        return getSessionKey();
     }
@@ -79,7 +80,7 @@ public class SyncSessionDTO implements ControllableNode {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     @Override
     public boolean isError() {
         return error;

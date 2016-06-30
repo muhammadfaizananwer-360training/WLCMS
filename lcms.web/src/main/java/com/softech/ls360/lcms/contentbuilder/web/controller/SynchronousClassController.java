@@ -377,7 +377,7 @@ public class SynchronousClassController {
 			}else{
 
 				scForSessAdd = new SynchronousClass();
-	    		CourseDTO secondCourse = courseService.getCourseById(Long.valueOf(courseId));
+	    		CourseDTO secondCourse = courseService.getCourseById(Long.parseLong(courseId));
     			secondCourse.setLastUpdatedDate(new Date());
     			secondCourse.setLastUpdateUser(principal.getAuthorId());
 				//CourseDTO secondCourse = new CourseDTO();

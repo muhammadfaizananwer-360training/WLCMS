@@ -1,5 +1,6 @@
 package com.softech.ls360.lcms.contentbuilder.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,22 +9,22 @@ import javax.persistence.Transient;
 
 
 @Entity
-public class ContentObject {
-	
-	@Transient 
+public class ContentObject implements Serializable{
+
+	@Transient
 	Integer CourseID;
-	@Transient 
+	@Transient
 	String CO_GUID;
-	@Transient 
+	@Transient
 	Integer NEW_ID;
 	@Transient
 	Integer contentOwner_Id;
 	@Transient
 	Integer CreateUserId;
-	
+
 	@Transient
 	List<LearningObject> lstContentObject;
-	
+
 	public List<LearningObject> getLstContentObject() {
 		return lstContentObject;
 	}
@@ -38,10 +39,10 @@ public class ContentObject {
 	String Description;
 	@Transient
 	String LearningObjective;
-	
+
 	@Transient
 	String LearningObjectiveId;
-	
+
 	public String getLearningObjectiveId() {
 		return LearningObjectiveId;
 	}
@@ -75,31 +76,31 @@ public class ContentObject {
 	Long LastUpdateUser;
 	@Transient
 	Integer DEMOABLE;
-	
+
 	private int allowQuiz;
-	
+
 	public ContentObject()
 	{
-		
-		
-		
+
+
+
 	}
-	
+
 	public ContentObject(Integer iD, String contentObjectType, String name,
 			String description, String learningObjective) {
-		
+
 		super();
 		ID = iD;
 		ContentObjectType = contentObjectType;
 		Name = name;
 		Description = description;
-		LearningObjective = learningObjective; 
+		LearningObjective = learningObjective;
 	}
-	
-	
+
+
 	public ContentObject(Integer iD, String contentObjectType, String name,
 			String description, int allowQuiz) {
-		
+
 		super();
 		ID = iD;
 		ContentObjectType = contentObjectType;
@@ -107,20 +108,20 @@ public class ContentObject {
 		Description = description;
 		this.allowQuiz = allowQuiz;
 	}
-	
+
 	public ContentObject(Integer iD, String contentObjectType, String name,
-			String description, Integer parentContentObjectId, Integer isAllowQuiz, 
-			Integer isShowInOutLine, Integer isRootNode, 
+			String description, Integer parentContentObjectId, Integer isAllowQuiz,
+			Integer isShowInOutLine, Integer isRootNode,
 			Integer maxQuizQuestionStoask,Integer overRideMaxQuizQuestionStoask, Long lastUpdateUser, Integer demoable) {
-		
+
 		super();
 		ID = iD;
 		ContentObjectType = contentObjectType;
 		Name = name;
 		Description = description;
-		
+
 		PARENT_CO_ID = parentContentObjectId;
-		
+
 		ALLOWQUIZTF=isAllowQuiz;
 		SHOWINOUTLINETF=isShowInOutLine;
 		ROOTNODETF=isRootNode;
@@ -129,7 +130,7 @@ public class ContentObject {
 		LastUpdateUser = lastUpdateUser;
 		DEMOABLE =demoable;
 	}
-	
+
 	public Integer getID() {
 		return ID;
 	}
@@ -154,7 +155,7 @@ public class ContentObject {
 	public void setDescription(String description) {
 		Description = description;
 	}
-	
+
 	public Integer getCourseID() {
 		return CourseID;
 	}
@@ -276,6 +277,6 @@ public class ContentObject {
 		this.allowQuiz = allowQuiz;
 	}
 
-	
-	
+
+
 }

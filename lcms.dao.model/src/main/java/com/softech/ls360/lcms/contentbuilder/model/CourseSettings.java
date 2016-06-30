@@ -2,30 +2,30 @@ package com.softech.ls360.lcms.contentbuilder.model;
 
 
 /**
- * 
+ *
  * @author haider.ali
  *
  */
 public class CourseSettings {
 
-	public Long Id;
-	public Long course_Id;
-	public Long courseConfiguration_Id;
-	public Boolean passAllQuizzes; 
-	public Boolean attemptTheExam; 
-	public Boolean passTheExam;
-	public Boolean agreeWithSpecifiedText;
-	public String specifiedText;
-	public String courseName;
-	public String businessKey;
-	public Boolean displaySlidesTOC;
-	
-	
+	protected Long id;
+	protected Long course_Id;
+	protected Long courseConfiguration_Id;
+	protected Boolean passAllQuizzes;
+	protected Boolean attemptTheExam;
+	protected Boolean passTheExam;
+	protected Boolean agreeWithSpecifiedText;
+	protected String specifiedText;
+	protected String courseName;
+	protected String businessKey;
+	protected Boolean displaySlidesTOC;
+
+
 	public Long getId() {
-		return Id;
+		return id;
 	}
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 	public Long getCourse_Id() {
 		return course_Id;
@@ -81,12 +81,12 @@ public class CourseSettings {
 	public void setBusinessKey(String businessKey) {
 		this.businessKey = businessKey;
 	}
-	
+
 	public Boolean getDisplaySlidesTOC() {
 		return displaySlidesTOC;
 	}
 	public void setDisplaySlidesTOC(Boolean displaySlidesTOC) {
 		this.displaySlidesTOC = displaySlidesTOC;
 	}
-	
+
 }
