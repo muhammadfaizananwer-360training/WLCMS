@@ -410,8 +410,6 @@ public class SlideDAOImpl extends GenericDAOImpl<Slide> implements SlideDAO {
 
     @Transactional
     public List<SlideAsset> convertSlideAssetSearch(Object[] courseRows, int assettype) {
-        logger.info("CourseRows Array detail:");
-        logger.info(courseRows);
         List<SlideAsset> slideList = new ArrayList<SlideAsset>();
         Object[] courseRow;
         SlideAsset dto;
@@ -446,6 +444,8 @@ public class SlideDAOImpl extends GenericDAOImpl<Slide> implements SlideDAO {
                 slideList.add(dto);
             }
         } catch (Exception ex) {
+            logger.error("CourseRows Array detail:");
+            logger.error(courseRows);
             logger.error("Error:", ex);
         }
         return slideList;
