@@ -571,7 +571,7 @@ public class SynchronousClassController {
 
                 }
                 course.setClassInstructorId(persist.getId());
-                courseService.saveCourse(course);
+                courseService.updateCourse(course);
 
         }
 		SynchronousClass scForSessAdd = null;
