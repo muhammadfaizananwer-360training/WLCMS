@@ -4,8 +4,9 @@ import com.softech.common.parsing.ExpressionConstant;
 import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty;
 
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
-public class CourseProviderDTO {
+public class CourseProviderDTO implements Serializable{
 	private CourseVO course;
 
     @NotEmpty
@@ -50,7 +51,7 @@ public class CourseProviderDTO {
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
-    
+
     public String getInstructorBackground() {
         return instructorBackground;
     }

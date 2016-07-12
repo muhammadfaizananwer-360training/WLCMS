@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by abdul.wahid on 6/20/2016.
+ * Created by Abdul Wahid on 6/20/2016.
  */
 @Configuration
 public class ModelMapperConfiguration {

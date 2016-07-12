@@ -1,5 +1,23 @@
 package com.softech.ls360.lcms.contentbuilder.dao.impl;
 
+import com.softech.ls360.lcms.contentbuilder.dao.GenericDAOImpl;
+import com.softech.ls360.lcms.contentbuilder.dao.SPCallingParams;
+import com.softech.ls360.lcms.contentbuilder.dao.SlideDAO;
+import com.softech.ls360.lcms.contentbuilder.model.Slide;
+import com.softech.ls360.lcms.contentbuilder.model.SlideAsset;
+import com.softech.ls360.lcms.contentbuilder.utils.LCMSProperties;
+import com.softech.ls360.lcms.contentbuilder.utils.LCMS_Util;
+import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
+import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -9,26 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
-import javax.persistence.Query;
-import javax.persistence.StoredProcedureQuery;
-
-import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
-import com.softech.ls360.lcms.contentbuilder.dao.GenericDAOImpl;
-import com.softech.ls360.lcms.contentbuilder.dao.SPCallingParams;
-import com.softech.ls360.lcms.contentbuilder.dao.SlideDAO;
-import com.softech.ls360.lcms.contentbuilder.model.Slide;
-import com.softech.ls360.lcms.contentbuilder.model.SlideAsset;
-import com.softech.ls360.lcms.contentbuilder.utils.LCMSProperties;
-import com.softech.ls360.lcms.contentbuilder.utils.LCMS_Util;
-import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 
 
 public class SlideDAOImpl extends GenericDAOImpl<Slide> implements SlideDAO {
@@ -137,10 +135,10 @@ public class SlideDAOImpl extends GenericDAOImpl<Slide> implements SlideDAO {
                 dto.setName(courseRow[1].toString());
                 dto.setDuration(Long.parseLong(StringUtil.ifNullReturnZero(courseRow[5])));
                 dto.setTemplateID(Long.parseLong(StringUtil.ifNullReturnZero(courseRow[4])));
-                dto.setDisplayStandardTF(courseRow[22] == null ? false : TypeConvertor.AnyToBoolean(courseRow[22].toString()));
-                dto.setDisplayWideScreenTF(courseRow[23] == null ? false : TypeConvertor.AnyToBoolean(courseRow[23].toString()));
+                dto.setDisplayStandardTF(courseRow[22] == null ? Boolean.FALSE : TypeConvertor.AnyToBoolean(courseRow[22].toString()));
+                dto.setDisplayWideScreenTF(courseRow[23] == null ? Boolean.FALSE : TypeConvertor.AnyToBoolean(courseRow[23].toString()));
                 dto.setEmbedCode((String) courseRow[24]);
-                dto.setIsEmbedCode(new Boolean(courseRow[25].toString()));
+                dto.setIsEmbedCode(Boolean.valueOf(courseRow[25].toString()));
 
 
                 //get template name
@@ -446,7 +444,9 @@ public class SlideDAOImpl extends GenericDAOImpl<Slide> implements SlideDAO {
                 slideList.add(dto);
             }
         } catch (Exception ex) {
-            logger.error(ex);
+            logger.error("CourseRows Array detail:");
+            logger.error(courseRows);
+            logger.error("Error:", ex);
         }
         return slideList;
     }

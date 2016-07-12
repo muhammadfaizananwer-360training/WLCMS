@@ -1,27 +1,19 @@
 package com.softech.ls360.lcms.contentbuilder.upload;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.SocketException;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.softech.ls360.lcms.contentbuilder.upload.FTPFileUploader.FileDetail;
-import com.softech.ls360.lcms.contentbuilder.utils.Delegate;
+import java.io.*;
+import java.net.SocketException;
 
 public class FTPFileUploader implements FileUploader {
 	public static class FileDetail {
 		private String filePath;
 		private long sizeInBytes;
-		
+
 		public String getFilePath() {
 			return filePath;
 		}
@@ -34,8 +26,8 @@ public class FTPFileUploader implements FileUploader {
 		public void setSizeInBytes(long sizeInBytes) {
 			this.sizeInBytes = sizeInBytes;
 		}
-		
-		
+
+
 	}
 	private String tempLocation;
 	private String permanentLocation;
@@ -52,16 +44,16 @@ public class FTPFileUploader implements FileUploader {
     	if(!enabled) {
     		return filePath;
     	}
-    	
+
     	FTPClient ftpClient = null;
     	try {
     		ftpClient = connectFTP();
-    					
+
 			//if it is a first chunk
 			if(currentChunk <= 0) {
-				//assuming, file already exists. 
+				//assuming, file already exists.
 				ftpClient.deleteFile(filePath);
-				
+
 				//assuming, directory structure is not defined
 				createDirectory(ftpClient,filePath, true);
 			} else {
@@ -71,7 +63,7 @@ public class FTPFileUploader implements FileUploader {
 					return filePath;
 				}
 			}
-			
+
 			OutputStream out = null;
 			try {
 				//some time "ftpClient.appendFileStream" returns null stream. so we will try configured number of times.
@@ -80,15 +72,15 @@ public class FTPFileUploader implements FileUploader {
 					out = ftpClient.appendFileStream(filePath);
 					tryLeft--;
 					if(out == null && tryLeft>0 ) {
-						logger.warn("Unable to append file" 
+						logger.warn("Unable to append file"
 							+ "\n File Path:" + filePath
 							+ "\nFTP Error Msg:" + ftpClient.getReplyString());
 						Thread.sleep(200);
 					} else {
 						break;
 					}
-				} 
-				
+				}
+
 				if(out != null) {
 					out = new BufferedOutputStream(out);
 					out.write(data);
@@ -96,8 +88,8 @@ public class FTPFileUploader implements FileUploader {
 				} else {
 					//last try with input stream
 					InputStream is = new ByteArrayInputStream(data);
-					
-					//appendFileStream is observed much faster that appendFile, So we kept appendFileStream as first priority 
+
+					//appendFileStream is observed much faster that appendFile, So we kept appendFileStream as first priority
 					if(!ftpClient.appendFile(filePath,is)){
 						throw new IOException("Unable to copy file to server because of unkonwn issue.\nFTP Error Msg:" + ftpClient.getReplyString());
 					}
@@ -107,16 +99,18 @@ public class FTPFileUploader implements FileUploader {
 					out.close();
 				}
 			}
-		
-			
+
+
 		} finally {
 			try {
 				if(ftpClient != null) {
 					ftpClient.disconnect();
 				}
-			} catch (IOException e) {}
+			} catch (IOException e) {
+				logger.debug(e.getMessage());
+			}
 		}
-    	
+
     	return filePath;
 	}
 
@@ -124,27 +118,27 @@ public class FTPFileUploader implements FileUploader {
 	public FileDetail confirmFile(String requestId,String fileRelativePath,String permanentRelativePath) throws Exception {
 		String permanetPath = getPermanentLocation() + permanentRelativePath;
 		String tempPath = fileRelativePath;
-		
+
 		FileDetail fileDetail = new FileDetail();
 		fileDetail.setFilePath(permanetPath);
-		
+
 		if(!enabled) {
     		return fileDetail;
     	}
-		
+
 		FTPClient ftpClient = null;
     	try {
     		ftpClient = connectFTP();
 			createDirectory(ftpClient,permanetPath, true);
-			
+
 			//move file location.
 			if(!ftpClient.rename(tempPath, permanetPath)) {
-				throw new IOException("Unable to move file to permanent location because of unkonwn issue." 
+				throw new IOException("Unable to move file to permanent location because of unkonwn issue."
 						+ "\nTemp Path:" + tempPath
 						+ "\nPermanent Path:" + permanetPath
 						+ "\nFTP Error Msg:" + ftpClient.getReplyString());
 			}
-			fileDetail.setSizeInBytes(getFileSize(ftpClient, permanetPath));			
+			fileDetail.setSizeInBytes(getFileSize(ftpClient, permanetPath));
 		} finally {
 			try {
 				if(ftpClient != null) {
@@ -152,13 +146,13 @@ public class FTPFileUploader implements FileUploader {
 				}
 			} catch (IOException e) {}
 		}
-		
-    	
-    	
+
+
+
 		return fileDetail;
 
 	}
-	
+
 	@Override
 	public boolean tempFileExists(String filePath) throws Exception {
 		FTPClient ftpClient = null;
@@ -170,18 +164,20 @@ public class FTPFileUploader implements FileUploader {
 				if(ftpClient != null) {
 					ftpClient.disconnect();
 				}
-			} catch (IOException e) {}
+			} catch (IOException e) {
+				logger.debug(e.getMessage());
+			}
 		}
 	}
-	
-	
+
+
 	@Override
 	public boolean deleteFile(String filePath) throws Exception {
 		FTPClient ftpClient = null;
     	try {
     		ftpClient = connectFTP();
     		if(!ftpClient.deleteFile(filePath)){
-    			logger.warn("Unable to delete file" 
+    			logger.warn("Unable to delete file"
 						+ "\n File Path:" + filePath
 						+ "\nFTP Error Msg:" + ftpClient.getReplyString());
     			return false;
@@ -193,10 +189,12 @@ public class FTPFileUploader implements FileUploader {
 				if(ftpClient != null) {
 					ftpClient.disconnect();
 				}
-			} catch (IOException e) {}
+			} catch (IOException e) {
+				logger.debug(e.getMessage());
+			}
 		}
 	}
-	
+
 	public FileDetail getFileDetail(String filePath) throws Exception {
 		FTPClient ftpClient = null;
 		FileDetail fileDetail = new FileDetail();
@@ -210,10 +208,12 @@ public class FTPFileUploader implements FileUploader {
 				if(ftpClient != null) {
 					ftpClient.disconnect();
 				}
-			} catch (IOException e) {}
+			} catch (IOException e) {
+				logger.debug(e.getMessage());
+			}
 		}
 	}
-	
+
 	protected static boolean isChunkRequired(int currentChunk, int chunks, long chunkSize, long fileSize) {
 		if(currentChunk * chunkSize >= fileSize) {
 			return true;
@@ -223,7 +223,7 @@ public class FTPFileUploader implements FileUploader {
 			return false;
 		}
 	}
-	
+
 	protected static long getFileSize(FTPClient ftpClient,String filePath) throws Exception {
 		long fileSize = 0;
 	    FTPFile[] files = ftpClient.listFiles(filePath);
@@ -232,21 +232,21 @@ public class FTPFileUploader implements FileUploader {
 	    }
 	    return fileSize;
 	}
-	
+
 	protected static boolean fileExists(FTPClient ftpClient,String filePath) throws Exception {
 	    FTPFile[] files = ftpClient.listFiles(filePath);
 	    return files.length == 1 && files[0].isFile();
 	}
-	
+
 	protected static void createDirectory(FTPClient ftpClient,String filePath,boolean hasFileName) throws SocketException, IOException {
 		String[] pathParts = filePath.split("[/\\\\]");
-		
+
 		StringBuilder constructedPath = new StringBuilder();
-				
+
 		//for avoiding last part if it has a file name.
-		int loopSize = pathParts.length - ((hasFileName)? 1: 0);  
+		int loopSize = pathParts.length - ((hasFileName)? 1: 0);
 		String fwSlash = "";
-		
+
 		for(int i=0; i<loopSize; i++) {
 			String pathPart = pathParts[i];
 			if(pathPart.trim().isEmpty()) {
@@ -257,21 +257,21 @@ public class FTPFileUploader implements FileUploader {
 			fwSlash = String.valueOf(dirSeparator);
 		}
 	}
-	
+
 	protected FTPClient connectFTP() throws Exception {
 		FTPClient ftpClient = new FTPClient();
-		
+
 		ftpClient.connect(getFtpServer());
 		if(!ftpClient.login(getUserName(), getPassword())){
 			throw new Exception("Unable to login\nFTP Error Msg:" + ftpClient.getReplyString());
 		}
-		
+
 		ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-		
-		
-		//Application from linux application server doesn't work on Active mode. 
+
+
+		//Application from linux application server doesn't work on Active mode.
 		ftpClient.enterLocalPassiveMode();
-		
+
 		return ftpClient;
 	}
 

@@ -112,9 +112,9 @@ public class PublishingController {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String sMSRP= request.getParameter("mSRP");
 		String sLowestSalePrice = request.getParameter("lowestSalePrice");
-		String courseType = request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE);
+		//String courseType = request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE);//unused variable
 		Double offerPrice = 0.0;
-		Boolean manageSFPrice = Boolean.valueOf( request.getParameter("chkManagerOffer") != null  && request.getParameter("chkManagerOffer").contains("on") ? "true" : "false");
+		Boolean manageSFPrice = request.getParameter("chkManagerOffer") != null  && request.getParameter("chkManagerOffer").contains("on");
 		String offerPriceParam = request.getParameter("offerprice");
 		if(manageSFPrice){
 			offerPrice = Double.valueOf (offerPriceParam == null || offerPriceParam.trim().equals("")  ? "0" : request.getParameter("offerprice"));
@@ -123,7 +123,7 @@ public class PublishingController {
 		logger.debug("PublishingController::updatePricing - Start");
 
 		CoursePricing cp = new CoursePricing();
-		String sErrorMsg = null;
+		//String sErrorMsg = null;//unused variable
 
 		try
 		{
@@ -143,7 +143,7 @@ public class PublishingController {
 
 		} catch (Exception ex)
 		{
-			sErrorMsg = "&failureMessage=" +"Pricing Information could not be saved " + ex.getMessage();
+			//sErrorMsg = "&failureMessage=" +"Pricing Information could not be saved " + ex.getMessage();//unused variable
 			logger.debug("CourseController::updateCourse - Exception " + ex.getMessage());
 		}
 		logger.debug("PublishingController::updatePricing - End");
@@ -248,7 +248,7 @@ public class PublishingController {
 		//ModelAndView mv = new ModelAndView ("offerOn360Marketplace");
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
-		JsonResponse res = new JsonResponse();
+		//JsonResponse res = new JsonResponse();//unused variable
 
 		Integer publishedCourseId = 0;
 		try {
@@ -585,7 +585,7 @@ public class PublishingController {
 		String msg = "&msg=success";
 		boolean isErrorFound = false;
 		VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Boolean varResaleClassroomW = false;
+		//Boolean varResaleClassroomW = false;//unused variable
 		Boolean mobileTablet = false;
 
 		String industry = request.getParameter("industry");

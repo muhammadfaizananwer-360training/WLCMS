@@ -6,64 +6,36 @@ import com.softech.common.parsing.TabularDataException;
 import com.softech.common.parsing.TabularDataExceptionList;
 import com.softech.ls360.lcms.contentbuilder.exception.BulkUplaodCourseException;
 import com.softech.ls360.lcms.contentbuilder.model.*;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.softech.ls360.lcms.contentbuilder.service.*;
-import com.softech.ls360.lcms.contentbuilder.utils.*;
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.softech.ls360.lcms.contentbuilder.service.impl.ClassroomCourseServiceImpl;
 import com.softech.ls360.lcms.contentbuilder.upload.FileUploader;
+import com.softech.ls360.lcms.contentbuilder.utils.*;
 import com.softech.ls360.lcms.contentbuilder.web.model.ClassroomModel;
 import com.softech.ls360.lcms.contentbuilder.web.model.RestResponse;
 import com.softech.ls360.lcms.contentbuilder.web.vo.SynchronousClassVO;
 import com.softech.ls360.lcms.contentbuilder.web.vo.SynchronousSessionVO;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Random;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class ClassroomController {
@@ -176,7 +148,7 @@ public class ClassroomController {
         return response;
 
     }
-    
+
     public RestResponse importClassroomCoursesToDtos(String filePath, boolean ignoreErrors, VU360UserDetail user) throws IOException {
         String fullPath = FileUtils.getTempDirectoryPath() + IOUtils.DIR_SEPARATOR + filePath;
 
@@ -228,14 +200,15 @@ public class ClassroomController {
             modelMapper.map(model, clazz);
 
             //set location.
-            if (model.getLocId() != clazz.getLocation().getId()) {
+            if (!model.getLocId().equals(clazz.getLocation().getId())) {
                 Location location = new Location();
                 location.setId(model.getLocId());
                 clazz.setLocation(locationService.findLocationById(location.getId()));
-                clazz.setUpdateDate(new Date());
-                clazz.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());
-                clazz.setClassInstructorId(model.getClassInsId());
             }
+
+            clazz.setUpdateDate(new Date());
+            clazz.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());
+            clazz.setClassInstructorId(model.getClassInsId());
 
             classService.saveSynchronousClass(clazz);
         } catch (Exception ex) {
@@ -491,7 +464,7 @@ public class ClassroomController {
         {
             int i = 0;
             for (SynchronousSession session : lstSession) {
-                String sessionKey = sessionkeyPrefix + "-" + org.apache.commons.lang.StringUtils.leftPad(Integer.valueOf(++i).toString(),2,'0');
+                String sessionKey = sessionkeyPrefix + "-" + org.apache.commons.lang.StringUtils.leftPad(Integer.toString(++i),2,'0');
                 session.setSessionKey(sessionKey);
             }
         }
@@ -773,7 +746,7 @@ public class ClassroomController {
             if (inputEndDate != null && inputEndDate.length() > 0) {
                 endDateCal.setTime(lcmsUtil.getDate(inputEndDate + " " + inputEndTime, expectedPattern));
                 //endDateCal.setTime(StringToDate(inputEndDate));
-                for (Calendar startCal = (Calendar) startDateCal.clone(); startCal.compareTo(endDateCal) <= 0;) //startCal.add(Calendar.DAY_OF_MONTH, WeekDaysNumber )) 
+                for (Calendar startCal = (Calendar) startDateCal.clone(); startCal.compareTo(endDateCal) <= 0;) //startCal.add(Calendar.DAY_OF_MONTH, WeekDaysNumber ))
                 {
 
                     for (int dayCounter = 0; dayCounter < 7; dayCounter++) {
@@ -782,7 +755,6 @@ public class ClassroomController {
                         try {
 
                             /*if(startCal.compareTo(endDateCal) < 0 && WeekDaysNumber >= 1 ) {
-									
 									startCal.add(Calendar.DAY_OF_MONTH, 1 );
 									if(endTimeCal.before(endDateCal))
 										endTimeCal.add(Calendar.DAY_OF_MONTH, 1 );
@@ -873,7 +845,7 @@ public class ClassroomController {
             startCal.add(Calendar.DAY_OF_MONTH, increase_day_of_month);
             endTimeCal.add(Calendar.DAY_OF_MONTH, increase_day_of_month);
         }
-        //startCal.add(Calendar.DAY_OF_MONTH, Calendar.DAY_OF_MONTH-1 );	
+        //startCal.add(Calendar.DAY_OF_MONTH, Calendar.DAY_OF_MONTH-1 );
     }
 
     private void generateWeekDaysList(String radioDaily) {
