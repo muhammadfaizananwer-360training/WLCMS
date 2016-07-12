@@ -50,6 +50,17 @@ public class ClassInstructorServiceImpl implements IClassInstructorService{
     }
 
     @Override
+    public boolean emailAlreadyExist(String email, Long id) {
+        ClassInstructor emailVerifyObj = classInstructorRepository.findByEmail(email);
+
+        if(emailVerifyObj!=null && ((id!=null && !emailVerifyObj.getId().equals(id)) || id==null)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public List<ClassInstructor> getAllClassInstructors() {
         return (List<ClassInstructor>)classInstructorRepository.findAll();
     }

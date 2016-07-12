@@ -16,4 +16,5 @@ public interface IClassInstructorService {
     public List<ClassInstructor> findByContentOwnerId(Long contentOwnerId);
     public int deleteInstructors(String commasepareteIds)throws Exception;
     public ClassInstructor findById(Long instructorId);
+    public boolean emailAlreadyExist(String email,Long id);
 }

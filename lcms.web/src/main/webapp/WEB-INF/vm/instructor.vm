@@ -3,7 +3,7 @@
 #parse("breadcrumb.vm")
 #parse("classinstructor_modal.vm")
 #*#parse("classinstructor_list.vm")*#
-<script src="javascript/vm_js/instructor.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>     
+<script src="javascript/vm_js/instructor.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/messageTopBar.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/constants.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
@@ -15,7 +15,7 @@ $(document).ready(function() {
 	 #set($msg = $request.getParameter("msg"))
     $("#varCourseId").val(getUrlParameter ('id'));
 	var cType = getParameterByName('cType');
-	
+
 	$('#nav_instructor').addClass('active');
 
     //initialize and populate jquery datatables
@@ -60,7 +60,7 @@ $(document).ready(function() {
 </script>
                #* BEGIN PAGE CONTENT *#
                 <div class="page-content">
-				
+
 				   #* BEGIN PAGE HEADINGS *#
 				   <div class="portlet">
 					<div class="portlet-body">
@@ -81,37 +81,37 @@ $(document).ready(function() {
                    #* END PAGE HEADINGS *#
 				    <div class="portlet">
 		<div class="messages" id="msgdiv" ></div>
-				   
+
 				    #if( $!{msg}=="success")
 						<div class="messages">
 						  <div role="alert" class="alert alert-success alert-dismissible fade in">
 							<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only"> #springMessage('button.close')</span> </button>
 							 #springMessage('message.save-message')
 						  </div>
-						 
+
 						</div>
 						<script type="text/javascript"> elementFadeOut('.messages'); </script>
-						 
-						  
+
+
 					   <script type="text/javascript"> elementFadeOut('.messages'); </script>
 						</div>
-						
-						 #elseif( $failureMessage )  
+
+						 #elseif( $failureMessage )
 						   <div class="messages">
 							  <div role="alert" class="alert alert-danger alert-dismissible fade in">
 								<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">&#215;</span><span class="sr-only">#springMessage('button.close')</span> </button>
-								 $!{failureMessage} 
+								 $!{failureMessage}
 								</div>
-								
+
 							</div>
 						<script type="text/javascript"> elementFadeOut('.messages'); </script>
 				   #end
-				   
-		
-				   
+
+
+
                    #* BEGIN SUMMARY FORM PORTLET *#
-                   
-					  
+
+
                       <div class="portlet-body form">
                          <form action="saveInstructor" class="form-horizontal" method="post" role="form" id="frm_instructor">
 						     <input type="hidden" id="varCourseId" class="form-control" placeholder="" name="varCourseId">
@@ -121,7 +121,7 @@ $(document).ready(function() {
 							 <input type="hidden" id="CourseID" class="form-control" value="$!{courseObj.bussinesskey}" name="CourseID">
 							 <input type="hidden" id="cType" class="form-control" value="$!{cType}" name="cType">
 							 <input type="hidden" id="courseProviderId" class="form-control" value="$!{syncClassVO.courseProviderId}" name="courseProviderId">
-							 
+                             <input type="hidden" id="classInstructorId" class="form-control" value="$!{classInstructorVO.id}" name="classInstructorId">
 							 	#if ($!{cType} == 5)
 							<div class="portlet portlet-btn">
 							<div title="#springMessage('label.vendor')" class="portlet-title">
@@ -174,7 +174,7 @@ $(document).ready(function() {
 		                         <div class="tools">
 		                            <a href="javascript:;" class="collapse" ></a>
 		                         </div>
-                      		</div>	
+                      		</div>
                             <div class="portlet-body form">
 							#if ($!{cType} == 5)
                                 <table class="table table-striped table-bordered table-hover table-full-width" id="instructor_table">
@@ -195,25 +195,25 @@ $(document).ready(function() {
 								<div class="form-group">
                                   <label class="col-md-3 control-label">#springMessage('label.first-name')<span class="required">*</span></label>
                                   <div class="col-md-6">
-                                     <input type="text" class="form-control" id="presenter_firstname" name="presenter_firstname" value="$!{syncClassVO.presenterFirstName}" placeholder="#springMessage('label.enter-first-name')."  maxlength="50">
+                                     <input type="text" class="form-control" id="presenter_firstname" name="presenter_firstname" value="$!{classInstructorVO.presenterFirstName}" placeholder="#springMessage('label.enter-first-name')."  maxlength="50">
                                   </div>
                                </div>
                                <div class="form-group">
 								  <label class="control-label col-md-3">#springMessage('label.last-name')<span class="required">*</span></label>
 								  <div class="col-md-6">
-									 <input type="text" class="form-control" id="presenter_lastname" name="presenter_lastname" value="$!{syncClassVO.presenterLastName}" placeholder="#springMessage('label.enter-last-name')."  maxlength="50">
+									 <input type="text" class="form-control" id="presenter_lastname" name="presenter_lastname" value="$!{classInstructorVO.presenterLastName}" placeholder="#springMessage('label.enter-last-name')."  maxlength="50">
 								  </div>
 							   </div>
 							   <div class="form-group">
 								  <label class="control-label col-md-3">#springMessage('label.email-address')<span class="required">*</span></label>
 								  <div class="col-md-6">
-									 <input type="text" class="form-control" id="presenter_email" name="presenter_email" value="$!{syncClassVO.presenterEmail}" placeholder="#springMessage('label.enter-email-address')."  maxlength="100">
+									 <input type="text" class="form-control" id="presenter_email" name="presenter_email" value="$!{classInstructorVO.presenterEmail}" placeholder="#springMessage('label.enter-email-address')."  maxlength="100">
 								  </div>
 							   </div>
 							   <div class="form-group">
                                   <label class="col-md-3 control-label">#springMessage('label.phone-number')<span class="required">*</span></label>
                                   <div class="col-md-6">
-                                     <input type="text" class="form-control" id="presenter_phonenumber" name="presenter_phonenumber" value="$!{syncClassVO.presenterPhone}" placeholder="#springMessage('label.enter-phone-number')."  maxlength="50">
+                                     <input type="text" class="form-control" id="presenter_phonenumber" name="presenter_phonenumber" value="$!{classInstructorVO.presenterPhone}" placeholder="#springMessage('label.enter-phone-number')."  maxlength="50">
                                   </div>
                                </div>
                                    #*<table class="table table-striped table-bordered table-hover table-full-width" id="instructor_table">
@@ -234,15 +234,15 @@ $(document).ready(function() {
                             </div>
                             <div class="form-actions fluid">
                                <div >
-                                  <button type="Submit" id="btnSave" class="btn blue input-small">#springMessage('button.save')</button>
+                                  <button type="Submit" id="btnSave" class="btn blue input-small" onclick="return emailVerify()">#springMessage('button.save')</button>
                                </div>
                             </div>
-						</div>	
+						</div>
                          </form>
                       </div>
                    </div>
                    #* END SUMMARY FORM PORTLET *#
-                   
+
                 </div>
                 #* END PAGE CONTENT *#
 #parse("footer.vm")

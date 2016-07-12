@@ -123,7 +123,22 @@ $(function() {
         		TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_NOT_SO_FAST});
         		return;
         	}
-			form.submit();
+			form.submit(function(){
+                alert('Enter')
+                $.ajax({
+                    type: "POST",
+                    url: "saveInstructor",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if(response.email=='Email exist'){
+                            TopMessageBar.displayMessageTopBar({vType:2, vMsg:WLCMS_LOCALIZED.EMAIL_INSTRUCTOR_FAILURE_MESSAGE, bFadeOut:true});
+                            return;
+                        }
+                        alert('dfkdkn');
+                    }
+                })
+
+            }) ;
         },
 
         invalidHandler: function(event, validator) {
@@ -328,6 +343,37 @@ function loadInstructor(id){
     $("#add-lesson-label").text('Edit Instructor');
     $("#"+id).closest('tr').addClass("update");
 }
+function emailVerify() {
+    var isEmailNotExist=true;
+    APP.AJAX({
+        url: 'checkInstructorEmail',
+        type: "POST",
+        cache: false,
+        data: $('#frm_instructor').serialize(),
+        async: false,
+        success: function (response) {
+            if(response){
+                isEmailNotExist=false;
+                TopMessageBar.displayMessageTopBar({vType:2, vMsg:WLCMS_LOCALIZED.EMAIL_INSTRUCTOR_FAILURE_MESSAGE, bFadeOut:true});
+            }
+
+            /*if (response.email == 'Email exist') {
+                TopMessageBar.displayMessageTopBar({
+                    vType: 2,
+                    vMsg: WLCMS_LOCALIZED.EMAIL_INSTRUCTOR_FAILURE_MESSAGE,
+                    bFadeOut: true
+                });
+                return;
+            }*/
+
+
+        }
+
+    });
+    return isEmailNotExist;
+}
+
+
 function addClassInstructor(){
     firstNameValid = $("#frm_classinstructor_modal").validate().element("#firstName");
     lastNameValid = $("#frm_classinstructor_modal").validate().element("#lastName");
