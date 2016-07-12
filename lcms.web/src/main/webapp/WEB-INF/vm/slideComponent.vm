@@ -271,6 +271,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 								  <th>Size</th>
 								  <th>Version</th>
 								  <th>Description</th>
+                                  <th>Preview</th>
 								</tr>
 							  </thead>
 							  <tbody>
@@ -327,6 +328,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 								  <th>Size</th>
 								  <th>Version</th>
 								  <th>Description</th>
+                                  <th>Preview</th>
 								</tr>
 							  </thead>
 							  <tbody>
@@ -383,6 +385,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 								  <th>Size</th>
 								  <th>Version</th>
 								  <th>Description</th>
+                                  <th>Preview</th>
 								</tr>
 							  </thead>
 							  <tbody id="VideoListing">
