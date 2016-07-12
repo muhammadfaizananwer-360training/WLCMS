@@ -204,10 +204,11 @@ public class ClassroomController {
                 Location location = new Location();
                 location.setId(model.getLocId());
                 clazz.setLocation(locationService.findLocationById(location.getId()));
-                clazz.setUpdateDate(new Date());
-                clazz.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());
-                clazz.setClassInstructorId(model.getClassInsId());
             }
+
+            clazz.setUpdateDate(new Date());
+            clazz.setStatus(SynchronousClassSessionStatusEnum.UPDATE.getStatus());
+            clazz.setClassInstructorId(model.getClassInsId());
 
             classService.saveSynchronousClass(clazz);
         } catch (Exception ex) {
