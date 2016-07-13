@@ -273,6 +273,7 @@ function getSlideVisualAssetTable (varSlideId, assetType) {
 					'<td> ' + Slidedata[i].size + '</td>' +
 					'<td>' + Slidedata[i].version + '</td>' +
 					'<td>' + Slidedata[i].description + '</td>' +
+					'<td>  <a href=' + Slidedata[i].location + ' target=_blank  class=\"btn blue-text\"><i class=\"glyphicon glyphicon-play\"></i></a></td>'+
 			  '</tr>';
 		}
 		if(html.length > 0) {
@@ -319,8 +320,19 @@ function getSlideVisualTable(varSlideId, assetType){
 						'<td>' + durationOrDimesion + '</td>' +
 						'<td>' +Slidedata[i].size+ '</td>' +
 						'<td>' + Slidedata[i].version + '</td>' +
-						'<td>' + Slidedata[i].description + '</td>' +
-				  '</tr>';
+						'<td>' + Slidedata[i].description + '</td>'
+						if ( Slidedata[i].assettype === 'Image'){
+							html += '<td>  <a href=' + Slidedata[i].location + ' target=_blank ><img width=50px src=' +Slidedata[i].location+ '></img></a></td></tr>'
+						}
+						else if ( Slidedata[i].assettype === 'Flash Object'){
+							html += '<td>  <a href=' + Slidedata[i].location + ' target=_blank ><img src=\'theme/executive/img/icons/swf.png\'/></a></td>'
+						}
+						else if ( Slidedata[i].assettype === 'Movie Clip' || Slidedata[i].assettype === 'Audio Clip'){
+							html +=	 '<td>  <a href=' + Slidedata[i].location + ' target=_blank  class=\"btn blue-text\"><i class=\"glyphicon glyphicon-play\"></i></a></td>'
+						}else if ( Slidedata[i].assettype === 'VSC'){
+							html +=	 '<td>  <a href=' + Slidedata[i].location + ' target=_blank  class=\"btn blue-text\"><i class=\"glyphicon glyphicon-play\"></i></a></td>'
+						}
+
 			}
 			if(assetType==1){
 				$('#tblVisualAsset_'+varSlideId+' tbody').empty();
