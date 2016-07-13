@@ -56,6 +56,8 @@ public class FileController {
 					}
 					//Now here is the first chunk failed in fms, divert request to fms2
 					logger.debug(e.getMessage(), e);
+					logger.info("first chunk failed to upload to fms, diverting request to fms2");
+
 					filePath= fmsFileUploader2.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
 					//let client code know to upload all further chunks to fms2
 					//It is optional variable only set in case of 1st chunk of fms2
