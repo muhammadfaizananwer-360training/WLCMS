@@ -422,6 +422,15 @@ public class SlideController {
 		slideAsset.setCreateUser_id((int) user.getAuthorId());
 
 		slideService.insertSelectedAsset(slideAsset);
+
+		AssetDTO asset = assetService.getAssetDetails(slideAsset.getId());
+		if(asset.getDuration() > 0) {
+			Slide slide = slideService.getSlide(slideAsset.getScene_id());
+			slide.setDuration(asset.getDuration());
+			slide.setLastUpdateUser(user.getAuthorId());
+			slideService.updateSlide(slide);
+		}
+
 		String course_id = request.getParameter("course_id");
 		updateCourseModifiedDateandLastUpdateUser(Long.parseLong(((course_id == null || course_id.equals("")) ? "0" : course_id)));
 

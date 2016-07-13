@@ -1,14 +1,12 @@
 package com.softech.ls360.lcms.contentbuilder.service;
 
-import java.io.IOException;
-import java.net.SocketException;
-import java.util.List;
-import java.util.Map;
-
 import com.softech.ls360.lcms.contentbuilder.model.AssetDTO;
 import com.softech.ls360.lcms.contentbuilder.model.AssetGroup;
 import com.softech.ls360.lcms.contentbuilder.model.SupportMaterial;
 import com.softech.ls360.lcms.contentbuilder.utils.ObjectWrapper;
+
+import java.util.List;
+import java.util.Map;
 
 
 public interface IAssetService {
@@ -29,6 +27,7 @@ public interface IAssetService {
 	List<AssetDTO> searchAssets(long contentOwnerId, String text, Map<String, Object> options);
 	AssetDTO updateAsset(String requestId, long ownerId, long authorId, long assetId, String fileRelativePath) throws Exception;
 	boolean deleteAsset(long assetId, long userId) throws Exception;
+	AssetDTO getAssetDetails(long assetId);
 	long getFMSUsedSpaceInBytes(long ownerId);
         public String getAssetLocationByVersonId(long versionId);
 }
