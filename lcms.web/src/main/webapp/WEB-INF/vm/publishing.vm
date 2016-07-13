@@ -474,6 +474,8 @@ $(document).ready(function() {
                     $("html,body").animate({scrollTop: val},600);
                     $("label.error").hide();
                     $(".error").removeClass("error");
+                    $("#offerPrice #mSRP").val("");
+                    $("#offerPrice #lowestSalePrice").val("");
                 }
                 else
                 {
@@ -543,10 +545,12 @@ function cancelOffer(isConfirmed)
     }
     else
     {
-        thisCourse.threesixty = false;
-        thisCourse.offerState = 0;
-        publishCases();
-        $('#publisTo360Btn').bootstrapSwitch('setState', false);
+        if(requestToCancelOffer()) {
+            thisCourse.threesixty = false;
+            thisCourse.offerState = 0;
+            publishCases();
+            $('#publisTo360Btn').bootstrapSwitch('setState', false);
+        }
     }
 }
 function publishCourseNow()

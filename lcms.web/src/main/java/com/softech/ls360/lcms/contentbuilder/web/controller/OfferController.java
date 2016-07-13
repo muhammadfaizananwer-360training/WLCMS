@@ -11,6 +11,7 @@ import com.softech.ls360.lcms.contentbuilder.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -132,8 +133,41 @@ public class OfferController {
 		return res;
 	}
 
+	@RequestMapping(value = "cancelOffer", method = RequestMethod.POST)
+	public @ResponseBody
+	JsonResponse  cancelOffer(HttpServletRequest request, HttpServletResponse response)throws Exception {
+		JsonResponse res = new JsonResponse();
+		Integer publishedCourseId = 0;
+		try {
+			String courseId = request.getParameter("hidCourseId");
+			VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			int cType = Integer.parseInt(request.getParameter("cType"));
+
+			if(cType==CourseType.CLASSROOM_COURSE.getId() || cType==CourseType.WEBINAR_COURSE.getId())
+				publishedCourseId = Integer.valueOf(courseId);
+			else
+				publishedCourseId = courseService.getPublishedVersion(courseId);
+
+
+
+			Offer objOffer = new Offer();
+			objOffer.setFromContentownerId(user.getContentOwnerId());
+			objOffer.setOriginalCourseId(publishedCourseId.toString());
+			objOffer.setCreatedUserId(user.getAuthorId());
+			offerService.cancelOffer(objOffer);
+			res.setStatus("SUCCESS");
+		}catch(Exception ex){
+			ex.printStackTrace();
+			res.setStatus("Fail");
+		}
+
+		return res;
+
+	}
+
 
 	@RequestMapping(value = "makeOffer", method = RequestMethod.POST)
+	@Deprecated
 	public @ResponseBody
 	JsonResponse  makeOffer(HttpServletRequest request, HttpServletResponse response)throws Exception {
 		//ModelAndView mv = new ModelAndView ("offerOn360Marketplace");
@@ -165,7 +199,6 @@ public class OfferController {
 			objOffer.setExistingOfferInPlace( Integer.parseInt( EXISTING_OFFER_IN_PLACE ) );
 			objOffer.setCreatedDate(dateFormat.format(cal.getTime()));
 			objOffer.setCreatedUserId(user.getAuthorId());
-			objOffer.setOfferStatus(OFFER_STATUS);
 			objOffer.setSuggestedRetailPrice(objPrice.getmSRP());
 			objOffer.setNoteToDistributor(NOTE_TO_DISTRIBUTOR);
 			objOffer.setAuthorId(user.getAuthorId());
@@ -184,7 +217,14 @@ public class OfferController {
 					break;
 			}
 
-			offerService.newOffer(objOffer);
+			objOffer = offerService.getOffer(objOffer);
+			if(StringUtils.isEmpty(objOffer.getOfferStatus())) {
+				objOffer.setOfferStatus(OFFER_STATUS);
+				offerService.newOffer(objOffer);
+			} else {
+				objOffer.setOfferStatus(OFFER_STATUS);
+				offerService.remakeOffer(objOffer);
+			}
 
 
 			CourseAvailability availability = publishingService.getCourseAvailability(Integer.parseInt(courseId));

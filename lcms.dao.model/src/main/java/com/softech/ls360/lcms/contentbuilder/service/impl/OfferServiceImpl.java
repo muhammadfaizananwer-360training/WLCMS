@@ -16,6 +16,16 @@ public class OfferServiceImpl implements IOfferService{
 	public Offer newOffer(Offer objOffer) throws Exception {
 		return offerDAO.newOffer(objOffer);
 	}
+
+	@Override
+	public void remakeOffer(Offer objOffer) throws Exception {
+		offerDAO.remakeOffer(objOffer);
+	}
+
+	@Override
+	public void cancelOffer(Offer objOffer) throws Exception {
+		offerDAO.cancelOffer(objOffer);
+	}
 	
 	public Offer getOffer (Offer offer) throws Exception {
 		return offerDAO.getOffer(offer);

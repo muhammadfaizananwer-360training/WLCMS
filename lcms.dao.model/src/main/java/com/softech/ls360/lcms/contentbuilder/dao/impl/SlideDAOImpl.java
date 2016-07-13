@@ -313,6 +313,15 @@ public class SlideDAOImpl extends GenericDAOImpl<Slide> implements SlideDAO {
                 dto.setVersion(StringUtil.ifNullReturnZero(courseRow[4]));
                 dto.setDuration(Integer.parseInt(StringUtil.ifNullReturnZero(courseRow[11])));
                 dto.setVersionId(Integer.parseInt(StringUtil.ifNullReturnZero(courseRow[7])));
+                String locationPath;
+
+                if (dto.getAssettype().equals("VSC")) {
+                    locationPath = LCMSProperties.getLCMSProperty("lcms.preview.streaming");
+                    dto.setLocation(locationPath + StringUtil.ifNullReturnEmpty(courseRow[14]));
+                } else {
+                    locationPath = LCMSProperties.getLCMSProperty("code.lcms.assets.URL");
+                    dto.setLocation(locationPath + StringUtil.ifNullReturnEmpty(courseRow[13]));
+                }
 
                 if (courseRow[10] != null) {
                     Clob cm = (Clob) courseRow[10];

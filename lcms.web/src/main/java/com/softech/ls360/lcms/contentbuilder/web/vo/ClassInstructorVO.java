@@ -17,6 +17,16 @@ public class ClassInstructorVO {
 
     String sColumns;
 
+    String presenterFirstName;
+
+    String presenterLastName;
+
+    String presenterEmail;
+
+    String presenterPhone;
+
+    Long id;
+
     List<ClassInstructor> aaData;
 
     public int getiTotalRecords() {
@@ -57,6 +67,46 @@ public class ClassInstructorVO {
 
     public void setAaData(List<ClassInstructor> aaData) {
         this.aaData = aaData;
+    }
+
+    public String getPresenterFirstName() {
+        return presenterFirstName;
+    }
+
+    public void setPresenterFirstName(String presenterFirstName) {
+        this.presenterFirstName = presenterFirstName;
+    }
+
+    public String getPresenterLastName() {
+        return presenterLastName;
+    }
+
+    public void setPresenterLastName(String presenterLastName) {
+        this.presenterLastName = presenterLastName;
+    }
+
+    public String getPresenterEmail() {
+        return presenterEmail;
+    }
+
+    public void setPresenterEmail(String presenterEmail) {
+        this.presenterEmail = presenterEmail;
+    }
+
+    public String getPresenterPhone() {
+        return presenterPhone;
+    }
+
+    public void setPresenterPhone(String presenterPhone) {
+        this.presenterPhone = presenterPhone;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
 
