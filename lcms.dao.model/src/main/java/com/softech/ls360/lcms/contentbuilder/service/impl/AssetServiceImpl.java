@@ -210,9 +210,4 @@ public class AssetServiceImpl implements IAssetService{
     public String getAssetLocationByVersonId(long versionId) {
         return assetDAO.getAssetLocationByVersonId(versionId);
     }
-
-	@Override
-	public AssetDTO getAssetDetails(long assetId) {
-		return assetDAO.getAssetDetails(assetId);
-	}
 }

@@ -461,11 +461,7 @@ public class AssetDAOImpl extends GenericDAOImpl<AssetDAO> implements AssetDAO{
 	public AssetDTO getAssetDetails(long assetId) {
 
 		EntityManager entityManager = getEntityManager();
-	    Query query = entityManager.createNativeQuery("SELECT a.ID,a.CONTENTOWNER_ID,a.NAME,a.SizeInBytes AS SizeInBytes,a.VIDEOFILENAME,a.LastUpdatedDate,a.LastUpdateUser,a.CURRENT_ASSETVERSION_ID,a.ASSETTYPE, d.duration " +
-				"\n FROM ASSET a " +
-				"\n LEFT JOIN assetversion v ON a.id = v.asset_id " +
-				"\n LEFT JOIN assetversiondetail d ON v.id = d.assetversion_id AND a.assettype = 'VSC' " +
-				"\n WHERE a.ID = :varId");
+	    Query query = entityManager.createNativeQuery("SELECT a.ID,a.CONTENTOWNER_ID,a.NAME,a.SizeInBytes AS SizeInBytes,a.VIDEOFILENAME,a.LastUpdatedDate,a.LastUpdateUser,a.CURRENT_ASSETVERSION_ID,a.ASSETTYPE FROM ASSET a where Id=:varId");
 	    query.setParameter("varId", assetId);
 
 	    Object obj = query.getSingleResult();
@@ -484,7 +480,6 @@ public class AssetDAOImpl extends GenericDAOImpl<AssetDAO> implements AssetDAO{
 		}
 
 		asset.setAssetType((String) row[8]);
-		asset.setDuration(row[9]==null || row[9].toString().trim().equals("") ? 0 : Integer.parseInt(row[9].toString().trim()));
 		return asset;
 
 	}

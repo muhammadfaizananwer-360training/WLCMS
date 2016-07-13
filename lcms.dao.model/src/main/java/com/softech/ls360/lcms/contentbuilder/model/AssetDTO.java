@@ -13,7 +13,6 @@ public class AssetDTO {
 	private Long versionId;
 	private String assetType;
 	private Boolean isLinked;
-	private int duration;
 
 	public long getId() {
 		return id;
@@ -74,11 +73,5 @@ public class AssetDTO {
 	}
 	public void setIsLinked(Boolean isLinked) {
 		this.isLinked = isLinked;
-	}
-	public int getDuration() {
-		return duration;
-	}
-	public void setDuration(int duration) {
-		this.duration = duration;
 	}
 }
