@@ -343,7 +343,11 @@ function loadInstructor(id){
     $("#add-lesson-label").text('Edit Instructor');
     $("#"+id).closest('tr').addClass("update");
 }
-function emailVerify() {
+function emailVerify(courseType) {
+    if(courseType=="5")
+        return true;
+    else if($("#presenter_email").val()=="")
+        return true;
     var isEmailNotExist=true;
     APP.AJAX({
         url: 'checkInstructorEmail',
