@@ -224,6 +224,12 @@ public class PublishingController {
 		courseCompletionReport.setContentOwnerId(contentOwnerId);
 		courseCompletionReport.setCourseType(TypeConvertor.AnyToInteger(cType));
 		courseCompletionReport = publishingService.getWebinarCompletionReport(courseCompletionReport);
+        /*Related issue WLCMS-2991 - Verify if instructor exist in ClassInstructor table then set true in courseCompletionReport */
+        Long classInstructorId = courseService.getCourseById(Integer.parseInt(idToSearch)).getClassInstructorId();
+        if(classInstructorId!=null){
+            courseCompletionReport.setIsPresenterSet(true);
+        }
+		/* End */
 
 		String dateString = courseCompletionReport.getLastPublishDate();
 		if(dateString != null && !dateString.trim().equals("")){
@@ -259,17 +265,17 @@ public class PublishingController {
 
 			if(cType==CourseType.CLASSROOM_COURSE.getId() || cType==CourseType.WEBINAR_COURSE.getId())
 				publishedCourseId = Integer.valueOf(courseId);
-			else
-				publishedCourseId = courseService.getPublishedVersion(courseId);
+            else
+                publishedCourseId = courseService.getPublishedVersion(courseId);
 
 
-			CoursePricing objPrice = publishingService.getCoursePricing(Integer.parseInt(courseId));
+            CoursePricing objPrice = publishingService.getCoursePricing(Integer.parseInt(courseId));
 			VU360UserDetail toContentOwner = (VU360UserDetail) vu360UserService.loadUserByUsername(TO_CONTENTOWNER_EMAIL);
 
 			Offer objOffer = new Offer();
-			objOffer.setFromContentownerId(user.getContentOwnerId());
-			objOffer.setToContentownerId(String.valueOf(toContentOwner.getContentOwnerId()));
-			objOffer.setOriginalCourseId(publishedCourseId.toString());
+            objOffer.setFromContentownerId(user.getContentOwnerId());
+            objOffer.setToContentownerId(String.valueOf(toContentOwner.getContentOwnerId()));
+            objOffer.setOriginalCourseId(publishedCourseId.toString());
 			objOffer.setLowestPrice(objPrice.getLowestSalePrice());
 			objOffer.setRoyaltyType(ROYALTY_TYPE);
 			objOffer.setExistingOfferInPlace( Integer.parseInt( EXISTING_OFFER_IN_PLACE ) );
