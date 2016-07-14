@@ -25,7 +25,7 @@ public class OfferDAOImpl extends GenericDAOImpl<Offer> implements OfferDAO{
 	@Transactional
 	public void remakeOffer (Offer offer) throws Exception {
 		try {
-			Query query = entityManager.createNativeQuery("Update CONTENTOWNER_OFFER set LOWEST_PRICE = :LOWEST_PRICE, ROYALTY_AMOUNT = :ROYALTY_AMOUNT, \n" +
+			Query query = entityManager.createNativeQuery("Update CONTENTOWNER_OFFER set PUBLISH_STATUS = 'Published', LOWEST_PRICE = :LOWEST_PRICE, ROYALTY_AMOUNT = :ROYALTY_AMOUNT, \n" +
 					"OFFER_STATUS = :OFFER_STATUS, SUGGESTED_RETAIL_PRICE = :SUGGESTED_RETAIL_PRICE, UPDATEDUSER_ID = :UPDATEDUSER_ID, UPDATEDDATE = :UPDATEDDATE WHERE FROM_CONTENTOWNER_ID= :FROM_CONTENTOWNER_ID AND ORIGINAL_COURSE_ID=:ORIGINAL_COURSE_ID");
 
 			query.setParameter("LOWEST_PRICE", offer.getLowestPrice());
@@ -50,7 +50,7 @@ public class OfferDAOImpl extends GenericDAOImpl<Offer> implements OfferDAO{
 	@Transactional
 	public void cancelOffer (Offer offer) throws Exception {
 		try {
-			Query query = entityManager.createNativeQuery("Update CONTENTOWNER_OFFER set OFFER_STATUS = 'Canceled', UPDATEDUSER_ID = :UPDATEDUSER_ID, UPDATEDDATE = :UPDATEDDATE WHERE FROM_CONTENTOWNER_ID= :FROM_CONTENTOWNER_ID AND ORIGINAL_COURSE_ID=:ORIGINAL_COURSE_ID");
+			Query query = entityManager.createNativeQuery("Update CONTENTOWNER_OFFER set OFFER_STATUS = 'Canceled', PUBLISH_STATUS = 'Retired', UPDATEDUSER_ID = :UPDATEDUSER_ID, UPDATEDDATE = :UPDATEDDATE WHERE FROM_CONTENTOWNER_ID= :FROM_CONTENTOWNER_ID AND ORIGINAL_COURSE_ID=:ORIGINAL_COURSE_ID");
 
 			query.setParameter("UPDATEDUSER_ID", offer.getCreatedUserId());
 			query.setParameter("UPDATEDDATE", new Date());
