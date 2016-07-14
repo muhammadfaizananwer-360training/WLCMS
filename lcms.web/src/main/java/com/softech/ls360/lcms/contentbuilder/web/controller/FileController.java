@@ -63,6 +63,7 @@ public class FileController {
 					//let client code know to upload all further chunks to fms2
 					//It is optional variable only set in case of 1st chunk of fms2
 					fileDetails.setFileServer("fms2");
+					logger.info("chunk 0 uploaded to fms2");
 				}
 			} else if(fileServer.equalsIgnoreCase("fms2")) {
 				filePath= fmsFileUploader2.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
