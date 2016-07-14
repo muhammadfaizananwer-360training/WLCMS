@@ -3,34 +3,34 @@
 var activeEditorForText = null;
 var activeEditorForCC = null;
 function getSlideTextEditor(div, callLoction){
-	
-	 var getSlideIdfortext = div.id.replace('Title_1_','');    
-     var getSlideTextUrl = "/lcms/getSlideTextAgainstSlideId";  
-     var divCloneTxT =  $("div#slide_1_"+ getSlideIdfortext).find("div#SceneTextEditor");	
-	 var divCloneCC = $("div#slide_1_"+ getSlideIdfortext).find("div#SceneCloseCaptionEditor");
-	    // divCloneCC.css("display", "none");	
 
-			if(divCloneTxT.css('display') == 'none')		
+	 var getSlideIdfortext = div.id.replace('Title_1_','');
+     var getSlideTextUrl = "/lcms/getSlideTextAgainstSlideId";
+     var divCloneTxT =  $("div#slide_1_"+ getSlideIdfortext).find("div#SceneTextEditor");
+	 var divCloneCC = $("div#slide_1_"+ getSlideIdfortext).find("div#SceneCloseCaptionEditor");
+	    // divCloneCC.css("display", "none");
+
+			if(divCloneTxT.css('display') == 'none')
 			{
-			
-			
+
+
 			  //WLCMS-159 - preserve last element to show confirmation box
 			  activeEditorForText = CKEDITOR.instances["SceneText_" + getSlideIdfortext];
-			
+
 			 APP.AJAX({
 	    	 		 		url: getSlideTextUrl,
 	         		 		dataType: "text",
 			         		type: "POST",
-	          		 		cache: false,	          		 
+	          		 		cache: false,
 	          		 		data:'varSlideId='+ getSlideIdfortext,
-	          	     		async: false,  
+	          	     		async: false,
 	         	     		success: function(response)
-                      				 {	         	     
-								             Slidedata = $.parseJSON(response);	
-								                
+                      				 {
+								             Slidedata = $.parseJSON(response);
+
 								                  		 if(Slidedata.length != 0)
 															{
-						                						//divCloneTxT.find('#SceneText_1_' + getSlideIdfortext).val(Slidedata[0].content);	
+						                						//divCloneTxT.find('#SceneText_1_' + getSlideIdfortext).val(Slidedata[0].content);
 																var editor = CKEDITOR.instances["SceneText_" + getSlideIdfortext];
 																editor.setData (Slidedata[0].content);
 																editor.updateElement();
@@ -38,150 +38,150 @@ function getSlideTextEditor(div, callLoction){
 																	$("#SlideText_"+getSlideIdfortext).find("i").addClass("green");
 																}
 															}
-										 				//divCloneTxT.css("display", "block");			 
+										 				//divCloneTxT.css("display", "block");
 						                    			//$("#SlideText a").attr('class','collapse');
-						                    			
+
 		                			}
-                        });				    
-             	 
-			}			
+                        });
+
+			}
 			else
-			
-			if(divCloneTxT.css('display') == 'block')				
+
+			if(divCloneTxT.css('display') == 'block')
 			{
-			 
+
 			 updateSlideTextUrl = "/lcms/updateSlideText";
-			 
+
 			 var editor = CKEDITOR.instances["SceneText_" + getSlideIdfortext];
 			 var vSceneTextData = editor.getData();
 			  //vSceneTextData = vSceneTextData.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
 			 vSceneTextData = escape(vSceneTextData);
-			
+
 			if (vSceneTextData != null && vSceneTextData.length > 0 ){
 				$("#SlideText_"+getSlideIdfortext).find("i").addClass("green");
 			}else{
-				$("#SlideText_"+getSlideIdfortext).find("i").removeClass("green"); 
+				$("#SlideText_"+getSlideIdfortext).find("i").removeClass("green");
 			}
-			 
+
 			 APP.AJAX({
 		    	 			url: updateSlideTextUrl,
 		          			dataType: "text",
 				  			type: "POST",
 		          			cache: false,
 		          			data:'varSlideId='+ getSlideIdfortext + '&varTitle='+vSceneTextData  + '&varOrientationKey=Text',
-		         			async: false,  
-		          			success: function(response) 
+		         			async: false,
+		          			success: function(response)
 		          			           {
 											if(callLoction=="1"){
-												//divCloneTxT.css("display", "none");	
-												
+												//divCloneTxT.css("display", "none");
+
 												$('#successMsg').html("");
-												$('#successMsg').append("<div  class='messages'>"+		
+												$('#successMsg').append("<div  class='messages'>"+
 													"<div role='alert' class='alert alert-success alert-dismissible fade in'>"+
 													"<button data-dismiss='alert' class='close' type='button'><span aria-hidden='true'>&#215;</span><span class='sr-only'>Close</span> </button>"+
 														WLCMS_LOCALIZED.SAVE_MESSAGE+"</div></div>");
 												elementFadeOut("#successMsg");
 												//WLCMS-496
 												activeEditorForText.resetDirty();
-											}	
-											//	$("#SlideText a").attr('class','expand');		          			 
+											}
+											//	$("#SlideText a").attr('class','expand');
 						               }
 		               });
-		 			  
+
 			}
 
 }
 
 
 
-function getSlideCloseCaptionEditor(div, callLoction){	
- 
-         var getSlideIdforCC = div.id.replace('ClosedCaptioning_1_',''); 
+function getSlideCloseCaptionEditor(div, callLoction){
+
+         var getSlideIdforCC = div.id.replace('ClosedCaptioning_1_','');
 		 var getSlideCloseCaptionUrl = "/lcms/getSlideCloseCaptionAgainstSlideId";
-		 var divCloneCC = $("div#slide_1_"+ getSlideIdforCC).find("div#SceneCloseCaptionEditor");			
-		 var divCloneTxT =  $("div#slide_1_"+ getSlideIdforCC).find("div#SceneTextEditor");	
-		      
+		 var divCloneCC = $("div#slide_1_"+ getSlideIdforCC).find("div#SceneCloseCaptionEditor");
+		 var divCloneTxT =  $("div#slide_1_"+ getSlideIdforCC).find("div#SceneTextEditor");
+
 		 //WLCMS-159 - preserve last element to show confirmation box
 		 activeEditorForCC = CKEDITOR.instances["SceneCloseCaption_" + getSlideIdforCC];
-			
-		 
-		  if(divCloneCC.css('display') == 'none')		
+
+
+		  if(divCloneCC.css('display') == 'none')
 			{
-			         
+
 			         APP.AJAX({
 	    	 		 url:  getSlideCloseCaptionUrl,
 	         		 dataType: "text",
 			         type: "POST",
-	          		 cache: false,	          		 
+	          		 cache: false,
 	          		 data:'varSlideId='+ getSlideIdforCC,
-	          	     async: false,  
+	          	     async: false,
 	         	     success: function(response) {
-		             Slidedata = $.parseJSON(response);	      
-			 	   
+		             Slidedata = $.parseJSON(response);
+
 													if(Slidedata.length != 0)
 														{
-															//divCloneCC.find('#SceneCloseCaption_1_' + getSlideIdforCC).val(Slidedata[0].content);	
+															//divCloneCC.find('#SceneCloseCaption_1_' + getSlideIdforCC).val(Slidedata[0].content);
 																var editor = CKEDITOR.instances["SceneCloseCaption_" + getSlideIdforCC];
 																editor.setData (Slidedata[0].content);
 																editor.updateElement();
-																
+
 																if (Slidedata[0].content != null && Slidedata[0].content.length > 0 ){
 																	$("#SlideCloseCaption_"+getSlideIdforCC).find("i").addClass("green");
 																}
-																
+
 														}
-						
-											 		//divCloneCC.css("display", "block");			 			
-								             		//$("#SlideCloseCaption a").attr('class','collapse');		
+
+											 		//divCloneCC.css("display", "block");
+								             		//$("#SlideCloseCaption a").attr('class','collapse');
              		                             }
-                                });       		
-			}			
+                                });
+			}
 			else
-			if(divCloneCC.css('display') == 'block')				
+			if(divCloneCC.css('display') == 'block')
 			{
-			
+
 			updateSlideCloseCaptionUrl = "/lcms/updateSlideCloseCaption";
-			 
+
 			 var editor = CKEDITOR.instances["SceneCloseCaption_" + getSlideIdforCC];
 			 var vSceneCloseCaptionData = editor.getData();
 			 //vSceneCloseCaptionData = vSceneCloseCaptionData.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, "\"")
 			 vSceneCloseCaptionData = escape(vSceneCloseCaptionData);
-			 
+
 			 //WLCMS-194
 			if (vSceneCloseCaptionData != null && vSceneCloseCaptionData.length > 0 ){
 				$("#SlideCloseCaption_"+getSlideIdforCC).find("i").addClass("green");
 			}else{
-				$("#SlideCloseCaption_"+getSlideIdforCC).find("i").removeClass("green"); 
+				$("#SlideCloseCaption_"+getSlideIdforCC).find("i").removeClass("green");
 			}
-			 
+
 			 APP.AJAX({
 		    	 			url: updateSlideCloseCaptionUrl,
 		          			dataType: "text",
 				  			type: "POST",
 		          			cache: false,
 		          			data:'varSlideId='+ getSlideIdforCC + '&varTitle='+vSceneCloseCaptionData  + '&varOrientationKey=VOText',
-		         			async: false,  
-		          			success: function(response) {	
-									
+		         			async: false,
+		          			success: function(response) {
+
 									if(callLoction=="1"){
-										//divCloneCC.css("display", "none");	
-										
+										//divCloneCC.css("display", "none");
+
 										$('#successMsg').html("");
-										$('#successMsg').append("<div  class='messages'>"+		
+										$('#successMsg').append("<div  class='messages'>"+
 											"<div role='alert' class='alert alert-success alert-dismissible fade in'>"+
 											"<button data-dismiss='alert' class='close' type='button'><span aria-hidden='true'>&#215;</span><span class='sr-only'>Close</span> </button>"+
 											WLCMS_LOCALIZED.SAVE_MESSAGE+"</div></div>");
 										elementFadeOut("#successMsg");
 										//WLCMS-496
 										activeEditorForCC.resetDirty();
-									}	
-									//$("#SlideCloseCaption a").attr('class','expand');	
-													 
-						    
-						
+									}
+									//$("#SlideCloseCaption a").attr('class','expand');
+
+
+
 							}
-		              });              
-			  
+		              });
+
 			}
 
 }
@@ -197,7 +197,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 
 <div class="panel-collapse a2 collapse" id="slideComponent" style="height: auto;">
   <div class="panel-body">
-	
+
 	#* BEGIN SLIDE COMPONENTS *#
 	<div class="portlet">
 	  <div class="portlet-title sub">
@@ -205,13 +205,13 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			Slide Components
 		 </div>
 		 <div class="tools">
-			
+
 		 </div>
 	  </div>
 	  <div class="portlet-body form">
-	  
+
 		<form role="form" class="form-horizontal">
-		
+
 				#* BEGIN COMPONENTS 1 *#
 			<div class="portlet portlet-btn" >
 			  <div title="Text" class="portlet-title" onclick="getSlideTextEditor(this, '1')">
@@ -225,17 +225,17 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			  </div>
 			  <div id = "SceneTextEditor" name = "SceneTextEditor" class="portlet-body" style="display: none;" >
 				<div class="form-body">
-				   <div class="form-group">					 
+				   <div class="form-group">
 						<div class="col-md-offset-2 col-md-8" id="SceneText" >
-						<textarea  name="SceneText" id="SceneText" ></textarea>							     
+						<textarea  name="SceneText" id="SceneText" ></textarea>
 					   </div>
 				   </div>
 				</div>
 			  </div>
 			</div>
-			
+
 			#* END COMPONENTS 1 *#
-			
+
 			#* BEGIN COMPONENTS 2 *#
 			<div class="portlet portlet-btn" id="tblVisualAssetTopDiv">
 			  <div title="Visual Asset" class="portlet-title">
@@ -257,14 +257,14 @@ function getSlideCloseCaptionEditor(div, callLoction){
 								<tr class="td-header">
 								  <th colspan="8">
 									<div class="btn-group">
-										<a title="Find Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" href="javascript:;" class="btn btn-default" data-target="#searchAssetModal" data-toggle="modal"><i class="glyphicon glyphicon-new-window"></i></a>										
-										<a title="Upload Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" onClick="cancelVisualAssetUploadForm();" href="javascript:;" class="btn btn-default" data-target="#addVisualAssetModal" data-toggle="modal"><i class="icon-plus blue-text"></i></a>										
+										<a title="Find Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" href="javascript:;" class="btn btn-default" data-target="#searchAssetModal" data-toggle="modal"><i class="glyphicon glyphicon-new-window"></i></a>
+										<a title="Upload Asset and Attach to Slide" data-backdrop="static" data-keyboard="false" onClick="cancelVisualAssetUploadForm();" href="javascript:;" class="btn btn-default" data-target="#addVisualAssetModal" data-toggle="modal"><i class="icon-plus blue-text"></i></a>
 										<a title="Detach Asset" href="javascript:;" data-backdrop="static" data-keyboard="false" class="btn btn-default" onClick="confirmDetachObject (1, this, event)"><i class="icon-minus red-text"></i></a>
 									</div>
 								  </th>
 								</tr>
 								<tr class="td-header-bottom-border">
-								  
+
 								  <th>Asset Name</th>
 								  <th>Type</th>
 								  <th>Dimension</th>
@@ -276,7 +276,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 							  </thead>
 							  <tbody>
 								<tr>
-								 
+
 								  <td></td>
 								  <td></td>
 								  <td></td>
@@ -293,7 +293,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			  </div>
 			</div>
 			#* END COMPONENTS 2 *#
-			
+
 			#* BEGIN COMPONENTS 3 *#
 			<div class="portlet portlet-btn" id="tblAudioAssetTopDiv">
 			  <div title="Audio Asset" class="portlet-title">
@@ -349,7 +349,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			  </div>
 			</div>
 			#* END COMPONENTS 3 *#
-					
+
 			#* BEGIN COMPONENTS 4 *#
 			<div class="portlet portlet-btn" id="tblVideoTopDiv">
 			  <div title="Video Streaming Asset" class="portlet-title">
@@ -378,10 +378,10 @@ function getSlideCloseCaptionEditor(div, callLoction){
 									</div>
 								  </th>
 								</tr>
-								<tr class="td-header-bottom-border">								  
+								<tr class="td-header-bottom-border">
 								  <th>Asset Name</th>
 								  <th>Type</th>
-								  <th>Dimension</th>
+								  <th>Duration</th>
 								  <th>Size</th>
 								  <th>Version</th>
 								  <th>Description</th>
@@ -390,7 +390,7 @@ function getSlideCloseCaptionEditor(div, callLoction){
 							  </thead>
 							  <tbody id="VideoListing">
 								<tr>
-								 
+
 								  <td></td>
 								  <td></td>
 								  <td></td>
@@ -412,9 +412,9 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			  </div>
 			</div>
 			#* END COMPONENTS 4 *#
-			
-			
-			
+
+
+
 			#* BEGIN COMPONENTS 5 *#
 			<div class="portlet portlet-btn">
 			  <div title="Closed Captioning" class="portlet-title" onclick="getSlideCloseCaptionEditor(this, '1')">
@@ -430,16 +430,16 @@ function getSlideCloseCaptionEditor(div, callLoction){
 				<div class="form-body">
 				   <div class="form-group">
 					  <div class="col-md-offset-2 col-md-8" id="SceneCloseCaption">
-					  
+
 					            <textarea  name="SceneCloseCaption" id="SceneCloseCaption" ></textarea>
-						 
+
 					  </div>
 				   </div>
 				</div>
 			  </div>
 			</div>
 			#* END COMPONENTS 5 *#
-		
+
 			#* BEGIN ACTION BUTTON *#
 			<div class="form-actions fluid" id="DivSlidePreview">
 			   <div class="text-center">
@@ -447,25 +447,25 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			   </div>
 			</div>
 			#* END ACTION BUTTON *#
-			
+
 		</form>
-		 
+
 	  </div>
 	</div>
 	#* END SLIDE COMPONENTS *#
-	
+
 	#* BEGIN CLOSE BUTTON *#
 	<div class="footer">
 		<a id="slideHref" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lesson_1" href="#list_0_0">CLOSE SLIDE</a>
 	</div>
 	#* END CLOSE BUTTON *#
-	
+
   </div>
 </div>
 
 <div class="panel-collapse a2 collapse" id="slideComponent_CustomTemplate" style="height: auto;">
   <div class="panel-body">
-	
+
 	#* BEGIN SLIDE COMPONENTS *#
 	<div class="portlet">
 	  <div class="portlet-title sub">
@@ -473,21 +473,21 @@ function getSlideCloseCaptionEditor(div, callLoction){
 			Slide Components
 		 </div>
 		 <div class="tools">
-			
+
 		 </div>
 	  </div>
 	  <div class="portlet-body form">
-	  
+
 
 	  </div>
 	</div>
 	#* END SLIDE COMPONENTS *#
-	
+
 	#* BEGIN CLOSE BUTTON *#
 	<div class="footer">
 		<a id="slideHref" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#lesson_1" href="#list_0_0">CLOSE SLIDE</a>
 	</div>
 	#* END CLOSE BUTTON *#
-	
+
   </div>
 </div>

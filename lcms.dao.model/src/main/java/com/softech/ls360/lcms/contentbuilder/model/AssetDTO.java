@@ -13,7 +13,7 @@ public class AssetDTO {
 	private Long versionId;
 	private String assetType;
 	private Boolean isLinked;
-	
+
 	public long getId() {
 		return id;
 	}

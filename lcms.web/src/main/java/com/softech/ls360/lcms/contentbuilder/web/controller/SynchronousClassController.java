@@ -376,7 +376,15 @@ public class SynchronousClassController {
 					scForSessAdd.setClassEndDate(simplesyncsessionDateFormat.parse(completeEndDate));
 					scForSessAdd.setEnrollmentCloseDate(formatDateWithTime.parse(enrollmentCloseDate+ " 23:59:59"));
 					scForSessAdd.setTimeZoneId(Integer.valueOf(timezone));
-					
+
+					/* WLCMS-2988 classinstructor set here if instructor created before webinar then must be set, other wise it will set while instructor save */
+
+                    Long classInstructorId = secondCourse.getClassInstructorId();
+                    if(classInstructorId!=null){
+                        scForSessAdd.setClassInstructorId(classInstructorId);
+                    }
+
+                    /* END */
 	    			
 	    			Set <SynchronousSession> lstSyncSess =  scForSessAdd.getSyncSession();
 	    			Iterator<SynchronousSession> iter2 = lstSyncSess.iterator();
@@ -410,6 +418,14 @@ public class SynchronousClassController {
 				scForSessAdd.setClassEndDate(simplesyncsessionDateFormat.parse(completeStartDate));
 				scForSessAdd.setEnrollmentCloseDate(formatDateWithTime.parse(enrollmentCloseDate+ " 23:59:59"));
 				scForSessAdd.setTimeZoneId(Integer.valueOf(timezone));
+                /* WLCMS-2988 classinstructor set here if instructor created before webinar then must be set, other wise it will set while instructor save */
+
+                Long classInstructorId = secondCourse.getClassInstructorId();
+                if(classInstructorId!=null){
+                    scForSessAdd.setClassInstructorId(classInstructorId);
+                }
+
+                    /* END */
 				
 				SynchronousSession syncSess = new SynchronousSession();
 	    		syncSess.setSyncClass(scForSessAdd);
@@ -586,7 +602,11 @@ public class SynchronousClassController {
 			scForSessAdd.setPresenterLastName(presenterLastName);
 			scForSessAdd.setPresenterEmail(presenterEmail);
 			scForSessAdd.setPresenterPhone(presenterPhone);
-            scForSessAdd.setClassInstructorId(persist.getId());
+			/* WLCMS-2988 only with webinar course class instructor save here, for classroom course class instructor save while class inserted */
+			if(cType!=null && !cType.equals("") && request.getParameter("cType").equals("6")) {
+				scForSessAdd.setClassInstructorId(persist.getId());
+			}
+			/* END */
             synchronoutService.saveSynchronousClass(scForSessAdd);
 	
 			logger.debug("CourseController::showinstructor - End");

@@ -596,7 +596,7 @@ function searchVAAsset() {
 				r.push(d.assettype);
 				r.push( '</td><td id=\'dimension\'>');
 				r.push(d.height);
-				r.push(' x ');
+				r.push(d.duration);
 				r.push(d.width);
 				r.push( '</td><td>N/A</td><td id=\'version\'>');
 				r.push(d.version);
