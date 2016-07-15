@@ -20,10 +20,12 @@ public class FileController {
     @Autowired
 	FileUploader fileUploader;
 
+	/*uploader for primary fms server*/
 	@Autowired
 	@Qualifier("fms")
 	FileUploader fmsFileUploader;
 
+	/*uploader for secondary fms server*/
 	@Autowired
 	@Qualifier("fms2")
 	FileUploader fmsFileUploader2;
