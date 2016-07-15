@@ -394,7 +394,7 @@ public class SlideController {
 			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 3);
 		}else if (!StringUtils.isEmpty(request.getParameter("visualSearch"))){
 			//bVisualSearch = Boolean.parseBoolean(request.getParameter("visualSearch"));
-			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 1);
+			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 4);
 		}else if(!StringUtils.isEmpty(request.getParameter("SupportMaterialSearch"))){
 			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 4);
 		}
