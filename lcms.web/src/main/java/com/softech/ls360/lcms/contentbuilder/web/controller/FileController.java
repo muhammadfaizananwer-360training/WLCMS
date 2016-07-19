@@ -20,10 +20,12 @@ public class FileController {
     @Autowired
 	FileUploader fileUploader;
 
+	/*uploader for primary fms server*/
 	@Autowired
 	@Qualifier("fms")
 	FileUploader fmsFileUploader;
 
+	/*uploader for secondary fms server*/
 	@Autowired
 	@Qualifier("fms2")
 	FileUploader fmsFileUploader2;
@@ -49,7 +51,6 @@ public class FileController {
 	    	if(fileServer.equalsIgnoreCase("fms")) {
 				try {
 					filePath= fmsFileUploader.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
-					logger.info("chunk "+chunk+" uploaded to fms1");
 				} catch (Exception e) {
 					//if it is not the first chunk of a file, rethrow error as it is the normal expected behavior
 					if(chunk != 0) {
@@ -57,17 +58,14 @@ public class FileController {
 					}
 					//Now here is the first chunk failed in fms, divert request to fms2
 					logger.debug(e.getMessage(), e);
-					logger.info("first chunk failed to upload to fms1, diverting request to fms2");
 
 					filePath= fmsFileUploader2.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
 					//let client code know to upload all further chunks to fms2
 					//It is optional variable only set in case of 1st chunk of fms2
 					fileDetails.setFileServer("fms2");
-					logger.info("chunk 0 uploaded to fms2");
 				}
 			} else if(fileServer.equalsIgnoreCase("fms2")) {
 				filePath= fmsFileUploader2.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
-				logger.info("chunk "+chunk+" uploaded to fms2");
 			} else if(fileServer.equalsIgnoreCase("ppt")) {
 	    		filePath= pptFileUploader.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
 	    	} else {
