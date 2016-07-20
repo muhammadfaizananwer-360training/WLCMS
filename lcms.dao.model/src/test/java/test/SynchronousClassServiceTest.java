@@ -57,28 +57,29 @@ public class SynchronousClassServiceTest extends AbstractLcmsTest{
 	public void testDeleteSynchronousClassandSessions(){
 		
 		
-		SynchronousClass synchronousClassPers = synchronousClassService.getSynchronousClassById(new Long(18736));
+		SynchronousClass synchronousClassPers = null;//synchronousClassService.getSynchronousClassById(new Long(18736));
 		
 		//locationPers.setLocationname("Junit Testing....");
 		
 		// commented code using for invalid case.
 		//synchronousClassPers.setStatus("U");
-		synchronousClassPers.setDeleted(true);
-		//synchronousClassPers.setUpdateDate(new Date());
+		if(synchronousClassPers!=null) {
+            synchronousClassPers.setDeleted(true);
+            //synchronousClassPers.setUpdateDate(new Date());
 
-		 List<SynchronousSession> list = new ArrayList<SynchronousSession>(synchronousClassPers.getSyncSession()!=null?synchronousClassPers.getSyncSession():null);
-		 
-		 for(SynchronousSession  synchronousSession : list){
-			 if(synchronousSession.getId().equals(new Long(30614))){
-				 synchronousSession.setStatus("D");
-				 //synchronousSession.setUpdateDate(new Date());
-			 }
-		 }
-		 
-		 //synchronousClassService.saveSynchronousClass(synchronousClassPers);
-		 
-	     Assert.assertNotNull(synchronousClassPers);
-		
+            List<SynchronousSession> list = new ArrayList<SynchronousSession>(synchronousClassPers.getSyncSession());
+
+            for (SynchronousSession synchronousSession : list) {
+                if (synchronousSession.getId().equals(new Long(30614))) {
+                    synchronousSession.setStatus("D");
+                    //synchronousSession.setUpdateDate(new Date());
+                }
+            }
+
+            //synchronousClassService.saveSynchronousClass(synchronousClassPers);
+
+            Assert.assertNotNull(synchronousClassPers);
+        }
 		
 	}
 	
