@@ -65,7 +65,8 @@ public class SynchronousClassServiceTest extends AbstractLcmsTest{
 		//synchronousClassPers.setStatus("U");
 		synchronousClassPers.setDeleted(true);
 		//synchronousClassPers.setUpdateDate(new Date());
-		 List<SynchronousSession> list = new ArrayList<SynchronousSession>(synchronousClassPers.getSyncSession());
+
+		 List<SynchronousSession> list = new ArrayList<SynchronousSession>(synchronousClassPers.getSyncSession()!=null?synchronousClassPers.getSyncSession():null);
 		 
 		 for(SynchronousSession  synchronousSession : list){
 			 if(synchronousSession.getId().equals(new Long(30614))){
