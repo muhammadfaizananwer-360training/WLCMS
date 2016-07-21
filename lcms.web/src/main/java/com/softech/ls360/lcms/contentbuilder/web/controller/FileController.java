@@ -1,10 +1,7 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
-import java.util.LinkedList;
-
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.io.FilenameUtils;
+import com.softech.ls360.lcms.contentbuilder.upload.FileUploader;
+import com.softech.ls360.lcms.contentbuilder.web.model.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,33 +10,30 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.softech.ls360.lcms.contentbuilder.upload.FTPFileUploader;
-import com.softech.ls360.lcms.contentbuilder.upload.FileUploader;
-import com.softech.ls360.lcms.contentbuilder.utils.FileMeta;
-import com.softech.ls360.lcms.contentbuilder.web.model.RestResponse;
- 
 @Controller
 public class FileController {
 	private static Logger logger = LoggerFactory.getLogger(FileController.class);
-	
+
     @Autowired
 	FileUploader fileUploader;
-    
+
+	/*uploader for primary fms server*/
 	@Autowired
 	@Qualifier("fms")
 	FileUploader fmsFileUploader;
-	
+
+	/*uploader for secondary fms server*/
+	@Autowired
+	@Qualifier("fms2")
+	FileUploader fmsFileUploader2;
+
 	@Autowired
 	@Qualifier("ppt")
 	FileUploader pptFileUploader;
-    
+
     @ResponseBody
     @RequestMapping(value="upload", method = RequestMethod.POST)
     ResponseEntity<Object> upload(@RequestBody MultipartFile file,@RequestParam String requestId
@@ -50,19 +44,34 @@ public class FileController {
     	RestResponse response = new RestResponse();
     	HttpStatus httpStatus = HttpStatus.OK;
     	try {
-	    	
-    		String filePath;
-    		
-	    	//upload to FMS if file type is mp4.
+
+    		String filePath = null;
+			FileDetails fileDetails = new FileDetails();
+	    	//upload to fms or fms2 if file type is mp4.
 	    	if(fileServer.equalsIgnoreCase("fms")) {
-	    		filePath= fmsFileUploader.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
-	    	} else if(fileServer.equalsIgnoreCase("ppt")) {
+				try {
+					filePath= fmsFileUploader.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
+				} catch (Exception e) {
+					//if it is not the first chunk of a file, rethrow error as it is the normal expected behavior
+					if(chunk != 0) {
+						throw e;
+					}
+					//Now here is the first chunk failed in fms, divert request to fms2
+					logger.debug(e.getMessage(), e);
+
+					filePath= fmsFileUploader2.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
+					//let client code know to upload all further chunks to fms2
+					//It is optional variable only set in case of 1st chunk of fms2
+					fileDetails.setFileServer("fms2");
+				}
+			} else if(fileServer.equalsIgnoreCase("fms2")) {
+				filePath= fmsFileUploader2.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
+			} else if(fileServer.equalsIgnoreCase("ppt")) {
 	    		filePath= pptFileUploader.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
 	    	} else {
 	    		filePath= fileUploader.uploadFileChunk(requestId, name, chunk, chunks, chunkSize, file.getBytes());
 	    	}
-	    	
-	    	FileDetails fileDetails = new FileDetails();
+
 	    	fileDetails.setFilePath(filePath);
 	    	response.setData(fileDetails);
     	} catch(Exception ex) {
@@ -70,13 +79,13 @@ public class FileController {
     		httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     		logger.error(ex.getMessage(), ex);
     	}
-    	
+
     	HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
     	return new ResponseEntity<Object>(response,headers,httpStatus);
-    	
+
     }
-    
+
     @ResponseBody
     @RequestMapping(value="doPostUploadActivites", method = RequestMethod.POST)
     ResponseEntity<Object> doPostUploadActivites(@RequestParam String requestId
@@ -86,7 +95,7 @@ public class FileController {
     	RestResponse response = new RestResponse();
     	HttpStatus httpStatus = HttpStatus.OK;
     	try {
-	    	
+
     		FileUploader uploader = null;
 	    	//upload to FMS if file type is mp4.
 	    	if(fileServer.equalsIgnoreCase("fms")) {
@@ -102,19 +111,20 @@ public class FileController {
     		httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     		logger.error(ex.getMessage(), ex);
     	}
-    	
+
     	HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
     	return new ResponseEntity<Object>(response,headers,httpStatus);
-    	
+
     }
-    
-    
-            
-    
-        
+
+
+
+
+
     public static class FileDetails {
     	private String filePath;
+		private String fileServer;
 
 		public String getFilePath() {
 			return filePath;
@@ -123,6 +133,14 @@ public class FileController {
 		public void setFilePath(String filePath) {
 			this.filePath = filePath;
 		}
-    }
+
+		public String getFileServer() {
+			return fileServer;
+		}
+
+		public void setFileServer(String fileServer) {
+			this.fileServer = fileServer;
+		}
+	}
 
 }

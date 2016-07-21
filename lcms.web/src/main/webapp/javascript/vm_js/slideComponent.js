@@ -273,6 +273,7 @@ function getSlideVisualAssetTable (varSlideId, assetType) {
 					'<td> ' + Slidedata[i].size + '</td>' +
 					'<td>' + Slidedata[i].version + '</td>' +
 					'<td>' + Slidedata[i].description + '</td>' +
+					'<td>  <a href=' + Slidedata[i].location + ' target=_blank  class=\"btn blue-text\"><i class=\"glyphicon glyphicon-play\"></i></a></td>'+
 			  '</tr>';
 		}
 		if(html.length > 0) {
@@ -319,8 +320,19 @@ function getSlideVisualTable(varSlideId, assetType){
 						'<td>' + durationOrDimesion + '</td>' +
 						'<td>' +Slidedata[i].size+ '</td>' +
 						'<td>' + Slidedata[i].version + '</td>' +
-						'<td>' + Slidedata[i].description + '</td>' +
-				  '</tr>';
+						'<td>' + Slidedata[i].description + '</td>'
+						if ( Slidedata[i].assettype === 'Image'){
+							html += '<td>  <a href=' + Slidedata[i].location + ' target=_blank ><img width=50px src=' +Slidedata[i].location+ '></img></a></td></tr>'
+						}
+						else if ( Slidedata[i].assettype === 'Flash Object'){
+							html += '<td>  <a href=' + Slidedata[i].location + ' target=_blank ><img src=\'theme/executive/img/icons/swf.png\'/></a></td>'
+						}
+						else if ( Slidedata[i].assettype === 'Movie Clip' || Slidedata[i].assettype === 'Audio Clip'){
+							html +=	 '<td>  <a href=' + Slidedata[i].location + ' target=_blank  class=\"btn blue-text\"><i class=\"glyphicon glyphicon-play\"></i></a></td>'
+						}else if ( Slidedata[i].assettype === 'VSC'){
+							html +=	 '<td>  <a href=' + Slidedata[i].location + ' target=_blank  class=\"btn blue-text\"><i class=\"glyphicon glyphicon-play\"></i></a></td>'
+						}
+
 			}
 			if(assetType==1){
 				$('#tblVisualAsset_'+varSlideId+' tbody').empty();
@@ -382,7 +394,7 @@ function detachAsset (assetType) {
 		dataType: "text",
 		type: "POST",
 		cache: false,
-		data:'varSlideId='+ slide_id+ '&assetVersion_id='+ assetVersion_id+'&course_id='+course_id ,
+		data:'varSlideId='+ slide_id+ '&assetVersion_id='+ assetVersion_id+'&course_id='+course_id + assetVersion_id +'&assetType='+assetType,
 		async: false,
 		success: function(response) {
 				trg.closest('table').find(' tbody tr:first').remove ();
@@ -789,7 +801,16 @@ function addVideoAsset(form){
 	if (!$(form).valid()) {
 		return false;
 	}
-  // Create the iframe...
+	//get duration of uploaded video in seconds and set it to form field
+	var file = $(form).find('.upload-360').uploader360().files[0];
+	if(file && file.media && file.media.duration && (!isNaN(file.media.duration))) {
+		//get floor of the value as mostly used format of its display value
+		var duration = Math.floor(file.media.duration);
+		$(form).find('#duration').val(duration);
+	} else {
+		$(form).find('#duration').val("0");
+	}
+	// Create the iframe...
     var iframe = document.createElement("iframe");
     iframe.setAttribute("id", "upload_iframe");
     iframe.setAttribute("name", "upload_iframe");

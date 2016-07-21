@@ -5,6 +5,33 @@
 <script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/publishing.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 
+#* BEGIN CONFIRMATION *#
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmation-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">#springMessage('button.close')</span></button>
+                <h3 class="modal-title" id="confirmation-label">
+
+                #* Dynamic Title *#
+
+                </h3>
+            </div>
+            <div class="modal-body">
+
+            #* Dynamic Message *#
+
+            </div>
+            <div class="modal-footer">
+
+            #* Dynamic Action Buttons *#
+
+            </div>
+        </div>
+    </div>
+</div>
+#* END CONFIRMATION *#
+
 #* BEGIN PAGE CONTENT *#
 <div class="page-content">
 
@@ -293,10 +320,11 @@
                                                 <br>
                                                 <p>#springMessage('label.publish.progress.message')</p>
                                                 <br>
-                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
+                                                <p><strong>#springMessage('label.publish.offer.success.offer.msrp') $!{number.currency($command.offerPrice)} #springMessage('label.publish.offer.success.offer.lowest') $!{number.currency($command.lowestPrice)}</strong></p>
 											#*<u><p>#springMessage('label.publish.offer.success.communicate.email') <a href="mailto:ls360.authors.add@360training.com" class="anchor">#springMessage('label.publish.offer.success.email')</a> #springMessage('label.publish.offer.success.include.email')</p></u>*#
                                                 <small>#springMessage('label.publish.offer.inprogress.sale')</small>
-                                                <br>
+                                                <br><br>
+                                                <a id="cancelOfferBtn" class="btn btn-default" onclick="cancelOffer(false)">#springMessage('label.publish.offer.cancel.offer')</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -306,6 +334,8 @@
                                                 <h2><strong>#springMessage('label.publish.offer.not.accepted')</strong></h2>
                                                 <br>
                                                 <p>#springMessage('label.publish.offer.check.email')</p>
+                                                <br>
+                                                <a id="cancelOfferBtn" class="btn btn-default" onclick="cancelOffer(false)">#springMessage('label.publish.offer.cancel.offer')</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -322,7 +352,7 @@
                                                     <li>#springMessage('label.username-of-the-account-owner')</li>
                                                 </ul>
                                                 <br>
-                                                <u><p>#springMessage('label.publish.offer.success.offer.msrp') <strong>$!{command.offerPrice}</strong> #springMessage('label.publish.offer.success.offer.lowest') <strong>$!{command.lowestPrice}</strong> </p></u>
+                                                <p><strong>#springMessage('label.publish.offer.success.offer.msrp') $!{number.currency($command.offerPrice)} #springMessage('label.publish.offer.success.offer.lowest') $!{number.currency($command.lowestPrice)}.</strong></p>
                                                 <small>#springMessage('label.publish.offer.success.resellers')</small>
                                             </div>
                                         </td>
@@ -337,14 +367,14 @@
                                                             <label class="control-label-2">#springMessage('label.publish.offer.price.list.price')<span class="required">*</span></label>
                                                             <div class="input-icon">
                                                                 <i class="icon-usd"></i>
-                                                                <input type="number" id="mSRP" name="mSRP" class="form-control" placeholder="0.00">
+                                                                <input type="number" id="mSRP" name="mSRP" class="form-control" placeholder="0.00" #if($command.offerPrice != 1.0) value="$!{command.offerPrice}" #end>
                                                             </div>
                                                         </div>
                                                         <div>
                                                             <label class="control-label-2">#springMessage('label.publish.offer.price.lowest')<span class="required">*</span></label>
                                                             <div class="input-icon">
                                                                 <i class="icon-usd"></i>
-                                                                <input type="number" class="form-control" id="lowestSalePrice" name="lowestSalePrice" placeholder="0.00">
+                                                                <input type="number" class="form-control" id="lowestSalePrice" name="lowestSalePrice" placeholder="0.00" #if($command.lowestPrice != 0.0) value="$!{command.lowestPrice}" #end>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -444,6 +474,8 @@ $(document).ready(function() {
                     $("html,body").animate({scrollTop: val},600);
                     $("label.error").hide();
                     $(".error").removeClass("error");
+                    $("#offerPrice #mSRP").val("");
+                    $("#offerPrice #lowestSalePrice").val("");
                 }
                 else
                 {
@@ -458,6 +490,10 @@ $(document).ready(function() {
 function publishCases()
 {
     publishBtnToggling();
+    $("#offerInitial").addClass("hide");
+    $("#offerInprogress").addClass("hide");
+    $("#offerFail").addClass("hide");
+    $("#offerSuccess").addClass("hide");
     switch(thisCourse.offerState)
     {
         case 0:
@@ -496,10 +532,10 @@ function cancelOffer(isConfirmed)
         //	BEGIN - MODAL BOX -------------------------------
         var $trgModal = $("#confirmationModal");
         //	BEGIN TITLE, MESSAGE AND BUTTONS
-        var title = '<i class="icon-exclamation-sign"></i> Please Confirm';
-        var msg = '<p>This action will remove the offer from this course. Do you want to continue?</p>';
-        var btns = '<button type="button" class="btn blue" onclick="cancelOffer(true)" data-dismiss="modal">YES</button>'+
-                '<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>';
+        var title = '#springMessage('label.publish.cancel-offer.modal.title')';
+        var msg = '#springMessage('label.publish.cancel-offer.modal.msg')';
+        var btns = '<button type="button" class="btn blue" onclick="cancelOffer(true)" data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.yes')</button>'+
+                '<button type="button" class="btn btn-default" data-dismiss="modal" style="text-transform: uppercase">#springMessage('label.no')</button>';
         //	END TITLE, MESSAGE AND BUTTONS
 			$trgModal.find(".modal-title").html(title);
 			$trgModal.find(".modal-body").html(msg);
@@ -509,10 +545,12 @@ function cancelOffer(isConfirmed)
     }
     else
     {
-        $('#publisTo360Btn').bootstrapSwitch('setState', false);
-        thisCourse.threesixty = false;
-        thisCourse.offerState = 0;
-        publishCases();
+        if(requestToCancelOffer()) {
+            thisCourse.threesixty = false;
+            thisCourse.offerState = 0;
+            publishCases();
+            $('#publisTo360Btn').bootstrapSwitch('setState', false);
+        }
     }
 }
 function publishCourseNow()

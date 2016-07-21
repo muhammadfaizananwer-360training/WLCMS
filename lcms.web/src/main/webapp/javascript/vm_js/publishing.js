@@ -178,6 +178,40 @@ function makeOfferAccepted(){
 
 }
 
+
+function requestToCancelOffer(){
+
+	var courseId = getUrlParameter ('id');
+	var cType = getUrlParameter ('cType');
+	var success = false;
+	targetUrl = "cancelOffer";
+	APP.AJAX({
+		url: targetUrl,
+		dataType: "text",
+		type: "POST",
+		cache: false,
+		data:'hidCourseId='+courseId+'&cType='+cType,
+		async: false,
+		success: function(response) {
+			obj = $.parseJSON(response);
+			if(obj.status=="SUCCESS") {
+				success = true;
+				$360.showMessage({})
+			} else {
+				$360.showMessage({error:"error"})
+			}
+		},
+		error:function () {
+			$360.showMessage({error:"error"})
+		}
+	});
+
+	return success;
+	// displaying success message
+
+
+}
+
 function showPublishAlert(formName) {
 	$("#errorExist").val("0");
 	/*var bValidLMSOption = $("#updateLMS").attr('checked')=='checked';

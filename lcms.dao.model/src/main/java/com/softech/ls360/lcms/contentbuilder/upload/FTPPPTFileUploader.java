@@ -1,30 +1,24 @@
 package com.softech.ls360.lcms.contentbuilder.upload;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
+import com.aspose.slides.Collections.Generic.List;
+import com.aspose.slides.ISlide;
+import com.aspose.slides.License;
+import com.aspose.slides.Presentation;
+import com.softech.ls360.lcms.contentbuilder.utils.IOConvertor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aspose.slides.ISlide;
-import com.aspose.slides.License;
-import com.aspose.slides.Presentation;
-import com.aspose.slides.Collections.Generic.List;
-import com.softech.ls360.lcms.contentbuilder.utils.IOConvertor;
+import java.io.*;
 
 public class FTPPPTFileUploader extends FTPFileUploader {
-	
-	
+
+
 	private static Logger logger = LoggerFactory.getLogger(FTPPPTFileUploader.class);
 	static {
-		
+
 		License lic = new License();
 		try (InputStream is = FTPPPTFileUploader.class.getClassLoader().getResourceAsStream("Aspose.Slides.lic")){
 			lic.setLicense(is);
@@ -32,11 +26,11 @@ public class FTPPPTFileUploader extends FTPFileUploader {
 			logger.error(e.getMessage(),e);
 		}
 	}
-	
+
 	private String localTempLocation = FileUtils.getTempDirectoryPath();
-	
-		
-	
+
+
+
 	@Override
 	public String uploadFileChunk(String requestId, String fileName, int currentChunk, int chunks, long chunkSize,
 			byte[] data) throws Exception {
@@ -46,12 +40,12 @@ public class FTPPPTFileUploader extends FTPFileUploader {
     	if(!isEnabled()) {
     		return appendedPath;
     	}
-       					
+
 		//if it is a first chunk
 		if(currentChunk <= 0) {
-			//assuming, file already exists. 
+			//assuming, file already exists.
 			FileUtils.deleteQuietly(file);
-			
+
 			//assuming, directory structure is not defined
 			file.getParentFile().mkdirs();
 		} else {
@@ -61,7 +55,7 @@ public class FTPPPTFileUploader extends FTPFileUploader {
 				return appendedPath;
 			}
 		}
-		
+
 		OutputStream out = null;
 		try {
 			//some time "ftpClient.appendFileStream" returns null stream. so we will try configured number of times.
@@ -75,8 +69,8 @@ public class FTPPPTFileUploader extends FTPFileUploader {
 				out.close();
 			}
 		}
-		
-	    	
+
+
     	return appendedPath;
 
 	}
@@ -92,17 +86,16 @@ public class FTPPPTFileUploader extends FTPFileUploader {
 		int slideNumber = 1;
 		List<String> faildSlides = new List<String>();
     	try {
-    		
+
     		ppt = new Presentation(pptFile.getAbsolutePath());
-    		   		
-     		
+
+
     		//add slide images to pptDir
     		logger.info("slides extraction started for file, " + pptPath);
     		for(ISlide slide : ppt.getSlides()){
-    			
-				//Create a full scale image 
+
+				//Create a full scale image
    				byte[] imageData = IOConvertor.convertBufferedImageToDataBytes(slide.getThumbnail(1,1),"jpeg");
-				pptPath.lastIndexOf(".");
 				super.uploadFileChunk(requestId
 						, pptDir + dirSeparator + slideNumber + ".jpg"
 						, 0, 1, -1, imageData);
@@ -110,23 +103,23 @@ public class FTPPPTFileUploader extends FTPFileUploader {
 					logger.info(slideNumber + " slides extracted.");
 				}
 				slideNumber++;
-    			
+
 			}
-    		
+
     		//remove ppt
     		try {
     			pptFile.delete();
     		} catch(Exception ex) {
-    			logger.warn("unable to delete file, file path:" 
+    			logger.warn("unable to delete file, file path:"
     					+ getTempLocation() + dirSeparator + pptPath, ex);
     		}
-    		
+
     	}  finally {
 			if(ppt != null) {
 				ppt.dispose();
 			}
 		}
-    	
+
     	JSONObject json = new JSONObject();
     	json.put("folderPath",getTempLocation() + requestId + dirSeparator + pptDir);
     	json.put("slides", slideNumber-1);
@@ -141,5 +134,5 @@ public class FTPPPTFileUploader extends FTPFileUploader {
 	public void setLocalTempLocation(String localTempLocation) {
 		this.localTempLocation = localTempLocation;
 	}
-	
+
 }

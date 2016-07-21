@@ -61,7 +61,8 @@
 				  <th>#springMessage('videoAssetMgrPage.column.type')</th>
 				  <th>#springMessage('videoAssetMgrPage.column.size')</th>
 				  <th>#springMessage('videoAssetMgrPage.column.linked')</th>
-				  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th data-orderable="false">#springMessage('videoAssetMgrPage.column.preview')</th>
+				  <th data-orderable="false">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 			   </tr>
 			</thead>
 			<tbody>

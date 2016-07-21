@@ -2,8 +2,10 @@ package com.softech.ls360.lcms.contentbuilder.dao.impl;
 
 
 import javax.persistence.ParameterMode;
+import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 
+import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -14,9 +16,57 @@ import com.softech.ls360.lcms.contentbuilder.model.Offer;
 import com.softech.ls360.lcms.contentbuilder.utils.LCMS_Util;
 import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 
+import java.util.Date;
+
 public class OfferDAOImpl extends GenericDAOImpl<Offer> implements OfferDAO{
-	
-	
+	private static Logger logger = Logger.getLogger(OfferDAOImpl.class);
+
+	@Override
+	@Transactional
+	public void remakeOffer (Offer offer) throws Exception {
+		try {
+			Query query = entityManager.createNativeQuery("Update CONTENTOWNER_OFFER set PUBLISH_STATUS = 'Published', LOWEST_PRICE = :LOWEST_PRICE, ROYALTY_AMOUNT = :ROYALTY_AMOUNT, \n" +
+					"OFFER_STATUS = :OFFER_STATUS, SUGGESTED_RETAIL_PRICE = :SUGGESTED_RETAIL_PRICE, UPDATEDUSER_ID = :UPDATEDUSER_ID, UPDATEDDATE = :UPDATEDDATE WHERE FROM_CONTENTOWNER_ID= :FROM_CONTENTOWNER_ID AND ORIGINAL_COURSE_ID=:ORIGINAL_COURSE_ID");
+
+			query.setParameter("LOWEST_PRICE", offer.getLowestPrice());
+			query.setParameter("ROYALTY_AMOUNT", offer.getRoyaltyAmount());
+			query.setParameter("OFFER_STATUS", offer.getOfferStatus());
+			query.setParameter("SUGGESTED_RETAIL_PRICE", offer.getSuggestedRetailPrice());
+			query.setParameter("UPDATEDUSER_ID", offer.getCreatedUserId());
+			query.setParameter("UPDATEDDATE", new Date());
+			query.setParameter("FROM_CONTENTOWNER_ID", offer.getFromContentownerId());
+			query.setParameter("ORIGINAL_COURSE_ID", offer.getOriginalCourseId());
+
+			query.executeUpdate();
+
+		} catch (Exception exp) {
+			logger.error(" Error in method::remakeOffer. Message:" + exp.getMessage());
+			throw exp;
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void cancelOffer (Offer offer) throws Exception {
+		try {
+			Query query = entityManager.createNativeQuery("Update CONTENTOWNER_OFFER set OFFER_STATUS = 'Canceled', PUBLISH_STATUS = 'Retired', UPDATEDUSER_ID = :UPDATEDUSER_ID, UPDATEDDATE = :UPDATEDDATE WHERE FROM_CONTENTOWNER_ID= :FROM_CONTENTOWNER_ID AND ORIGINAL_COURSE_ID=:ORIGINAL_COURSE_ID");
+
+			query.setParameter("UPDATEDUSER_ID", offer.getCreatedUserId());
+			query.setParameter("UPDATEDDATE", new Date());
+			query.setParameter("FROM_CONTENTOWNER_ID", offer.getFromContentownerId());
+			query.setParameter("ORIGINAL_COURSE_ID", offer.getOriginalCourseId());
+
+			query.executeUpdate();
+
+		} catch (Exception exp) {
+			logger.error(" Error in method::remakeOffer. Message:" + exp.getMessage());
+			throw exp;
+		}
+
+	}
+
+
 	@Override
 	@Transactional
 	public Offer newOffer(Offer offer) throws Exception{

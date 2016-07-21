@@ -1,15 +1,10 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.softech.ls360.lcms.contentbuilder.model.*;
+import com.softech.ls360.lcms.contentbuilder.service.IAssetService;
+import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
+import com.softech.ls360.lcms.contentbuilder.service.ISlideService;
+import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
 import com.softech.ls360.lcms.contentbuilder.utils.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -24,15 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.softech.ls360.lcms.contentbuilder.model.AssetGroup;
-import com.softech.ls360.lcms.contentbuilder.model.Slide;
-import com.softech.ls360.lcms.contentbuilder.model.SlideAsset;
-import com.softech.ls360.lcms.contentbuilder.model.SupportMaterial;
-import com.softech.ls360.lcms.contentbuilder.model.VU360UserDetail;
-import com.softech.ls360.lcms.contentbuilder.service.IAssetService;
-import com.softech.ls360.lcms.contentbuilder.service.ICourseService;
-import com.softech.ls360.lcms.contentbuilder.service.ISlideService;
-import com.softech.ls360.lcms.contentbuilder.service.VU360UserService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class SlideController {
@@ -46,12 +38,12 @@ public class SlideController {
 
 	@Autowired
 	VU360UserService vu360UserService;
-	
+
 	@Autowired
 	ICourseService courseService;
-	
+
     //DateFormat completeDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//unused field
-	
+
 	// Function use to get Content Object and dispaly in Edit Mode
 	@RequestMapping(value = "addSlide", method = RequestMethod.POST)
 	public @ResponseBody
@@ -62,10 +54,6 @@ public class SlideController {
 		String varSlideId = request.getParameter("templateID");
 		Slide objSlide = new Slide();
 
-		// LdapUserDetailsImpl userd =
-		// (LdapUserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		// VU360UserDetail user = (VU360UserDetail)
-		// vu360UserService.loadUserByUsername(userd.getUsername());
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
@@ -91,8 +79,6 @@ public class SlideController {
 		else
 			objSlide.setDuration(0);
 
-		// objSlide.setTemplateID(Long.parseLong(StringUtil.ifNullReturnZero(request.getParameter("templateID"))));
-
 		objSlide.setOrientationKey("Left");
 		objSlide.setAsset_ID(0);
 		objSlide.setContentOwner_ID((int) user.getContentOwnerId());
@@ -103,17 +89,17 @@ public class SlideController {
 		slideService.addSlide(objSlide);
 
 		logger.info("SlideController:: addSlide - End");
-		
+
 		String filePath = request.getParameter("filePath");
 		if(!StringUtils.isEmpty(filePath)) {
 			uploadVisualAsset(request, request.getParameter("id")
 					, FilenameUtils.getBaseName(filePath)
 					, String.valueOf(objSlide.getId())
 					, new String[] {"ATTACH_ASSET_WITH_SLIDE","ATTACH_ASSET_WITH_ASSETGROUP"}
-					
+
 			);
 		}
-		
+
 		return objSlide;
 	}
 
@@ -180,7 +166,7 @@ public class SlideController {
 			res.setStatus("ERROR");
 			return res;
 		}
-		
+
 		long varSlideId = Long.parseLong(request.getParameter("varSlideId").toString());
 		String embedCode = request.getParameter("embedCode");
 		Boolean isEmbedCodeValueUpdate = Boolean.valueOf(request.getParameter("isEmbedCodeValUpdate"));
@@ -189,7 +175,7 @@ public class SlideController {
 		res.setStatus("SUCCESS");
 		return res;
 	}
-	
+
 	@RequestMapping(value = "updateSlideEmbedCodeBit", method = RequestMethod.POST)
 	public @ResponseBody
 	JsonResponse updateSlideEmbedCodeBit(HttpServletRequest request,
@@ -200,7 +186,7 @@ public class SlideController {
 			res.setStatus("ERROR");
 			return res;
 		}
-		
+
 		long varSlideId = Long.parseLong(request.getParameter("varSlideId").toString());
 		Boolean isEmbedCode = Boolean.valueOf(request.getParameter("isEmbedCode"));
 		slideService.updateSlideEmbedBit(varSlideId, isEmbedCode);
@@ -208,7 +194,7 @@ public class SlideController {
 		res.setStatus("SUCCESS");
 		return res;
 	}
-	
+
 	// updating Selected Slide Template Id
 	@RequestMapping(value = "updateSelectedSlideTemplate", method = RequestMethod.POST)
 	public @ResponseBody
@@ -230,7 +216,7 @@ public class SlideController {
 
 		slideService.updateSelectedSlideTemplate(dto);
 		updateCourseModifiedDateandLastUpdateUser(courseId);
-		
+
 		res.setStatus("SUCCESS");
 		return res;
 	}
@@ -241,14 +227,14 @@ public class SlideController {
 	JsonResponse updateSlideText(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		JsonResponse res = new JsonResponse();
-		
+
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 		String varSlideId = request.getParameter("varSlideId");
 		String varTitle = request.getParameter("varTitle");
 		String varOrientationKey = request.getParameter("varOrientationKey");
 		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		if (varOrientationKey != null)
 			varOrientationKey = "$" + varOrientationKey;
 
@@ -292,7 +278,7 @@ public class SlideController {
 		String varTitle = request.getParameter("varTitle");
 		String varOrientationKey = request.getParameter("varOrientationKey");
 		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
@@ -305,8 +291,6 @@ public class SlideController {
 		dto.setOrientationkey(varOrientationKey);
 		dto.setCreateUser_id((int) user.getAuthorId());
 		dto.setLastUpdateUser(principal.getContentOwnerId());
-		//VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 		slideService.updateSlideCloseCaption(dto);
 
 		res.setStatus("SUCCESS");
@@ -374,6 +358,15 @@ public class SlideController {
 		int iAssetVersionId = !StringUtils.isEmpty(request
 				.getParameter("assetVersion_id")) ? Integer.parseInt(request
 				.getParameter("assetVersion_id")) : 0;
+		 //in case of detaching video from slide, reset duration of slide too
+		if("3".equals(request.getParameter("assetType")) && iSlideId != 0) {
+			Slide slide = slideService.getSlide((long) iSlideId);
+			slide.setDuration(0);
+			VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
+					.getContext().getAuthentication().getPrincipal();
+			slide.setLastUpdateUser(user.getAuthorId());
+			slideService.updateSlide(slide);
+		}
 
 		SlideAsset slideAsset = new SlideAsset();
 		String courseId = request.getParameter("course_id");
@@ -392,7 +385,7 @@ public class SlideController {
 				.getContext().getAuthentication().getPrincipal();
 
 		List<SlideAsset> lstAssets = null;
-		
+
 		if (!StringUtils.isEmpty(request.getParameter("audioSearch"))){
 			//bAudioSeach = Boolean.parseBoolean(request.getParameter("audioSearch"));
 		    lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 2);
@@ -401,30 +394,11 @@ public class SlideController {
 			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 3);
 		}else if (!StringUtils.isEmpty(request.getParameter("visualSearch"))){
 			//bVisualSearch = Boolean.parseBoolean(request.getParameter("visualSearch"));
-			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 1);
+			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 4);
 		}else if(!StringUtils.isEmpty(request.getParameter("SupportMaterialSearch"))){
 			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 4);
 		}
-		
-		
 
-		/*if (bVisualSearch) {
-			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 1);
-		} else if (bVASearch) {
-			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 3);
-		} else if (bAudioSeach)
-			lstAssets = slideService.getSlideAssetSearch(request.getParameter("assetSearchTerm"), (int) user.getContentOwnerId(), 2);
-		 */
-/*		for (int i = 0; i < lstAssets.size(); i++) {
-
-			String locationPath = LCMSProperties
-					.getLCMSProperty("code.lcms.assets.URL");
-
-			SlideAsset objAsset = (SlideAsset) lstAssets.get(i);
-			objAsset.setStreamingServerPath(LCMSProperties.getLCMSProperty("lcms.preview.streaming")
-					+ objAsset.getLocation());
-			objAsset.setLocation(locationPath + objAsset.getLocation());
-		}*/
 		return lstAssets;
 	}
 
@@ -450,7 +424,7 @@ public class SlideController {
 		slideService.insertSelectedAsset(slideAsset);
 		String course_id = request.getParameter("course_id");
 		updateCourseModifiedDateandLastUpdateUser(Long.parseLong(((course_id == null || course_id.equals("")) ? "0" : course_id)));
-		
+
 		return null;
 	}
 
@@ -507,28 +481,26 @@ public class SlideController {
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
-
-
 			try {
-				
+
 				//calculate asset type
 				String ext = FilenameUtils.getExtension(filePath);
 				String assetType = "";
-								
-				if (ext.equals("mp3") || ext.equals("wma")) 
+
+				if (ext.equals("mp3") || ext.equals("wma"))
 					assetType = "Audio Clip";
-				else if(ext.equals("doc") || ext.equals("docx") || ext.equals("pdf") 
-						|| ext.equals("ppt") || ext.equals("pptx") 
+				else if(ext.equals("doc") || ext.equals("docx") || ext.equals("pdf")
+						|| ext.equals("ppt") || ext.equals("pptx")
 							|| ext.equals("xls") || ext.equals("xlsx"))
 					assetType = "Document";
 				else if(ext.equals("png") || ext.equals("jpg") || ext.equals("gif"))
 					assetType = "Image";
-				
+
 				ObjectWrapper<Long> assetVersionWrapper = new ObjectWrapper<Long>();
 				asset_id = assetService.addAsset(requestId, user.getUsername(),user.getContentOwnerId(),user.getAuthorId(),audioAssetName, filePath, assetType,audioAssetKeywords,audioAssetDescription,assetVersionWrapper);
-				
-				
-				
+
+
+
 				if (assetType.equalsIgnoreCase("Audio Clip")) {
 					SlideAsset objSlideAsset = new SlideAsset();
 					objSlideAsset.setId(asset_id);
@@ -538,7 +510,7 @@ public class SlideController {
 					slideService.updateAssetAttribtes(objSlideAsset);
 					objSlideAsset = null;
 				}
-				
+
 				if (assetOptions != null && assetOptions.length > 0) {
 					for (String assetOption : assetOptions) {
 						if (assetOption
@@ -562,7 +534,7 @@ public class SlideController {
 						}
 					}
 				}
-				
+
 				//If data submitted by Support Material Form;
 				if(! StringUtils.isEmpty(isSupportMaterialForm) ){
 					int sequanceMax = assetService.getSpprtMtrSequanceMax(Integer.parseInt(lessonIdSupportMaterial), Integer.parseInt(courseId));
@@ -582,16 +554,16 @@ public class SlideController {
 				return LCMSProperties.getLCMSProperty("code.lcms.assets.URL")
 						+ "/" + assetService.getAssetLocation((int) asset_id);
 			} catch (Exception e) {
-				 
+
 				e.printStackTrace();
 			}
 
-		
+
 
 		return "courseModelView";
 	}
-	
-	
+
+
 	@RequestMapping(value = "getSpprtMtrIdMax", method = RequestMethod.POST)
 	public @ResponseBody
 	JsonResponse getSpprtMtrIdMax(HttpServletRequest request,
@@ -620,13 +592,13 @@ public class SlideController {
 		res.setStatus("SUCCESS");
 		return res;
 	}
-	
+
 	private void updateCourseModifiedDateandLastUpdateUser(long courseId){
 		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		courseService.updateCourseLastUpdateUserandModifiedDate(principal.getAuthorId(), courseId);
 	}
-	
-	
+
+
 	@RequestMapping(value = "attachSupportMaterial", method = RequestMethod.POST)
 	public @ResponseBody
 	JsonResponse attachSupportMaterial(HttpServletRequest request,
@@ -637,31 +609,28 @@ public class SlideController {
 		String asset_id = request.getParameter("asset_id");
 		String lesson_Id = request.getParameter("lesson_Id");
 		String course_id = request.getParameter("course_id");
+		int intCourseId = 0;//default if not found
+		if(course_id != null && !course_id.trim().equals(""))
+			intCourseId = Integer.parseInt(course_id.trim());
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		int sequanceMax = assetService.getSpprtMtrSequanceMax(TypeConvertor.AnyToInteger(lesson_Id), TypeConvertor.AnyToInteger(course_id));
-		
+
 		SupportMaterial smVO =new SupportMaterial();
 		smVO.setContentObjectId(TypeConvertor.AnyToInteger(lesson_Id));
-		smVO.setCourseId(Integer.valueOf(course_id));
+		smVO.setCourseId(intCourseId);
 		smVO.setType(asset_type);
 		smVO.setCreatedUserId(user.getAuthorId());
 		//smVO.setCreatedDate(cal.getTime());
 		smVO.setAssetId( Long.valueOf(asset_id ));
 		smVO.setSequence( ++sequanceMax );
 		assetService.insertSupportMaterial(smVO);
-		assetService.setSpprtMtrDisplayOrderOnAddDlt(Integer.parseInt(course_id), Integer.parseInt(lesson_Id), 1);
-		updateCourseModifiedDateandLastUpdateUser(Long.parseLong(((course_id == null || course_id.equals("")) ? "0" : course_id)));
+		assetService.setSpprtMtrDisplayOrderOnAddDlt(intCourseId, Integer.parseInt(lesson_Id), 1);
+		updateCourseModifiedDateandLastUpdateUser(intCourseId);
 		res.setStatus("SUCCESS");
 		return res;
 	}
-	public static void main(String args[]){
 
-        Long i = Long.valueOf(null);
-        long ii = i;
-        System.out.print("ok");
-
-    }
 	@RequestMapping(value = "getSupportMaterialList", method = RequestMethod.POST)
 	public @ResponseBody
 	List<SupportMaterial> getSupportMaterialList(HttpServletRequest request,
@@ -671,12 +640,12 @@ public class SlideController {
 		List<SupportMaterial> lstCourseMaterial = assetService.getSupportMaterialDetailListByContObject(Integer.parseInt(varCourseId));
 		return lstCourseMaterial;
 	}
-	
+
 	@RequestMapping(value = "getSupportMaterialDetail", method = RequestMethod.POST)
 	public @ResponseBody
 	SupportMaterial getSupportMaterialDetail(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
 		String locationPath = LCMSProperties.getLCMSProperty("code.lcms.assets.URL");
 		String varLessonId = request.getParameter("varLessonId");
 		SupportMaterial supportMaterial =  assetService.getSupportMaterialDetail(Integer.parseInt(varLessonId));
@@ -684,7 +653,7 @@ public class SlideController {
 		System.out.println(locationPath + supportMaterial.getLocation());
 		return supportMaterial;
 	}
-	
+
 	@RequestMapping(value = "uploadVisualAsset", method = RequestMethod.POST, produces = "text/html; charset=utf-8")
 	public @ResponseBody
 	String uploadVisualAsset(MultipartHttpServletRequest request) {
@@ -695,7 +664,7 @@ public class SlideController {
 			if(request.getParameter("videoAssetName")!=null && !request.getParameter("videoAssetName").equals(""))
 				videoAssetName = request.getParameter("videoAssetName");//request.getParameter("videoAssetName");
 
-		
+
 		String courseId = "";
 		String slideIdForAsset = "";
 		if (request.getParameter("cboAssetTypeVisual").equals("mp4")) {
@@ -705,22 +674,22 @@ public class SlideController {
 			courseId = request.getParameter("courseIdForAsset");
 			slideIdForAsset = request.getParameter("slideIdForAsset");
 		}
-		
+
 		return uploadVisualAsset(request, courseId, videoAssetName, slideIdForAsset
 				, request.getParameterValues("visualAssetOptions")
 		);
-		
-		
+
+
 	}
 
 	String uploadVisualAsset(HttpServletRequest request,String courseId,String videoAssetName, String slideIdForAsset, String assetOptions[]) {
 		long asset_id = 0;
 
-					
+
 		String audioAssetKeywords = request.getParameter("visualAssetKeywords");
 		String audioAssetDescription = (String) ObjectUtils.defaultIfNull(request
 				.getParameter("visualAssetDescription"),"");
-		
+
 		String cboAssetTypeVisual = request.getParameter("cboAssetTypeVisual");
 		String filePath = request.getParameter("filePath");
 
@@ -728,12 +697,12 @@ public class SlideController {
 		String imageHeight = request.getParameter("imageHeight");
 		String duration = request.getParameter("duration");
 		String requestId = request.getParameter("requestId");
-	
+
 
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
-		
+
 
 
 			String assetType = "";
@@ -762,7 +731,7 @@ public class SlideController {
 
 				ObjectWrapper<Long> assetVersionWrapper = new ObjectWrapper<Long>();
 				asset_id = assetService.addAsset(requestId, user.getUsername(),user.getContentOwnerId(),user.getAuthorId(),videoAssetName, filePath, assetType,audioAssetKeywords,audioAssetDescription,assetVersionWrapper);
-	
+
 				// ----Start-------- WLCMS-294
 				// ------------------------------------------------------------------
 				if (assetType.equalsIgnoreCase("Image")
@@ -777,6 +746,14 @@ public class SlideController {
 					}
 					slideService.updateAssetAttribtes(objSlideAsset);
 					objSlideAsset = null;
+
+				}
+				//update duration of slide too if video duration found
+				if(assetType.equalsIgnoreCase("VSC") && !StringUtils.isEmpty(duration)) {
+					Slide slide = slideService.getSlide(Long.parseLong(slideIdForAsset));
+					slide.setDuration(Integer.parseInt(duration));
+					slide.setLastUpdateUser(user.getAuthorId());
+					slideService.updateSlide(slide);
 				}
 				// -----End-------- WLCMS-294
 				// ------------------------------------------------------------------
@@ -785,7 +762,7 @@ public class SlideController {
 					for (String assetOption : assetOptions) {
 						if (assetOption
 								.equalsIgnoreCase("ATTACH_ASSET_WITH_SLIDE")) {
-							
+
 									SlideAsset slideAssetNew = new SlideAsset();
 
 									slideAssetNew.setScene_id(Integer
@@ -798,7 +775,7 @@ public class SlideController {
 											.getAuthorId());
 									slideService
 											.insertSelectedAsset(slideAssetNew);
-							
+
 						} else if (assetOption
 								.equalsIgnoreCase("ATTACH_ASSET_WITH_ASSETGROUP")) {
 
@@ -816,18 +793,11 @@ public class SlideController {
 				return LCMSProperties.getLCMSProperty("code.lcms.assets.URL")
 						+ "/" + assetService.getAssetLocation((int) asset_id);
 			} catch (Exception e) {
-
-
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-
-
-
 		return "courseModelView";
 	}
-	
+
 	@RequestMapping(value = "maxfilesize", method = RequestMethod.GET)
 	public @ResponseBody
 	String maxfilesize(HttpServletRequest request) {
@@ -840,21 +810,21 @@ public class SlideController {
 		String fileLimit = request.getParameter("supportMaterialFileLimit");
 		return LCMSProperties.getLCMSProperty(fileLimit);
 	}
-	
+
 	@RequestMapping(value = "uploadPPTFile", method = RequestMethod.POST , produces = "text/html; charset=utf-8")
 	public @ResponseBody
 	String uploadPPTFile(MultipartHttpServletRequest request) throws Exception {
-		
+
 		String filePath = request.getParameter("filePath");
 		String requestId = request.getParameter("requestId");
 		int slides = Integer.parseInt(request.getParameter("slides"));
-		Integer course_id = StringUtils.isEmpty( request.getParameter("id")) ? 0 : Integer.parseInt(request.getParameter("id")) ;				    
+		Integer course_id = StringUtils.isEmpty( request.getParameter("id")) ? 0 : Integer.parseInt(request.getParameter("id")) ;
 		Integer content_id = StringUtils.isEmpty( request.getParameter("content_id")) ? 0 : Integer.parseInt(request.getParameter("content_id")) ;
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
-		
+
 		Long asset_id = 0L;
-		AssetGroup objAG  = null;			
+		AssetGroup objAG  = null;
 		try {
 			 objAG = assetService.getAssetGroupByCourseId ( Long.parseLong(course_id.toString()) );
 		} catch (NumberFormatException e1) {
@@ -862,7 +832,7 @@ public class SlideController {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-			
+
 			for (int i=0; i<slides; i++) {
 				String slideName = " Slide " + (i+1);
 				String slidePath = filePath + "/" + (i+1) + ".jpg";
@@ -873,31 +843,31 @@ public class SlideController {
 					logger.info( i + "Slide(s) moved to parmanet location, folder Path:" + filePath);
 					break;
 				}
-				
+
 				Integer template_id = 0;
 				try {
 					template_id = slideService.getTemplateIDForPPTSlide();
 				} catch (SQLException e) {
-					logger.error(e.getMessage());	
+					logger.error(e.getMessage());
 				}
-				
-				
+
+
 			    // Create Slide
 			   Slide objSlide = createSlideforPPT (course_id, content_id, slideName, template_id, asset_id.intValue());
 			   try {
 				   objSlide =  slideService.addSlide(objSlide);
 				} catch (SQLException e) {
-					logger.error(e.getMessage());	
+					logger.error(e.getMessage());
 				}
-			   
+
 			    // Attach asset
 			   	SlideAsset objSlideAsset =  createSlideAsset(objSlide,asset_id.intValue());
 			   	try {
 					slideService.insertSelectedAsset(objSlideAsset);
 				} catch (SQLException e) {
-					logger.error(e.getMessage());	
+					logger.error(e.getMessage());
 				}
-			   	
+
 			   	try {
 					assetService.insertAssetAssetGroupRelationship(
 											   			asset_id, objAG.getID(),
@@ -905,23 +875,23 @@ public class SlideController {
 				} catch (Exception e) {
 					logger.error(e.getMessage(),e);
 				}
-			   	
+
 			}
 		return "";
 	}
-	
-	
+
+
 	Slide createSlideforPPT (int CourseID, int content_id, String name, int template_id, int asset_id) {
 
 		Slide objSlide = new Slide();
-		
+
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
 		objSlide.setCourse_ID((Integer) CourseID);
 		objSlide.setContentObject_id((Integer) content_id);
 		objSlide.setName(name);
-		objSlide.setNameVisbileTF(false);		
+		objSlide.setNameVisbileTF(false);
 		objSlide.setTemplateID(template_id);
 		objSlide.setAsset_ID(asset_id);
 		//objSlide.setTemplateName();
@@ -933,31 +903,31 @@ public class SlideController {
 		objSlide.setSceneGUID(UUID.randomUUID().toString().replaceAll("-", ""));
 
 		return objSlide;
-		
+
 	}
-	
+
 	SlideAsset createSlideAsset (Slide objSlide, int asset_id) {
-		
+
 		SlideAsset objSlideAsset = new SlideAsset ();
 		objSlideAsset.setScene_id((int) objSlide.getId());
 		objSlideAsset.setId(asset_id);
 		objSlideAsset.setOrientationkey("$VisualTop");
-		
-			
+
+
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 		objSlideAsset.setCreateUser_id((int) user.getAuthorId());
-		
+
 		try {
 			Integer version_id = slideService.getVersionIDForUploadedAsset (objSlideAsset);
 			objSlideAsset.setAssetversion_id(version_id);
 		} catch (SQLException e) {
-			logger.error(e.getMessage());	
+			logger.error(e.getMessage());
 		}
-		
+
 		return objSlideAsset;
-		
+
 	}
-	
-	
+
+
 }

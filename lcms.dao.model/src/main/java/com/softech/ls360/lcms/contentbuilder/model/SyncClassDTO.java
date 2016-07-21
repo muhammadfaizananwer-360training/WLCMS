@@ -3,12 +3,13 @@ import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty
 import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotPastDate;
 import org.hibernate.validator.constraints.Range;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SyncClassDTO implements ControllableNode {
+public class SyncClassDTO implements ControllableNode, Serializable {
 
     private Long id;
 
@@ -42,7 +43,7 @@ public class SyncClassDTO implements ControllableNode {
     }
 
     public Long getMaximumClassSize() {
-        return (maximumClassSize == null) ? Long.MAX_VALUE : maximumClassSize;
+        return (maximumClassSize == null) ? Long.valueOf(Long.MAX_VALUE) : maximumClassSize;
     }
 
     public void setMaximumClassSize(Long maximumClassSize) {
@@ -80,8 +81,8 @@ public class SyncClassDTO implements ControllableNode {
     public void setTimeZoneText(String timeZoneText) {
         this.timeZoneText = timeZoneText;
     }
-    
-    
+
+
 
     public Date getEnrollmentCloseDate() {
         return enrollmentCloseDate;
@@ -143,9 +144,9 @@ public class SyncClassDTO implements ControllableNode {
     public void setSessionsMap(Map<String, SyncSessionDTO> sessionsMap) {
         this.sessionsMap = sessionsMap;
     }
-    
-    
-    
+
+
+
     public String getAction() {
         return action;
     }
@@ -181,6 +182,6 @@ public class SyncClassDTO implements ControllableNode {
     public Map<String, ? extends ControllableNode> getChildren() {
         return getSessionsMap();
     }
-    
-    
+
+
 }

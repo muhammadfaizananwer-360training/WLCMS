@@ -1,15 +1,7 @@
 package com.softech.ls360.lcms.contentbuilder.web.controller;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.softech.common.mail.MailAsyncManager;
+import com.softech.ls360.lcms.contentbuilder.manager.WebinarMeetingURLManager;
 import com.softech.ls360.lcms.contentbuilder.model.*;
 import com.softech.ls360.lcms.contentbuilder.service.*;
 import com.softech.ls360.lcms.contentbuilder.utils.*;
@@ -19,13 +11,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.softech.common.mail.MailAsyncManager;
-import com.softech.ls360.lcms.contentbuilder.manager.WebinarMeetingURLManager;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -115,9 +113,9 @@ public class PublishingController {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String sMSRP= request.getParameter("mSRP");
 		String sLowestSalePrice = request.getParameter("lowestSalePrice");
-		String courseType = request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE);
+		//String courseType = request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE);//unused variable
 		Double offerPrice = 0.0;
-		Boolean manageSFPrice = Boolean.valueOf( request.getParameter("chkManagerOffer") != null  && request.getParameter("chkManagerOffer").contains("on") ? "true" : "false");
+		Boolean manageSFPrice = request.getParameter("chkManagerOffer") != null  && request.getParameter("chkManagerOffer").contains("on");
 		String offerPriceParam = request.getParameter("offerprice");
 		if(manageSFPrice){
 			offerPrice = Double.valueOf (offerPriceParam == null || offerPriceParam.trim().equals("")  ? "0" : request.getParameter("offerprice"));
@@ -126,7 +124,7 @@ public class PublishingController {
 		logger.debug("PublishingController::updatePricing - Start");
 
 		CoursePricing cp = new CoursePricing();
-		String sErrorMsg = null;
+		//String sErrorMsg = null;//unused variable
 
 		try
 		{
@@ -146,7 +144,7 @@ public class PublishingController {
 
 		} catch (Exception ex)
 		{
-			sErrorMsg = "&failureMessage=" +"Pricing Information could not be saved " + ex.getMessage();
+			//sErrorMsg = "&failureMessage=" +"Pricing Information could not be saved " + ex.getMessage();//unused variable
 			logger.debug("CourseController::updateCourse - Exception " + ex.getMessage());
 		}
 		logger.debug("PublishingController::updatePricing - End");
@@ -226,6 +224,12 @@ public class PublishingController {
 		courseCompletionReport.setContentOwnerId(contentOwnerId);
 		courseCompletionReport.setCourseType(TypeConvertor.AnyToInteger(cType));
 		courseCompletionReport = publishingService.getWebinarCompletionReport(courseCompletionReport);
+        /*Related issue WLCMS-2991 - Verify if instructor exist in ClassInstructor table then set true in courseCompletionReport */
+        Long classInstructorId = courseService.getCourseById(Integer.parseInt(idToSearch)).getClassInstructorId();
+        if(classInstructorId!=null){
+            courseCompletionReport.setIsPresenterSet(true);
+        }
+		/* End */
 
 		String dateString = courseCompletionReport.getLastPublishDate();
 		if(dateString != null && !dateString.trim().equals("")){
@@ -251,7 +255,7 @@ public class PublishingController {
 		//ModelAndView mv = new ModelAndView ("offerOn360Marketplace");
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
-		JsonResponse res = new JsonResponse();
+		//JsonResponse res = new JsonResponse();//unused variable
 
 		Integer publishedCourseId = 0;
 		try {
@@ -261,23 +265,22 @@ public class PublishingController {
 
 			if(cType==CourseType.CLASSROOM_COURSE.getId() || cType==CourseType.WEBINAR_COURSE.getId())
 				publishedCourseId = Integer.valueOf(courseId);
-			else
-				publishedCourseId = courseService.getPublishedVersion(courseId);
+            else
+                publishedCourseId = courseService.getPublishedVersion(courseId);
 
 
-			CoursePricing objPrice = publishingService.getCoursePricing(Integer.parseInt(courseId));
+            CoursePricing objPrice = publishingService.getCoursePricing(Integer.parseInt(courseId));
 			VU360UserDetail toContentOwner = (VU360UserDetail) vu360UserService.loadUserByUsername(TO_CONTENTOWNER_EMAIL);
 
 			Offer objOffer = new Offer();
-			objOffer.setFromContentownerId(user.getContentOwnerId());
-			objOffer.setToContentownerId(String.valueOf(toContentOwner.getContentOwnerId()));
-			objOffer.setOriginalCourseId(publishedCourseId.toString());
+            objOffer.setFromContentownerId(user.getContentOwnerId());
+            objOffer.setToContentownerId(String.valueOf(toContentOwner.getContentOwnerId()));
+            objOffer.setOriginalCourseId(publishedCourseId.toString());
 			objOffer.setLowestPrice(objPrice.getLowestSalePrice());
 			objOffer.setRoyaltyType(ROYALTY_TYPE);
 			objOffer.setExistingOfferInPlace( Integer.parseInt( EXISTING_OFFER_IN_PLACE ) );
 			objOffer.setCreatedDate(dateFormat.format(cal.getTime()));
 			objOffer.setCreatedUserId(user.getAuthorId());
-			objOffer.setOfferStatus(OFFER_STATUS);
 			objOffer.setSuggestedRetailPrice(objPrice.getmSRP());
 			objOffer.setNoteToDistributor(NOTE_TO_DISTRIBUTOR);
 			objOffer.setAuthorId(user.getAuthorId());
@@ -296,7 +299,14 @@ public class PublishingController {
 					break;
 			}
 
-			offerService.newOffer(objOffer);
+			objOffer = offerService.getOffer(objOffer);
+			if(StringUtils.isEmpty(objOffer.getOfferStatus())) {
+				objOffer.setOfferStatus(OFFER_STATUS);
+				offerService.newOffer(objOffer);
+			} else {
+				objOffer.setOfferStatus(OFFER_STATUS);
+				offerService.remakeOffer(objOffer);
+			}
 
 
 			CourseAvailability availability = publishingService.getCourseAvailability(Integer.parseInt(courseId));
@@ -345,13 +355,13 @@ public class PublishingController {
 
 		String msg = "&msg=success";
 
-
-		Boolean publishSF = Boolean.parseBoolean(request.getParameter("publishSF")==null ? "false" :request.getParameter("publishSF") );
-		Boolean publishLMS = Boolean.parseBoolean(request.getParameter("publishLMS")==null ? "false" :request.getParameter("publishLMS"));
-		Boolean updateCouseContent = Boolean.parseBoolean(request.getParameter("updateCouseContent")==null ? "false" :request.getParameter("updateCouseContent"));
-		Boolean updateLMS = Boolean.parseBoolean(request.getParameter("updateLMS")==null ? "false" :request.getParameter("updateLMS"));
-		Boolean updateSF = Boolean.parseBoolean(request.getParameter("updateSF")==null ? "false" :request.getParameter("updateSF"));
-		Boolean publis360Btn = Boolean.parseBoolean(request.getParameter("publis360Btn")==null ? "false" :request.getParameter("publis360Btn"));
+		//radio button param value is null in case of unchecked. In case of checked, it is 'on' or anything defined by value attribute
+		Boolean publishSF = request.getParameter("publishSF") != null;
+		Boolean publishLMS = request.getParameter("publishLMS") != null;
+		Boolean updateCouseContent = request.getParameter("updateCouseContent") != null;
+		Boolean updateLMS = request.getParameter("updateLMS") != null;
+		Boolean updateSF = request.getParameter("updateSF") != null;
+		Boolean publis360Btn = request.getParameter("publis360Btn") != null;
 
 		String sErrorMsg = "";
 
@@ -477,7 +487,7 @@ public class PublishingController {
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage ());
-			msg = "&failureMessage=Course publishing could not be performed. " ;
+			msg = "&failureMessage=Course%20publishing%20could%20not%20be%20performed.";
 		}
 
 		if (updateCouseContent)
@@ -588,7 +598,7 @@ public class PublishingController {
 		String msg = "&msg=success";
 		boolean isErrorFound = false;
 		VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Boolean varResaleClassroomW = false;
+		//Boolean varResaleClassroomW = false;//unused variable
 		Boolean mobileTablet = false;
 
 		String industry = request.getParameter("industry");

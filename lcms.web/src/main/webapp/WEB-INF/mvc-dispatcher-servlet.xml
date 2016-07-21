@@ -30,7 +30,7 @@
     <security:global-method-security pre-post-annotations="enabled">
         <security:expression-handler ref="expressionHandler"/>
     </security:global-method-security>
- 
+
     <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
         <property name="permissionEvaluator" ref="todoPermissionEvaluator" />
     </bean>
@@ -39,31 +39,31 @@
     <bean id="brandProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="classpath:locale/branding_en_US.properties"/>
     </bean>
-    
+
 	<bean id="vu360UserServiceImpl"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.VU360UserServiceImpl">
 		<property name="vu360UserDAO" ref="vu360UserDAO" />
 		<property name="activeDirectoryService" ref="activeDirectoryService" />
 		<property name="passwordEncoder" ref="passwordEncoder" />
 		<property name="saltSource" ref="saltSource" />
-		
+
 	</bean>
-	
+
 	<bean name="activeDirectoryService"
-	class="com.softech.ls360.lcms.contentbuilder.service.impl.ActiveDirectoryServiceImpl" /> 	
+	class="com.softech.ls360.lcms.contentbuilder.service.impl.ActiveDirectoryServiceImpl" />
 
 	<bean name="vu360UserDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.VU360UserDAOImpl">
 	</bean>
 
 	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />
-		
+
 	<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
 		<property name="userPropertyToUse" value="userGUID" />
 	</bean>
 
 
-	
+
 	<!--  	org.apache.commons.dbcp.BasicDataSource -->
 	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
@@ -73,11 +73,11 @@
         <property name="maxPoolSize" value="30"></property>
         <property name="idleConnectionTestPeriod" value="3000"></property>
         <property name="automaticTestTable" value="DB_TEST_TABLE"></property>
-		
+
 	</bean> -->
-	
+
 	<!-- BoneCP configuration -->
-	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">	 
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
 		<property name="jdbcUrl" value="${jdbc.databaseurl}" />
 		<property name="username" value="${jdbc.username}"/>
@@ -91,12 +91,12 @@
 		<property name="acquireRetryAttempts" value="5" />
 		<property name="acquireRetryDelayInMs" value="5000" />
 		<property name="statementsCacheSize" value="100"/>
-		<property name="disableConnectionTracking" value="true"/>		
+		<property name="disableConnectionTracking" value="true"/>
 		<property name="connectionTestStatement" value="SELECT 1"/>
-		<property name="maxConnectionAgeInSeconds" value="1800"/>		
-		<property name="connectionTimeoutInMs" value="20000" />		
+		<property name="maxConnectionAgeInSeconds" value="1800"/>
+		<property name="connectionTimeoutInMs" value="20000" />
 		<property name="closeConnectionWatch" value="false"/>
-		<property name="closeConnectionWatchTimeoutInMs" value="60000"/> 
+		<property name="closeConnectionWatchTimeoutInMs" value="60000"/>
 	</bean>
 
 
@@ -125,7 +125,7 @@
 		</property>
 		<property name="packagesToScan" value="com.softech.ls360.lcms.contentbuilder.model"/>
 	</bean>
-	
+
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 		<property name="dataSource" ref="dataSource" />
@@ -137,8 +137,7 @@
 	</bean>
 
 	<!-- Aspect -->
-	<!-- <bean id="logAspect" class="com.softech.ls360.lcms.contentbuilder.utils.LoggingAspect" 
-		/> -->
+	<!-- <bean id="logAspect" class="com.softech.ls360.lcms.contentbuilder.utils.LoggingAspect"/> -->
 
 	<bean id="CourseService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.CourseServiceImpl">
@@ -146,46 +145,46 @@
 	</bean>
 	<bean name="courseDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.CourseDAOImpl" />
-		
-		
-		
+
+
+
 	<bean id="SlideService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.SlideServiceImpl">
 		<property name="slideDAO" ref="slideDAO" />
 	</bean>
-	
+
 	<bean name="slideDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.SlideDAOImpl" />
-		
-		
+
+
 	<bean id="QuizService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.QuizServiceImpl">
 		<property name="quizDAO" ref="quizDAO" />
-	</bean>	
-	
+	</bean>
+
 	<bean name="quizDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.QuizDAOImpl" />
-		
-	
+
+
 	<bean id="AssetService"	class="com.softech.ls360.lcms.contentbuilder.service.impl.AssetServiceImpl">
 		<property name="assetDAO" ref="assetDAO" />
 	</bean>
-	
-	<bean name="assetDAO" class="com.softech.ls360.lcms.contentbuilder.dao.impl.AssetDAOImpl" />			
+
+	<bean name="assetDAO" class="com.softech.ls360.lcms.contentbuilder.dao.impl.AssetDAOImpl" />
 
 
 	<!--   SignUp Author -  Service & DAO Definition -->
 	<bean id="signUpAuthorService"	class="com.softech.ls360.lcms.contentbuilder.service.impl.SignUpAuthorServiceImpl">
 		<property name="signUpAuthorDAO" ref="signUpAuthorDAO" />
 	</bean>
-	<bean name="signUpAuthorDAO" class="com.softech.ls360.lcms.contentbuilder.dao.impl.SignUpAuthorDAOImpl" />	
+	<bean name="signUpAuthorDAO" class="com.softech.ls360.lcms.contentbuilder.dao.impl.SignUpAuthorDAOImpl" />
 	<!--   SignUp Author -  Service & DAO Definition -->
 
 	<!--   Course Setting -  Service & DAO Definition -->
 	<bean id="coruseSettingsService"	class="com.softech.ls360.lcms.contentbuilder.service.impl.CourseSettingsServiceImpl">
 		<property name="courseSettingsDAO" ref="courseSettingsDAO" />
 	</bean>
-	<bean name="courseSettingsDAO" class="com.softech.ls360.lcms.contentbuilder.dao.impl.CourseSettingsDAOImpl" />	
+	<bean name="courseSettingsDAO" class="com.softech.ls360.lcms.contentbuilder.dao.impl.CourseSettingsDAOImpl" />
 	<!--   Course Setting -  Service & DAO Definition -->
 
 
@@ -195,76 +194,76 @@
 	</bean>
 	<bean name="courseRatingDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.CourseRatingDAOImpl" />
-		
+
 	<bean id="PublishingService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.PublishingServiceImpl">
 		<property name="publishingDAO" ref="publishingDAO" />
 	</bean>
-	
+
 	<bean name="publishingDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.PublishingDAOImpl" />
 
 	<bean id="ExamService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.ExamServiceImpl">
 		<property name="examDAO" ref="examDAO" />
-	</bean>	
-	
+	</bean>
+
 	<bean name="examDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.ExamDAOImpl" />
-		
+
 	<bean name="marketingDAO"
-		class="com.softech.ls360.lcms.contentbuilder.dao.impl.MarketingDAOImpl" />	
-		
-		
+		class="com.softech.ls360.lcms.contentbuilder.dao.impl.MarketingDAOImpl" />
+
+
 	<bean id="MarketingService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.MarketingServiceImpl">
 		<property name="marketingDAO" ref="marketingDAO" />
-	</bean>	
-		
-		
+	</bean>
+
+
 	<bean id="OfferService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.OfferServiceImpl">
 		<property name="offerDAO" ref="offerDAO" />
 	</bean>
-	
+
 	<bean name="offerDAO"
-		class="com.softech.ls360.lcms.contentbuilder.dao.impl.OfferDAOImpl" />	
-	
-	
+		class="com.softech.ls360.lcms.contentbuilder.dao.impl.OfferDAOImpl" />
+
+
 	<bean name="locService"
 			class="com.softech.ls360.lcms.contentbuilder.service.impl.LocationServiceImpl" >
 			</bean>
 	<bean name="locDAO"
 			class="com.softech.ls360.lcms.contentbuilder.dao.impl.LocationDAOImpl" />
-			
+
 	<bean name="CoursProviderService"
 			class="com.softech.ls360.lcms.contentbuilder.service.impl.CourseProviderServiceImpl" >
 			</bean>
 	<bean name="courseProviderDAO"
-			class="com.softech.ls360.lcms.contentbuilder.dao.impl.CourseProviderDAOImpl" />			
-	
+			class="com.softech.ls360.lcms.contentbuilder.dao.impl.CourseProviderDAOImpl" />
+
 	<bean name="synchronousClassService"
 			class="com.softech.ls360.lcms.contentbuilder.service.impl.SynchronousClassServiceImpl" >
 			<property name="syncClassDAO" ref="syncClassDAO" />
 	</bean>
 
 	<bean name="syncClassDAO"
-		class="com.softech.ls360.lcms.contentbuilder.dao.impl.SynchronousClassDAOImpl" />	
-		
+		class="com.softech.ls360.lcms.contentbuilder.dao.impl.SynchronousClassDAOImpl" />
+
 	<bean id="royaltySettingsService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.ContentOwnerRoyaltySettingsServiceImpl">
  		<property name="royaltySettingsDAO" ref="royaltySettingsDAO" />
 	</bean>
 	<bean name="royaltySettingsDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.ContentOwnerRoyaltySettingsDAOImpl" />
-		
+
 	<bean id="userPermissionSettingsService"
 		class="com.softech.ls360.lcms.contentbuilder.service.impl.PermissionSettingsServiceImpl">
  		<property name="permissionSettingsDAO" ref="permissionSettingsDAO" />
 	</bean>
 	<bean name="permissionSettingsDAO"
 		class="com.softech.ls360.lcms.contentbuilder.dao.impl.PermissionSettingsDAOImpl" />
-		
+
 	<bean id="reportService"	class="com.softech.ls360.lcms.contentbuilder.service.impl.ReportServiceImpl">
  		<property name="reportDAO" ref="reportDAO" />
 	</bean>
@@ -274,12 +273,12 @@
 	</bean>
 
 	<bean name="reportDAO"	class="com.softech.ls360.lcms.contentbuilder.dao.impl.ReportDAOImpl" />
-		
+
         <!-- Velocity Email Template Configuration -->
         <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
             <property name="resourceLoaderPath" value="classpath:/email-templates/velocity" />
-        </bean> 
-        
+        </bean>
+
         <!--  Presentation Configuration  -->
 	<bean id="velocityConfig"
 		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
@@ -302,7 +301,7 @@
                <entry key="veloUserDetailService"><ref bean="vu360UserServiceImpl"/></entry>
               </map>
 		</property>
-		
+
 	</bean>
 	<!--  <bean id ="veloSecUserDetailsService" class ="com.softech.ls360.lcms.contentbuilder.service.impl.VU360UserServiceImpl"/>
 -->
@@ -344,7 +343,7 @@
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
-	
+
 	<bean class="com.softech.ls360.lcms.contentbuilder.upload.FTPFileUploader" primary="true" >
 		<property name="tempLocation" value="${ftp.main.temploc}" />
 		<property name="permanentLocation" value="${ftp.main.permloc}" />
@@ -374,6 +373,16 @@
 		<property name="maxRetries" value="${ftp.fms.retries}" />
 		<property name="enabled" value="${ftp.fms.enabled}" />
 	</bean>
+	<bean class="com.softech.ls360.lcms.contentbuilder.upload.FTPFileUploader">
+		<qualifier value = "fms2" />
+		<property name="tempLocation" value="${ftp.fms2.temploc}" />
+		<property name="permanentLocation" value="${ftp.fms2.permloc}" />
+		<property name="ftpServer" value="${ftp.fms2.server}" />
+		<property name="userName" value="${ftp.fms2.username}" />
+		<property name="password" value="${ftp.fms2.password}" />
+		<property name="maxRetries" value="${ftp.fms2.retries}" />
+		<property name="enabled" value="${ftp.fms2.enabled}" />
+	</bean>
 
 	<tx:annotation-driven />
 
@@ -390,26 +399,26 @@
 		<bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
 			<property name="paramName" value="theme" />
 		</bean>
-		<bean class="com.softech.ls360.lcms.contentbuilder.security.SessionExpiredInterceptor" />   
+		<bean class="com.softech.ls360.lcms.contentbuilder.security.SessionExpiredInterceptor" />
 	</mvc:interceptors>
 
 
 	<!-- <import resource="spring-security.xml"/> -->
 	<!-- ========================= HIBERNATE DEFINITIONS ======================================== -->
 	<!-- Local DataSource that works in any environment -->
-	<!-- Note that DriverManagerDataSource does not pool; it is not intended 
+	<!-- Note that DriverManagerDataSource does not pool; it is not intended
 		for production -->
-	<!-- See JPetStore for an example of using Commons DBCP BasicDataSource 
+	<!-- See JPetStore for an example of using Commons DBCP BasicDataSource
 		as alternative -->
-	<!-- See Image Database for an example of using C3P0 ComboPooledDataSource 
+	<!-- See Image Database for an example of using C3P0 ComboPooledDataSource
 		as alternative -->
 
 	<import resource="jpa-hibernate-config.xml" />
-	
+
 	<beans profile="default">
 		<bean id="properties"
-			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-			<property name="ignoreResourceNotFound" value="true" />
+			class="com.softech.common.encryption.PropertyPlaceholderDecryptor">
+			<property name="secretKey" value="F43E8A778263A605BFBC8A7CD95D7307"/>
 			<property name="locations">
 				<list>
 					<value>classpath:vu360-lcms.properties</value>
@@ -418,9 +427,8 @@
 		</bean>
 	</beans>
 	<beans profile="test">
-		<bean id="properties" 
+		<bean id="properties"
 			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-			<property name="ignoreResourceNotFound" value="true" />
 			<property name="locations">
 				<list>
 					<value>classpath:vu360-lcms.properties</value>

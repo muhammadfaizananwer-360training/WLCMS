@@ -23,7 +23,7 @@ public class CoursesTest extends AbstractLcmsTest {
 	
     // @Autowired
     //protected ContactService contactService;
-   @Test
+   //@Test
     public void CourseMoveUp(){
     	try {
     		System.out.println("start......CourseMoveUp()............");

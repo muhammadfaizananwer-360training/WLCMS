@@ -1,53 +1,35 @@
 package com.softech.ls360.lcms.contentbuilder.dao.impl;
 
-
-import java.math.BigDecimal;
-import java.sql.Clob;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.ParameterMode;
-import javax.persistence.Query;
-import javax.persistence.StoredProcedureQuery;
-import javax.persistence.TypedQuery;
-
+import com.softech.ls360.lcms.contentbuilder.dao.CourseDAO;
+import com.softech.ls360.lcms.contentbuilder.dao.GenericDAOImpl;
+import com.softech.ls360.lcms.contentbuilder.dao.SPCallingParams;
+import com.softech.ls360.lcms.contentbuilder.model.*;
+import com.softech.ls360.lcms.contentbuilder.utils.LCMS_Util;
+import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
 import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.softech.ls360.lcms.contentbuilder.dao.CourseDAO;
-import com.softech.ls360.lcms.contentbuilder.dao.GenericDAOImpl;
-import com.softech.ls360.lcms.contentbuilder.dao.SPCallingParams;
-import com.softech.ls360.lcms.contentbuilder.model.ContentObject;
-import com.softech.ls360.lcms.contentbuilder.model.Course;
-import com.softech.ls360.lcms.contentbuilder.model.CourseDTO;
-import com.softech.ls360.lcms.contentbuilder.model.CourseDisplayOrder;
-import com.softech.ls360.lcms.contentbuilder.model.CourseGroup;
-import com.softech.ls360.lcms.contentbuilder.model.LearningObject;
-import com.softech.ls360.lcms.contentbuilder.model.SearchCourseFilter;
-import com.softech.ls360.lcms.contentbuilder.model.Slide;
-import com.softech.ls360.lcms.contentbuilder.model.SlideTemplate;
-import com.softech.ls360.lcms.contentbuilder.model.SynchronousClass;
-import com.softech.ls360.lcms.contentbuilder.utils.LCMS_Util;
-import com.softech.ls360.lcms.contentbuilder.utils.StringUtil;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.sql.Clob;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.List;
+import java.util.UUID;
 
 public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDAO
 {
 	private static Logger logger = Logger.getLogger(CourseDAOImpl.class);
-	
+
 	private static final String INSERT_RECENT_COURSE = "INSERT INTO RecentCourses (COURSE_ID) VALUES( ? ) ";
-	
+
 	public CourseDAOImpl() {
-		
+
 	}
-	
+
 	@Transactional
 	@Override
 	public CourseDTO getCourseByID (int id) throws SQLException
@@ -56,22 +38,22 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		logger.info("In CourseDAOImpl::getCourseByID BEGIN");
 
 		CourseDTO dto;
-		
-		
-		SPCallingParams sparam1 = LCMS_Util.createSPObject("COURSE_ID", String.valueOf(id) , Integer.class, ParameterMode.IN);		
 
-					
-		Object[] courseRow;		
+
+		SPCallingParams sparam1 = LCMS_Util.createSPObject("COURSE_ID", String.valueOf(id) , Integer.class, ParameterMode.IN);
+
+
+		Object[] courseRow;
  		Object[] courseRows = callStoredProc("LCMS_WEB_GET_COURSE_COURSE_GROUP_PB_STATUS", sparam1).toArray();
-		
-	 
+
+
  		dto = new CourseDTO();
- 		
+
  		try {
 			for (Object course : courseRows) {
-				
+
 				courseRow = (Object[]) course;
-				
+
 				dto.setId(TypeConvertor.AnyToLong(courseRow[0]));
 				dto.setCoursePublishStatus(courseRow[1] == null || StringUtil.ifNullReturnEmpty(courseRow[11]).equalsIgnoreCase("Retired") ? ""  : courseRow[1].toString());
 				dto.setName(courseRow[3].toString());
@@ -250,7 +232,7 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 			courseRow = (Object[]) course;
 
 			dto = new Course();
-			dto.setId(Integer.valueOf(courseRow[0].toString()));
+			dto.setId(Integer.parseInt(courseRow[0].toString()));
 			dto.setCourseid(courseRow[1] == null ? "" : courseRow[1].toString());
 			dto.setName(courseRow[1].toString());
 			dto.setBussinesskey(courseRow[2].toString());
@@ -373,20 +355,20 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 			dto.setLstContentObject(this.getContentLearningObject((int)varContendOjectId));
 		}catch(Exception ee){
 			logger.error(ee);
-			
+
 		}
-		
+
 		return dto;
-		
+
 	}
-	
-	@Transactional 
+
+	@Transactional
 	@Override
-	public boolean updateContentObject(ContentObject co) throws SQLException 
-	{		
+	public boolean updateContentObject(ContentObject co) throws SQLException
+	{
 		logger.info("In CourseDAOImpl::updateCourse Begin");
-		
-		SPCallingParams sparamContentObjectId = LCMS_Util.createSPObject("ID", String.valueOf(co.getID()) , 					 Integer.class, ParameterMode.IN);		
+
+		SPCallingParams sparamContentObjectId = LCMS_Util.createSPObject("ID", String.valueOf(co.getID()) , 					 Integer.class, ParameterMode.IN);
 		SPCallingParams sparamContentObjectName = LCMS_Util.createSPObject("NAME", String.valueOf(co.getName()) , 				 String.class, ParameterMode.IN);
 		SPCallingParams sparam3 = LCMS_Util.createSPObject("DESCRIPTION", co.getDescription() , 				 String.class, ParameterMode.IN);
 		SPCallingParams sparam4 = LCMS_Util.createSPObject("LEARNINGOBJECTIVE", co.getLearningObjective() ,		 String.class, ParameterMode.IN);
@@ -394,56 +376,56 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		SPCallingParams sparamUserId = LCMS_Util.createSPObject("CreateUserID", co.getCreateUserId().toString() ,	 Integer.class, ParameterMode.IN);
 		SPCallingParams sparamCourseId = LCMS_Util.createSPObject("CourseID", co.getCourseID().toString(),	 			 Integer.class, ParameterMode.IN);
 		SPCallingParams sparamLastUpdateUser = LCMS_Util.createSPObject("@LastUpdateUser", co.getLastUpdateUser().toString(),	 			 Integer.class, ParameterMode.IN);
-		
+
 		StoredProcedureQuery qr = createQueryParameters("LCMS_WEB_UPDATE_CONTENTOBJECT", sparamContentObjectId, sparamContentObjectName, sparam3, sparam4, sparam5, sparamUserId, sparamCourseId,sparamLastUpdateUser);
 		qr.execute();
-		
-		
-		StoredProcedureQuery qr1 = createQueryParameters("SET_LCMS_WEB_ASSESSMENTITEM_BANK_MAPPING", sparamCourseId, sparamUserId );	
+
+
+		StoredProcedureQuery qr1 = createQueryParameters("SET_LCMS_WEB_ASSESSMENTITEM_BANK_MAPPING", sparamCourseId, sparamUserId );
 		qr1.execute();
-		
+
 		//WLCMS-163 - Update Lesson's Item Banks for Final Exam on update Lesson
-		StoredProcedureQuery qr2 = createQueryParameters("LESSON_SET_EXAM_BANKS_UPDATE", sparamCourseId, sparamContentObjectId, sparamUserId, sparamContentObjectName);	
+		StoredProcedureQuery qr2 = createQueryParameters("LESSON_SET_EXAM_BANKS_UPDATE", sparamCourseId, sparamContentObjectId, sparamUserId, sparamContentObjectName);
 		qr2.execute();
-		
-		
-		
+
+
+
 		return true;
 	}
-	
+
 	@Transactional
 	@Override
 	public boolean deleteLesson (String varLessonId, String courseId,long loginUserId) throws Exception{
 		logger.info("In CourseDAOImpl::deleteLesson --- Begin");
-		
+
 		try{
-			Long loginUserIdObj = loginUserId; 
+			Long loginUserIdObj = loginUserId;
 			SPCallingParams sparam1 = LCMS_Util.createSPObject("@CONTENTOBJECT_ID", varLessonId , Integer.class, ParameterMode.IN);
 			SPCallingParams sparam2 = LCMS_Util.createSPObject("@COURSE_ID", courseId , Integer.class, ParameterMode.IN);
 			SPCallingParams sparam3 = LCMS_Util.createSPObject("CreateUserId", loginUserIdObj.toString(), Integer.class, ParameterMode.IN);
-			
+
 			StoredProcedureQuery qr = createQueryParameters("LCMS_WEB_DELETE_CONTENTOBJECT", sparam1,sparam2,sparam3);
 			qr.execute();
-			
+
 			/// DELETE CONTENT_LEARNING OBJECTIVE
-			StoredProcedureQuery qr2 = createQueryParameters("DELETE_CONTENTOBJECT_LEARNINGOBJECTIVE", sparam1);			
+			StoredProcedureQuery qr2 = createQueryParameters("DELETE_CONTENTOBJECT_LEARNINGOBJECTIVE", sparam1);
 			qr2.execute();
-			
+
 			logger.info("In CourseDAOImpl::deleteLesson --- LESSON_SET_EXAM_BANKS_DELETE");
-			//WLCMS-163 - disabling Lesson's Item Banks for Final Exam upon delete lesson 
+			//WLCMS-163 - disabling Lesson's Item Banks for Final Exam upon delete lesson
 			SPCallingParams sparamCourseId = LCMS_Util.createSPObject("COURSE_ID", courseId , Integer.class, ParameterMode.IN);
 			SPCallingParams sparamContentObjectId = LCMS_Util.createSPObject("CONTENTOBJECT_ID", varLessonId , Integer.class, ParameterMode.IN);
-			StoredProcedureQuery qr3 = createQueryParameters("LESSON_SET_EXAM_BANKS_DELETE", sparamCourseId, sparamContentObjectId);			
+			StoredProcedureQuery qr3 = createQueryParameters("LESSON_SET_EXAM_BANKS_DELETE", sparamCourseId, sparamContentObjectId);
 			qr3.execute();
 
 		}catch(Exception ex){
 			logger.error(ex);
 			return false;
 		}
-		
-		
+
+
 		logger.info("In CourseDAOImpl::deleteLesson --- END");
-		
+
 		return true;
 	}
 
@@ -451,25 +433,25 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 	@Override
 	public List<LearningObject> getContentLearningObject(int contentID)
 			throws SQLException {
-		
-		
+
+
 		SPCallingParams sparam1 = LCMS_Util.createSPObject("CONTENTOBJECT_ID", String.valueOf(contentID) , Integer.class, ParameterMode.IN);
 		StoredProcedureQuery qr = createQueryParameters("SELECT_CONTENTOBJECT_LEARNINGOBJECTIVE", sparam1);
-				
+
 		Object[] loRows = qr.getResultList().toArray();
-		
+
 		Object[] loRow;
-		List<LearningObject>  loDTOList = new ArrayList<LearningObject>(); 
-		
+		List<LearningObject>  loDTOList = new ArrayList<LearningObject>();
+
 			for (Object lo : loRows) {
 				loRow = (Object[]) lo;
-	
-				if(loRow[1]!=null && !loRow[1].toString().equals("ADDITIONAL QUESTIONS")){ //WLCMS-735  
+
+				if(loRow[1]!=null && !loRow[1].toString().equals("ADDITIONAL QUESTIONS")){ //WLCMS-735
 
 					LearningObject dto = new LearningObject();
 					try {
 						dto.setId(TypeConvertor.AnyToInteger(loRow[0]));
-					} catch (NumberFormatException e) {					
+					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -484,36 +466,36 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
+
 					loDTOList.add(dto);
 				}// if check for ADDITIONAL QUESTIONS
-				
+
 			}
-				
+
 		return loDTOList;
 	}
-    
-	
+
+
 	@Transactional
 	@Override
 	public boolean deleteLLO(int id, int contentObjectId) throws Exception {
-	
+
 		SPCallingParams sparam1 = LCMS_Util.createSPObject("contentObject_id",String.valueOf( contentObjectId ), Integer.class, ParameterMode.IN);
 		SPCallingParams sparam2 = LCMS_Util.createSPObject("learningobjective_id",String.valueOf( id ), Integer.class, ParameterMode.IN);
 		StoredProcedureQuery qr = createQueryParameters("DELETE_CONTENTOBJECT_LEARNINGOBJECTIVE1", sparam1, sparam2);
 		qr.execute();
-		
+
 		return true;
 	}
-	
+
 	@Transactional
 	public boolean isFinalExamEnabled(int courseID)	throws Exception {
-		SPCallingParams sparam1 = LCMS_Util.createSPObject("COURSE_ID", String.valueOf(courseID) , Integer.class, ParameterMode.IN);		
+		SPCallingParams sparam1 = LCMS_Util.createSPObject("COURSE_ID", String.valueOf(courseID) , Integer.class, ParameterMode.IN);
 		SPCallingParams sparam2 = LCMS_Util.createSPObject("USER_ID", String.valueOf("-1") , Integer.class, ParameterMode.IN);
 		SPCallingParams sparam3 = LCMS_Util.createSPObject("EXAMTYPE", String.valueOf("PostAssessment") , String.class, ParameterMode.IN);
 		StoredProcedureQuery qr = createQueryParameters("LCMS_WEB_UPDATECCT_BY_TYPE_GET", sparam1, sparam2, sparam3);
 		Boolean coList = (Boolean) qr.getSingleResult();
-		
+
 		if(coList!=null)
 			return coList.booleanValue();
 		else
@@ -528,15 +510,15 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		List<SlideTemplate> slideTemplates = new ArrayList<SlideTemplate>();
 		//SPCallingParams sparam1 = LCMS_Util.createSPObject("CONTENTOWNER_ID", String.valueOf(contentOwnerId) , Integer.class, ParameterMode.IN);
 		//StoredProcedureQuery qr = createQueryParameters("SELECT_SCENETEMPLATES", sparam1);
-		
+
 		//Object[] loRows = qr.getResultList().toArray();//qr.getResultList().toArray();
 		Object[] loRows = entityManager.createNativeQuery("exec SELECT_SCENETEMPLATES "+contentOwnerId).getResultList().toArray();
-		
+
 		Object[] loRow;
 
 			for (Object lo : loRows) {
 				loRow = (Object[]) lo;
-				
+
 				if(loRow != null){
 					SlideTemplate slideTemplate = new SlideTemplate();
 					slideTemplate.setSlideTemplateID(TypeConvertor.AnyToInteger(loRow[0]));
@@ -546,34 +528,34 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 				}
 			}
 
-		
+
 		return slideTemplates;
 	}
-	
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Integer getPublishedVersion(String courseId) throws Exception{
-		
+
 		EntityManager entityManager;
 	    entityManager = getEntityManager();
 	    Integer publishedCourseId= -1;
 	    javax.persistence.Query query = entityManager.createNativeQuery("select FROM_COURSE_ID from Course_derived_from_course where to_course_id=:courseId and Type='Drafted'");
         query.setParameter("courseId", courseId);
-        
+
         try{
-        	
+
         	publishedCourseId = (Integer)query.getSingleResult();
         	entityManager = null;
         }catch(NoResultException  ex){
         	ex.printStackTrace();
         }
-      
+
         return publishedCourseId ;
 	}
-	
-	
-	
-	
+
+
+
+
 	@Transactional
 	public CourseDTO saveCourse(CourseDTO course){
 		//String GUID = UUID.randomUUID().toString().replaceAll("-", "");
@@ -583,7 +565,7 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		this.addRecentCourse(course.getId());
 		return course;
 	}
-	
+
 	@Override
 	@Transactional
 	public CourseDTO getCourseById(long courseId) {
@@ -591,7 +573,7 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		CourseDTO course = super.getById(courseId);
 		return course;
 	}
-	
+
 
 	@Override
 	@Transactional
@@ -600,31 +582,31 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		List<CourseDisplayOrder> courseDisplayOrderList = new ArrayList<CourseDisplayOrder>();
 		entityManager.createNativeQuery("UPDATE COURSE SET LastUpdatedDate=GETDATE()  WHERE ID="+courseId).executeUpdate();
 		Object[] loRows = entityManager.createNativeQuery("exec GET_COURSE_DISPLAYORDERS "+courseId).getResultList().toArray();
-		
+
 		Object[] loRow;
 
 			for (Object lo : loRows) {
 				loRow = (Object[]) lo;
-				
+
 				if(loRow != null){
 					CourseDisplayOrder courseDisplayOrder = new CourseDisplayOrder();
 					courseDisplayOrder.setId(TypeConvertor.AnyToInteger(loRow[0]));
 					courseDisplayOrder.setItem_Id(TypeConvertor.AnyToInteger(loRow[1]));
 					courseDisplayOrder.setItem_Type(StringUtil.ifNullReturnEmpty(loRow[2]));
 					courseDisplayOrder.setDisplayOrder(TypeConvertor.AnyToInteger(loRow[3]));
-					
+
 					courseDisplayOrderList.add(courseDisplayOrder);
 				}
 			}
 
-		
+
 		return courseDisplayOrderList;
 	}
 
 	@Transactional
 	@Override
 	public boolean UpdateCourseDisplayOrder(CourseDisplayOrder courseDisplayOrder,long course_Id,long lastUpdateUser) throws Exception {
-	
+
 		SPCallingParams sparam1 = LCMS_Util.createSPObject("ID",String.valueOf( courseDisplayOrder.getId() ), Integer.class, ParameterMode.IN);
 		SPCallingParams sparam2 = LCMS_Util.createSPObject("ITEM_ID",String.valueOf( courseDisplayOrder.getItem_Id() ), Integer.class, ParameterMode.IN);
 		SPCallingParams sparam3 = LCMS_Util.createSPObject("ITEMTYPE",String.valueOf( courseDisplayOrder.getItem_Type() ), String.class, ParameterMode.IN);
@@ -633,55 +615,55 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 		SPCallingParams sparam6 = LCMS_Util.createSPObject("LastUpdateUser",String.valueOf( lastUpdateUser ), Long.class, ParameterMode.IN);
 		StoredProcedureQuery qr = createQueryParameters("UPDATE_COURSEDISPLAYORDER", sparam1, sparam2,sparam3,sparam4,sparam5,sparam6);
 		qr.execute();
-		
+
 		return true;
 	}
-	
+
 	@Transactional
 	public CourseDTO updateCourse(CourseDTO course){
-		
+
 		CourseDTO  courseDTO = entityManager.merge(course);
 		entityManager.flush();
 		return courseDTO;
 	}
-	
+
 	@Override
 	@Transactional
 	public int addRecentCourse(long courseId){
-		
+
 		 Query query = entityManager.createNativeQuery(INSERT_RECENT_COURSE);
 		 query.setParameter(1, courseId);
 		 return query.executeUpdate();
 	}
-	
-	
-	
-	
+
+
+
+
 	@Override
 	@Transactional
 	public List<CourseGroup> getCourseGroupByContentOwner (long contentOwnerId, String courseGroupName){
 		Query query = entityManager.createQuery(" SELECT cg FROM CourseGroup cg "
 												+ " WHERE cg.contentOwnerId=:CONTENTOWNER_ID and cg.name=:COURSEGROUP_NAME");
-		
+
 		query.setParameter("CONTENTOWNER_ID", contentOwnerId);
 		query.setParameter("COURSEGROUP_NAME", courseGroupName);
-		
+
 		List<CourseGroup> lstCG = (List<CourseGroup>)query.getResultList();
-		
+
 		return lstCG;
-		
+
 	}
-	
+
 	@Override
 	@Transactional
 	public boolean updateCourseModifiedDate(long courseId){
 		try{
 		Query query = entityManager.createNativeQuery("UPDATE COURSE SET LastUpdatedDate=GETDATE() WHERE ID=:COURSE_ID");
-		
+
 		query.setParameter("COURSE_ID", courseId);
-		
+
 		int rocordUpdated = query.executeUpdate();
-		
+
 		if(rocordUpdated>0)
 			return true;
 		else
@@ -690,8 +672,8 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
 			logger.error(" Error in method::updateCourseModifiedDate. Message:" + exp.getMessage());
 			return false;
 		}
-		
-		
+
+
 	}
     @Override
     @Transactional
@@ -717,29 +699,29 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
         List<CourseDTO> courses = getCoursesByOwnerIdAndBusinessKey(ownerId, businessKey);
         if(courses.size() > 0) {
           return courses.get(0);
-        } 
+        }
         return null;
     }
-    
+
     @Override
     @Transactional
 	public int getStreamingTemplateId(){
-		Query query = entityManager.createNativeQuery("Select ID From scenetemplate where name  = 'Video Streaming Center' and ContentOwner_Id=1");		
+		Query query = entityManager.createNativeQuery("Select ID From scenetemplate where name  = 'Video Streaming Center' and ContentOwner_Id=1");
 		Object id = query.getSingleResult();
-		return id == null ? 0 : Integer.parseInt((id.toString()));		
+		return id == null ? 0 : Integer.parseInt((id.toString()));
     }
-    
+
     @Override
     @Transactional
     public boolean updateCourseLastUpdateUserandModifiedDate(long lastUpdateUser,long courseId){
     	try{
     		Query query = entityManager.createNativeQuery("UPDATE COURSE SET LastUpdatedDate=GETDATE(),LastUpdateUser=:lastUpdateUser WHERE ID=:COURSE_ID");
-    		
+
     		query.setParameter("COURSE_ID", courseId);
     		query.setParameter("lastUpdateUser", lastUpdateUser);
-    		
+
     		int rocordUpdated = query.executeUpdate();
-    		
+
     		if(rocordUpdated>0)
     			return true;
     		else
@@ -748,7 +730,7 @@ public class CourseDAOImpl extends GenericDAOImpl<CourseDTO> implements CourseDA
     			logger.error(" Error in method::updateCourseLastUpdateUserandModifiedDate. Message:" + exp.getMessage());
     			return false;
     		}
-    	
-    	
+
+
     }
 }

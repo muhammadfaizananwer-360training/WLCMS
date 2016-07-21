@@ -6,6 +6,8 @@ public interface OfferDAO extends GenericDAO<Offer>{
 	
 	
 	public Offer newOffer(Offer offer) throws Exception;
+	public void remakeOffer (Offer offer) throws Exception ;
+	public void cancelOffer (Offer offer) throws Exception ;
 	public Offer getOffer(Offer offer) throws Exception;
 	
 }

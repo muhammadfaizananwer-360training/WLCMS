@@ -22,6 +22,8 @@ public class CourseVO implements Serializable,ControllableNode {
 
     @NotEmpty
     private String description;
+
+    @NotEmpty
     private String keywords;
     private String courseType;
     private Long createUserId;

@@ -1496,7 +1496,7 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
         });
 
         if (missingSessions.size() > 0) {
-            throw new BulkUplaodCourseException("Not Found In System", "Class", 0, 0,
+            throw new BulkUplaodCourseException("Not Found In System", "Session", 0, 0,
                     "", "(" + cls.getCourse().getBussinesskey() + "," + cls.getClassName() + ") " + "[" + Joiner.on(", ").join(missingSessions) + "]");
         }
     }
