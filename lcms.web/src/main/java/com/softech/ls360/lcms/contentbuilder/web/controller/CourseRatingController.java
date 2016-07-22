@@ -42,6 +42,9 @@ public class CourseRatingController {
 	@Autowired
 	ICourseRatingService courseRatingService;
 
+	@Autowired
+	UserFeature userFeature;
+
 	private static Logger logger = LoggerFactory
 			.getLogger(CourseController.class);
 
@@ -52,7 +55,7 @@ public class CourseRatingController {
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 					.getContext().getAuthentication().getPrincipal();
 			
-			if (!user.hasFeaturePermission(UserFeature.npsCourseRating)) {
+			if (!user.hasFeaturePermission(userFeature.getNpsCourseRating())) {
 				throw new Exception("Rating Review Page Permission Error.");
 			}
 		

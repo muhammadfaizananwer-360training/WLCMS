@@ -170,8 +170,8 @@ function addVideoSlide(btn) {
 	var extraParams = {
 			cboAssetTypeVisual: "mp4",
 			requestId : $(form).find("#requestId").val(),
-			filePath : $(form).find("#filePath").val(),
-	}
+			filePath : $(form).find("#filePath").val()
+	};
 	addSlide(btn,vName,extraParams);
 }
 

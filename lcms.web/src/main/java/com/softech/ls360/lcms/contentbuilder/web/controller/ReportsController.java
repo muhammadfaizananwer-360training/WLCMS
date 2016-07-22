@@ -33,6 +33,9 @@ public class ReportsController {
 
 	@Autowired
 	VU360UserService vu360UserService;
+
+	@Autowired
+	UserFeature userFeature;
 	
 	@Autowired
 	ReportService reportService;
@@ -42,7 +45,7 @@ public class ReportsController {
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 
-		if (!user.hasFeaturePermission(UserFeature.viewWLCMSReportPermssion)) {
+		if (!user.hasFeaturePermission(userFeature.getViewWLCMSReportPermssion())) {
 			throw new Exception("View WLCMS Reports Permission Error.");
 		}
 		return new ModelAndView("reports");

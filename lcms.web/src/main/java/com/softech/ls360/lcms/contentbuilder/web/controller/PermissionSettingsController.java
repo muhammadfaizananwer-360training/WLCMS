@@ -24,6 +24,9 @@ public class PermissionSettingsController {
 
 	@Autowired
 	IPermissionSettingsService userPermissionSettingsService;
+
+	@Autowired
+	UserFeature userFeature;
 	
 	@RequestMapping(value = "userPermissionSettings", method = RequestMethod.GET)
 	public ModelAndView getRoyaltySettings() throws Exception {
@@ -31,7 +34,7 @@ public class PermissionSettingsController {
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 		
-		if (!user.hasFeaturePermission(UserFeature.userPermission)) {
+		if (!user.hasFeaturePermission(userFeature.getUserPermission())) {
 			throw new Exception("User Permission Settings Page Permission Error.");
 		}
 		return new ModelAndView("authorPermissionSettings");
@@ -68,11 +71,11 @@ public class PermissionSettingsController {
 	 VU360UserDetail user = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	 boolean returnValue = false;
 	 int authorGropIdInt = Integer.parseInt(authorGroupId);
-	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, UserFeature.npsCourseRating, Integer.parseInt(npsRatingReviewPermValue), user.getVu360UserID());
-	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, UserFeature.contentOwnerRoyaltySettings, Integer.parseInt(royaltySettingPermValue), user.getVu360UserID());
-	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, UserFeature.userPermission, Integer.parseInt(userPermValue), user.getVu360UserID());
-	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, UserFeature.bulkCourseImportPermssion, Integer.parseInt(bulkUploadPermValue), user.getVu360UserID());
-	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, UserFeature.viewWLCMSReportPermssion, Integer.parseInt(viewReportPermValue), user.getVu360UserID());
+	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, userFeature.getNpsCourseRating(), Integer.parseInt(npsRatingReviewPermValue), user.getVu360UserID());
+	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, userFeature.getContentOwnerRoyaltySettings(), Integer.parseInt(royaltySettingPermValue), user.getVu360UserID());
+	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, userFeature.getUserPermission(), Integer.parseInt(userPermValue), user.getVu360UserID());
+	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, userFeature.getBulkCourseImportPermssion(), Integer.parseInt(bulkUploadPermValue), user.getVu360UserID());
+	 returnValue = userPermissionSettingsService.updatePermissionSettings(authorGropIdInt, userFeature.getViewWLCMSReportPermssion(), Integer.parseInt(viewReportPermValue), user.getVu360UserID());
 	 
 	 return returnValue;
  }

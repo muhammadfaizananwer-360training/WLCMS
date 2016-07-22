@@ -85,9 +85,5 @@
 				inspect="com.org.Foo" />
 		</toolbox>
 	</tools>
-	<tool>
-		<key>UserFeature</key>
-		<scope>application</scope>
-		<class>com.softech.ls360.lcms.contentbuilder.utils.UserFeature</class>
-	</tool>
+
 </toolbox>
