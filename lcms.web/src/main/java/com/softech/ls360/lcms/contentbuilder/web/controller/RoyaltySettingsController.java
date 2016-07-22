@@ -24,6 +24,9 @@ public class RoyaltySettingsController {
 
 	@Autowired
 	IContentOwnerRoyaltySettingsService royaltySettingsService;
+
+	@Autowired
+	UserFeature userFeature;
 	
 	@RequestMapping(value = "royaltySettings", method = RequestMethod.GET)
 	public ModelAndView getRoyaltySettings() throws Exception {
@@ -31,7 +34,7 @@ public class RoyaltySettingsController {
 		VU360UserDetail user = (VU360UserDetail) SecurityContextHolder
 				.getContext().getAuthentication().getPrincipal();
 		
-		if (!user.hasFeaturePermission(UserFeature.contentOwnerRoyaltySettings)) {
+		if (!user.hasFeaturePermission(userFeature.getContentOwnerRoyaltySettings())) {
 			throw new Exception("Royalty Settings Page Permission Error.");
 		}
 		return new ModelAndView("royaltSettings");

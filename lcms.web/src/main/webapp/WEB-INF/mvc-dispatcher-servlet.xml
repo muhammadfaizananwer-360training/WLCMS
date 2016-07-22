@@ -299,6 +299,7 @@
 		<property name="attributesMap">
               <map>
                <entry key="veloUserDetailService"><ref bean="vu360UserServiceImpl"/></entry>
+				  <entry key="UserFeature"><ref bean="userFeature"/></entry>
               </map>
 		</property>
 
