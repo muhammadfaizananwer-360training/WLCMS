@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 ##	BEGIN CSS
     <link rel="stylesheet" type="text/css" href="theme/executive/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="theme/executive/plugins/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
@@ -39,7 +39,7 @@
 	<script type="text/javascript" src="javascript/vm_js/constants.js?#springMessage('js.version-param-name')=#springMessage('js.version')"></script>
 	<script type="text/javascript" src="theme/executive/plugins/bootstrap-switch/static/js/bootstrap-switch.js"></script>
 </head>
-	<script>		
+	<script>
        function changeRole(type){
 	       	var serviceParam = "$!{lcmsProperties.getLCMSProperty('lms.BaseUrl')}/login.do?to=";
 	       	$("#service").val(serviceParam + type);
@@ -59,7 +59,7 @@
 </form>
 
 	<input type="hidden" id="navigatingLink" />
-	<input type="hidden" id="currentFormName" />	
+	<input type="hidden" id="currentFormName" />
     <div class="wrapper">
 ##	BEGIN CONFIRMATION MODAL
 			<div class="modal fade" id="confimrationModal" tabindex="-1" role="dialog" aria-labelledby="add-exam-label" aria-hidden="true">
@@ -72,7 +72,7 @@
 				  #springMessage('label.confirmation-warning')
 				  </div>
 				  <div class="modal-footer">
-					<button type="button" class="btn blue" data-dismiss="modal">#springMessage('label.yes')</button>
+					<button type="button" class="btn blue" data-dismiss="modal" onclick="revertToSameURL();">#springMessage('label.yes')</button>
 					<button type="button" class="btn btn-default" onclick="navigateToURL();" >#springMessage('label.no')</button>
 				  </div>
 				</div>
@@ -127,7 +127,7 @@
                 </div>
             </div>
 ##         Top Bar End
-            
+
 ##         Navigation Bar Begin
             <nav class="navbar navbar-default" role="navigation">
                 <div class="container-fluid">
@@ -137,7 +137,7 @@
 ##                  Store
                     <li class="dropdown">
                       <a title="Store" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons store-icon"></div><span>Store</span> <b class="caret"></b></a>
-                      <ul class="dropdown-menu">						
+                      <ul class="dropdown-menu">
                         <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-starter/');">#springMessage('label.free-software-and-packages')</a></li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-lcms-software/');">#springMessage('label.course-creation-software-and-upgrades')</a></li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-lms-software');">#springMessage('label.learning-management-software-and-upgrades')</a></li>
@@ -148,7 +148,7 @@
 ##                  Create
                     <li class="dropdown">
                       <a title="Create" href="javascript:;" class="dropdown-toggle fix-dropdown-a" data-toggle="dropdown"><div class="nav-icons create-icon"></div><span>Create</span> <b class="caret"></b></a>
-                      <ul class="dropdown-menu">						
+                      <ul class="dropdown-menu">
                         <li class="dropdown-cat">Account-free Courses</li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('createcourse?cType=6');">#springMessage('label.submit-webinar-course')</a></li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('createcourse?cType=5');">#springMessage('label.submit-classroom-course')</a></li>
@@ -177,7 +177,7 @@
 								#if($vu360User.hasFeaturePermission($UserFeature.bulkCourseImportPermssion))
 									<li><a href="/lcms/classroomImportPage">#springMessage('classroomImportPage.menu.name')</a></li>
 								#end
-								
+
 								#if($vu360User.hasFeaturePermission($UserFeature.viewWLCMSReportPermssion))
 									<li><a href="/lcms/reports">#springMessage('author_permission_settings.label.viewReport')</a></li>
 								#end
@@ -201,7 +201,7 @@
                         <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/faq-storefront/');">#springMessage('label.managing-your-own-storefront')</a></li>
 
                       	<li class="dropdown-cat">Community</li>
-                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/whats-new/');">#springMessage('label.whats-new')</a></li>                        
+                        <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/whats-new/');">#springMessage('label.whats-new')</a></li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-blog/');">#springMessage('label.blogs')</a></li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('https://www.facebook.com/pages/360trainingcom-Authoring/378754678842234');">#springMessage('label.facebook')</a></li>
                         <li><a href="javascript:;" onclick="checkForFormChanged('http://www.360training.com/authoring-program/author-showcase/');">#springMessage('label.showcase')</a></li>
@@ -233,4 +233,3 @@
           <div class="messages" id="TopMsgBarDiv" ></div>
 ##       Main Content Begin
         <div class="main-content">
-        

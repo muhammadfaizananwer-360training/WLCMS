@@ -14,7 +14,7 @@
 				            #springMessage('label.confirmation-warning')
 				         </div>
 				         <div class="modal-footer">
-				            <button type="button" class="btn blue" data-dismiss="modal">#springMessage('label.yes')</button>
+				            <button type="button" class="btn blue" data-dismiss="modal" onclick="revertToSameURL();">#springMessage('label.yes')</button>
 				            <button type="button" class="btn btn-default" onclick="navigateToURL();" >#springMessage('label.no')</button>
 				         </div>
 				      </div>
@@ -23,7 +23,7 @@
 				#* END CONFIRMATION MODAL *#
                 #* BEGIN PAGE CONTENT *#
                 <div class="page-content">
-				
+
 					#* BEGIN DATE RANGE *#
 					<div class="portlet portlet-btn">
 					  <div class="portlet-title" title="Rating Review">
@@ -33,7 +33,7 @@
                          </div>
 					  </div>
 					  <div class="portlet-body">
-						
+
 						<form class="form-horizontal" action ="RatingCourseSearch" method="POST" role="form"  id="frm_availability" >
                             <div class="form-body">
                                <div class="form-group">
@@ -75,7 +75,7 @@
 										<option>10</option>
 									</select>
 								  </div>
-								  
+
                                </div>
 							   <div class="form-group col-md-6" style="margin-left: 75px;">
 									<input type="checkbox"  class="form-chkbox" id="chkHideNull" value="false" name="chkHideNull" />
@@ -91,7 +91,7 @@
                                </div>
 							</div>
                         </form>
-						
+
 					  </div>
 					</div>
 					#* END DATE RANGE *#
@@ -110,7 +110,7 @@
 					<h3 class="modal-title" id="further-details-label"><i class="icon-comments-alt"></i> NPS Question &amp; Review</h3>
 				  </div>
 				  <div class="modal-body">
-				
+
 					<form class="form-horizontal" role="form">
 						<div class="form-body">
 							<div class="form-group">
@@ -146,15 +146,15 @@
 								</div>
 							  </div>
 						   </div>
-						   
+
 						   <hr>
-						   
+
 							#* BEGIN CAROUSEL *#
 							<div id="ques_carousel" class="carousel slide">
-		
+
 								#* BEGIN ITEMS *#
 								<div class="carousel-inner">
-									
+
 									<div class="item active" id="RATING">
 										  <div class="form-group">
 											  <label class="col-md-3 control-label">#1</label>
@@ -184,7 +184,7 @@
 											  </div>
 										  </div>
 									</div>
-									
+
 									<div class="item" id="SHOPPINGEXP">
 										  <div class="form-group">
 											  <label class="col-md-3 control-label">#2</label>
@@ -217,7 +217,7 @@
 											  </div>
 										  </div>
 									</div>
-									
+
 									<div class="item" id="LEARNINGTECH">
 										  <div class="form-group" >
 											  <label class="col-md-3 control-label">#3</label>
@@ -245,7 +245,7 @@
 											  </div>
 										  </div>
 									</div>
-									
+
 									<div class="item" id="CS">
 										  <div class="form-group">
 											  <label class="col-md-3 control-label">#4</label>
@@ -273,26 +273,26 @@
 											  </div>
 										  </div>
 									</div>
-									
+
 								</div>
 								#* End ITEMS *#
-								 
+
 								#* BEGIN CONTROLLER *#
 								<a class="left carousel-control" style="width:0%" href="#ques_carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left gray-text"></span></a>
 								<a class="right carousel-control" style="width:0%" href="#ques_carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right gray-text"></span></a>
 								#* BEGIN CONTROLLER *#
 							</div>
 							#* End CAROUSEL *#
-							
+
 						   <hr>
-						   
+
 						   <div class="form-group">
 							  <label class="col-md-3 control-label">Review</label>
 							  <div class="col-md-7" >
 								<p class="form-control-static" id="RatingUserReviewTest"> </p>
 							  </div>
 						   </div>
-						   
+
 						   <div class="form-group">
 							  <label class="col-md-3 control-label">Publish</label>
 							  <div class="col-md-7">
@@ -304,13 +304,13 @@
 							  		<input type="hidden" id="RatingCourseId"/>
 							  		<input type="hidden" id="RatingEnrollmentId"/>
 								 <label class="checkbox-inline">
-									
+
 								 </label>
 							  </div>
 						   </div>
 						</div>
 					</form>
-					
+
 				  </div>
 				  <div class="modal-footer">
 					<button type="button" class="btn blue" onclick="SaveRatingStatus()">Save</button>
@@ -347,15 +347,15 @@ function GetRatingDetail(NPS_RATING,USER_REVIEW_TEXT,RATING_COURSE,
 	$('#furtherDetailsModal #RatingUserReviewTest').text(USER_REVIEW_TEXT);
 	$('#furtherDetailsModal #RatingNPSRating span strong').text(NPS_RATING);
 	console.log('RATING_SHOPPINGEXP_SECONDARY:'+RATING_SHOPPINGEXP_SECONDARY);
-	
-	console.log('RATING_COURSE_SECONDARY:'+RATING_COURSE_SECONDARY);	
+
+	console.log('RATING_COURSE_SECONDARY:'+RATING_COURSE_SECONDARY);
 	$('#furtherDetailsModal #RATING #RatingCourseSecondary p').text(RATING_COURSE_SECONDARY);
 	$('#furtherDetailsModal #RATING #RatingCourseSecondary_Q p').text(RATING_COURSE_SECONDARY_Q);
-	
+
 	$( "#furtherDetailsModal #RATING #RatingCourse .icon-star" ).removeClass("yellow-text");
-	
+
 	$( "#furtherDetailsModal #RATING #RatingCourse .icon-star" ).each(function( index, element ) {
-	
+
 		console.log("RATING_COURSE:" + RATING_COURSE + ":index:"+index);
     	if (index+1>RATING_COURSE) {
   			console.log('RATING_COURSE return');
@@ -363,57 +363,57 @@ function GetRatingDetail(NPS_RATING,USER_REVIEW_TEXT,RATING_COURSE,
 		}
 	    $(element).addClass("yellow-text");
   	});
-	
+
 	$('#furtherDetailsModal #SHOPPINGEXP #RatingCourseSecondary p').text(RATING_SHOPPINGEXP_SECONDARY);
 	$('#furtherDetailsModal #SHOPPINGEXP #RatingCourseSecondary_Q p').text(RATING_SHOPPINGEXP_SECONDARY_Q);
-	
+
 	$( "#furtherDetailsModal #SHOPPINGEXP #RatingCourse .icon-star" ).removeClass("yellow-text");
-	
+
 	$( "#furtherDetailsModal #SHOPPINGEXP #RatingCourse .icon-star" ).each(function( index, element ) {
-    		
+
     		console.log("RATING_SHOPPINGEXP:"+RATING_SHOPPINGEXP+":index:"+index);
 	    	if (index+1> RATING_SHOPPINGEXP) {
       			console.log('RATING_SHOPPINGEXP return');
       			return false;
     		}
-	
+
 	    $(element).addClass("yellow-text");
   	});
-	
+
 	$('#furtherDetailsModal #LEARNINGTECH #RatingCourseSecondary p').text(RATING_LEARNINGTECH_SECONDARY);
 	$('#furtherDetailsModal #LEARNINGTECH #RatingCourseSecondary_Q p').text(RATING_LEARNINGTECH_SECONDARY_Q);
-	
+
 	$( "#furtherDetailsModal #LEARNINGTECH #RatingCourse .icon-star" ).removeClass("yellow-text");
-	
+
 	$( "#furtherDetailsModal #LEARNINGTECH #RatingCourse .icon-star" ).each(function( index, element ) {
 			console.log("RATING_LEARNINGTECH:" + RATING_LEARNINGTECH + ":index:"+index);
 	    	if (index+1>RATING_LEARNINGTECH) {
       			console.log('RATING_LEARNINGTECH return');
       			return false;
     		}
-	
+
 	    $(element).addClass("yellow-text");
   	});
 
 	$('#furtherDetailsModal #CS #RatingCourseSecondary p').text(RATING_CS_SECONDARY);
 	$('#furtherDetailsModal #CS #RatingCourseSecondary_Q p').text(RATING_CS_SECONDARY_Q);
-	
+
 	$( "#furtherDetailsModal #CS #RatingCourse .icon-star" ).removeClass("yellow-text");
-	
+
 	$( "#furtherDetailsModal #CS #RatingCourse .icon-star" ).each(function( index, element ) {
 			console.log("RATING_CS:" + RATING_CS + ":index:"+index);
 	    	if (index+1>RATING_CS) {
       			console.log('RATING_CS return');
       			return false;
     		}
-	
+
 	    $(element).addClass("yellow-text");
   	});
 	$('#PublishStatus').val(PUBLISH_STATUS);
 	$("#RatingCourseId").val(CourseId);
 	$("#RatingCourseID p").text(CourseId);
 	$("#RatingEnrollmentId").val(EnrollmentId);
-	
+
 	if(PUBLISH_STATUS == 'PUBLISHED'){
 		$("<option value='PUBLISHED'>Published</option>").appendTo("#PublishStatus");
 		$('#PublishStatus').val("PUBLISHED");
@@ -422,15 +422,15 @@ function GetRatingDetail(NPS_RATING,USER_REVIEW_TEXT,RATING_COURSE,
 		$('#PublishStatus option[value="PUBLISHED"]').remove();
 		$('#PublishStatus').removeAttr("disabled");
 	}
-	
+
 	$('#RATING').removeClass("active");
 	$('#SHOPPINGEXP').removeClass("active");
 	$('#LEARNINGTECH').removeClass("active");
 	$('#LEARNINGTECH').removeClass("active");
 	$('#CS').removeClass("active");
-	
+
 	$('#RATING').addClass("active");
-	
+
 	$("#furtherDetailsModal").modal('show');
 }
 function SaveRatingStatus()
@@ -446,9 +446,9 @@ function SaveRatingStatus()
 		type: "POST",
 		cache: false,
 		data:'Course_Id='+$("#RatingCourseId").val() +'&Enrollment_id='+$("#RatingEnrollmentId").val()+'&Status='+$("#PublishStatus").val(),
-		async: false,  
+		async: false,
 		success: function(response) {
-			var colorClass = "yellow-text"; 
+			var colorClass = "yellow-text";
 			if(statusRequested == 'NEW'){
 				colorClass = "";
 				removeReviewsId(reviewId);
@@ -462,7 +462,7 @@ function SaveRatingStatus()
 			$("#CourseRating_table tbody tr").find("#review_" + reviewId).html('<span class=' + colorClass + '>' + statusRequested + '</span>');
 		}
    });
-   
+
 	$('#furtherDetailsModal').modal('hide');
 
 }
@@ -472,7 +472,7 @@ function PublishAllCourse()
 	var trgModal = $("#confirmationModal");
 	trgModal.modal("hide");
 	showProgressLoader("<div id='loader-label'>Loading...</div>");
-	
+
 	var reviewIdList = reviewsMarkedReady.join(',');
 	APP.AJAX({
 		url: 'PublishAllCourse',
@@ -480,9 +480,9 @@ function PublishAllCourse()
 		type: "POST",
 		cache: false,
 		data: 'reviewIds=' + reviewIdList,
-		async: true,  
+		async: true,
 		success: function(response) {
-		
+
 			if(response){
 				for(var i = 0; i < reviewsMarkedReady.length; i++){
 					$("#CourseRating_table tbody tr").find("#review_" + reviewsMarkedReady[i]).html('<span class="green-text">PUBLISHED</span>');
