@@ -29,43 +29,46 @@ function revertToSameURL(){
 	//Check current page location of user
 	var url = window.location.toString();
 	//Now make current tab of user 'active' based on his current page
-	if(url.includes("editCourseOverview")){
+	if(contains(url, "editCourseOverview")){
 		revertToActive("#nav_accordion_0");
-	} else if(url.includes("coursestructure")){
+	} else if(contains(url, "coursestructure")){
 		revertToActive("#nav_accordion_1");
-	} else if(url.includes("courseSettings")){
+	} else if(contains(url, "courseSettings")){
 		revertToActive("#nav_accordion_2");
-	} else if(url.includes("editClassroomWebinarCourse")){
-		if(url.includes("cType=5")) {
+	} else if(contains(url, "editClassroomWebinarCourse")){
+		if(contains(url, "cType=5")) {
 			//cType=5 is classroom
 			revertToActive("#nav_accordion_0_cr");
 		} else {
 			//cType=6 is webinar
 			revertToActive("#nav_accordion_0_wb");
 		}
-	} else if(url.includes("instructor")){
+	} else if(contains(url, "instructor")){
 		revertToActive("#nav_instructor");
-	} else if(url.includes("classroom-classes")){
+	} else if(contains(url, "classroom-classes")){
 		revertToActive("#nav_classroomsetup");
-	} else if(url.includes("locationList")){
+	} else if(contains(url, "locationList")){
 		revertToActive("#nav_locationList");
-	} else if(url.includes("schedule")){
+	} else if(contains(url, "schedule")){
 		revertToActive("#lnkSchedule");
-	} else if(url.includes("webinarSetup")){
+	} else if(contains(url, "webinarSetup")){
 		revertToActive("#lnkWebinarSetup");
 	}
 	//remaining 'Publishing' super tab
 	else {
-		revertToSuperTab();
+		revertToSuperTab(url);
 	}
 }
 
-function revertToActive(selector){
-	$(selector).removeClass("open-sign");
-	$(selector).addClass("active");
+function contains(url, page){
+	return url.indexOf(page) !== -1;
 }
 
-function revertToSuperTab(){
+function revertToActive(selector){
+	$(selector).removeClass("open-sign").addClass("active");
+}
+
+function revertToSuperTab(url){
 	revertToActive("#nav_accordion_3");
 	//expand Publishing super tab
 	$("#nav_accordion_3").addClass("close-sign");
@@ -73,13 +76,13 @@ function revertToSuperTab(){
 	//remove any active sub tab of Publishing
 	$("ul.list-sub-group>li.list-group-item>a.active").removeClass("active");
 	//Now make current sub-tab of user 'active'
-	if(url.includes("availability")) {
+	if(contains(url, "availability")) {
 		$("#lnkAvailability>a").addClass("active");
-	} else if(url.includes("setMarketing")) {
+	} else if(contains(url, "setMarketing")) {
 		$("#lnkMarketing>a").addClass("active");
-	} else if(url.includes("webinar_publishing")) {
+	} else if(contains(url, "webinar_publishing")) {
 		$("#lnkWebinarPublishing>a").addClass("active");
-	} else if(url.includes("publishing")) {
+	} else if(contains(url, "publishing")) {
 		$("#lnkPublishing>a").addClass("active");
 	}
 }
