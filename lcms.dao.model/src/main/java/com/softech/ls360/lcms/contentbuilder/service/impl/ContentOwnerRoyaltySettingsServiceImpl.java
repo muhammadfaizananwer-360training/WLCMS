@@ -15,7 +15,7 @@ public class ContentOwnerRoyaltySettingsServiceImpl implements IContentOwnerRoya
 	ContentOwnerRoyaltySettingsDAO royaltySettingsDAO;
 	
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).contentOwnerRoyaltySettings)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.contentOwnerRoyaltySettings)")
 	public List<ContentOwnerRoyaltySettings> searchContentOwners(
 			String firstOrLastName) {
 		
@@ -23,7 +23,7 @@ public class ContentOwnerRoyaltySettingsServiceImpl implements IContentOwnerRoya
 	}
 
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).contentOwnerRoyaltySettings)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.contentOwnerRoyaltySettings)")
 	public boolean updateRoyaltSettings(int contentOwnerId,
 			float onlineRoyaltyPercentage, float classroomRoyaltyPercentage,
 			float webinarRoyaltyPercentage) {

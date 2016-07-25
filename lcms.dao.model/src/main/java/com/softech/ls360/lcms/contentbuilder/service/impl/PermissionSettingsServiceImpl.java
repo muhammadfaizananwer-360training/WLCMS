@@ -15,7 +15,7 @@ public class PermissionSettingsServiceImpl implements IPermissionSettingsService
 	PermissionSettingsDAO permissionSettingsDAO;
 
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).userPermission)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.userPermission)")
 	public List<PermissionSettings> searchContentOwnersWithAuthorGruop(
 			String firstOrLastName) {
 		
@@ -23,7 +23,7 @@ public class PermissionSettingsServiceImpl implements IPermissionSettingsService
 	}
 
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).userPermission)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.userPermission)")
 	public boolean updatePermissionSettings(int authorGroupId, int featureId,
 			int permissionId, long lastUpdatedUserId) {
 	
