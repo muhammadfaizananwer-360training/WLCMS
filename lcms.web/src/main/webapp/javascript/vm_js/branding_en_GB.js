@@ -81,6 +81,10 @@ var WLCMS_LOCALIZED = {
         'classroomImportPage-errorListingConfirmation-message':"<hr/><b>Do you want to proceed with the import without fixing the errors?</b>",
         'DELETE_INSTRUCTOR_FAILURE_MESSAGE_CLASSROOM' : 'Unable to delete, already refer in classroom.',
         'DELETE_INSTRUCTOR_FAILURE_MESSAGE_INFORMATION' : 'Unable to delete, already refer in information.',
-        'EMAIL_INSTRUCTOR_FAILURE_MESSAGE' : 'That email address is already in use by an existing instructor in your account. Please enter a different email address'
+        'EMAIL_INSTRUCTOR_FAILURE_MESSAGE' : 'That email address is already in use by an existing instructor in your account. Please enter a different email address',
+        'MRSP_REQUIRED_MESSAGE' :'Please select MSRP / list price.',
+        'MRSP_NEGATIVE_MESSAGE' :'Price cannot be a negative value.',
+        'LSP_REQUIRED_MESSAGE' :'Please select Lowest on-sale price.',
+        'LSP_NEGATIVE_MESSAGE' :'Price cannot be a negative value.'
 };
 

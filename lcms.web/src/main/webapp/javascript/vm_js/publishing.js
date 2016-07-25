@@ -43,12 +43,12 @@ $(function() {
 			},
 			messages: {
 				mSRP: {
-					required: "Please select MSRP / list price.",
-					min: "Price cannot be a negative value."
+					required: WLCMS_LOCALIZED.MRSP_REQUIRED_MESSAGE,
+					min: WLCMS_LOCALIZED.MRSP_NEGATIVE_MESSAGE
 				},
 				lowestSalePrice: {
-					required: "Please select Lowest on-sale price.",
-					min: "Price cannot be a negative value."
+					required: WLCMS_LOCALIZED.LSP_REQUIRED_MESSAGE,
+					min: WLCMS_LOCALIZED.LSP_NEGATIVE_MESSAGE
 				}
 			}
 		});
@@ -67,12 +67,12 @@ $(function() {
 			},
 			messages: {
 				mSRP: {
-					required: "Please select MSRP / list price.",
-					min: "Price cannot be a negative value."
+					required: WLCMS_LOCALIZED.MRSP_REQUIRED_MESSAGE,
+					min: WLCMS_LOCALIZED.MRSP_NEGATIVE_MESSAGE
 				},
 				lowestSalePrice: {
-					required: "Please select Lowest on-sale price.",
-					min: "Price cannot be a negative value."
+					required: WLCMS_LOCALIZED.LSP_REQUIRED_MESSAGE,
+					min: WLCMS_LOCALIZED.LSP_NEGATIVE_MESSAGE
 				}
 			}
 		});
