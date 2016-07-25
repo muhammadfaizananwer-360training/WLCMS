@@ -30,19 +30,36 @@ function revertToSameURL(){
 	var url = window.location.toString();
 	//Now make current tab of user 'active' based on his current page
 	if(url.includes("editCourseOverview")){
-		$("#nav_accordion_0").removeClass("open-sign");
-		$("#nav_accordion_0").addClass("active");
+		revertToActive("#nav_accordion_0");
 	} else if(url.includes("coursestructure")){
-		$("#nav_accordion_1").removeClass("open-sign");
-		$("#nav_accordion_1").addClass("active");
+		revertToActive("#nav_accordion_1");
 	} else if(url.includes("courseSettings")){
-		$("#nav_accordion_2").removeClass("open-sign");
-		$("#nav_accordion_2").addClass("active");
+		revertToActive("#nav_accordion_2");
+	} else if(url.includes("editClassroomWebinarCourse")){
+		if(url.includes("cType=5")) {
+			//cType=5 is classroom
+			revertToActive("#nav_accordion_0_cr");
+		} else {
+			//cType=6 is webinar
+			revertToActive("#nav_accordion_0_wb");
+		}
+	} else if(url.includes("instructor")){
+		revertToActive("#nav_instructor");
+	} else if(url.includes("classroom-classes")){
+		revertToActive("#nav_classroomsetup");
+	} else if(url.includes("locationList")){
+		revertToActive("#nav_locationList");
+	} else if(url.includes("schedule")){
+		revertToActive("#lnkSchedule");
+	} else if(url.includes("webinarSetup")){
+		revertToActive("#lnkWebinarSetup");
 	}
 	//remaining 'Publishing' super tab
 	else {
-		$("#nav_accordion_3").removeClass("open-sign");
-		$("#nav_accordion_3").addClass("active");
+		revertToActive("#nav_accordion_3")
+		//expand Publishing super tab
+		$("#nav_accordion_3").addClass("close-sign");
+		$("ul.list-sub-group").attr("style", "display: block;");
 		//remove any active sub tab of Publishing
 		$("ul.list-sub-group>li.list-group-item>a.active").removeClass("active");
 		//Now make current sub-tab of user 'active'
@@ -50,8 +67,15 @@ function revertToSameURL(){
 			$("#lnkAvailability>a").addClass("active");
 		} else if(url.includes("setMarketing")) {
 			$("#lnkMarketing>a").addClass("active");
+		} else if(url.includes("webinar_publishing")) {
+			$("#lnkWebinarPublishing>a").addClass("active");
 		} else if(url.includes("publishing")) {
 			$("#lnkPublishing>a").addClass("active");
+		}
+
+		function revertToActive(selector){
+			$(selector).removeClass("open-sign");
+			$(selector).addClass("active");
 		}
 	}
 }
