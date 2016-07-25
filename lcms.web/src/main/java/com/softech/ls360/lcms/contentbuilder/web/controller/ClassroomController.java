@@ -386,9 +386,9 @@ public class ClassroomController {
         String add_sess_number_week_days = request.getParameter("add_sess_number_week_days");
         String completeEndDate = null;
         String completeStartDate = null;
-        Integer session_days = null;
-        Integer endoccurance = null;
-        Integer number_week_days = null;
+        int session_days = 0;
+        int endoccurance=0;
+        int number_week_days=0;
 
         Calendar classstartDateCal = Calendar.getInstance();
         classstartDateCal.setTime(StringToDate(startDate + " " + start_time));
