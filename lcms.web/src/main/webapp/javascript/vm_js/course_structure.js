@@ -175,7 +175,7 @@ function cancelLesson() {
 
 function AddLesson() {
 
-	console.log("course_structure::addLess - begin")
+	console.log("course_structure::addLess - begin");
 
 	course_id = getUrlParameter ('id');
 	var content_object = null;
@@ -412,7 +412,9 @@ function getContentObjectSetup (content_id, e) {
 function deleteLLO (id, contentObject_id)
 {
 	if (id.indexOf("LLO") >= 0)
-		return;
+		{
+			return;
+		}
 
 	APP.AJAX({
 		url: 'deleteLLO',
@@ -649,14 +651,11 @@ function updateSlide(varSlideId){
 	var displayRatio_Standard = 0 ,displayRatio_Widescreen = 0 ;
 
 
-	if($('#displayRatioStandard_' +varSlideId)[0].checked ==  true)
-
-		{
+	if($('#displayRatioStandard_' +varSlideId)[0].checked ==  true) {
 		displayRatio_Standard = true;
 		}
 
-	else
-		{
+	else {
 		displayRatio_Widescreen = true ;
 		}
 
@@ -705,7 +704,9 @@ function elementFadeOut(id)
 function getSlidesByContentObject(contentObjectId){
 
 	if($('#list_'+contentObjectId).hasClass( "panel-collapse bg-gray-2 a2 collapse in" ))
-		return;
+		{
+			return;
+		}
 
 	getSlidesByContentAjax (contentObjectId);
 }
@@ -901,7 +902,9 @@ function showSlides(data, contentObjectId) {
 function updateContentObject(contentObjectId){
 
 	if (!checkDuplicateLLO (contentObjectId))
-		return false;
+		{
+			return false;
+		}
 
 	arrLLO = [];
 	arrLLOId = [];
@@ -962,10 +965,14 @@ function embedCodeSave(embedCode){
 	embedCode = $("#embedCode_"+slideId).val();
 	isEmbedCodeVideoChecked=true;
 	if(embedCode === undefined)
-		return;
+		{
+			return;
+		}
 
 	if($("#embedCode_"+slideId).attr("required") && !$("#embedCode_"+slideId).valid())
-		return;
+		{
+			return;
+		}
 	if($("#embedCodeVideo_"+slideId).is(":checked")){
 		isEmbedCodeVideoChecked=false;
 	}
@@ -998,7 +1005,9 @@ function embedCodeSaveForUploadVideo(embedCode){
 
 	slideId = $("#hidId").val();
 	if(!$("#embedCodeRadioModal").is(":checked") || !$("#embedCodeModal").valid())
-		return;
+		{
+			return;
+		}
 		APP.AJAX({
 			url: "updateSlideEmbedCode",
 			dataType: "text",
@@ -1083,22 +1092,26 @@ function save(event){
 			return false;
 		} else {
 			getContentObjectSetup ($('#hidId').val(), event );
-			console.log ("SAVE :: getContentObjectForEdit2 ")
+			console.log ("SAVE :: getContentObjectForEdit2 ");
 		}
 
 	}else if((varHiddenFieldVal=='updateSlide')){
 		var varClass = $("#slideSetup_2_"+$('#hidId').val()).attr('class');
 		if(varClass=="panel-collapse a1 collapse in")
-			if (!updateSlide($('#hidId').val())){
-				if(event != 'undefined' || event != null){
-					event.preventDefault();
-					event.stopPropagation ();
+			{
+				if (!updateSlide($('#hidId').val())) {
+					if (event != 'undefined' || event != null) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
+					return false;
 				}
-				return false;
 			}
 	}else if(varHiddenFieldVal=='MC_SCENE_XML'){
 		if(!update_MC_SCENE_XML($('#sceneId').val()))
-			return;
+			{
+				return;
+			}
 	}
 
 	var divCloneTxT = $("div#slide_1_"+ $('#sceneId').val()).find("div#SceneTextEditor");
@@ -1160,9 +1173,13 @@ function save(event){
 
 	//WLCMS-496
 	if(activeEditorForText!=null)
-		activeEditorForText.resetDirty();
+		{
+			activeEditorForText.resetDirty();
+		}
 	if(activeEditorForCC!=null)
-		activeEditorForCC.resetDirty();
+		{
+			activeEditorForCC.resetDirty();
+		}
 
 }
 
@@ -1433,13 +1450,13 @@ function guid() {
 }
 
 function initSMAssetForms(){
-	$("#collapseAddSM").attr("style", "height: auto;")
+	$("#collapseAddSM").attr("style", "height: auto;");
 	$("#collapseAddSM").attr('class', 'panel-collapse collapse');
 
-	$("#collapseFindSM").attr("style", "height: auto;")
+	$("#collapseFindSM").attr("style", "height: auto;");
 	$("#collapseFindSM").attr('class', 'panel-collapse collapse');
 
-	$("#collapseTypeSM").attr("style", "height: auto;")
+	$("#collapseTypeSM").attr("style", "height: auto;");
 	$("#collapseTypeSM").attr('class', 'panel-collapse collapse in');
 
 	// reset attach material form

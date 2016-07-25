@@ -481,7 +481,7 @@ $(document).ready(function (){
 			}
 		}
 
-	}
+	};
 	var manual_sessionStarttimeBeforeCurrenttime = function(value, element) {
 		var strcourseStartDate = $('#add_manual_sdate').val();
 		var strcourseStarttime = $('#add_manual_startTime').val();
@@ -522,7 +522,7 @@ $(document).ready(function (){
 		} else if (Date.parse(currentDate) < Date.parse(courseStartDate)) {
 			return true;
 		}
-	}
+	};
 	var manual_sessionstarttimeisBeforeEndtime = function(enrolldate, startdate) {
 
 		var strcourseStartDate = $('#add_manual_sdate').val();

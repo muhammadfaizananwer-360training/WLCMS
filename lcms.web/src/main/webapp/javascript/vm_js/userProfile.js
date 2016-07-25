@@ -175,10 +175,14 @@ function AddProfilePicture(form){
             setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
             $("#assetId").val(content.assetId);
             $("#profileImage").attr("src", content.assetUrl);
-        }
+        };
 
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+    if (iframeId.addEventListener) {
+		iframeId.addEventListener("load", eventHandler, true);
+	}
+    if (iframeId.attachEvent) {
+		iframeId.attachEvent("onload", eventHandler);
+	}
 
     // Set properties of form...
     form.setAttribute("target", "upload_iframe");

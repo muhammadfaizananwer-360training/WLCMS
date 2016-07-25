@@ -101,10 +101,14 @@ trg = APP.CACHE;
 			$('#successMsg').show ();
 			// Call function to list the asset
 			getSlidesByContentAjax (contentObjectId);
-    }
+    };;
 
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+    if (iframeId.addEventListener) {
+		iframeId.addEventListener("load", eventHandler, true);
+	}
+    if (iframeId.attachEvent) {
+		iframeId.attachEvent("onload", eventHandler);
+	}
 
     // Set properties of form...
     form.setAttribute("target", "upload_iframe");

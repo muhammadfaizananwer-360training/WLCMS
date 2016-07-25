@@ -21,7 +21,9 @@ $(document).ready(function(){
 	$('#lnkPricing a').addClass('active');
 
 	if ($('#offerprice').val () == 0)
-			$('#offerprice').val ("0.00");
+			{
+				$('#offerprice').val("0.00");
+			}
 
 
 });

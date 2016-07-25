@@ -237,7 +237,7 @@ function updateFmsSpaceUsagePanel() {
 	$(panel).find(".avail-space-text").html(availSpacePercent + "%");
 
 	var usedSpaceBar = $(panel).find(".used-space-bar")[0];
-	$(usedSpaceBar).css('width',usedSpacePercent+"%")
+	$(usedSpaceBar).css('width',usedSpacePercent+"%");
 	$(usedSpaceBar).removeClass('progress-bar-success progress-bar-danger progress-bar-info progress-bar-warning');
 	var colorClass = 'progress-bar-info';
 

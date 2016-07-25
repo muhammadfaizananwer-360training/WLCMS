@@ -12,7 +12,7 @@ CKEDITOR.dialog.add( 'abbrDialog', function ( editor ) {
 					{
 						type : 'html',
 						html : '<div id="resultsSMLstSlide"></div>' 
-					},
+					}
                 ]
             }
         ],

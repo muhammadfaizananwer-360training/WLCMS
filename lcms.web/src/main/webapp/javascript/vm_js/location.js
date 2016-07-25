@@ -13,7 +13,7 @@ function location_list()
 						oTb.fnAddData(object);
 					}
 		},error: function(data){
-			alert('Error')
+			alert('Error');
 		}
 
    });
@@ -53,7 +53,7 @@ function unCheckCheckBoxesWhenCancelonClick(){
 			TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_ON_DELETE_SELECT,bFadeOut:true});
 			return false;
 		}
-		var commaseparateids=""
+		var commaseparateids="";;
 		for(var i=0; i<ids.length; i++)
 		{
 			commaseparateids+=ids[i].value+","
@@ -61,8 +61,8 @@ function unCheckCheckBoxesWhenCancelonClick(){
 		}
 
 
-		commaseparateids = commaseparateids.substr(0,commaseparateids.length-1)
-		var id ="1"
+		commaseparateids = commaseparateids.substr(0,commaseparateids.length-1);;
+		var id ="1";;
 		APP.AJAX({
 		url: 'deleteLocation',
 		type: "POST",
@@ -83,7 +83,7 @@ function unCheckCheckBoxesWhenCancelonClick(){
 					TopMessageBar.displayMessageTopBar({vType:2, vMsg:WLCMS_LOCALIZED.DELETE_LOCATION_FAILURE_MESSAGE, bFadeOut:true});
 				}
 		},error: function(data){
-			alert('Error')
+			alert('Error');
 		}
 
    });
@@ -178,7 +178,7 @@ function addLocation(come_from_classroom) {
 			desc: $("#locationdesc").val(),address: $("textarea[name='locationaddress']").val()},
 		async: false,
 		success: function(response) {
-				var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='"+response.id+"' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation("+response.id+")'>"+response.locationname+"</a>", ""+response.city+"",""+response.state+""]
+				var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='"+response.id+"' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation("+response.id+")'>"+response.locationname+"</a>", ""+response.city+"",""+response.state+""];
 				oTb.fnAddData(object);
 				$('#submitLocation').attr('data-dismiss', 'modal');
 
@@ -285,7 +285,7 @@ function updateLocation()
 		async: false,
 		success: function(response) {
 			$('#submitLocation').attr('data-dismiss', 'modal');
-			var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='"+response.id+"' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation("+response.id+")'>"+response.locationname+"</a>", ""+response.city+"",""+response.state+""]
+			var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='"+response.id+"' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation("+response.id+")'>"+response.locationname+"</a>", ""+response.city+"",""+response.state+""];
 			var table = $('#location_table').DataTable();
 			table.row('.update').data(object).draw( false );
 			$("#"+response.id).closest('tr').removeClass('update');

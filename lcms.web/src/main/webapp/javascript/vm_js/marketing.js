@@ -169,7 +169,7 @@ window.onbeforeunload = function (e) {
 
 
     }
-}
+};;
 
 function showProgressLoader(message){
 			$("#loader-overlay").html(message);
@@ -322,7 +322,7 @@ function SaveMarketing () {
 		link = APP.CACHE;
 		APP.CACHE = '';
 		onChangeURL = false;
-		window.location.assign(link)
+		window.location.assign(link);
 	}
 
 }
@@ -463,7 +463,9 @@ function searchVAAsset() {
 
 			//WLCMS-232
 			if( len <= 0)
-				r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				{
+					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				}
 
 			for(var i = 0; i < len; i++)
 			{
@@ -714,7 +716,9 @@ function searchVideoAsset() {
 
 			//WLCMS-232
 			if( len <= 0)
-				r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				{
+					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				}
 
 			for(var i = 0; i < len; i++)
 			{
@@ -802,7 +806,9 @@ function searchMarketingVideoAsset() {
 
 			//WLCMS-232
 			if( len <= 0)
-				r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				{
+					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				}
 
 			for(var i = 0; i < len; i++)
 			{
@@ -987,7 +993,7 @@ function listMarketingVideoAssets (){
 			rowData +=	'<td class="Type">' + d.assettype + '</td>';
 			rowData +=	'<td class="Dimension">' + d.size + '</td>';
 			rowData+= ( '<td id=\'image\'><a onclick="playVideo(this)" href="javascript:;"><img width="50px" src="theme/executive/img/vplayer_thumbnail.png" data-full-src="theme/executive/img/vplayer_thumbnail.png"></img></a></td></tr>' );
-			rowData+='<input type="hidden" id="videoPath" value="'+d.location+'" />'
+			rowData+='<input type="hidden" id="videoPath" value="'+d.location+'" />';
 			rowData +=	'</tr>';
 
 
@@ -1078,7 +1084,9 @@ function searchMarketingAsset() {
 
 			//WLCMS-232
 			if( len <= 0)
-				r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				{
+					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				}
 
 			for(var i = 0; i < len; i++)
 			{
@@ -1608,7 +1616,7 @@ function dnd(instance,n,type)
 							$("#multiModal").modal("hide");
 							APP.UPLOAD_FILE.CAN_ADD_MORE_FILES(false,this);
 							APP.CHACHE = this;
-							curr_instance=instance
+							curr_instance=instance;
 							saveAndAttachAsset(true);
 
 
@@ -1817,8 +1825,12 @@ function openFindModal(n)
 	function searchAssets (Dynamic) {
 
 		showProgressLoader("<div id='loader-label'>Loading...</div>");
-		if(Dynamic == undefined) Dynamic='searchAssetModal';
-		if(Dynamic.type == 'button') Dynamic='searchAssetModal';
+		if(Dynamic == undefined) {
+			Dynamic = 'searchAssetModal';
+		}
+		if(Dynamic.type == 'button') {
+			Dynamic = 'searchAssetModal';
+		}
 		var bSearch = false;
 		$txtAssetSearch = $("div#"+Dynamic).find ('#txtAudioAssetSearchTerm');
 		if ($txtAssetSearch.val().length < 3) {
@@ -1852,7 +1864,9 @@ function openFindModal(n)
 
 				//WLCMS-232
 				if( len <= 0)
-					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+					{
+						r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+					}
 
 				for(var i = 0; i < len; i++)
 				{

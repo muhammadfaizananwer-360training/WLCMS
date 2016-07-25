@@ -100,7 +100,7 @@ $(function() {
 	});
 
 	$.validator.addMethod('equalStrict', function (value, el, param) {
-		return value = param;
+		return value == param;
 	});
 
 	$.validator.addMethod('maxStrict', function (value, el, param) {
@@ -204,13 +204,19 @@ function postQuizConfiguration(InvalidateQuizMastery) {
 
 
 	if($('#chkrandomizeAnswers').is( ":checked" ))
-		vchkrandomizeAnswers = true;
+		{
+			vchkrandomizeAnswers = true;
+		}
 
 	if($('#chkrandomizeQuestions').is( ":checked" ))
-		vchkrandomizeQuestions = true;
+		{
+			vchkrandomizeQuestions = true;
+		}
 
 	if($('#allowReviewaftGrading').is( ":checked" ))
-		vallowReviewaftGrading = true;
+		{
+			vallowReviewaftGrading = true;
+		}
 
 
 
@@ -230,7 +236,9 @@ function postQuizConfiguration(InvalidateQuizMastery) {
 				$('#addQuizLinkDiv_' + content_id ).hide ();
 
 				$('#addQuizModal').modal('hide');
-				if(!$("#quiz_banks_" +content_id).is(':visible')) $("#quizBankTitle_" +content_id ).click();
+				if(!$("#quiz_banks_" +content_id).is(':visible')) {
+					$("#quizBankTitle_" + content_id).click();
+				}
 
 		}
 	 });
@@ -316,13 +324,19 @@ function updateQuizConfiguration(contentObjectId,InvalidateQuizMastery) {
 	var vallowReviewaftGrading = false;
 
 	if($('#quiz_policies_' + contentObjectId).find('#embchkrandomizeQuestions').is( ":checked" ))
-		vchkrandomizeQuestions  = true;
+		{
+			vchkrandomizeQuestions = true;
+		}
 
 	if($('#quiz_policies_' + contentObjectId).find('#embchkrandomizeAnswers').is( ":checked" ))
-		vchkrandomizeAnswers = true;
+		{
+			vchkrandomizeAnswers = true;
+		}
 
 	if($('#quiz_policies_' + contentObjectId).find('#emballowReviewaftGrading').is( ":checked" ))
-		vallowReviewaftGrading = true;
+		{
+			vallowReviewaftGrading = true;
+		}
 
 	APP.AJAX({
 		  url: 'updateQuizConfiguration',
@@ -348,14 +362,18 @@ function updateQuizConfiguration(contentObjectId,InvalidateQuizMastery) {
 		}
 	 });
 	if(InvalidateQuizMastery)
-		$('#quiz_policies_' + contentObjectId).attr("class","panel-collapse a1 collapse");
+		{
+			$('#quiz_policies_' + contentObjectId).attr("class", "panel-collapse a1 collapse");
+		}
 }
 
 function updateQuizConfigurationValidation(contentObjectId,event) {
 	//WLCMS-482
 	var container = $('#quiz_policies_' + contentObjectId)[0];
 	if(!$(container).hasClass( "panel-collapse a1 collapse in" ))
-		return;
+		{
+			return;
+		}
 
 	if(!$(container).find("#frmEditQuizSetup").valid()) {
 		if(typeof(event) != "undefined") {
@@ -412,7 +430,7 @@ function getQuizSetup (trg,event) {
 	$("#hidQuizContentObjectId").val(contentObjectId);
 	quizsetup_id = '#quiz_policies_' + contentObjectId;
 	var quizSetuptemplate =  "";
-	var $quizSetuptemplate = ""
+	var $quizSetuptemplate = "";
 	quizSetuptemplate =  $('div#quizSetup').clone();
 	$quizSetuptemplate = $(quizSetuptemplate);
 
@@ -619,7 +637,9 @@ function getBankList(trg) {
 		var bitPstQuestNoQuiz = postQuestionNo_Quiz(course_id,bank_id,contentObject_id);
 
 		if(bitPstQuestNoQuiz)
-			TopMessageBar.displayMessageTopBar({vType:1, vMsg:WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut:true});
+			{
+				TopMessageBar.displayMessageTopBar({vType: 1, vMsg: WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut: true});
+			}
 
 		$("#hidQuizNoOfQuestionContentObjectId").val(0);
 		$("#hidQuizNoOfQuestionBankId").val(0);
@@ -677,7 +697,9 @@ function getQuestionBar (questionBarId, contentObject_id, AssessmentID) {
 	course_id = getUrlParameter ("id");
 
 	if (!AssessmentID)
-		return;
+		{
+			return;
+		}
 
 	b_bankList = false;
 	//GET bank bar list
@@ -762,7 +784,9 @@ function getQuestion (trg, event) {
 				$('#tblAnswerChoices_' + question_id + '_').parent ().addClass("error");
 				// solve error $parent is null here
 				if ($('#tblAnswerChoices_' + question_id + '_').parent ().parent ().find ('label.answer-error').length <= 0)
-					$('#tblAnswerChoices_' + question_id + '_').parent ().parent ().append("<label for='Quizanswerchoices' generated='true' class='answer-error'>Please mark one the answer choice as the correct answer.</label>");
+					{
+						$('#tblAnswerChoices_' + question_id + '_').parent().parent().append("<label for='Quizanswerchoices' generated='true' class='answer-error'>Please mark one the answer choice as the correct answer.</label>");
+					}
 				event.preventDefault();
 				event.stopPropagation();
 				return false;
@@ -1318,13 +1342,17 @@ function addAnswerEdit (bank_id,question_id, event) {
 				correct = $tds.eq(2).text(),
 				feedback = escape(replaceAnswerText($tds.eq(3).text()));
 				if (choice != '')
-					answerArray += choice + '--' + correct + '--' + feedback + '::';
+					{
+						answerArray += choice + '--' + correct + '--' + feedback + '::';
+					}
 			}
 		}
     });
 
 	if (answerArray == '')
-		return true;
+		{
+			return true;
+		}
 
 
 	b_postAnswer = false;
@@ -1643,7 +1671,9 @@ function getDetailAnswerChoice(trg) {
 			}
 			else {
 				if(table.find('td.correct:contains("true")').length>0)
-						$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						{
+							$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						}
 
 				$('#addAnsChoiceModal3').find ('isCorrect3').prop("checked", false);
 			}
@@ -1653,10 +1683,14 @@ function getDetailAnswerChoice(trg) {
 		jQuery.each($columns, function(i, item) {
 			$item = $(item);
 			if ($item.hasClass('choice') )
-				CKEDITOR.instances['ans-ckeditor-3'].setData($item.text ());
+				{
+					CKEDITOR.instances['ans-ckeditor-3'].setData($item.text());
+				}
 
 			if ($item.hasClass('feedback') )
-				CKEDITOR.instances['feedback-ckeditor-3'].setData($item.text ());
+				{
+					CKEDITOR.instances['feedback-ckeditor-3'].setData($item.text());
+				}
 
 			if ($item.hasClass('correct')){
 				if ($item.text ()== 'true')  {
@@ -1666,7 +1700,9 @@ function getDetailAnswerChoice(trg) {
 				}
 				else {
 					if(table.find('td.correct:contains("true")').length>0)
-						$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						{
+							$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						}
 
 					$('#addAnsChoiceModal3').find ('#isCorrect3').prop("checked", false);
 				}

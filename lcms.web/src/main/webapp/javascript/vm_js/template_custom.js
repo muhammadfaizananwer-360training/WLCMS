@@ -66,16 +66,24 @@ if (typeof IsGetSlideTemplateId == 'undefined')
 		$('#ActivityTemplate').hide();
 	} else{
 		if(Template_MC_Template_ID==0)
-			$('#Template_MC_Template_A').hide();
+			{
+				$('#Template_MC_Template_A').hide();
+			}
 
 		if(Template_DND_Matching_Template_ID==0)
-			$('#Template_DND_Matching_Template_A').hide();
+			{
+				$('#Template_DND_Matching_Template_A').hide();
+			}
 
 		if(Template_DND_Image_Template_ID==0)
-			$('#Template_DND_Image_Template_A').hide();
+			{
+				$('#Template_DND_Image_Template_A').hide();
+			}
 
 		if(Template_DND_Category_Template_ID==0)
-			$('#Template_DND_Category_Template_A').hide();
+			{
+				$('#Template_DND_Category_Template_A').hide();
+			}
 	}
 
 	IsGetSlideTemplateId = true;

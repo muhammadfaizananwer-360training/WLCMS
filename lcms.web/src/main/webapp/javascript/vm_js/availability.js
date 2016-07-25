@@ -47,7 +47,9 @@ $(function() {
 		var valueDateobj = new Date( dsplit[2],dsplit[0]-1,dsplit[1],0, 0, 0, 0);
 		var validDate = false;
 		if ( valueDateobj > future )
-			validDate = true;
+			{
+				validDate = true;
+			}
 
 		return validDate;
 	}, 'Course expiration must be a future date.');

@@ -158,16 +158,22 @@ function examAddUpdate(trg, bCheckValidation) {
 	var noTargetQuestionsForExam = $('#noTargetQuestionsForExam').val();				  //	Number of target questions per exam
 
 	if($('#chkrandomizeQuestionsForExam').prop('checked'))  							  // 	check box  - Randomize questions
-		chkrandomizeQuestionsForExam=1;
+		{
+			chkrandomizeQuestionsForExam = 1;
+		}
 
 	if($('#chkrandomizeAnswersForExam').prop('checked'))    							  // 	check box  - Randomize answers
-		chkrandomizeAnswersForExam = 1;
+		{
+			chkrandomizeAnswersForExam = 1;
+		}
 
 	var timePermittedForExam = $('#timePermittedForExam').val();			  			  //	Time permitted for exam (minutes)
 	var oboGradeQuestionsForExam = $('#oboGradeQuestionsForExam').val();			  	  //	Grade questions
 
 	if($('#allowReviewaftGradingForExam').prop('checked')) 							  	  //	Allow review after grading
-		allowReviewaftGradingForExam=1;
+		{
+			allowReviewaftGradingForExam = 1;
+		}
 
 	var scoreRequiredPassForExam = $('#scoreRequiredPassForExam').val();			  	  //	Score required to pass exam
 	var attemptsPermittedExam = $('#attemptsPermittedExam').val();			  			  //	Number of attempts permitted
@@ -176,7 +182,9 @@ function examAddUpdate(trg, bCheckValidation) {
 	if (bCheckValidation) {
 		//check if form data is not valid, then do nothing an send the control to form back
 		if(! $("#frmAddExamModal").valid())
-			return;
+			{
+				return;
+			}
 		var objCourseSettings = getCourseSettings();
 
 		if ( (objCourseSettings.attemptTheExam == true || objCourseSettings.passTheExam == true ) && ( scoreRequiredPassForExam > 0 && actionOnFailtoPassForExam == '3')  ) {
@@ -508,15 +516,15 @@ function getExamforEdit(event)
 
 
 			if(obj.gradeQuestions=='AfterEachQuestionIsAnswered') {
-				$divClone.find("#oboGradeQuestionsForUpdateExamNew").children("option[value='1']").prop('selected',true)
+				$divClone.find("#oboGradeQuestionsForUpdateExamNew").children("option[value='1']").prop('selected',true);
 			} else {
-				$divClone.find("#oboGradeQuestionsForUpdateExamNew").children("option[value='2']").prop('selected',true)
+				$divClone.find("#oboGradeQuestionsForUpdateExamNew").children("option[value='2']").prop('selected',true);
 			}
 
 		/*	if(obj.actionOnFailtoPass=='Retake Content') {
-				$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='1']").prop('selected',true)
+				$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='1']").prop('selected',true);
 		 	} else {
-				$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='2']").prop('selected',true)
+				$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='2']").prop('selected',true);
 		 	}
 		*/
 
@@ -557,16 +565,22 @@ function updateExam(bDoValidation) {
 	var noTargetQuestionsForExam = $('#noTargetQuestionsForUpdateExamNew').val();				  //	Number of target questions per exam
 
 	if($('#chkrandomizeQuestionsForUpdateExamNew').prop('checked'))  							  // 	check box  - Randomize questions
-		chkrandomizeQuestionsForExam=1;
+		{
+			chkrandomizeQuestionsForExam = 1;
+		}
 
 	if($('#chkrandomizeAnswersForUpdateExamNew').prop('checked'))    							  // 	check box  - Randomize answers
-		chkrandomizeAnswersForExam = 1;
+		{
+			chkrandomizeAnswersForExam = 1;
+		}
 
 	var timePermittedForExam = $('#timePermittedForUpdateExamNew').val();			  			  //	Time permitted for exam (minutes)
 	var oboGradeQuestionsForExam = $('#oboGradeQuestionsForUpdateExamNew').val();			  	  //	Grade questions
 
 	if($('#allowReviewaftGradingForUpdateExamNew').prop('checked')) 							  	  //	Allow review after grading
-		allowReviewaftGradingForExam=1;
+		{
+			allowReviewaftGradingForExam = 1;
+		}
 
 	var scoreRequiredPassForExam = $('#scoreRequiredPassForUpdateExamNew').val();			  	  //	Score required to pass exam
 	var attemptsPermittedExam = $('#attemptsPermittedUpdateExamNew').val();			  			  //	Number of attempts permitted
@@ -932,7 +946,7 @@ function getGuestionComponentArea(eventObjectId){
 
 		$divClone.find("#qustnCmpnntClseLnk").attr("href", "#exam_0_bank_0_question_" + assessmentItemId);
 		$divClone.find("#qustnCmpnntClseLnk").attr("id", "qustnCmpnntClseLnk_" + assessmentItemId);
-		$divClone.attr("class", "panel-collapse a2 collapse in")
+		$divClone.attr("class", "panel-collapse a2 collapse in");
 
 		//------------------------------------------------------------------------------------------------------
 		// changing form controls name and ids
@@ -1136,13 +1150,17 @@ function updateExamQuestion(question_id) {
 				correct = $tds.eq(2).text(),
 				feedback = escape(replaceAnswerText($tds.eq(3).text()));
 				if (choice != '')
-					answerArray += choice + '--' + correct + '--' + feedback + '::';
+					{
+						answerArray += choice + '--' + correct + '--' + feedback + '::';
+					}
 			}
 		}
     });
 
 	if (answerArray == '')
-		return true;
+		{
+			return true;
+		}
 
 
 	//Post new added Answers
@@ -1319,7 +1337,9 @@ function getExamDetailAnswerChoice(trg) {
 			}
 			else {
 				if(table.find('td.correct:contains("true")').length>0)
-						$("#addExamAnsChoiceModalForEdit").find("#isCorrectForEditExam").attr("disabled", true);
+						{
+							$("#addExamAnsChoiceModalForEdit").find("#isCorrectForEditExam").attr("disabled", true);
+						}
 
 				$('#addExamAnsChoiceModalForEdit').find ('#isCorrectForEditExam').prop("checked", false);
 			}
@@ -1331,10 +1351,14 @@ function getExamDetailAnswerChoice(trg) {
 		jQuery.each($columns, function(i, item) {
 			$item = $(item);
 			if ($item.hasClass('choice') )
-				CKEDITOR.instances['choiceTextForEditExam'].setData($item.text ());
+				{
+					CKEDITOR.instances['choiceTextForEditExam'].setData($item.text());
+				}
 
 			if ($item.hasClass('feedback') )
-				CKEDITOR.instances['choiceFeedbackForEditExam'].setData($item.text ());
+				{
+					CKEDITOR.instances['choiceFeedbackForEditExam'].setData($item.text());
+				}
 
 			if ($item.hasClass('correct')){
 				if ($item.text ()== 'true')  {
@@ -1344,7 +1368,9 @@ function getExamDetailAnswerChoice(trg) {
 				}
 				else {
 					if(table.find('td.correct:contains("true")').length>0)
-						$("#addExamAnsChoiceModalForEdit").find("#isCorrectForEditExam").attr("disabled", true);
+						{
+							$("#addExamAnsChoiceModalForEdit").find("#isCorrectForEditExam").attr("disabled", true);
+						}
 
 					$('#addExamAnsChoiceModalForEdit').find ('#isCorrectForEditExam').prop("checked", false);
 				}
@@ -1498,7 +1524,9 @@ function addExamQuestion(form) {
         feedback = escape(replaceAnswerText($tds.eq(3).text()));
         answerArray += choice + '--' + correct + '--' + feedback + '::';
 		if (correct == 'true')
-			bCorrectAnsIn = true;
+			{
+				bCorrectAnsIn = true;
+			}
 	});
 		$("#tblAnswerChoicesExam").parent().parent().parent().find("lable.answer-error").remove();
 		$("#tblAnswerChoicesExam").parent().parent().removeClass("error");
@@ -1512,7 +1540,9 @@ function addExamQuestion(form) {
 
 			var chkexamRandomizeAnswer = false;
 			if($('#examRandomizeAnswer').is( ":checked" ))
-				chkexamRandomizeAnswer = true;
+				{
+					chkexamRandomizeAnswer = true;
+				}
 
 			// get Assessment ID, content ID
 			bPostQuestion = false;

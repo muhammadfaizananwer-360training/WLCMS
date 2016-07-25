@@ -134,7 +134,7 @@ function addSupportMaterial(form){
 			// display newly added Support material bar
 			getAddSupportMaterialBar(varAudioAssetName);
 			setArrowVsbltySpprtMtrl($("#hidLessonId").val());
-        }
+        };
 
     if (iframeId.addEventListener) {
 		iframeId.addEventListener("load", eventHandler, true);
@@ -194,7 +194,7 @@ function cancelsmUploadForm() {
 	$("#frmsmUploadAsset").get(0).reset();
 	$('#btnSubmitAudioAssetForm').attr("data-dismiss", "modal");
 
-	$("#audioAssetKeywords").parent().find('span').remove()
+	$("#audioAssetKeywords").parent().find('span').remove();
 	$('#msgdiv').html ('');
 	return false;
 }
