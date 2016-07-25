@@ -14,7 +14,7 @@
 				            #springMessage('label.confirmation-warning')
 				         </div>
 				         <div class="modal-footer">
-				            <button type="button" class="btn blue" data-dismiss="modal" onclick="revertToSameURL();">#springMessage('label.yes')</button>
+				            <button type="button" class="btn blue" data-dismiss="modal">#springMessage('label.yes')</button>
 				            <button type="button" class="btn btn-default" onclick="navigateToURL();" >#springMessage('label.no')</button>
 				         </div>
 				      </div>
