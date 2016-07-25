@@ -56,27 +56,31 @@ function revertToSameURL(){
 	}
 	//remaining 'Publishing' super tab
 	else {
-		revertToActive("#nav_accordion_3")
-		//expand Publishing super tab
-		$("#nav_accordion_3").addClass("close-sign");
-		$("ul.list-sub-group").attr("style", "display: block;");
-		//remove any active sub tab of Publishing
-		$("ul.list-sub-group>li.list-group-item>a.active").removeClass("active");
-		//Now make current sub-tab of user 'active'
-		if(url.includes("availability")) {
-			$("#lnkAvailability>a").addClass("active");
-		} else if(url.includes("setMarketing")) {
-			$("#lnkMarketing>a").addClass("active");
-		} else if(url.includes("webinar_publishing")) {
-			$("#lnkWebinarPublishing>a").addClass("active");
-		} else if(url.includes("publishing")) {
-			$("#lnkPublishing>a").addClass("active");
-		}
+		revertToSuperTab();
+	}
+}
 
-		function revertToActive(selector){
-			$(selector).removeClass("open-sign");
-			$(selector).addClass("active");
-		}
+function revertToActive(selector){
+	$(selector).removeClass("open-sign");
+	$(selector).addClass("active");
+}
+
+function revertToSuperTab(){
+	revertToActive("#nav_accordion_3");
+	//expand Publishing super tab
+	$("#nav_accordion_3").addClass("close-sign");
+	$("ul.list-sub-group").attr("style", "display: block;");
+	//remove any active sub tab of Publishing
+	$("ul.list-sub-group>li.list-group-item>a.active").removeClass("active");
+	//Now make current sub-tab of user 'active'
+	if(url.includes("availability")) {
+		$("#lnkAvailability>a").addClass("active");
+	} else if(url.includes("setMarketing")) {
+		$("#lnkMarketing>a").addClass("active");
+	} else if(url.includes("webinar_publishing")) {
+		$("#lnkWebinarPublishing>a").addClass("active");
+	} else if(url.includes("publishing")) {
+		$("#lnkPublishing>a").addClass("active");
 	}
 }
 
