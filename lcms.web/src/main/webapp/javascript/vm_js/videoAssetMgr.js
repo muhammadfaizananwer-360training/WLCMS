@@ -220,10 +220,11 @@ function disableSearchButton(){
 	var searhButton = $('.dataTables_filter #searchButton')[0];
 	$(searhButton).attr('disabled',true);
     $('.dataTables_filter #seachText').keyup(function(){
-        if($(this).val().length !=0)
-            $(searhButton).attr('disabled', false);
-        else
+        if($(this).val().length !=0) {
+			$(searhButton).attr('disabled', false);
+		} else {
             $(searhButton).attr('disabled',true);
+		}
     });
 }
 

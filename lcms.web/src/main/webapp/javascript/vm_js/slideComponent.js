@@ -294,10 +294,11 @@ function getSlideVisualAssetTable (varSlideId, assetType) {
 }
 
 function getSlideVisualTable(varSlideId, assetType){
-	if(assetType===1)
-		var divClone = $("div#tblDivVisualAsset_"+varSlideId);
-	else
+	if(assetType===1) {
+		var divClone = $("div#tblDivVisualAsset_" + varSlideId);
+	} else {
 		var divClone = $("div#tblDivAudioAsset_"+varSlideId);
+	}
 			 var visualAssetURL = "/lcms/getAssetBySlide";
 			 APP.AJAX({
 				 url:  visualAssetURL,
@@ -913,14 +914,15 @@ $(function() {
 	$.validator.addMethod("validateExtensionForVisualAsset",
 		function(value, element) {
 			var ext = value.split('.').pop().toLowerCase();
-			if( $("#cboAssetTypeVisual").val()==="Image" && $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) !== -1)
+			if( $("#cboAssetTypeVisual").val()==="Image" && $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) !== -1) {
 				return true;
-			else if($("#cboAssetTypeVisual").val()==="MovieClip" && $.inArray(ext, ['flv','wmv','mp4']) !== -1)
+			} else if($("#cboAssetTypeVisual").val()==="MovieClip" && $.inArray(ext, ['flv','wmv','mp4']) !== -1) {
 				return true;
-			else if($("#cboAssetTypeVisual").val()==="FlashObject" && $.inArray(ext, ['swf']) !== -1)
+			} else if($("#cboAssetTypeVisual").val()==="FlashObject" && $.inArray(ext, ['swf']) !== -1) {
 				return true;
-			else
+			} else {
 				return false;
+			}
 		},
 	"Please provide a file with a valid file type");
     $("#frmUploadVisualAsset").validate({

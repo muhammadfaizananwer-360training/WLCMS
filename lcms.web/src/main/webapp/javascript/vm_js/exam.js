@@ -488,44 +488,45 @@ function getExamforEdit(event)
 			$divClone.find ("#attemptsPermittedUpdateExamNew").val (obj.noAttemptsPermitted);
 
 
-			if(obj.randomizeQuestions)
-				$divClone.find ("#chkrandomizeQuestionsForUpdateExamNew").prop("checked", true);
-			else
+			if(obj.randomizeQuestions) {
+				$divClone.find("#chkrandomizeQuestionsForUpdateExamNew").prop("checked", true);
+			}else {
 				$divClone.find ("#chkrandomizeQuestionsForUpdateExamNew").prop("checked", false);
+			}
 
-
-			if(obj.randomizeAnswers)
+			if(obj.randomizeAnswers) {
 				$divClone.find('#chkrandomizeAnswersForUpdateExamNew').attr('checked', true);
-			else
+			} else {
 				$divClone.find('#chkrandomizeAnswersForUpdateExamNew').attr('checked', false);
+			}
 
-
-			if(obj.allowReviewaftGrading)
+			if(obj.allowReviewaftGrading) {
 				$divClone.find('#allowReviewaftGradingForUpdateExamNew').attr('checked', true);
-			else
+			}else {
 				$divClone.find('#allowReviewaftGradingForUpdateExamNew').attr('checked', false);
+			}
 
 
-
-			if(obj.gradeQuestions=='AfterEachQuestionIsAnswered')
+			if(obj.gradeQuestions=='AfterEachQuestionIsAnswered') {
 				$divClone.find("#oboGradeQuestionsForUpdateExamNew").children("option[value='1']").prop('selected',true)
-			else
+			} else {
 				$divClone.find("#oboGradeQuestionsForUpdateExamNew").children("option[value='2']").prop('selected',true)
+			}
 
-
-		/*	if(obj.actionOnFailtoPass=='Retake Content')
+		/*	if(obj.actionOnFailtoPass=='Retake Content') {
 				$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='1']").prop('selected',true)
-			else
+		 	} else {
 				$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='2']").prop('selected',true)
+		 	}
 		*/
 
-		if(obj.actionOnFailtoPass=='Retake Content')
+		if(obj.actionOnFailtoPass=='Retake Content') {
 			$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='1']").prop('selected',true);
-		else if(obj.actionOnFailtoPass=='Lock Course')
+		} else if(obj.actionOnFailtoPass=='Lock Course') {
 			$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='2']").prop('selected',true);
-		else if(obj.actionOnFailtoPass=='Continue Course')
+		} else if(obj.actionOnFailtoPass=='Continue Course') {
 			$divClone.find("#actionOnFailtoPassForUpdateExamNew").children("option[value='3']").prop('selected',true);
-
+		}
 
 			//-------------------------------------------------------------------------------------------------------------
 			// set the fields data according to database --  End
@@ -1480,10 +1481,11 @@ function addExamQuestion(form) {
 			errormsg = WLCMS_CONSTANTS.VALIDATION_SINGLE_ANSWER;
 			$("#tblAnswerChoicesExam").parent().parent().addClass("error");
 		}
-		if (!$("#tblAnswerChoicesExam").parent().parent().parent ().parent().find ('.answer-error').length > 0 )
+		if (!$("#tblAnswerChoicesExam").parent().parent().parent ().parent().find ('.answer-error').length > 0 ) {
 			$("#tblAnswerChoicesExam").parent().parent().parent().append(errormsg);
-		else
+		} else {
 			$("#tblAnswerChoicesExam").parent().parent().parent().find ('.answer-error').html(errormsg);
+		}
 		return false;
 	}
 	bCorrectAnsIn = false;

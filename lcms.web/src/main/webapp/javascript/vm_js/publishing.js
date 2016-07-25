@@ -88,10 +88,11 @@ $(function() {
 	 }
 	 },
 	 submitHandler : function(form) {
-	 if ($("#errorExist").val()=="1")
-	 return false;
-	 else
-	 form.submit();
+		 if ($("#errorExist").val()=="1") {
+			return false;
+		 } else {
+			form.submit();
+		 }
 	 },
 	 errorPlacement : function(error, element) {
 	 error.appendTo('#err');
@@ -243,8 +244,9 @@ function callValidator(){
 	var cType = getParameterByName('cType');
     alert('sffffdf')
 
-	if(cType != null && cType == WLCMS_CONSTANTS_COURSE_TYPE.ONLINE_COURSE )
+	if(cType != null && cType == WLCMS_CONSTANTS_COURSE_TYPE.ONLINE_COURSE ) {
 		$("#frm_publish").valid();
-	else
+	} else {
 		$("#frm_webinar_publish").valid();
+	}
 }

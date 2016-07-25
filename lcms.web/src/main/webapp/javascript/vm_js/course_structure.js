@@ -1079,9 +1079,9 @@ function save(event){
 
 	if( (varHiddenFieldVal=='updateContentObject') && ( varClass=="panel-collapse bg-gray-2 a1 collapse in"))
 	{
-		if(!updateContentObject($('#hidId').val()))
+		if(!updateContentObject($('#hidId').val())) {
 			return false;
-		else{
+		} else {
 			getContentObjectSetup ($('#hidId').val(), event );
 			console.log ("SAVE :: getContentObjectForEdit2 ")
 		}

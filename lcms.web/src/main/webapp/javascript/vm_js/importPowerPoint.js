@@ -78,8 +78,11 @@ trg = APP.CACHE;
 
 	iframeId = document.getElementById("upload_iframe");
 	var eventHandler = function () {
-            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
-            else iframeId.removeEventListener("load", eventHandler, false);
+            if (iframeId.detachEvent) {
+				iframeId.detachEvent("onload", eventHandler);
+			} else { 
+				iframeId.removeEventListener("load", eventHandler, false); 
+			}
              // Message from server...
             if (iframeId.contentDocument) {
                 content = iframeId.contentDocument.body.innerHTML;

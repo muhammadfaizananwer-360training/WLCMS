@@ -439,36 +439,40 @@ function getQuizSetup (trg,event) {
 		$quizSetuptemplate.find('#embnoAttemptsPermitted').val(objQuizSetup.noAttemptsPermitted);
 		$quizSetuptemplate.find('#embscorePassQuiz').val (objQuizSetup.scorePassQuiz);
 
-		if (objQuizSetup.randomizeQuestions)
+		if (objQuizSetup.randomizeQuestions) {
 			$quizSetuptemplate.find('#embchkrandomizeQuestions').prop("checked", true);
-		else
+		} else {
 			$quizSetuptemplate.find('#embchkrandomizeQuestions').prop("checked", false);
+		}
 
-		if(objQuizSetup.randomizeAnswers)
+		if(objQuizSetup.randomizeAnswers) {
 			$quizSetuptemplate.find('#embchkrandomizeAnswers').prop("checked", true);
-		else
+		} else {
 			$quizSetuptemplate.find('#embchkrandomizeAnswers').prop("checked", false);
+		}
 
-		if (objQuizSetup.allowReviewaftGrading)
+		if (objQuizSetup.allowReviewaftGrading) {
 			$quizSetuptemplate.find('#emballowReviewaftGrading').prop("checked", true);
-		else
+		} else {
 			$quizSetuptemplate.find('#emballowReviewaftGrading').prop("checked", false);
+		}
 
 		$quizSetuptemplate.find('#embtimeforQuiz').val(objQuizSetup.timeforQuiz);
 
 
-		if(objQuizSetup.gradeQuestions=='AfterEachQuestionIsAnswered')
-			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterEachQuestionIsAnswered']").prop('selected',true)
-		else
-			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterAssessmentIsSubmitted']").prop('selected',true)
+		if(objQuizSetup.gradeQuestions=='AfterEachQuestionIsAnswered') {
+			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterEachQuestionIsAnswered']").prop('selected', true);
+		} else {
+			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterAssessmentIsSubmitted']").prop('selected', true);
+		}
 
-
-		if(objQuizSetup.actionOnFailtoPass=='Retake Lesson')
-			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Retake Lesson']").prop('selected',true)
-		else if(objQuizSetup.actionOnFailtoPass=='Go To Next Lesson')
-			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Go To Next Lesson']").prop('selected',true)
-		else
-			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Lock Course']").prop('selected',true)
+		if(objQuizSetup.actionOnFailtoPass=='Retake Lesson') {
+			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Retake Lesson']").prop('selected', true);
+		} else if(objQuizSetup.actionOnFailtoPass=='Go To Next Lesson') {
+			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Go To Next Lesson']").prop('selected', true);
+		} else {
+			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Lock Course']").prop('selected',true);
+		}
 	}
 
 	$quizSetuptemplate.find ('#setupfooter').attr('data-parent', '#quiz_container' + contentObjectId);
@@ -822,10 +826,11 @@ function getQuestion (trg, event) {
 
 		var correctVal = objQuestion.disableRandomizeAnswerChoiceTF;
 
-		if(objQuestion.disableRandomizeAnswerChoiceTF)
+		if(objQuestion.disableRandomizeAnswerChoiceTF) {
 			$quizBanktemplate.find('#embchkAnswerRandomization').prop("checked", true);
-		else
+		} else {
 			$quizBanktemplate.find('#embchkAnswerRandomization').prop("checked", false);
+		}
 
 		$quizBanktemplate.find("#btnUpdtQuizDelQstnOptionTemp").attr("id", "btnUpdtQuizDelQstnOption");
 		$quizBanktemplate.find("#chkUpdtQuizAnswersSlctAllTemp").attr("id", "chkUpdtQuizAnswersSlctAll");
@@ -916,10 +921,12 @@ function addQuestion() {
 		if(len==1){
 			errormsg = WLCMS_CONSTANTS.VALIDATION_SINGLE_ANSWER;
 		}
-		if ($('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find ('.answer-error').length <= 0 )
+
+		if ($('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find ('.answer-error').length <= 0 ) {
 			$('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().append(errormsg);
-		else
-			$('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find ('.answer-error').html(errormsg);
+		} else {
+			$('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find('.answer-error').html(errormsg);
+		}
 
 		$('#addQuestionModal').find("#tbQuestionAnswer2").parent().addClass("error");
 		return false;
@@ -1173,10 +1180,11 @@ function correctanswervalidation (event){
 			$('#tblAnswerChoices_' + question_id + '_').parent().addClass("error");
 			bPostQuestion = false;
 		}
-		if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 )
+		if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 ) {
 			$('#tblAnswerChoices_' + question_id + '_').parent().parent().append(errormsg);
-		else
-			$('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').html(errormsg);
+		} else {
+			$('#tblAnswerChoices_' + question_id + '_').parent().parent().find('.answer-error').html(errormsg);
+		}
 
 		if (event) {
 			event.preventDefault();
@@ -1523,11 +1531,11 @@ function getAnswerChoice (trg, event) {
 
 				$('#tblAnswerChoices_' + question_id + '_').parent().addClass("error");
 			}
-			if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 )
+			if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 ) {
 				$('#tblAnswerChoices_' + question_id + '_').parent().parent().append(errormsg);
-			else
-				$('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').html(errormsg);
-
+			} else {
+				$('#tblAnswerChoices_' + question_id + '_').parent().parent().find('.answer-error').html(errormsg);
+			}
 			event.preventDefault();
 			event.stopPropagation();
 			return false;
@@ -1587,11 +1595,12 @@ function getAnswerChoiceAJAX(bank_id,question_id){
 function getDetailAnswerChoice(trg) {
 
 
-	if (APP.CACHE.length > 0)
-			APP.CACHE[1] = trg;
-	else
-			APP.CACHE = trg;
-
+	if (APP.CACHE.length > 0) {
+		APP.CACHE[1] = trg;
+	} else {
+		APP.CACHE = trg;
+	}
+	
 	$trg = $(trg);
 	$trg = $trg.parent ().parent();
 

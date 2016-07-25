@@ -81,10 +81,11 @@ $(function() {
 	$.validator.addMethod("validateImageExtension",
 			function(value, element) {
 				var ext = value.split('.').pop().toLowerCase();
-				if( $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) != -1)
+				if( $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) != -1) {
 					return true;
-				else
+				} else {
 					return false;
+				}
 			},
 		"Please provide a file with these types gif, png, jpg, jpeg, bmp.");
 
@@ -155,8 +156,11 @@ function AddProfilePicture(form){
 
 	var eventHandler = function () {
 
-            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
-            else iframeId.removeEventListener("load", eventHandler, false);
+            if (iframeId.detachEvent) {
+				iframeId.detachEvent("onload", eventHandler);
+			} else {
+				iframeId.removeEventListener("load", eventHandler, false);
+			}
 
             // Message from server...
             if (iframeId.contentDocument) {

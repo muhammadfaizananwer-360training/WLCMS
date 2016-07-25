@@ -94,10 +94,11 @@ $(document).ready(function(){
 			function(value, element) {
 				var ext = value.split('.').pop().toLowerCase();
 
-				if($("#cboAssetTypeVisual").val()=="MovieClip" && $.inArray(ext, ['mp4']) != -1)
+				if($("#cboAssetTypeVisual").val()=="MovieClip" && $.inArray(ext, ['mp4']) != -1) {
 					return true;
-				else
+				} else {
 					return false;
+				}
 			},
 		"Please provide a file with a valid file type");
 
@@ -1125,12 +1126,14 @@ function acceptMarketingDialogBox () {
 
 	course_id = getParameterByName ('id');
 	var valID;
-	if($("#assetUploadType").val() == CourseAssetTypeEnum.AUTHORIMAGE)
-		valID =  $('[name=audioVal]:checked').val();
-	else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSEIMAGE)
-		valID =  $('[name=g1]:checked').val();
-	else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSETHUMBNAILIMAGE)
-		valID =  $('[name=g2]:checked').val();
+	if($("#assetUploadType").val() == CourseAssetTypeEnum.AUTHORIMAGE) {
+		valID = $('[name=audioVal]:checked').val();
+	} else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSEIMAGE) {
+		valID = $('[name=g1]:checked').val();
+	} else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSETHUMBNAILIMAGE) {
+		valID = $('[name=g2]:checked').val();
+	}
+
 	if (valID.length > 0 )
 	{
 		var arr = valID.split('_');
@@ -1857,14 +1860,15 @@ function openFindModal(n)
 					row_id = d.id + '_'  + d.assetversion_id;
 					r.push('<tr><td id=\'');
 					r.push(row_id);
-					if($("#assetUploadType").val() == CourseAssetTypeEnum.AUTHORIMAGE)
-						r.push( '\'><input type=\'radio\' name=\'audioVal\' value=\'');
-					else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSEIMAGE)
-						r.push( '\'><input type=\'radio\' name=\'g1\' value=\'');
-					else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSETHUMBNAILIMAGE)
-						r.push( '\'><input type=\'radio\' name=\'g2\' value=\'');
-					else if($("#assetUploadType").val() == CourseAssetTypeEnum.VIDEODEMO)
-						r.push( '\'><input type=\'radio\' name=\'g3\' value=\'');
+					if($("#assetUploadType").val() == CourseAssetTypeEnum.AUTHORIMAGE) {
+						r.push('\'><input type=\'radio\' name=\'audioVal\' value=\'');
+					} else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSEIMAGE) {
+						r.push('\'><input type=\'radio\' name=\'g1\' value=\'');
+					} else if($("#assetUploadType").val() == CourseAssetTypeEnum.COURSETHUMBNAILIMAGE) {
+						r.push('\'><input type=\'radio\' name=\'g2\' value=\'');
+					}else if($("#assetUploadType").val() == CourseAssetTypeEnum.VIDEODEMO) {
+						r.push('\'><input type=\'radio\' name=\'g3\' value=\'');
+					}
 					r.push(row_id);
 					r.push('\'/></td><td id=\'name\'>');
 					r.push(d.name);
@@ -2008,9 +2012,9 @@ function openFindModal(n)
 
    function acceptDialog(){
 
-	if($("#assetUploadType").val() == CourseAssetTypeEnum.VIDEODEMO)
+	if($("#assetUploadType").val() == CourseAssetTypeEnum.VIDEODEMO) {
 		acceptMarketingVideoDialogBox();
-	else
+	} else {
 		acceptMarketingDialogBox();
-
+	}
    }

@@ -344,10 +344,12 @@ function loadInstructor(id){
     $("#"+id).closest('tr').addClass("update");
 }
 function emailVerify(courseType) {
-    if(courseType=="5")
+    if(courseType=="5") {
         return true;
-    else if($("#presenter_email").val()=="")
+    }
+    else if($("#presenter_email").val()=="") {
         return true;
+    }
     var isEmailNotExist=true;
     APP.AJAX({
         url: 'checkInstructorEmail',

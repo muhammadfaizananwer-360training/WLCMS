@@ -171,11 +171,12 @@ function disableSearchButton(){
 
 	 $('#searchButton').attr('disabled',true);
 	    $('#seachText').keyup(function(){
-	        if($(this).val().length !=0)
-	            $('#searchButton').attr('disabled', false);
-	        else
+	        if($(this).val().length !=0) {
+				$('#searchButton').attr('disabled', false);
+			} else {
 	            $('#searchButton').attr('disabled',true);
-	    })
+			}
+	    });
 }
 function uncheckAllCheckBox(){
 	$( "#detailForm" ).validate().resetForm();

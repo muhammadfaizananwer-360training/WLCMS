@@ -62,9 +62,9 @@ if (typeof IsGetSlideTemplateId == 'undefined')
 		}
 	});
 
-	if(Template_MC_Template_ID==0 && Template_DND_Matching_Template_ID==0 && Template_DND_Image_Template_ID==0 && Template_DND_Category_Template_ID==0)
+	if(Template_MC_Template_ID==0 && Template_DND_Matching_Template_ID==0 && Template_DND_Image_Template_ID==0 && Template_DND_Category_Template_ID==0) {
 		$('#ActivityTemplate').hide();
-	else{
+	} else{
 		if(Template_MC_Template_ID==0)
 			$('#Template_MC_Template_A').hide();
 

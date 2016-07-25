@@ -158,10 +158,11 @@ function saveSettings(elem){
 function disableSearchButton(){
 
 	 $('#searchButton').attr('disabled',true);
-	    $('#seachText').keyup(function(){
-		if($(this).val().length !=0)
-	            $('#searchButton').attr('disabled', false);
-	        else
-	            $('#searchButton').attr('disabled',true);
-	    })
+	$('#seachText').keyup(function () {
+		if ($(this).val().length != 0) {
+			$('#searchButton').attr('disabled', false);
+		} else {
+			$('#searchButton').attr('disabled', true);
+		}
+	});
 }
