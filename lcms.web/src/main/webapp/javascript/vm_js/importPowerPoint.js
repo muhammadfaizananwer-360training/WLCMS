@@ -78,8 +78,11 @@ trg = APP.CACHE;
 
 	iframeId = document.getElementById("upload_iframe");
 	var eventHandler = function () {
-            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
-            else iframeId.removeEventListener("load", eventHandler, false);
+            if (iframeId.detachEvent) {
+				iframeId.detachEvent("onload", eventHandler);
+			} else { 
+				iframeId.removeEventListener("load", eventHandler, false); 
+			}
              // Message from server...
             if (iframeId.contentDocument) {
                 content = iframeId.contentDocument.body.innerHTML;
@@ -98,10 +101,14 @@ trg = APP.CACHE;
 			$('#successMsg').show ();
 			// Call function to list the asset
 			getSlidesByContentAjax (contentObjectId);
-    }
+    };;
 
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+    if (iframeId.addEventListener) {
+		iframeId.addEventListener("load", eventHandler, true);
+	}
+    if (iframeId.attachEvent) {
+		iframeId.attachEvent("onload", eventHandler);
+	}
 
     // Set properties of form...
     form.setAttribute("target", "upload_iframe");

@@ -146,7 +146,9 @@ function getSlideComponent(varSlideId){
 				$divClone.find ("#tblAudioAssetTopDiv_" + varSlideId).remove ();
 				$divClone.find ("#Title_1_" + varSlideId).parent().remove ();
 			} else
-				APP.CKEDITOR("SceneText_"+varSlideId,"TEXT");
+				{
+					APP.CKEDITOR("SceneText_" + varSlideId, "TEXT");
+				}
     		//The video bar is shown only with templateID=5
 			if(slide_Obj!==null && slide_Obj.templateID !== Template_Visual_Streaming_Center_ID){
 				$divClone.find("#tblVideoTopDiv_" + varSlideId).remove ();
@@ -157,7 +159,9 @@ function getSlideComponent(varSlideId){
 				update_MC_SCENE_XML(varSlideId);
 			}
 			else
-			$('#slideSetup_1_'+varSlideId).remove();
+			{
+				$('#slideSetup_1_' + varSlideId).remove();
+			}
 	}
 	/**
 	 * Retrieve data for icons, which has data Do icon green otherwise gray.
@@ -240,7 +244,9 @@ function update_MC_SCENE_XML(varSlideId)
 		return true;
 	}
 	else
-	return false;
+	{
+		return false;
+	}
 }
 
 function getSlideVisualAssetTable (varSlideId, assetType) {
@@ -294,10 +300,11 @@ function getSlideVisualAssetTable (varSlideId, assetType) {
 }
 
 function getSlideVisualTable(varSlideId, assetType){
-	if(assetType===1)
-		var divClone = $("div#tblDivVisualAsset_"+varSlideId);
-	else
+	if(assetType===1) {
+		var divClone = $("div#tblDivVisualAsset_" + varSlideId);
+	} else {
 		var divClone = $("div#tblDivAudioAsset_"+varSlideId);
+	}
 			 var visualAssetURL = "/lcms/getAssetBySlide";
 			 APP.AJAX({
 				 url:  visualAssetURL,
@@ -320,7 +327,7 @@ function getSlideVisualTable(varSlideId, assetType){
 						'<td>' + durationOrDimesion + '</td>' +
 						'<td>' +Slidedata[i].size+ '</td>' +
 						'<td>' + Slidedata[i].version + '</td>' +
-						'<td>' + Slidedata[i].description + '</td>'
+						'<td>' + Slidedata[i].description + '</td>';
 						if ( Slidedata[i].assettype === 'Image'){
 							html += '<td>  <a href=' + Slidedata[i].location + ' target=_blank ><img width=50px src=' +Slidedata[i].location+ '></img></a></td></tr>'
 						}
@@ -625,13 +632,19 @@ function addAudioAsset(form){
             TopMessageBar.displayMessageTopBar({vType:1, vMsg: WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut:true});
 			if($(form).find('#isCustomTemplate').val() === 'true'){
 				if($(form).find('#attachAssetWithSlide').is(":checked")=== true)
-					TEMPLATE.RETURN_DYNAMIC_MODAL(audioAssetName,'1',content);
+					{
+						TEMPLATE.RETURN_DYNAMIC_MODAL(audioAssetName, '1', content);
+					}
 			}
 			getSlideVisualTable ($("#sceneId").val(), 0);
 			cancelAudioAssetUploadForm();
-        }
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+        };
+    if (iframeId.addEventListener) {
+		iframeId.addEventListener("load", eventHandler, true);
+	}
+    if (iframeId.attachEvent) {
+		iframeId.attachEvent("onload", eventHandler);
+	}
     // Set properties of form...
     form.setAttribute("target", "upload_iframe");
     form.setAttribute("action", "uploadAudioAsset");
@@ -770,7 +783,7 @@ function addVisualAsset(form){
         } else {
             getSlideVisualTable($("#sceneId").val(), 1);
         }
-        }
+        };
     if (iframeId.addEventListener){ iframeId.addEventListener("load", eventHandler, true);}
     if (iframeId.attachEvent){ iframeId.attachEvent("onload", eventHandler);}
     // Set properties of form...
@@ -841,10 +854,12 @@ function addVideoAsset(form){
 		 	// refresh the list
 			if($(form).find('#isCustomTemplate').val() === 'true'){
 				if($(form).find('#visualAttachAssetWithSlide').is(":checked")=== true)
-					TEMPLATE.RETURN_DYNAMIC_MODAL(videoAssetName,'1',content);
+					{
+						TEMPLATE.RETURN_DYNAMIC_MODAL(videoAssetName, '1', content);
+					}
 			}
 			getSlideVisualAssetTable ($("#sceneId").val(), 2);
-        }
+        };
     if (iframeId.addEventListener){ iframeId.addEventListener("load", eventHandler, true);}
     if (iframeId.attachEvent){ iframeId.attachEvent("onload", eventHandler);}
     // Set properties of form...
@@ -913,14 +928,15 @@ $(function() {
 	$.validator.addMethod("validateExtensionForVisualAsset",
 		function(value, element) {
 			var ext = value.split('.').pop().toLowerCase();
-			if( $("#cboAssetTypeVisual").val()==="Image" && $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) !== -1)
+			if( $("#cboAssetTypeVisual").val()==="Image" && $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) !== -1) {
 				return true;
-			else if($("#cboAssetTypeVisual").val()==="MovieClip" && $.inArray(ext, ['flv','wmv','mp4']) !== -1)
+			} else if($("#cboAssetTypeVisual").val()==="MovieClip" && $.inArray(ext, ['flv','wmv','mp4']) !== -1) {
 				return true;
-			else if($("#cboAssetTypeVisual").val()==="FlashObject" && $.inArray(ext, ['swf']) !== -1)
+			} else if($("#cboAssetTypeVisual").val()==="FlashObject" && $.inArray(ext, ['swf']) !== -1) {
 				return true;
-			else
+			} else {
 				return false;
+			}
 		},
 	"Please provide a file with a valid file type");
     $("#frmUploadVisualAsset").validate({

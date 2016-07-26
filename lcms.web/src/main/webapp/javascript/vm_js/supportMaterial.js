@@ -21,10 +21,11 @@ $(function() {
 		function(value, element) {
 			var ext = value.split('.').pop().toLowerCase();
 
-			if($.inArray(ext, ['doc','docx','pdf','ppt','pptx','xls','xlsx','png','jpeg','jpg','gif']) != -1)
+			if($.inArray(ext, ['doc','docx','pdf','ppt','pptx','xls','xlsx','png','jpeg','jpg','gif']) != -1) {
 				return true;
-			else
+			} else {
 				return false;
+			}
 		},
 	"Please provide a file with a valid file type.");
 
@@ -100,16 +101,20 @@ function addSupportMaterial(form){
     iframe.setAttribute("style", "width: 0; height: 0; border: none;");
 
 	// Add to document...
-	if($(form).find('#IsCustomTemplate').val() == 'true')
+	if($(form).find('#IsCustomTemplate').val() == 'true') {
 		form.parentNode.parentNode.parentNode.appendChild(iframe);
-	else
+	} else {
 		form.parentNode.appendChild(iframe);
+	}
     window.frames['upload_iframe'].name = "upload_iframe";
  	iframeId = document.getElementById("upload_iframe");
 
 	var eventHandler = function () {
-            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
-            else iframeId.removeEventListener("load", eventHandler, false);
+            if (iframeId.detachEvent) {
+				iframeId.detachEvent("onload", eventHandler);
+			} else {
+				iframeId.removeEventListener("load", eventHandler, false);
+			}
 
             // Message from server...
             if (iframeId.contentDocument) {
@@ -129,10 +134,13 @@ function addSupportMaterial(form){
 			// display newly added Support material bar
 			getAddSupportMaterialBar(varAudioAssetName);
 			setArrowVsbltySpprtMtrl($("#hidLessonId").val());
-        }
+        };
 
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    else if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+    if (iframeId.addEventListener) {
+		iframeId.addEventListener("load", eventHandler, true);
+	} else if (iframeId.attachEvent) {
+		iframeId.attachEvent("onload", eventHandler);
+	}
 
     // Set properties of form...
     form.setAttribute("target", "upload_iframe");
@@ -186,7 +194,7 @@ function cancelsmUploadForm() {
 	$("#frmsmUploadAsset").get(0).reset();
 	$('#btnSubmitAudioAssetForm').attr("data-dismiss", "modal");
 
-	$("#audioAssetKeywords").parent().find('span').remove()
+	$("#audioAssetKeywords").parent().find('span').remove();
 	$('#msgdiv').html ('');
 	return false;
 }

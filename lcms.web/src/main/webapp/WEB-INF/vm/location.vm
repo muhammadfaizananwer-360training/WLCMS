@@ -111,7 +111,7 @@
 			locationaddress: { required: true},
         	locationcity: { required: true },
         	country: { required: true },
-        	state: { required: true },
+        	state: { required: true }
         	
         },
         messages: {
@@ -121,7 +121,7 @@
         	country: {required : "Please select a country."},
         	state: {required : "Please select a state."}
         	
-        },
+        }
 		
     });
     });

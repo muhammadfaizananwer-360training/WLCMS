@@ -81,10 +81,11 @@ $(function() {
 	$.validator.addMethod("validateImageExtension",
 			function(value, element) {
 				var ext = value.split('.').pop().toLowerCase();
-				if( $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) != -1)
+				if( $.inArray(ext, ['gif','png','jpg','jpeg','bmp']) != -1) {
 					return true;
-				else
+				} else {
 					return false;
+				}
 			},
 		"Please provide a file with these types gif, png, jpg, jpeg, bmp.");
 
@@ -155,8 +156,11 @@ function AddProfilePicture(form){
 
 	var eventHandler = function () {
 
-            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
-            else iframeId.removeEventListener("load", eventHandler, false);
+            if (iframeId.detachEvent) {
+				iframeId.detachEvent("onload", eventHandler);
+			} else {
+				iframeId.removeEventListener("load", eventHandler, false);
+			}
 
             // Message from server...
             if (iframeId.contentDocument) {
@@ -171,10 +175,14 @@ function AddProfilePicture(form){
             setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
             $("#assetId").val(content.assetId);
             $("#profileImage").attr("src", content.assetUrl);
-        }
+        };
 
-    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
-    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+    if (iframeId.addEventListener) {
+		iframeId.addEventListener("load", eventHandler, true);
+	}
+    if (iframeId.attachEvent) {
+		iframeId.attachEvent("onload", eventHandler);
+	}
 
     // Set properties of form...
     form.setAttribute("target", "upload_iframe");

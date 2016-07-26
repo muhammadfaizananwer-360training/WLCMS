@@ -21,7 +21,9 @@ $(document).ready(function(){
 	$('#lnkPricing a').addClass('active');
 
 	if ($('#offerprice').val () == 0)
-			$('#offerprice').val ("0.00");
+			{
+				$('#offerprice').val("0.00");
+			}
 
 
 });
@@ -32,17 +34,19 @@ $(function() {
 
 
 	jQuery.validator.addMethod("dollarsscentsOfferPrice", function(value, element) {
-		if ($('#chkManagerOffer').is( ":checked" ) )
+		if ($('#chkManagerOffer').is( ":checked" ) ) {
 			return this.optional(element) || /^(\d{0,8})(\.\d{2})$/.test(value);
-		else
+		} else {
 			return true;
+		}
     }, "You must include two decimal places");
 
 	 $.validator.addMethod('minStrict', function (value, el, param) {
-		    if ($('#chkManagerOffer').is( ":checked" ) )
-					return value >= param ;
-			else
+		    if ($('#chkManagerOffer').is( ":checked" ) ) {
+				return value >= param;
+			} else {
 				return true;
+			}
 	}, "If marketing offer is checked then offer price should be greater than 0");
 
 

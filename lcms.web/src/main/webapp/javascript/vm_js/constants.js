@@ -22,22 +22,22 @@ var WLCMS_CONSTANTS_TEMPLATE_MC_Scenario = {
 		'TEMPLATE_TYPE_FOR_STREAMING_DES': 'This scenario template features a picture (JPG, GIF, PNG), scenario text (option to scroll), and multiple-choice question with feedback for correct and incorrect responses.',
 		'TEMPLATE_TYPE_IMG': 'theme/executive/img/icons/templates/icon_11b.png'
 
-}
+};;
 
 var WLCMS_CONSTANTS_COURSE_TYPE = {
 		'ONLINE_COURSE': '4',
 		'CLASSROOM_COURSE': '5',
 		'WEBINAR_COURSE': '6'
-}
+};;
 
 var WLCMS_CONSTANTS_COURSE_STATUS = {
 		'STATUS_PUBLISH': 'Published',
 		'STATUS_NOT_STARTED': 'Not Started'
-}
+};;
 
 var SLIDE_TEMPLATE_TYPE = {
 		'CUSTOM_MC': 'MC'
-}
+};;
 
 var MODAL_CKEDITOR_INIT = {
 	addSlideModal:{locked:false,trgs:[{id: "name", type:"TITLE"}]},

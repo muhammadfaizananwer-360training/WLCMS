@@ -64,4 +64,4 @@ var TopMessageBar = {
 		});
 		}
 
-}
+};;

@@ -220,10 +220,11 @@ function disableSearchButton(){
 	var searhButton = $('.dataTables_filter #searchButton')[0];
 	$(searhButton).attr('disabled',true);
     $('.dataTables_filter #seachText').keyup(function(){
-        if($(this).val().length !=0)
-            $(searhButton).attr('disabled', false);
-        else
+        if($(this).val().length !=0) {
+			$(searhButton).attr('disabled', false);
+		} else {
             $(searhButton).attr('disabled',true);
+		}
     });
 }
 
@@ -236,7 +237,7 @@ function updateFmsSpaceUsagePanel() {
 	$(panel).find(".avail-space-text").html(availSpacePercent + "%");
 
 	var usedSpaceBar = $(panel).find(".used-space-bar")[0];
-	$(usedSpaceBar).css('width',usedSpacePercent+"%")
+	$(usedSpaceBar).css('width',usedSpacePercent+"%");
 	$(usedSpaceBar).removeClass('progress-bar-success progress-bar-danger progress-bar-info progress-bar-warning');
 	var colorClass = 'progress-bar-info';
 

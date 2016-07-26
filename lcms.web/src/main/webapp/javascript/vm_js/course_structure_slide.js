@@ -23,7 +23,7 @@ $(document).ready(function(){
 function modalEvents(ID){
    $(ID).on('hidden.bs.modal', function (e) {
 
-   })
+   });;
    $(ID).on('show.bs.modal', function (e) {
 		if (typeof($(e.relatedTarget).data('lesson-id')) !== "undefined"){
 			content_id = $(e.relatedTarget).data('lesson-id');
@@ -42,7 +42,7 @@ function modalEvents(ID){
 				};
 			}
 		}
-   })
+   });
 }
 //END MODAL EVENT
 function showProgressLoader(message){
@@ -317,8 +317,12 @@ function addSlide (btn,title,extraParams)
 function searchAssets (Dynamic) {
 	showProgressLoader("<div id='loader-label'>Loading...</div>");
 	// manual validation of AJAX form
-	if(Dynamic === undefined) Dynamic='searchAssetModal';
-	if(Dynamic.type === 'button') Dynamic='searchAssetModal';
+	if(Dynamic === undefined) {
+		Dynamic = 'searchAssetModal';
+	}
+	if(Dynamic.type === 'button') {
+		Dynamic = 'searchAssetModal';
+	}
 	var bSearch = false;
 	$txtAssetSearch = $("div#"+Dynamic).find ('#visualAssetSearchTerm');
 	if ($txtAssetSearch.val().length < 3) {
@@ -445,8 +449,12 @@ function acceptAssetSearch() {
 function searchAudioAssets (Dynamic) {
 
 showProgressLoader("<div id='loader-label'>Loading...</div>");
-if(Dynamic === undefined) Dynamic='searchAAssetModal';
-if(Dynamic.type === 'button') Dynamic='searchAssetModal';
+if(Dynamic === undefined) {
+	Dynamic = 'searchAAssetModal';
+}
+if(Dynamic.type === 'button') {
+	Dynamic = 'searchAssetModal';
+}
 	var bSearch = false;
 	$txtAssetSearch = $("div#"+Dynamic).find ('#txtAudioAssetSearchTerm');
 	if ($txtAssetSearch.val().length < 3) {
@@ -581,7 +589,9 @@ function searchVAAsset() {
 			var len = asset_object.length;
 			//WLCMS-232
 			if( len <= 0)
-				r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				{
+					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				}
 			for(var i = 0; i < len; i++)
 			{
 				d = asset_object[i];
@@ -690,7 +700,9 @@ function searchSupportMaterialAsset() {
 			var len = asset_object.length;
 			//WLCMS-232
 			if( len <= 0)
-				r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				{
+					r.push('<tr><td colspan=\'8\'>No search result(s) found.</td></tr>');
+				}
 			for(var i = 0; i < len; i++)
 			{
 				d = asset_object[i];

@@ -245,7 +245,9 @@ $(function() {
 		var dateFrom = value.split("-");
 		var dateTo = $('#datePicker_2').find('input').val().split("-");
 		if(dateFrom==="" || dateTo==="")
-			return false;
+			{
+				return false;
+			}
 
 		var valueDateFrom = new Date( dateFrom[2],dateFrom[0]-1,dateFrom[1],0, 0, 0, 0);
 		var valueDateTo = new Date( dateTo[2],dateTo[0]-1,dateTo[1],0, 0, 0, 0);

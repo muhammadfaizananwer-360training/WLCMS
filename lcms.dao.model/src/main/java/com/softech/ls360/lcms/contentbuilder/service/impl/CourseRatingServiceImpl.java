@@ -19,32 +19,32 @@ public class CourseRatingServiceImpl implements ICourseRatingService {
 	private CourseRatingDAO courseRatingDAO;
 	
 
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).npsCourseRating)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.npsCourseRating)")
 	public CourseRatingDAO getCourseRatingDAO() {
 		return courseRatingDAO;
 	}
 
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).npsCourseRating)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.npsCourseRating)")
 	public void setCourseRatingDAO(CourseRatingDAO courseRatingDAO) {
 		this.courseRatingDAO = courseRatingDAO;
 	}
 	
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).npsCourseRating)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.npsCourseRating)")
 	public List<CourseRating> SearchCourseRating(String FromDate,String ToDate,String NpsRating, int hideNullReview) {
 		// TODO Auto-generated method stub
 		return courseRatingDAO.SearchCourseRating(FromDate, ToDate, NpsRating, hideNullReview);
 	}
 	
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).npsCourseRating)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.npsCourseRating)")
 	public boolean SaveCourseRatingStatus(int CourseId,int EnrollmentId,String Publish)
 	{
 		return courseRatingDAO.SaveCourseRatingStatus(CourseId, EnrollmentId, Publish);
 	}
 
 	@Override
-	@PreAuthorize("hasPermission(#firstOrLastName, T(com.softech.ls360.lcms.contentbuilder.utils.UserFeature).npsCourseRating)")
+	@PreAuthorize("hasPermission(#firstOrLastName, @userFeature.npsCourseRating)")
 	public List<CourseRatingPublish> GetCourseRatingPublishList(String reviewIds){
 		return courseRatingDAO.GetCourseRatingPublishList(reviewIds);
 	}

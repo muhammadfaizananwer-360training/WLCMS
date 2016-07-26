@@ -63,12 +63,12 @@ $(function() {
 	var isValidPhone = function(){
 	  var phone = $("#phoneNo").val();
 	  return !(phone !== "" && !$.isNumeric(phone));
-	}
+	};
 	var isValidProviderPhone = function(){
 		  var phone = $("#presenter_phonenumber").val();
 		  var provider_phone = $("#phone_no").val();
 		  return !(provider_phone !== "" && !$.isNumeric(provider_phone));
-		}
+		};
      jQuery.validator.addMethod("isValidPhone", function() {
 
         return isValidPhone();}, "Please enter valid phone number.");
@@ -124,7 +124,7 @@ $(function() {
         		return;
         	}
 			form.submit(function(){
-                alert('Enter')
+                alert('Enter');
                 $.ajax({
                     type: "POST",
                     url: "saveInstructor",
@@ -136,7 +136,7 @@ $(function() {
                         }
                         alert('dfkdkn');
                     }
-                })
+                });
 
             }) ;
         },
@@ -215,7 +215,7 @@ function instructor_list()
 				oTb.fnAddData(object);
 			}
 		},error: function(data){
-			alert('Error')
+			alert('Error');
 		}
 
 	});
@@ -268,7 +268,7 @@ function delete_instructors()
         TopMessageBar.displayMessageTopBar({vType:2, vMsg: WLCMS_LOCALIZED.VALIDATION_ON_DELETE_SELECT,bFadeOut:true});
         return false;
     }
-    var commaseparateids=""
+    var commaseparateids="";
     for(var i=0; i<ids.length; i++)
     {
         commaseparateids+=ids[i].value+","
@@ -276,8 +276,8 @@ function delete_instructors()
     }
 
 
-    commaseparateids = commaseparateids.substr(0,commaseparateids.length-1)
-    var id ="1"
+    commaseparateids = commaseparateids.substr(0,commaseparateids.length-1);
+    var id ="1";
     APP.AJAX({
         url: 'deleteClassInstructions',
         type: "POST",
@@ -299,7 +299,7 @@ function delete_instructors()
                 //reset_modal();
 
         },error: function(data){
-            alert('Error')
+            alert('Error');
         }
 
     });
@@ -344,10 +344,12 @@ function loadInstructor(id){
     $("#"+id).closest('tr').addClass("update");
 }
 function emailVerify(courseType) {
-    if(courseType=="5")
+    if(courseType=="5") {
         return true;
-    else if($("#presenter_email").val()=="")
+    }
+    else if($("#presenter_email").val()=="") {
         return true;
+    }
     var isEmailNotExist=true;
     APP.AJAX({
         url: 'checkInstructorEmail',
@@ -405,7 +407,7 @@ function addClassInstructor(){
                 TopMessageBar.displayMessageTopBar({vType:2, vMsg:WLCMS_LOCALIZED.EMAIL_INSTRUCTOR_FAILURE_MESSAGE, bFadeOut:true});
                 return;
             }
-            var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'instructor-delete-btn')\" class='checks' value='"+response.id+"' name='classinstructor_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addClassInstructorModal' onclick='loadInstructor("+response.id+")'>"+response.firstName+"</a>", ""+response.lastName+"",""+response.email+"",""+response.phoneNo+""]
+            var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'instructor-delete-btn')\" class='checks' value='"+response.id+"' name='classinstructor_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addClassInstructorModal' onclick='loadInstructor("+response.id+")'>"+response.firstName+"</a>", ""+response.lastName+"",""+response.email+"",""+response.phoneNo+""];
             if($("#classInstructorId").val()=='') {
                 oTb.fnAddData(object);
                 $('#submitClassInstuctor').attr('data-dismiss', 'modal');
@@ -431,7 +433,7 @@ function reset_modal()
 	$("label.error").hide();
     $(".error").removeClass("error");
     $('#msgdiv').html ('');
-    $("#add-lesson-label").text('Add Instructor')
-    $("#classInstructorId").val("")
+    $("#add-lesson-label").text('Add Instructor');
+    $("#classInstructorId").val("");
 
 }

@@ -6,7 +6,10 @@ $(document).ready(function() {
 			chk = true;
 		}
 		return chk;
-	}, '')
+	}, '');
+
+
+
 });
 
 function getUrlParameter(sParam)
@@ -136,11 +139,11 @@ function requestToCancelOffer(){
 				success = true;
 				$360.showMessage({})
 			} else {
-				$360.showMessage({error:"error"})
+				$360.showMessage({error:"error"});
 			}
 		},
 		error:function () {
-			$360.showMessage({error:"error"})
+			$360.showMessage({error:"error"});
 		}
 	});
 
@@ -161,8 +164,9 @@ function elementFadeOut(id) {
 
 function callValidator(){
 	var cType = getParameterByName('cType');
-	if(cType != null && cType == WLCMS_CONSTANTS_COURSE_TYPE.ONLINE_COURSE )
+	if(cType != null && cType == WLCMS_CONSTANTS_COURSE_TYPE.ONLINE_COURSE ) {
 		$("#frm_publish").valid();
-	else
+	} else {
 		$("#frm_webinar_publish").valid();
+	}
 }

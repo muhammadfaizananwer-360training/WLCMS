@@ -100,7 +100,7 @@ $(function() {
 	});
 
 	$.validator.addMethod('equalStrict', function (value, el, param) {
-		return value = param;
+		return value == param;
 	});
 
 	$.validator.addMethod('maxStrict', function (value, el, param) {
@@ -204,13 +204,19 @@ function postQuizConfiguration(InvalidateQuizMastery) {
 
 
 	if($('#chkrandomizeAnswers').is( ":checked" ))
-		vchkrandomizeAnswers = true;
+		{
+			vchkrandomizeAnswers = true;
+		}
 
 	if($('#chkrandomizeQuestions').is( ":checked" ))
-		vchkrandomizeQuestions = true;
+		{
+			vchkrandomizeQuestions = true;
+		}
 
 	if($('#allowReviewaftGrading').is( ":checked" ))
-		vallowReviewaftGrading = true;
+		{
+			vallowReviewaftGrading = true;
+		}
 
 
 
@@ -230,7 +236,9 @@ function postQuizConfiguration(InvalidateQuizMastery) {
 				$('#addQuizLinkDiv_' + content_id ).hide ();
 
 				$('#addQuizModal').modal('hide');
-				if(!$("#quiz_banks_" +content_id).is(':visible')) $("#quizBankTitle_" +content_id ).click();
+				if(!$("#quiz_banks_" +content_id).is(':visible')) {
+					$("#quizBankTitle_" + content_id).click();
+				}
 
 		}
 	 });
@@ -316,13 +324,19 @@ function updateQuizConfiguration(contentObjectId,InvalidateQuizMastery) {
 	var vallowReviewaftGrading = false;
 
 	if($('#quiz_policies_' + contentObjectId).find('#embchkrandomizeQuestions').is( ":checked" ))
-		vchkrandomizeQuestions  = true;
+		{
+			vchkrandomizeQuestions = true;
+		}
 
 	if($('#quiz_policies_' + contentObjectId).find('#embchkrandomizeAnswers').is( ":checked" ))
-		vchkrandomizeAnswers = true;
+		{
+			vchkrandomizeAnswers = true;
+		}
 
 	if($('#quiz_policies_' + contentObjectId).find('#emballowReviewaftGrading').is( ":checked" ))
-		vallowReviewaftGrading = true;
+		{
+			vallowReviewaftGrading = true;
+		}
 
 	APP.AJAX({
 		  url: 'updateQuizConfiguration',
@@ -348,14 +362,18 @@ function updateQuizConfiguration(contentObjectId,InvalidateQuizMastery) {
 		}
 	 });
 	if(InvalidateQuizMastery)
-		$('#quiz_policies_' + contentObjectId).attr("class","panel-collapse a1 collapse");
+		{
+			$('#quiz_policies_' + contentObjectId).attr("class", "panel-collapse a1 collapse");
+		}
 }
 
 function updateQuizConfigurationValidation(contentObjectId,event) {
 	//WLCMS-482
 	var container = $('#quiz_policies_' + contentObjectId)[0];
 	if(!$(container).hasClass( "panel-collapse a1 collapse in" ))
-		return;
+		{
+			return;
+		}
 
 	if(!$(container).find("#frmEditQuizSetup").valid()) {
 		if(typeof(event) != "undefined") {
@@ -412,7 +430,7 @@ function getQuizSetup (trg,event) {
 	$("#hidQuizContentObjectId").val(contentObjectId);
 	quizsetup_id = '#quiz_policies_' + contentObjectId;
 	var quizSetuptemplate =  "";
-	var $quizSetuptemplate = ""
+	var $quizSetuptemplate = "";
 	quizSetuptemplate =  $('div#quizSetup').clone();
 	$quizSetuptemplate = $(quizSetuptemplate);
 
@@ -439,36 +457,40 @@ function getQuizSetup (trg,event) {
 		$quizSetuptemplate.find('#embnoAttemptsPermitted').val(objQuizSetup.noAttemptsPermitted);
 		$quizSetuptemplate.find('#embscorePassQuiz').val (objQuizSetup.scorePassQuiz);
 
-		if (objQuizSetup.randomizeQuestions)
+		if (objQuizSetup.randomizeQuestions) {
 			$quizSetuptemplate.find('#embchkrandomizeQuestions').prop("checked", true);
-		else
+		} else {
 			$quizSetuptemplate.find('#embchkrandomizeQuestions').prop("checked", false);
+		}
 
-		if(objQuizSetup.randomizeAnswers)
+		if(objQuizSetup.randomizeAnswers) {
 			$quizSetuptemplate.find('#embchkrandomizeAnswers').prop("checked", true);
-		else
+		} else {
 			$quizSetuptemplate.find('#embchkrandomizeAnswers').prop("checked", false);
+		}
 
-		if (objQuizSetup.allowReviewaftGrading)
+		if (objQuizSetup.allowReviewaftGrading) {
 			$quizSetuptemplate.find('#emballowReviewaftGrading').prop("checked", true);
-		else
+		} else {
 			$quizSetuptemplate.find('#emballowReviewaftGrading').prop("checked", false);
+		}
 
 		$quizSetuptemplate.find('#embtimeforQuiz').val(objQuizSetup.timeforQuiz);
 
 
-		if(objQuizSetup.gradeQuestions=='AfterEachQuestionIsAnswered')
-			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterEachQuestionIsAnswered']").prop('selected',true)
-		else
-			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterAssessmentIsSubmitted']").prop('selected',true)
+		if(objQuizSetup.gradeQuestions=='AfterEachQuestionIsAnswered') {
+			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterEachQuestionIsAnswered']").prop('selected', true);
+		} else {
+			$quizSetuptemplate.find("#embopgradeQuestions").children("option[value='AfterAssessmentIsSubmitted']").prop('selected', true);
+		}
 
-
-		if(objQuizSetup.actionOnFailtoPass=='Retake Lesson')
-			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Retake Lesson']").prop('selected',true)
-		else if(objQuizSetup.actionOnFailtoPass=='Go To Next Lesson')
-			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Go To Next Lesson']").prop('selected',true)
-		else
-			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Lock Course']").prop('selected',true)
+		if(objQuizSetup.actionOnFailtoPass=='Retake Lesson') {
+			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Retake Lesson']").prop('selected', true);
+		} else if(objQuizSetup.actionOnFailtoPass=='Go To Next Lesson') {
+			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Go To Next Lesson']").prop('selected', true);
+		} else {
+			$quizSetuptemplate.find("#embactionOnFailtoPass").children("option[value='Lock Course']").prop('selected',true);
+		}
 	}
 
 	$quizSetuptemplate.find ('#setupfooter').attr('data-parent', '#quiz_container' + contentObjectId);
@@ -615,7 +637,9 @@ function getBankList(trg) {
 		var bitPstQuestNoQuiz = postQuestionNo_Quiz(course_id,bank_id,contentObject_id);
 
 		if(bitPstQuestNoQuiz)
-			TopMessageBar.displayMessageTopBar({vType:1, vMsg:WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut:true});
+			{
+				TopMessageBar.displayMessageTopBar({vType: 1, vMsg: WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut: true});
+			}
 
 		$("#hidQuizNoOfQuestionContentObjectId").val(0);
 		$("#hidQuizNoOfQuestionBankId").val(0);
@@ -673,7 +697,9 @@ function getQuestionBar (questionBarId, contentObject_id, AssessmentID) {
 	course_id = getUrlParameter ("id");
 
 	if (!AssessmentID)
-		return;
+		{
+			return;
+		}
 
 	b_bankList = false;
 	//GET bank bar list
@@ -758,7 +784,9 @@ function getQuestion (trg, event) {
 				$('#tblAnswerChoices_' + question_id + '_').parent ().addClass("error");
 				// solve error $parent is null here
 				if ($('#tblAnswerChoices_' + question_id + '_').parent ().parent ().find ('label.answer-error').length <= 0)
-					$('#tblAnswerChoices_' + question_id + '_').parent ().parent ().append("<label for='Quizanswerchoices' generated='true' class='answer-error'>Please mark one the answer choice as the correct answer.</label>");
+					{
+						$('#tblAnswerChoices_' + question_id + '_').parent().parent().append("<label for='Quizanswerchoices' generated='true' class='answer-error'>Please mark one the answer choice as the correct answer.</label>");
+					}
 				event.preventDefault();
 				event.stopPropagation();
 				return false;
@@ -822,10 +850,11 @@ function getQuestion (trg, event) {
 
 		var correctVal = objQuestion.disableRandomizeAnswerChoiceTF;
 
-		if(objQuestion.disableRandomizeAnswerChoiceTF)
+		if(objQuestion.disableRandomizeAnswerChoiceTF) {
 			$quizBanktemplate.find('#embchkAnswerRandomization').prop("checked", true);
-		else
+		} else {
 			$quizBanktemplate.find('#embchkAnswerRandomization').prop("checked", false);
+		}
 
 		$quizBanktemplate.find("#btnUpdtQuizDelQstnOptionTemp").attr("id", "btnUpdtQuizDelQstnOption");
 		$quizBanktemplate.find("#chkUpdtQuizAnswersSlctAllTemp").attr("id", "chkUpdtQuizAnswersSlctAll");
@@ -916,10 +945,12 @@ function addQuestion() {
 		if(len==1){
 			errormsg = WLCMS_CONSTANTS.VALIDATION_SINGLE_ANSWER;
 		}
-		if ($('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find ('.answer-error').length <= 0 )
+
+		if ($('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find ('.answer-error').length <= 0 ) {
 			$('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().append(errormsg);
-		else
-			$('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find ('.answer-error').html(errormsg);
+		} else {
+			$('#addQuestionModal').find("#tbQuestionAnswer2").parent().parent().find('.answer-error').html(errormsg);
+		}
 
 		$('#addQuestionModal').find("#tbQuestionAnswer2").parent().addClass("error");
 		return false;
@@ -1173,10 +1204,11 @@ function correctanswervalidation (event){
 			$('#tblAnswerChoices_' + question_id + '_').parent().addClass("error");
 			bPostQuestion = false;
 		}
-		if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 )
+		if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 ) {
 			$('#tblAnswerChoices_' + question_id + '_').parent().parent().append(errormsg);
-		else
-			$('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').html(errormsg);
+		} else {
+			$('#tblAnswerChoices_' + question_id + '_').parent().parent().find('.answer-error').html(errormsg);
+		}
 
 		if (event) {
 			event.preventDefault();
@@ -1310,13 +1342,17 @@ function addAnswerEdit (bank_id,question_id, event) {
 				correct = $tds.eq(2).text(),
 				feedback = escape(replaceAnswerText($tds.eq(3).text()));
 				if (choice != '')
-					answerArray += choice + '--' + correct + '--' + feedback + '::';
+					{
+						answerArray += choice + '--' + correct + '--' + feedback + '::';
+					}
 			}
 		}
     });
 
 	if (answerArray == '')
-		return true;
+		{
+			return true;
+		}
 
 
 	b_postAnswer = false;
@@ -1523,11 +1559,11 @@ function getAnswerChoice (trg, event) {
 
 				$('#tblAnswerChoices_' + question_id + '_').parent().addClass("error");
 			}
-			if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 )
+			if ($('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').length <= 0 ) {
 				$('#tblAnswerChoices_' + question_id + '_').parent().parent().append(errormsg);
-			else
-				$('#tblAnswerChoices_' + question_id + '_').parent().parent().find ('.answer-error').html(errormsg);
-
+			} else {
+				$('#tblAnswerChoices_' + question_id + '_').parent().parent().find('.answer-error').html(errormsg);
+			}
 			event.preventDefault();
 			event.stopPropagation();
 			return false;
@@ -1587,11 +1623,12 @@ function getAnswerChoiceAJAX(bank_id,question_id){
 function getDetailAnswerChoice(trg) {
 
 
-	if (APP.CACHE.length > 0)
-			APP.CACHE[1] = trg;
-	else
-			APP.CACHE = trg;
-
+	if (APP.CACHE.length > 0) {
+		APP.CACHE[1] = trg;
+	} else {
+		APP.CACHE = trg;
+	}
+	
 	$trg = $(trg);
 	$trg = $trg.parent ().parent();
 
@@ -1634,7 +1671,9 @@ function getDetailAnswerChoice(trg) {
 			}
 			else {
 				if(table.find('td.correct:contains("true")').length>0)
-						$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						{
+							$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						}
 
 				$('#addAnsChoiceModal3').find ('isCorrect3').prop("checked", false);
 			}
@@ -1644,10 +1683,14 @@ function getDetailAnswerChoice(trg) {
 		jQuery.each($columns, function(i, item) {
 			$item = $(item);
 			if ($item.hasClass('choice') )
-				CKEDITOR.instances['ans-ckeditor-3'].setData($item.text ());
+				{
+					CKEDITOR.instances['ans-ckeditor-3'].setData($item.text());
+				}
 
 			if ($item.hasClass('feedback') )
-				CKEDITOR.instances['feedback-ckeditor-3'].setData($item.text ());
+				{
+					CKEDITOR.instances['feedback-ckeditor-3'].setData($item.text());
+				}
 
 			if ($item.hasClass('correct')){
 				if ($item.text ()== 'true')  {
@@ -1657,7 +1700,9 @@ function getDetailAnswerChoice(trg) {
 				}
 				else {
 					if(table.find('td.correct:contains("true")').length>0)
-						$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						{
+							$("#addAnsChoiceModal3").find("#isCorrect3").attr("disabled", true);
+						}
 
 					$('#addAnsChoiceModal3').find ('#isCorrect3').prop("checked", false);
 				}
