@@ -291,6 +291,20 @@
                                         </div>
                                     </td>
                                 </tr>
+                                    #if ($!{command.publishedOnSF}=="true")
+                                    <input type="hidden" name="publishedOnSF" id="publishedOnSF" value="$!{command.publishedOnSF}" />
+                                    <tr id="updateSFPanel" class="hide">
+                                        <td colspan="2">
+                                            <div class="collapse" id="collapseDiv">
+                                                <ul class="list-inline hint-in-table">
+                                                &nbsp;&nbsp; #springMessage('label.update.publish.my.store.front.question')<br />
+                                                <label for="sessionsOnly" style="margin-left: 40px;"><input type="radio" name="updateSFChange" id="sessionsOnly" value="sessionsOnly" /> #springMessage('label.update.publish.my.store.front.answer1') </label>
+                                                <label for="updateAll" style="margin-left: 40px;"><input type="radio" name="updateSFChange" id="updateAll" value="updateAll" /> #springMessage('label.update.publish.my.store.front.answer2') </label>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    #end
 								#end
 							#end
 							#if ($!{command.publishStatus}=="true")
@@ -438,6 +452,7 @@ $(document).ready(function() {
                 $("#publishLMS").val(data.value)
                 break;
             case "publisToSFBtn":
+                toggleUpdateSFPanel();
                 thisCourse.sf = data.value;
                 $("#publishSF").val(data.value)
                 break;
@@ -546,5 +561,28 @@ function cancelOffer(isConfirmed)
     }
 }
 
-
+function toggleUpdateSFPanel(){
+    var cType = getUrlParameter('cType');
+    //if not classroom, return...
+    if(cType !== "5"){
+        return;
+    }
+    var publishedOnSF = $('#publishedOnSF').val();
+    if(!publishedOnSF){
+        return;
+    }
+    //if updateSF is YES
+    if($('#updateSF:checked').val() != undefined){
+        $('#updateSFPanel').removeClass("hide");
+        $("#collapseDiv").collapse('show');
+        $("#sessionsOnly").attr('checked', true);
+    }
+    //IF NO
+    else {
+        $("#collapseDiv").collapse('hide');
+        $("#sessionsOnly").attr('checked', false);
+        $("#updateAll").attr('checked', false);
+        setTimeout(function(){ $('#updateSFPanel').addClass("hide"); }, 250);
+    }
+}
 </script>

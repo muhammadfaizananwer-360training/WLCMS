@@ -105,7 +105,6 @@ public class PublishingController {
 		return courseModelView;
 	}
 
-	//@RequestMapping(value="updatePricing", method={RequestMethod.POST, RequestMethod.GET})
 	public void updatePricing(
 			HttpServletRequest request) {
 
@@ -113,7 +112,6 @@ public class PublishingController {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String sMSRP= request.getParameter("mSRP");
 		String sLowestSalePrice = request.getParameter("lowestSalePrice");
-		//String courseType = request.getParameter(WlcmsConstants.PARAMETER_COURSE_TYPE);//unused variable
 		Double offerPrice = 0.0;
 		Boolean manageSFPrice = request.getParameter("chkManagerOffer") != null  && request.getParameter("chkManagerOffer").contains("on");
 		String offerPriceParam = request.getParameter("offerprice");
@@ -124,12 +122,8 @@ public class PublishingController {
 		logger.debug("PublishingController::updatePricing - Start");
 
 		CoursePricing cp = new CoursePricing();
-		//String sErrorMsg = null;//unused variable
-
 		try
 		{
-			//LdapUserDetailsImpl userd  = (LdapUserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			//VU360UserDetail  user = (VU360UserDetail) vu360UserService.loadUserByUsername(userd.getUsername());
 			VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			cp.setUpdatedBy(String.valueOf(user.getAuthorId()));
@@ -144,19 +138,10 @@ public class PublishingController {
 
 		} catch (Exception ex)
 		{
-			//sErrorMsg = "&failureMessage=" +"Pricing Information could not be saved " + ex.getMessage();//unused variable
 			logger.debug("CourseController::updateCourse - Exception " + ex.getMessage());
 		}
 		logger.debug("PublishingController::updatePricing - End");
-        /*if (sErrorMsg != null)
-        {
-        	sErrorMsg = "redirect:/pricing?id="+ id + sErrorMsg + "&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=" + courseType;;
-        }
-        else
-        {
-        	sErrorMsg = "redirect:/pricing?id="+ id + "&msg=success&" + WlcmsConstants.PARAMETER_COURSE_TYPE + "=" + courseType;
-        }*/
-		// return new ModelAndView(sErrorMsg);
+
 	}
 
 	@RequestMapping(value = "publishing",  method={RequestMethod.POST, RequestMethod.GET})
@@ -174,7 +159,6 @@ public class PublishingController {
 		CourseCompletionReport courseCompletionReport = new CourseCompletionReport ();
 		courseCompletionReport.setCourseId(Integer.parseInt(idToSearch));
 		courseCompletionReport.setContentOwnerId(contentOwnerId);
-		//CourseCompletionReport.setContentOwnerId(Integer.parseInt(contentOwnerId));
 		courseCompletionReport = publishingService.getCompletionReport(courseCompletionReport);
 		String dateString = courseCompletionReport.getLastPublishDate();
 		if(dateString != null && !dateString.trim().equals("")){
@@ -252,10 +236,10 @@ public class PublishingController {
 	}
 
 	public String makeOffer(HttpServletRequest request)throws Exception {
-		//ModelAndView mv = new ModelAndView ("offerOn360Marketplace");
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
-		//JsonResponse res = new JsonResponse();//unused variable
+
 
 		Integer publishedCourseId = 0;
 		try {
@@ -319,7 +303,6 @@ public class PublishingController {
 			oe.setToContentOwnerEmail(toContentOwner.getEmailAddress());
 
 			sendMailOnReceivedOffer(oe);
-			//res.setStatus("SUCCESS");
 			return "success";
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -361,6 +344,12 @@ public class PublishingController {
 		Boolean updateCouseContent = request.getParameter("updateCouseContent") != null;
 		Boolean updateLMS = request.getParameter("updateLMS") != null;
 		Boolean updateSF = request.getParameter("updateSF") != null;
+		//initialize default as false
+		Boolean updateSFSessionsOnly = Boolean.FALSE;
+		//Dependent on updateSF being true, updateSFChange param value can be "sessionsOnly" (or "updateAll" in normal case of updateSF)
+		if(updateSF) {
+			updateSFSessionsOnly = "sessionsOnly".equalsIgnoreCase(request.getParameter("updateSFChange")) ? Boolean.TRUE : Boolean.FALSE;
+		}
 		Boolean publis360Btn = request.getParameter("publis360Btn") != null;
 
 		String sErrorMsg = "";
@@ -369,7 +358,7 @@ public class PublishingController {
 		if (cType != null && (cType.equals(String.valueOf(CourseType.CLASSROOM_COURSE.getId())) ||
 				cType.equals(String.valueOf(CourseType.WEBINAR_COURSE.getId()))) ) {
 			sErrorMsg = publishSynchronousCourse(idToSearch, publishSF, publishLMS,
-					updateCouseContent, updateLMS, updateSF);
+					updateCouseContent, updateLMS, updateSF, updateSFSessionsOnly);
 
 			if (Integer.parseInt(cType) == CourseType.WEBINAR_COURSE.getId()){//this should happen only for Publishing Webinar Course
 				int courseIdInt = Integer.parseInt(idToSearch);
@@ -441,18 +430,22 @@ public class PublishingController {
 
 	public String publishSynchronousCourse(String idToSearch, Boolean publishSF,
 										   Boolean publishLMS, Boolean updateCouseContent, Boolean updateLMS,
-										   Boolean updateSF ){
+										   Boolean updateSF, Boolean updateSFSessionsOnly ){
 		String msg  = "";
 		VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		try
 		{
 			publishingService.adjustCourseInfoBeforePublish(TypeConvertor.AnyToInteger(idToSearch));
-			if (publishSF || updateSF)
+			if(updateSF && updateSFSessionsOnly) {
+				CoursePublishHelper.publishCourse(Integer.parseInt(idToSearch), "SyncSFSessions", user.getAuthorId());
+			} else if (publishSF || updateSF) {
 				CoursePublishHelper.publishCourse(Integer.parseInt(idToSearch), "SyncSF", user.getAuthorId());
+			}
 
-			if (publishLMS || updateLMS)
+			if (publishLMS || updateLMS) {
 				CoursePublishHelper.publishCourse(Integer.parseInt(idToSearch), "SyncLMS", user.getAuthorId());
+			}
 
 			publishingService.changeSynchrounousPublishStatus(Integer.parseInt(idToSearch), user.getAuthorId());
 
@@ -598,7 +591,6 @@ public class PublishingController {
 		String msg = "&msg=success";
 		boolean isErrorFound = false;
 		VU360UserDetail user  = (VU360UserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		//Boolean varResaleClassroomW = false;//unused variable
 		Boolean mobileTablet = false;
 
 		String industry = request.getParameter("industry");

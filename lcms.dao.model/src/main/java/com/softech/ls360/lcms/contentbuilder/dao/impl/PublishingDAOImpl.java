@@ -56,12 +56,6 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 	@Override
 	public boolean changeSynchrounousPublishStatus(int courseId, long authorId){
 
-		/*SPCallingParams sparam1 = LCMS_Util.createSPObject("COURSE_ID", String.valueOf(courseId) , Integer.class, ParameterMode.IN);
-
-		StoredProcedureQuery qr = createQueryParameters("ChangePublishStatusSynchronousCourse", sparam1);
-		qr.execute();
-		*/
-
 		Query query = getEntityManager ().createNativeQuery("Update Course SET COURSESTATUS='Published', LastUpdatedDate = GetDate() , LastPublishedDate = GetDate(), LastUpdateUser = :author_Id WHERE ID = :course_id");
 		query.setParameter( "course_id", courseId);
 		query.setParameter( "author_Id", authorId);
@@ -172,6 +166,7 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 			courseCompletionReport.setLastPublishDate(TypeConvertor.DateTimeToString((Date) coursCompletionRptRow[9]));
 			courseCompletionReport.setOfferPrice(TypeConvertor.AnyToDouble(coursCompletionRptRow[10]));
 			courseCompletionReport.setLowestPrice(TypeConvertor.AnyToDouble(coursCompletionRptRow[11]));
+			courseCompletionReport.setPublishedOnSF(coursCompletionRptRow[12] == null ? false : Boolean.parseBoolean(coursCompletionRptRow[12].toString()));
 		}
 
 		return courseCompletionReport;
@@ -225,8 +220,6 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 		for (Object course : courseRows) {
 
 			courseRow = (Object[]) course;
-			//Clob cm = (Clob )courseRow[1];
-			//String courseName = StringUtil.clobStringConversion(cm);
 			availability.setId( Long.parseLong(courseRow[0].toString()));
 			Clob cm = (Clob )courseRow[1];
 			String courseName = StringUtil.clobStringConversion(cm);
@@ -266,8 +259,6 @@ public class PublishingDAOImpl extends GenericDAOImpl<CoursePricing> implements 
 
 		SPCallingParams sparam1 = LCMS_Util.createSPObject("COURSE_ID", String.valueOf(availability.getId()) , Integer.class, ParameterMode.IN);
 		SPCallingParams sparam2 = LCMS_Util.createSPObject("Industry", String.valueOf(availability.getIndustry()) , String.class, ParameterMode.IN);
-//		SPCallingParams sparam3 = LCMS_Util.createSPObject("CourseGroupId", String.valueOf(availability.getCourseGroupId()) , Integer.class, ParameterMode.IN);
-//		SPCallingParams sparam4 = LCMS_Util.createSPObject("CourseGroupName", String.valueOf(availability.getCourseGroupName()) , String.class, ParameterMode.IN);
 
 		SPCallingParams sparam3 = null;
 		boolean isCourseExpirationNull = false;

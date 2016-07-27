@@ -42,6 +42,7 @@ public class CourseCompletionReport implements Serializable{
 	boolean IsAuthorInfoProvided;
 	Double lowestPrice;
 	Double offerPrice;
+	boolean publishedOnSF;
 	String lastPublishDate;
 	Integer examQuestionToAskCount;
 
@@ -294,6 +295,16 @@ public class CourseCompletionReport implements Serializable{
 	public Double getLowestPrice() {
 		return lowestPrice;
 	}
+
+
+	public boolean isPublishedOnSF() {
+		return publishedOnSF;
+	}
+
+	public void setPublishedOnSF(boolean publishedOnSF) {
+		this.publishedOnSF = publishedOnSF;
+	}
+
 
 	public void setLowestPrice(Double lowestPrice) {
 		this.lowestPrice = lowestPrice;
