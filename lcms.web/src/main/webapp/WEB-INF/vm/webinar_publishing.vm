@@ -292,7 +292,6 @@
                                     </td>
                                 </tr>
                                     #if ($!{command.publishedOnSF}=="true")
-                                    <input type="hidden" name="publishedOnSF" id="publishedOnSF" value="$!{command.publishedOnSF}" />
                                     <tr id="updateSFPanel" class="hide">
                                         <td colspan="2">
                                             <div class="collapse" id="collapseDiv">
@@ -567,8 +566,8 @@ function toggleUpdateSFPanel(){
     if(cType !== "5"){
         return;
     }
-    var publishedOnSF = $('#publishedOnSF').val();
-    if(!publishedOnSF){
+    //if updateSFPanel doesnt exist, return...
+    if (!$("#updateSFPanel").length) {
         return;
     }
     //if updateSF is YES
