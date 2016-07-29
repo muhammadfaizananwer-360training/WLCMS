@@ -4,6 +4,7 @@ import com.softech.ls360.lcms.contentbuilder.model.validator.annotation.NotEmpty
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -49,6 +50,8 @@ public class CourseVO implements Serializable,ControllableNode {
     private String learningObjectives;
     private String propValue;
     private boolean error;
+    private Double courseDuration;
+    private Double coursePrice;
     
     public CourseVO() {
         this.syncClassesMap = new LinkedHashMap<>();
@@ -269,10 +272,21 @@ public class CourseVO implements Serializable,ControllableNode {
     public Map<String, ? extends ControllableNode> getChildren() {
         return getSyncClassesMap();
     }
-    
-    
-    
-    
-    
 
+
+    public Double getCourseDuration() {
+        return courseDuration;
+    }
+
+    public void setCourseDuration(Double courseDuration) {
+        this.courseDuration = courseDuration;
+    }
+
+    public Double getCoursePrice() {
+        return coursePrice;
+    }
+
+    public void setCoursePrice(Double coursePrice) {
+        this.coursePrice = coursePrice;
+    }
 }
