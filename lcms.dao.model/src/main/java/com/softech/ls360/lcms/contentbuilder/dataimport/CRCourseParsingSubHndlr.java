@@ -36,6 +36,7 @@ public class CRCourseParsingSubHndlr implements ITabularParsingSubHandler<Course
         ACTION,
         COURSE_NAME,
         COURSE_ID,
+        COURSE_DURATION,
         DESCRIPTION,
         PROP_VALUE,
         INDUSTRY_CATEGORY,
@@ -44,6 +45,7 @@ public class CRCourseParsingSubHndlr implements ITabularParsingSubHandler<Course
         TOPICS_COVERED,
         PREREQUISITES,
         ADDITIONAL_INFORMATION,
+        COURSE_PRICE,
         INSTRUCTOR_EMAIL,
         AUTHOR_BACKGROUND,
         PROVIDER_NAME,
@@ -55,6 +57,7 @@ public class CRCourseParsingSubHndlr implements ITabularParsingSubHandler<Course
         new MetaData("Action", false, null, String.class),
         new MetaData("Course Title", true, null, String.class),
         new MetaData("Course ID", true, null, String.class),
+        new MetaData("Course Duration", false, ExpressionConstant.POSITIVE_NUMBER_DECIMAL, String.class, "Positive Number"),
         new MetaData("Description", true, null, String.class),
         new MetaData("About This Course", false, null, String.class),
         new MetaData("Industry Category", true, null, String.class),
@@ -63,6 +66,7 @@ public class CRCourseParsingSubHndlr implements ITabularParsingSubHandler<Course
         new MetaData("Topics Covered", false, null, String.class),
         new MetaData("Prerequisites", false, null, String.class),
         new MetaData("Additional Information", false, null, String.class),
+        new MetaData("Course Price", true, ExpressionConstant.POSITIVE_NUMBER_DECIMAL, String.class, "Positive Number"),
         new MetaData("Instructor Email", true, ExpressionConstant.EMAIL, String.class, "Invalid Email"),
         new MetaData("Instructor Background", true, null, String.class),
         new MetaData("Provider Name", true, null, String.class),
@@ -149,6 +153,9 @@ public class CRCourseParsingSubHndlr implements ITabularParsingSubHandler<Course
         course.setBusinessunitName(TypeConvertor.AnyToString(row[ColumnIndexes.INDUSTRY_CATEGORY.ordinal()]));
         course.setPropValue(TypeConvertor.AnyToString(row[ColumnIndexes.PROP_VALUE.ordinal()]));
         course.setInstructorEmail(instructorHandler.getInstructor(TypeConvertor.AnyToString(row[ColumnIndexes.INSTRUCTOR_EMAIL.ordinal()])).getEmail());
+        course.setCourseDuration(TypeConvertor.AnyToDouble(row[ColumnIndexes.COURSE_DURATION.ordinal()]));
+        course.setCoursePrice(TypeConvertor.AnyToDouble(row[ColumnIndexes.COURSE_PRICE.ordinal()]));
+
         courseProvider.setInstructorBackground(TypeConvertor.AnyToString(row[ColumnIndexes.AUTHOR_BACKGROUND.ordinal()]));
         courseProvider.setName(TypeConvertor.AnyToString(row[ColumnIndexes.PROVIDER_NAME.ordinal()]));
         courseProvider.setEmail(TypeConvertor.AnyToString(row[ColumnIndexes.PROVIDER_EMAIL.ordinal()]));

@@ -70,6 +70,7 @@ var WLCMS_LOCALIZED = {
         'classroomImportPage-error-Empty Column':"No column defined.",
         'classroomImportPage-error-Invalid Column':"<strong>@[errorText]</strong> is invalid column.",
         'classroomImportPage-error-Mandatory Field':"A required field was left blank.",
+        'classroomImportPage-error-Positive Number':"<strong>@[errorText]</strong> is not positive numeric value.",
         'classroomImportPage-error-Invalid Value':"<strong>@[errorText]</strong> is invalid value.",
         'classroomImportPage-error-Not Found In System':"<strong>@[errorText]</strong> is not defined in the system.",
         'classroomImportPage-error-Unknown':"Oops, this error is not expected. @[errorText]",

@@ -1100,6 +1100,19 @@ public class ClassroomCourseServiceImpl implements IClassroomCourseService {
             course.setLastUpdatedDate(new Date());
             modelMapper.map(dto, course);
 
+            //duration
+            if(dto.getCourseDuration() != null) {
+                course.setDuration(dto.getCourseDuration().toString());
+                course.setCeus(BigDecimal.valueOf(dto.getCourseDuration()));
+            }
+
+            //price
+            if(dto.getCoursePrice() != null) {
+                course.setProductPrice(BigDecimal.valueOf(dto.getCoursePrice()));
+                course.setMsrp(BigDecimal.valueOf(dto.getCoursePrice()));
+                course.setLowestPrice(BigDecimal.valueOf(dto.getCoursePrice()));
+            }
+
             if (dto.getCourseProvider() != null && dto.getCourseProvider().getInstructorBackground() != null) {
                 course.setAuthorBackground(dto.getCourseProvider().getInstructorBackground());
             }

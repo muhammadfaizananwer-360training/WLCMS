@@ -37,6 +37,9 @@ public class CourseDTO implements Serializable{
     
     @Column(name = "CEUS")
     private BigDecimal ceus;
+
+	private BigDecimal msrp;
+	private BigDecimal lowestPrice;
     
     @Column(name = "KEYWORDS")
     private String keywords;
@@ -721,4 +724,21 @@ public class CourseDTO implements Serializable{
         this.classInstructorId = classInstructorId;
     }
 
+	@Column(name="MSRP")
+	public BigDecimal getMsrp() {
+		return msrp;
+	}
+
+	public void setMsrp(BigDecimal msrp) {
+		this.msrp = msrp;
+	}
+
+	@Column(name="LOWESTPRICE")
+	public BigDecimal getLowestPrice() {
+		return lowestPrice;
+	}
+
+	public void setLowestPrice(BigDecimal lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
 }
