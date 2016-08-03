@@ -25,7 +25,10 @@ public class LocationServiceImpl implements ILocationService{
 
 	@Override
 	public Location addLocation(Location location) {
-		// TODO Auto-generated method stub
+		List<Location> locations = locationDAO.getLocationsByOwnerIdAndName(location.getContentownerId(), location.getLocationname());
+		if(locations.size() > 0) {
+			throw new RuntimeException("duplicate");
+		}
 		return locationDAO.addLocation(location);
 	}
 
@@ -45,9 +48,14 @@ public class LocationServiceImpl implements ILocationService{
 
 	@Override
 	public Location updateLocation(Location location) {
-		
-		
-		
+
+
+		List<Location> locations = locationDAO.getLocationsByOwnerIdAndName(location.getContentownerId(), location.getLocationname());
+		if(locations.size() > 0) {
+			if(locations.size() > 1 || !locations.get(0).getId().equals(location.getId())) {
+				throw new RuntimeException("duplicate");
+			}
+		}
 		return locationDAO.updateLocation(location);
 	}
 	

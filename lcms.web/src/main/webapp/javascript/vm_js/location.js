@@ -178,12 +178,17 @@ function addLocation(come_from_classroom) {
 			desc: $("#locationdesc").val(),address: $("textarea[name='locationaddress']").val()},
 		async: false,
 		success: function(response) {
-				var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='"+response.id+"' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation("+response.id+")'>"+response.locationname+"</a>", ""+response.city+"",""+response.state+""];
+			if(response.error) {
+				$360.showMessage(response);
+				$('#submitLocation').removeAttr("data-dismiss");
+			} else {
+				response = response.data;
+				var object = ["<input id='" + response.id + "' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='" + response.id + "' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation(" + response.id + ")'>" + response.locationname + "</a>", "" + response.city + "", "" + response.state + ""];
 				oTb.fnAddData(object);
 				$('#submitLocation').attr('data-dismiss', 'modal');
 
-				TopMessageBar.displayMessageTopBar({vType:1, vMsg:WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut:true});
-
+				TopMessageBar.displayMessageTopBar({vType: 1, vMsg: WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut: true});
+			}
 		}
    });
 
@@ -284,13 +289,18 @@ function updateLocation()
 			desc: $("#locationdesc").val(),address: $("textarea[name='locationaddress']").val(),loc_id: $("#locationid").val()},
 		async: false,
 		success: function(response) {
-			$('#submitLocation').attr('data-dismiss', 'modal');
-			var object = [ "<input id='"+response.id+"' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='"+response.id+"' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation("+response.id+")'>"+response.locationname+"</a>", ""+response.city+"",""+response.state+""];
-			var table = $('#location_table').DataTable();
-			table.row('.update').data(object).draw( false );
-			$("#"+response.id).closest('tr').removeClass('update');
-			TopMessageBar.displayMessageTopBar({vType:1, vMsg:WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut:true});
-
+			if(response.error) {
+				$360.showMessage(response);
+				$('#submitLocation').removeAttr("data-dismiss");
+			} else {
+				response = response.data;
+				$('#submitLocation').attr('data-dismiss', 'modal');
+				var object = ["<input id='" + response.id + "' type='checkbox' onclick=\"APP.CHECKBOX_WITH_BTN(this,false,'loc-delete-btn')\" class='checks' value='" + response.id + "' name='location_checkboxes'>", "<a class='anchor' href='javascript:;' data-toggle='modal' data-target='#addLocationModal' onclick='loadLocation(" + response.id + ")'>" + response.locationname + "</a>", "" + response.city + "", "" + response.state + ""];
+				var table = $('#location_table').DataTable();
+				table.row('.update').data(object).draw(false);
+				$("#" + response.id).closest('tr').removeClass('update');
+				TopMessageBar.displayMessageTopBar({vType: 1, vMsg: WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut: true});
+			}
 
 		}
    });
