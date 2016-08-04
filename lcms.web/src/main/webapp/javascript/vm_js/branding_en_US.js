@@ -88,6 +88,7 @@ var WLCMS_LOCALIZED = {
         'MRSP_REQUIRED_MESSAGE' :'Please select MSRP / list price.',
         'MRSP_NEGATIVE_MESSAGE' :'Price cannot be a negative value.',
         'LSP_REQUIRED_MESSAGE' :'Please select Lowest on-sale price.',
-        'LSP_NEGATIVE_MESSAGE' :'Price cannot be a negative value.'
+        'LSP_NEGATIVE_MESSAGE' :'Price cannot be a negative value.',
+        'duplicate': '<strong>Sorry!</strong> Duplicate entry found.'
 };
 
