@@ -438,7 +438,7 @@ public class PublishingController {
 		{
 			publishingService.adjustCourseInfoBeforePublish(TypeConvertor.AnyToInteger(idToSearch));
 			if(updateSF && updateSFSessionsOnly) {
-				CoursePublishHelper.publishCourse(Integer.parseInt(idToSearch), "SyncSF", user.getAuthorId());
+				CoursePublishHelper.publishCourse(Integer.parseInt(idToSearch), "SyncSFSessions", user.getAuthorId());
 			} else if (publishSF || updateSF) {
 				CoursePublishHelper.publishCourse(Integer.parseInt(idToSearch), "SyncSF", user.getAuthorId());
 			}
