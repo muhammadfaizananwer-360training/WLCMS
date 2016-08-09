@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.softech.ls360.lcms.contentbuilder.utils.TypeConvertor;
+import com.softech.ls360.lcms.contentbuilder.web.model.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,9 @@ public class LocationController {
 			.getLogger(CourseController.class);
 	
 	@RequestMapping(value = "addLocation", method = RequestMethod.POST)
-	public @ResponseBody Location addLocation(
-			HttpServletRequest request, HttpServletResponse response) {
-		
+	public @ResponseBody RestResponse addLocation(
+			HttpServletRequest request) {
+		RestResponse response =  new RestResponse();
 		logger.debug("LocationController::addLocation - Start");
 		
 		Address objAddress = new Address();
@@ -69,15 +70,16 @@ public class LocationController {
 		
 		location.setContentownerId((int)principal.getContentOwnerId());
 		location.setAddress(objAddress);
-		
-		
-	    Location obj = ls.addLocation(location);
-		
-		
-		
 
+
+		try {
+			Location obj = ls.addLocation(location);
+			response.setData(obj);
+		} catch(Exception ex) {
+			response.setError(ex.getMessage());
+		}
 		
-		return obj;
+		return response;
 		
 	}
 	
@@ -172,7 +174,7 @@ public class LocationController {
 	
 	
 	@RequestMapping(value = "updateLocation", method = RequestMethod.POST)
-	public @ResponseBody Location updateLocation(
+	public @ResponseBody RestResponse updateLocation(
 			@RequestParam("loc_id") String id,
 			@RequestParam("locationName") String locationName,
 			@RequestParam("city") String city,
@@ -184,7 +186,7 @@ public class LocationController {
 			@RequestParam("address") String address) {
 		
 		logger.debug("LocationController::addLocation - Start");
-		
+		RestResponse response =  new RestResponse();
 		Address objAddress = new Address();
 		Location location = new Location();
 		VU360UserDetail principal = (VU360UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -209,11 +211,17 @@ public class LocationController {
 		location.setContentownerId((int)principal.getContentOwnerId());
 		location.setAddress(objAddress);
 		
-		Location locationObj = ls.updateLocation(location);
 
-		
-		return locationObj;
-		
+
+		try {
+			Location locationObj = ls.updateLocation(location);
+			response.setData(locationObj);
+		} catch(Exception ex) {
+			response.setError(ex.getMessage());
+		}
+
+		return response;
+
 	}
 
 	

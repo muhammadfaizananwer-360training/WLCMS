@@ -387,13 +387,18 @@ function add_location_from_classroom()
 			desc: $("#locationdesc").val(),address: $("textarea[name='locationaddress']").val()},
     	async: false,
 		success: function(response) {
+			if(response.error) {
+				$360.showMessage(response);
+				$('#submitLocation').removeAttr("data-dismiss");
+			} else {
 				$('[name=classLocation]')
-				.append($("<option></option>")
-				.attr("value",response.id)
-				.text(response.locationname));
+					.append($("<option></option>")
+						.attr("value", response.id)
+						.text(response.locationname));
 				$('#addClassform').find('#classLocation').val(response.id);
 				$('#submitLocation').attr('data-dismiss', 'modal');
-				TopMessageBar.displayMessageTopBar({vType:1, vMsg:WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut:true});
+				TopMessageBar.displayMessageTopBar({vType: 1, vMsg: WLCMS_LOCALIZED.SAVE_MESSAGE, bFadeOut: true});
+			}
 		}
    });
 }
