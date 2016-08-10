@@ -89,8 +89,8 @@ $(function(){
 </div>
 #* END PAGE CONTENT *#
 <script src="javascript/vm_js/schedule.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
-<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/branding_en_GB.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
+<script src="javascript/vm_js/branding_en_US.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 <script src="javascript/vm_js/countries.js?#springMessage('js.version-param-name')=#springMessage('js.version')" type="text/javascript"></script>
 #parse("footer.vm")
 <script>
