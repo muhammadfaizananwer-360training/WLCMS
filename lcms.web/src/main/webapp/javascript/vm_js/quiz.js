@@ -8,7 +8,7 @@ function configureQuizSetupValidator(container) {
 		rules: {
 			'embtimeforQuiz': {
 				required: true,
-				minStrict: -1,
+				minStrict: 0,
 				number: true
 			},
 			'embscorePassQuiz': {
@@ -18,17 +18,15 @@ function configureQuizSetupValidator(container) {
 			},
 			'embnoAttemptsPermitted': {
 				required: true,
-				minStrict: 0,
-				equalStrict: 1,
+				range: [1, 10],
 				number: true
 			}
 		},
 		// Specify the validation error messages
 		messages: {
-			'embtimeforQuiz': "Please enter a number greater than zero.",
-			'embscorePassQuiz': "Please enter a number between 0 and 100.",
-			'embnoAttemptsPermitted': "Please enter a number greater than or equal to one."
-
+			'embtimeforQuiz': WLCMS_LOCALIZED.VALIDATION_TIME_PERMITTED_FOR_QUIZ,
+			'embscorePassQuiz': WLCMS_LOCALIZED.VALIDATION_SCORE_REQUIRED_TO_PASS_QUIZ,
+			'embnoAttemptsPermitted': WLCMS_LOCALIZED.VALIDATION_NUMBER_OF_ATTEMPS_PERMITTED
 		},
 
 		invalidHandler: function (event, validator) {
@@ -99,24 +97,13 @@ $(function() {
 		return value > param;
 	});
 
-	$.validator.addMethod('equalStrict', function (value, el, param) {
-		return value == param;
-	});
-
-	$.validator.addMethod('maxStrict', function (value, el, param) {
-		return value <= param;
-	});
-
-	$.validator.addMethod('lessthan', function (value, el, param) {
-		return value < 0 ;
-	});
 // Setup form validation on the #register-form element
    $("#frmAddQuizModal").validate({
         // Specify the validation rules
        rules: {
     	   'timeforQuiz' : {
 					required: true,
-					minStrict: -1,
+					minStrict: 0,
 					number: true
 				},
 			'scorePassQuiz' : {
@@ -126,17 +113,15 @@ $(function() {
 			},
 			'noAttemptsPermitted':{
 					required: true,
-					minStrict : 0,
-					equalStrict: 1,
+				    range:[1,10],
 					number: true
 			}
         },
         // Specify the validation error messages
        messages: {
-    	   'timeforQuiz': "Please enter a number greater than zero." ,
-		   'scorePassQuiz' : "Please enter a number between 0 and 100.",
-		   'noAttemptsPermitted':"Please enter a number greater than or equal to one."
-
+    	   'timeforQuiz': WLCMS_LOCALIZED.VALIDATION_TIME_PERMITTED_FOR_QUIZ,
+		   'scorePassQuiz': WLCMS_LOCALIZED.VALIDATION_SCORE_REQUIRED_TO_PASS_QUIZ,
+		   'noAttemptsPermitted': WLCMS_LOCALIZED.VALIDATION_NUMBER_OF_ATTEMPS_PERMITTED
         },
 
 		invalidHandler: function(event, validator) {
@@ -1628,7 +1613,7 @@ function getDetailAnswerChoice(trg) {
 	} else {
 		APP.CACHE = trg;
 	}
-	
+
 	$trg = $(trg);
 	$trg = $trg.parent ().parent();
 
