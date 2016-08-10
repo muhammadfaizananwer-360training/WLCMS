@@ -866,7 +866,7 @@
 					
 					
 				  <div class="modal-footer">
-					<button id="submitLocation"  OnClick="addLocation('1')" class="btn blue">Save</button>
+					<button type="button" id="submitLocation"  OnClick="addLocation('1')" class="btn blue">Save</button>
 					<button type="button" class="btn btn-default" onClick="reset_modal()" data-dismiss="modal">Cancel</button>					
 				  </div>
 				  </form>
