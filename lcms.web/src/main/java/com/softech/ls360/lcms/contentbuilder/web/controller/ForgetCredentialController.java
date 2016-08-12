@@ -93,7 +93,7 @@ public class ForgetCredentialController {
 				mbody = StringUtils.replace(mbody, "&lt;loginurl&gt;", host + "/login.do");
 				
 				//update user in DB and AD
-				VU360User vu360User1 = (VU360User) vu360UserService.changeVU360UserPassword(vu360User, password);
+				vu360UserService.changeVU360UserPassword(vu360User, password);
 
 				//send mail
 				sendMessage("Forget your password?", sendTo, mbody);
