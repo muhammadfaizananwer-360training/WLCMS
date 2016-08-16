@@ -391,6 +391,7 @@ function add_location_from_classroom()
 				$360.showMessage(response);
 				$('#submitLocation').removeAttr("data-dismiss");
 			} else {
+				response = response.data;
 				$('[name=classLocation]')
 					.append($("<option></option>")
 						.attr("value", response.id)
